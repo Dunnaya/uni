@@ -626,7 +626,7 @@ void demoMode()
 void benchmark()
 {
     int n;
-    cout << "Enter N: ";
+    cout << "\nEnter N: ";
     cin >> n;
 
     string product[] = {"aa", "bb", "cc", "dd", "ee"};
@@ -700,7 +700,7 @@ void benchmark()
             auto durationWrite = chrono::duration_cast<chrono::milliseconds>(endWrite - startWrite);
             auto durationRead = chrono::duration_cast<chrono::milliseconds>(endRead - startRead);
 
-            cout << "Time using BIN\n";
+            cout << "\nTime using BIN\n";
             cout << "Writing time: " << durationWrite.count() << endl;
             cout << "Reading time: " << durationRead.count() << endl;
         }
@@ -720,7 +720,7 @@ void benchmark()
             auto durationWrite = chrono::duration_cast<chrono::milliseconds>(endWrite - startWrite);
             auto durationRead = chrono::duration_cast<chrono::milliseconds>(endRead - startRead);
 
-            cout << "Time using TXT\n";
+            cout << "\nTime using TXT\n";
             cout << "Writing time: " << durationWrite.count() << endl;
             cout << "Reading time: " << durationRead.count() << endl;
         }
@@ -751,22 +751,20 @@ void benchmark()
         auto durationSearchDate = chrono::duration_cast<chrono::milliseconds>(endSearchDate - startSearchDate);
         auto durationSearchAll = chrono::duration_cast<chrono::milliseconds>(endSearchAll - startSearchAll);
 
-        cout << "\nN = " << n << endl;
-
         if (i == 2)
-        cout << "Time using VECTOR\n";
+        cout << "\nTime using VECTOR\n";
 
-        cout << "Duration: " << durationAll.count() << endl;
-        cout << "Time adding: " << durationAdd.count() << endl;
+        cout << "Time adding products: " << durationAdd.count() << endl;
         cout << "Time searching name: " << durationSearchName.count() << endl;
         cout << "Time searching quantity: " << durationSearchQuantity.count() << endl;
         cout << "Time searching date: " << durationSearchDate.count() << endl;
         cout << "Time searching all: " << durationSearchAll.count() << endl;
+        cout << "Duration: " << durationAll.count() << endl;
 
         total += durationAll.count();
     }
 
-    cout << "Total time: " << total;
+    cout << "\nTotal time: " << total;
 }
 
 int main() 
