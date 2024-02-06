@@ -762,6 +762,8 @@ void benchmark()
         cout << "Duration: " << durationAll.count() << endl;
 
         total += durationAll.count();
+
+        store.products.clear();
     }
 
     cout << "\nTotal time: " << total;
