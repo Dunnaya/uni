@@ -36,10 +36,15 @@ struct point
         cout << "(" << x << ";" << y << ";" << z << ")";
     }
 
+    void returnCoordinateBenchmark ()
+    {
+        for (int a = 0; a <= 7; a++) {} // for the same number of commands
+    }
+
     point () {};
 };
 
-const int maxsize = 99;
+const int maxsize = 255000;
 struct stackarr
 {
     private:
@@ -65,6 +70,12 @@ struct stackarr
         arr[top].returnCoordinate();
     }
 
+    void peekBenchmark ()
+    {
+        if (!is_empty())
+        arr[top].returnCoordinateBenchmark();
+    }
+
     void pop ()
     {
         if (is_empty())
@@ -73,11 +84,23 @@ struct stackarr
         arr[top--].returnCoordinate();
     }
 
+    void popBenchmark ()
+    {
+        if (!is_empty())
+        arr[top--].returnCoordinateBenchmark();
+    }
+
     void push (point newElem)
     {
         if (top == maxsize)
         cout << "STACK IS FULL\n";
         else
+        arr[++top] = newElem;
+    }
+
+    void pushBenchmark (point newElem)
+    {
+        if (!(top == maxsize))
         arr[++top] = newElem;
     }
 };
@@ -103,6 +126,12 @@ struct stackvect
         arr.back().returnCoordinate();
     }
 
+    void peekBenchmark ()
+    {
+        if (!is_empty())
+        arr.back().returnCoordinateBenchmark();
+    }
+
     void pop ()
     {
         if (is_empty())
@@ -110,6 +139,15 @@ struct stackvect
         else
         {
             arr.back().returnCoordinate();
+            arr.pop_back();
+        }
+    }
+
+    void popBenchmark ()
+    {
+        if (!is_empty())
+        {
+            arr.back().returnCoordinateBenchmark();
             arr.pop_back();
         }
     }
@@ -142,6 +180,12 @@ struct stacklist
         top -> returnCoordinate();
     }
 
+    void peekBenchmark ()
+    {
+        if (!is_empty())
+        top -> returnCoordinateBenchmark();
+    }
+
     void pop ()
     {
         if (is_empty())
@@ -149,6 +193,15 @@ struct stacklist
         else
         top -> returnCoordinate();
         top = top -> next;
+    }
+
+    void popBenchmark ()
+    {
+        if (!is_empty())
+        {
+            top -> returnCoordinateBenchmark();
+            top = top -> next;
+        }
     }
 
     void push (double x, double y, double z)
@@ -161,34 +214,34 @@ struct stacklist
 
 void interactiveMode()
 {
-    int choice;
+    int choice1, choice2;
 
-    cout << "Select stack type:\n";
+    cout << "\nSelect stack type:\n";
     cout << "1. Array\n";
     cout << "2. Vector\n";
     cout << "3. List\n";
     cout << "Enter your choice: ";
-    cin >> choice;
+    cin >> choice1;
 
-    switch (choice)
+    switch (choice1)
     {
         case 1:
         {
+            stackarr newStackarr = stackarr();
+            cout << "New stack has been created! :)\n";
+
             do 
             {
-                stackarr newStackarr = stackarr();
-                cout << "New stack has been created! :)\n";
-
-                cout << "Menu:\n";
+                cout << "\nMenu:\n";
                 cout << "1. Push\n";
                 cout << "2. Pop\n";
                 cout << "3. Peek\n";
                 cout << "4. Is empty\n";
                 cout << "5. Exit\n";
                 cout << "Enter your choice: ";
-                cin >> choice;
+                cin >> choice2;
 
-                switch (choice)
+                switch (choice2)
                 {
                     case 1:
                     {
@@ -227,29 +280,38 @@ void interactiveMode()
                         break;
                     }
 
+                    case 5:
+                    {
+                        cout << "Exiting...\n";
+
+                        break;
+                    }
+
                     default:
                     cout << "Invalid choice.\n";
                 }
-            } while (choice != 5);
+            } while (choice2 != 5);
+
+            break;
         }
 
         case 2:
         {
+            stackvect newStackarr = stackvect();
+            cout << "\nNew stack has been created! :)\n";
+
             do 
             {
-                stackvect newStackarr = stackvect();
-                cout << "New stack has been created! :)\n";
-
-                cout << "Menu:\n";
+                cout << "\nMenu:\n";
                 cout << "1. Push\n";
                 cout << "2. Pop\n";
                 cout << "3. Peek\n";
                 cout << "4. Is empty\n";
                 cout << "5. Exit\n";
                 cout << "Enter your choice: ";
-                cin >> choice;
+                cin >> choice2;
 
-                switch (choice)
+                switch (choice2)
                 {
                     case 1:
                     {
@@ -288,30 +350,37 @@ void interactiveMode()
                         break;
                     }
 
+                    case 5:
+                    {
+                        cout << "Exiting...\n";
+
+                        break;
+                    }
+
                     default:
                     cout << "Invalid choice.\n";
                 }
-            } while (choice != 5);
+            } while (choice2 != 5);
 
+            break;
         }
 
         case 3:
         {
+            stacklist newStackarr = stacklist();
+            cout << "\nNew stack has been created! :)\n";
             do 
             {
-                stacklist newStackarr = stacklist();
-                cout << "New stack has been created! :)\n";
-                
-                cout << "Menu:\n";
+                cout << "\nMenu:\n";
                 cout << "1. Push\n";
                 cout << "2. Pop\n";
                 cout << "3. Peek\n";
                 cout << "4. Is empty\n";
                 cout << "5. Exit\n";
                 cout << "Enter your choice: ";
-                cin >> choice;
+                cin >> choice2;
 
-                switch (choice)
+                switch (choice2)
                 {
                     case 1:
                     {
@@ -349,10 +418,19 @@ void interactiveMode()
                         break;
                     }
 
+                    case 5:
+                    {
+                        cout << "Exiting...\n";
+
+                        break;
+                    }
+
                     default:
                     cout << "Invalid choice.\n";
                 }
-            } while (choice != 5);
+            } while (choice2 != 5);
+
+            break;
         }
 
         default:
@@ -390,8 +468,6 @@ void demoMode()
 
     cout << "\nIs empty: " << newStackarr.is_empty();
 
-
-
             cout << "\n\n2. Vector\n";
 
     stackvect newStackvect = stackvect();
@@ -415,8 +491,6 @@ void demoMode()
     newStackvect.peek();
 
     cout << "\nIs empty: " << newStackvect.is_empty();
-
-
 
             cout << "\n\n3. List\n";
 
@@ -445,7 +519,190 @@ void demoMode()
 
 void benchmark()
 {
+    int n;
+    cout << "\nEnter N: ";
+    cin >> n;
 
+        auto start = chrono::high_resolution_clock::now();
+
+    auto startInitializing = chrono::high_resolution_clock::now();
+    stackarr stack1 = stackarr();
+    auto endInitializing = chrono::high_resolution_clock::now();
+
+    auto firstStartIsEmpty = chrono::high_resolution_clock::now();
+    stack1.is_empty();
+    auto firstEndIsEmpty = chrono::high_resolution_clock::now();
+
+    auto startAdd = chrono::high_resolution_clock::now();
+    for (int j = 0; j < n; j++)
+    {
+        double x = rand()% 1000 / 100.0;
+        double y = rand()% 1000 / 100.0;
+        double z = rand()% 1000 / 100.0;
+
+        point pointt(x, y, z);
+
+        stack1.pushBenchmark(pointt);
+    }
+    auto endAdd = chrono::high_resolution_clock::now();
+
+    auto firstPeekStart = chrono::high_resolution_clock::now();
+    stack1.peekBenchmark();
+    auto firstPeekEnd = chrono::high_resolution_clock::now();
+
+    auto startPop = chrono::high_resolution_clock::now();
+    stack1.popBenchmark();
+    auto endPop = chrono::high_resolution_clock::now();
+
+    auto secondPeekStart = chrono::high_resolution_clock::now();
+    stack1.peekBenchmark();
+    auto secondPeekEnd = chrono::high_resolution_clock::now();
+
+    auto secondStartIsEmpty = chrono::high_resolution_clock::now();
+    stack1.is_empty();
+    auto secondEndIsEmpty = chrono::high_resolution_clock::now();
+
+    auto end = chrono::high_resolution_clock::now();
+
+    auto durationAll = chrono::duration_cast<chrono::milliseconds>(end - start);
+    auto durationAdd = chrono::duration_cast<chrono::milliseconds>(endAdd - startAdd);
+    auto durationInitializing = chrono::duration_cast<chrono::milliseconds>(endInitializing - startInitializing);
+    auto durationFirstIsEmpty = chrono::duration_cast<chrono::milliseconds>(firstEndIsEmpty - firstStartIsEmpty);
+    auto durationSecondIsEmpty = chrono::duration_cast<chrono::milliseconds>(secondEndIsEmpty - secondStartIsEmpty);
+    auto durationFirstPeek = chrono::duration_cast<chrono::milliseconds>(firstPeekEnd - firstPeekStart);
+    auto durationSecondPeek = chrono::duration_cast<chrono::milliseconds>(secondPeekEnd - secondPeekStart);
+    auto durationPop = chrono::duration_cast<chrono::milliseconds>(endPop - startPop);
+
+    cout << "\nTime using ARRAY\n";
+    cout << "Time initializing stack: " << durationInitializing.count() << endl;
+    cout << "Time is_empty (1st): " << durationFirstIsEmpty.count() << endl;
+    cout << "Time adding points: " << durationAdd.count() << endl;
+    cout << "Time peek (1st): " << durationFirstPeek.count() << endl;
+    cout << "Time pop: " << durationPop.count() << endl;
+    cout << "Time peek (2nd): " << durationSecondPeek.count() << endl;
+    cout << "Time is_empty (2nd): " << durationSecondIsEmpty.count() << endl;
+    cout << "Duration: " << durationAll.count() << endl;
+    cout << "Size of stack: " << sizeof(stack1) << endl;
+
+        start = chrono::high_resolution_clock::now();
+
+    startInitializing = chrono::high_resolution_clock::now();
+    stackvect stack2 = stackvect();
+    endInitializing = chrono::high_resolution_clock::now();
+
+    firstStartIsEmpty = chrono::high_resolution_clock::now();
+    stack2.is_empty();
+    firstEndIsEmpty = chrono::high_resolution_clock::now();
+
+    startAdd = chrono::high_resolution_clock::now();
+    for (int j = 0; j < n; j++)
+    {
+        double x = rand()% 1000 / 100.0;
+        double y = rand()% 1000 / 100.0;
+        double z = rand()% 1000 / 100.0;
+
+        point pointt(x, y, z);
+
+        stack2.push(pointt);
+    }
+    endAdd = chrono::high_resolution_clock::now();
+
+    firstPeekStart = chrono::high_resolution_clock::now();
+    stack2.peekBenchmark();
+    firstPeekEnd = chrono::high_resolution_clock::now();
+
+    startPop = chrono::high_resolution_clock::now();
+    stack2.popBenchmark();
+    endPop = chrono::high_resolution_clock::now();
+
+    secondPeekStart = chrono::high_resolution_clock::now();
+    stack2.peekBenchmark();
+    secondPeekEnd = chrono::high_resolution_clock::now();
+
+    secondStartIsEmpty = chrono::high_resolution_clock::now();
+    stack2.is_empty();
+    secondEndIsEmpty = chrono::high_resolution_clock::now();
+
+    end = chrono::high_resolution_clock::now();
+
+    durationAll = chrono::duration_cast<chrono::milliseconds>(end - start);
+    durationAdd = chrono::duration_cast<chrono::milliseconds>(endAdd - startAdd);
+    durationInitializing = chrono::duration_cast<chrono::milliseconds>(endInitializing - startInitializing);
+    durationFirstIsEmpty = chrono::duration_cast<chrono::milliseconds>(firstEndIsEmpty - firstStartIsEmpty);
+    durationSecondIsEmpty = chrono::duration_cast<chrono::milliseconds>(secondEndIsEmpty - secondStartIsEmpty);
+    durationFirstPeek = chrono::duration_cast<chrono::milliseconds>(firstPeekEnd - firstPeekStart);
+    durationSecondPeek = chrono::duration_cast<chrono::milliseconds>(secondPeekEnd - secondPeekStart);
+    durationPop = chrono::duration_cast<chrono::milliseconds>(endPop - startPop);
+
+        cout << "\nTime using VECTOR\n";
+    cout << "Time initializing stack: " << durationInitializing.count() << endl;
+    cout << "Time is_empty (1st): " << durationFirstIsEmpty.count() << endl;
+    cout << "Time adding points: " << durationAdd.count() << endl;
+    cout << "Time peek (1st): " << durationFirstPeek.count() << endl;
+    cout << "Time pop: " << durationPop.count() << endl;
+    cout << "Time peek (2nd): " << durationSecondPeek.count() << endl;
+    cout << "Time is_empty (2nd): " << durationSecondIsEmpty.count() << endl;
+    cout << "Duration: " << durationAll.count() << endl;
+    cout << "Size of stack: " << sizeof(stack2) << endl;
+
+        start = chrono::high_resolution_clock::now();
+
+    startInitializing = chrono::high_resolution_clock::now();
+    stacklist stack3 = stacklist();
+    endInitializing = chrono::high_resolution_clock::now();
+
+    firstStartIsEmpty = chrono::high_resolution_clock::now();
+    stack3.is_empty();
+    firstEndIsEmpty = chrono::high_resolution_clock::now();
+
+    startAdd = chrono::high_resolution_clock::now();
+    for (int j = 0; j < n; j++)
+    {
+        double x = rand()% 1000 / 100.0;
+        double y = rand()% 1000 / 100.0;
+        double z = rand()% 1000 / 100.0;
+
+        stack3.push(x, y, z);
+    }
+    endAdd = chrono::high_resolution_clock::now();
+
+    firstPeekStart = chrono::high_resolution_clock::now();
+    stack3.peekBenchmark();
+    firstPeekEnd = chrono::high_resolution_clock::now();
+
+    startPop = chrono::high_resolution_clock::now();
+    stack3.popBenchmark();
+    endPop = chrono::high_resolution_clock::now();
+
+    secondPeekStart = chrono::high_resolution_clock::now();
+    stack3.peekBenchmark();
+    secondPeekEnd = chrono::high_resolution_clock::now();
+
+    secondStartIsEmpty = chrono::high_resolution_clock::now();
+    stack3.is_empty();
+    secondEndIsEmpty = chrono::high_resolution_clock::now();
+
+    end = chrono::high_resolution_clock::now();
+
+    durationAll = chrono::duration_cast<chrono::milliseconds>(end - start);
+    durationAdd = chrono::duration_cast<chrono::milliseconds>(endAdd - startAdd);
+    durationInitializing = chrono::duration_cast<chrono::milliseconds>(endInitializing - startInitializing);
+    durationFirstIsEmpty = chrono::duration_cast<chrono::milliseconds>(firstEndIsEmpty - firstStartIsEmpty);
+    durationSecondIsEmpty = chrono::duration_cast<chrono::milliseconds>(secondEndIsEmpty - secondStartIsEmpty);
+    durationFirstPeek = chrono::duration_cast<chrono::milliseconds>(firstPeekEnd - firstPeekStart);
+    durationSecondPeek = chrono::duration_cast<chrono::milliseconds>(secondPeekEnd - secondPeekStart);
+    durationPop = chrono::duration_cast<chrono::milliseconds>(endPop - startPop);
+
+        cout << "\nTime using LIST\n";
+    cout << "Time initializing stack: " << durationInitializing.count() << endl;
+    cout << "Time is_empty (1st): " << durationFirstIsEmpty.count() << endl;
+    cout << "Time adding points: " << durationAdd.count() << endl;
+    cout << "Time peek (1st): " << durationFirstPeek.count() << endl;
+    cout << "Time pop: " << durationPop.count() << endl;
+    cout << "Time peek (2nd): " << durationSecondPeek.count() << endl;
+    cout << "Time is_empty (2nd): " << durationSecondIsEmpty.count() << endl;
+    cout << "Duration: " << durationAll.count() << endl;
+    cout << "Size of stack: " << sizeof(stack3) << endl;
 }
 
 int main () 
