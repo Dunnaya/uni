@@ -54,6 +54,11 @@ struct stackarr
     public:
     stackarr () {top = -1;} //create_empty
 
+    size_t sizeOfStack() 
+    {
+        return sizeof(point) * (top + 1);
+    }
+
     bool is_empty ()
     {
         if (top == -1) 
@@ -113,6 +118,12 @@ struct stackvect
     public:
     stackvect () {} //create_empty
 
+    size_t sizeOfStack() 
+    {
+        size_t tempSize = arr.size() * sizeof(point);
+        return tempSize + sizeof(arr);
+    }
+
     bool is_empty ()
     {
         return arr.empty();
@@ -163,6 +174,19 @@ struct stacklist
     point* top;
 
     stacklist () {top = nullptr;} //create_empty
+
+    size_t sizeOfStack() 
+    {
+        size_t sizeList = 0;
+        point *temp = top;
+        while (temp != nullptr)
+        {
+            sizeList += (sizeof(point) + sizeof(point*));
+            temp = temp -> next;
+        }
+
+        return sizeList;
+    }
 
     bool is_empty ()
     {
@@ -582,7 +606,7 @@ void benchmark()
     cout << "Time peek (2nd): " << durationSecondPeek.count() << endl;
     cout << "Time is_empty (2nd): " << durationSecondIsEmpty.count() << endl;
     cout << "Duration: " << durationAll.count() << endl;
-    cout << "Size of stack: " << sizeof(stack1) << endl;
+    cout << "Size of array: " << stack1.sizeOfStack() << endl;
 
         start = chrono::high_resolution_clock::now();
 
@@ -643,7 +667,7 @@ void benchmark()
     cout << "Time peek (2nd): " << durationSecondPeek.count() << endl;
     cout << "Time is_empty (2nd): " << durationSecondIsEmpty.count() << endl;
     cout << "Duration: " << durationAll.count() << endl;
-    cout << "Size of stack: " << sizeof(stack2) << endl;
+    cout << "Size of stack: " << stack2.sizeOfStack() << endl;
 
         start = chrono::high_resolution_clock::now();
 
@@ -702,7 +726,7 @@ void benchmark()
     cout << "Time peek (2nd): " << durationSecondPeek.count() << endl;
     cout << "Time is_empty (2nd): " << durationSecondIsEmpty.count() << endl;
     cout << "Duration: " << durationAll.count() << endl;
-    cout << "Size of stack: " << sizeof(stack3) << endl;
+    cout << "Size of stack: " << stack3.sizeOfStack() << endl;
 }
 
 int main () 
