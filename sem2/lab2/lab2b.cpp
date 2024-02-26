@@ -7,7 +7,6 @@
 #include <vector>
 #include <string>
 #include <iomanip>
-#include <fstream>
 #include <cstdlib>
 #include <chrono>
 using namespace std;
@@ -109,14 +108,14 @@ struct journal
     {
         if (K > journal_size) 
         {
-            cout << "There is less than " << K << " elements in journal. There are only " << count << " messages: \n";
+            cout << "There are less than " << K << " elements in journal. There are only " << count << " messages: \n";
             K = count;
         }
 
         for (size_t i = 0; i < K; i++)
         {
             cout << messages[i].messageText;
-            cout << setw(20) << messages[i].time.year << "." << messages[i].time.month << "." << messages[i].time.day
+            cout << setw(15) << messages[i].time.year << "." << messages[i].time.month << "." << messages[i].time.day
             << " " << messages[i].time.hour << ":" << messages[i].time.min << ":" << messages[i].time.sec << endl;
         }
     }
@@ -190,10 +189,10 @@ void demoMode()
     cout << "N = 3\n";
     journal demoJournal(3);
 
-    message msg1("This is the first message :)", Time(2007, 10, 10, 10, 10, 10));
-    message msg2("This is the second message :)", Time(2012, 12, 12, 12, 12, 12));
-    message msg3("This is the third message :)", Time(2012, 11, 11, 11, 11, 11));
-    message msg4("This is the 4th message :)", Time(2001, 11, 11, 11, 11, 11));
+    message msg1("This is the 1st message :)", Time(2007, 10, 10, 10, 10, 10));
+    message msg2("This is the 2nd message :)", Time(2008, 12, 12, 12, 12, 12));
+    message msg3("This is the 3rd message :)", Time(2009, 11, 11, 11, 11, 11));
+    message msg4("This is the 4th message :)", Time(2010, 11, 11, 11, 11, 11));
 
     demoJournal.add(msg1);
     demoJournal.add(msg2);
