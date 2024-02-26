@@ -75,7 +75,7 @@ struct message
     string messageText;
     Time time;
 
-    message() : messageText(""), time() {} // Default constructor
+    message() : messageText(""), time() {}
 
     message (string messageText, Time time) : messageText(messageText), time(time) {};
 };
@@ -83,7 +83,7 @@ struct message
 struct journal
 {
     vector<message> messages;
-    size_t journal_size; //(N)
+    size_t journal_size;
     size_t cur;
     size_t count;
 
