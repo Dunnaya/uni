@@ -106,7 +106,7 @@ struct journal
     //операція отримання останніх K повідомлень (K<=N)
     void receiveMessage (size_t K)
     {
-        if (K > journal_size) 
+        if (K > count) 
         {
             cout << "There are less than " << K << " elements in journal. There are only " << count << " messages: \n";
             K = count;
