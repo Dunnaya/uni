@@ -119,6 +119,20 @@ struct journal
             << " " << messages[i].time.hour << ":" << messages[i].time.min << ":" << messages[i].time.sec << endl;
         }
     }
+
+    void receiveMessageBenchmark (size_t K)
+    {
+        if (K > count) 
+        {
+            K = count;
+        }
+
+        for (size_t i = 0; i < K; i++)
+        {
+            for(int j = 0; j < 13; j++)
+            {}
+        }
+    }
 };
 
 void interactiveMode() 
@@ -211,7 +225,75 @@ void demoMode()
     demoJournal.receiveMessage(3);
 }
 
-void benchmark() {}
+void benchmark() 
+{
+    size_t N, K;
+    cout << "\nEnter N: ";
+    cin >> N;
+    string newMessage[] = {"aa", "bb", "cc", "dd", "ee"};
+
+    journal benchJournal(N);
+
+    auto start = chrono::high_resolution_clock::now();
+    auto startAdd = chrono::high_resolution_clock::now();
+    for (int j = 0; j < N; j++)
+    {
+        string text = newMessage[rand() % sizeof(newMessage) / sizeof(newMessage[0])];
+
+        int year = 2014 + (rand()% 11);
+        int month = 1 + (rand()% 12);
+        int day = 1;
+
+        switch (month)
+        {
+            case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+                {
+                    day = 1 + (rand()% 31);
+                    break;
+                };
+            case 4: case 6: case 9: case 11:
+                {
+                    day = 1 + (rand()% 30);
+                    break;
+                }
+            case 2:
+                {
+                    if (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) 
+                    day = 1 + (rand()% 29); 
+                    else 
+                    day = 1 + (rand()% 28);
+                    break;
+                }
+        }
+
+        int hour = 1 + (rand()% 24);
+        int minute = 1 + (rand()% 60);
+        int second = 1 + (rand()% 60);
+
+        Time date(year, month, day, hour, minute, second);
+
+        message benchMessage (text, date);
+        benchJournal.add(benchMessage);
+    }
+    auto endAdd = chrono::high_resolution_clock::now();
+
+    K = N * (0.0001 + rand()%10 / 136.0);
+    cout << "Random K: " << K << endl << endl;
+
+    auto startReceive = chrono::high_resolution_clock::now();
+    benchJournal.receiveMessageBenchmark(K);
+    auto endReceive = chrono::high_resolution_clock::now();
+
+    auto end = chrono::high_resolution_clock::now();
+
+    auto durationAll = chrono::duration_cast<chrono::milliseconds>(end - start);
+    auto durationAdd = chrono::duration_cast<chrono::milliseconds>(endAdd - startAdd);
+    auto durationReceive = chrono::duration_cast<chrono::milliseconds>(endReceive - startReceive);
+
+    cout << "Time adding random messages: " << durationAdd.count() << endl;
+    cout << "Time receiving K messages: " << durationReceive.count() << endl;
+    cout << "Duration: " << durationAll.count() << endl;
+}
 
 int main () 
 {
