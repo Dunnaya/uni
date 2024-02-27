@@ -266,7 +266,7 @@ void demoMode()
     demoScheduler.add(task4);
     demoScheduler.add(task5);
 
-    cout << "\n\t\tFCFS:\n";
+    cout << "\n\tFCFS:\n";
     demoScheduler.firstComeFirstServed();
     demoScheduler.schedulerWork();
 
@@ -277,7 +277,7 @@ void demoMode()
     demoScheduler.add(task4);
     demoScheduler.add(task5);
 
-    cout << "\n\t\tSJF:\n";
+    cout << "\n\tSJF:\n";
     demoScheduler.shortestJobSort();
     demoScheduler.schedulerWork();
 }
