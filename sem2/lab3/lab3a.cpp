@@ -26,7 +26,7 @@ struct point
 
     void returnCoordinateBenchmark ()
     {
-        for (int a = 0; a <= 7; a++) {} // for the same number of commands
+        for (int a = 0; a <= 7; a++) {}
     }
 
     point () {};
@@ -261,6 +261,16 @@ void xMergesort (vector <point>& points)
     }
 }
 
+void xCombination (vector <point>& points)
+{
+    int n = 10000; // selection sort for x,y,z - 1/2 sec
+    if (points.size() > n)
+    {
+        xQuicksort(points, 0, points.size() - 1);
+    }
+    else xSelectionSort(points);
+}
+
 void ySelectionSort (vector <point>& points)
 {
     for (int i = 0; i < (points.size() - 1); i++)
@@ -307,6 +317,16 @@ void yMergesort (vector <point>& points)
     }
 }
 
+void yCombination (vector <point>& points)
+{
+    int n = 10000; // selection sort for x,y,z - 1/2 sec
+    if (points.size() > n)
+    {
+        yQuicksort(points, 0, points.size() - 1);
+    }
+    else ySelectionSort(points);
+}
+
 void zSelectionSort (vector <point>& points)
 {
     for (int i = 0; i < (points.size() - 1); i++)
@@ -351,6 +371,16 @@ void zMergesort (vector <point>& points)
             zMerge (points, left_start, mid, right_end);
         }
     }
+}
+
+void zCombination (vector <point>& points)
+{
+    int n = 10000; // selection sort for x,y,z - 1/2 sec
+    if (points.size() > n)
+    {
+        zQuicksort(points, 0, points.size() - 1);
+    }
+    else zSelectionSort(points);
 }
 
 void demoMode() 
@@ -430,6 +460,27 @@ void demoMode()
 
     cout << "\nMerge sort by z:\n";
     zMergesort(points);
+    for (int i = 0; i < points.size(); i++)
+    {
+        points[i].returnCoordinate();
+    }
+
+    cout << "\nCombined algorithm by x:\n";
+    xCombination(points);
+    for (int i = 0; i < points.size(); i++)
+    {
+        points[i].returnCoordinate();
+    }
+
+    cout << "\nCombined algorithm by y:\n";
+    yCombination(points);
+    for (int i = 0; i < points.size(); i++)
+    {
+        points[i].returnCoordinate();
+    }
+
+    cout << "\nCombined algorithm by z:\n";
+    zCombination(points);
     for (int i = 0; i < points.size(); i++)
     {
         points[i].returnCoordinate();
@@ -527,6 +578,24 @@ void benchmark()
     auto endMergeZ = chrono::high_resolution_clock::now();
     auto durationMergeZ = chrono::duration_cast<chrono::milliseconds>(endMergeZ - startMergeZ);
     cout << "Mergesort by z: " << durationMergeZ.count() << endl;
+
+    auto startCombX = chrono::high_resolution_clock::now();
+    xCombination(points);
+    auto endCombX = chrono::high_resolution_clock::now();
+    auto durationCombX = chrono::duration_cast<chrono::milliseconds>(endCombX - startCombX);
+    cout << "Combined algorithm by x: " << durationCombX.count() << endl;
+
+    auto startCombY = chrono::high_resolution_clock::now();
+    yCombination(points);
+    auto endCombY = chrono::high_resolution_clock::now();
+    auto durationCombY = chrono::duration_cast<chrono::milliseconds>(endCombY - startCombY);
+    cout << "Combined algorithm by y: " << durationCombY.count() << endl;
+
+    auto startCombZ = chrono::high_resolution_clock::now();
+    zCombination(points);
+    auto endCombZ = chrono::high_resolution_clock::now();
+    auto durationCombZ = chrono::duration_cast<chrono::milliseconds>(endCombZ - startCombZ);
+    cout << "Combined algorithm by z: " << durationCombZ.count() << endl;
 
     auto startSortX = chrono::high_resolution_clock::now();
     std::sort(points.begin(), points.end(), comparePointsX);
