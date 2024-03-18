@@ -600,7 +600,7 @@ void demoMode()
 
     Product product1("Milk", "l",   10.5, Time(2022, 10, 10, 10, 10, 10), 7);
     Product product2("Cookies", "kg",  20.3, Time(2022, 12, 12, 12, 12, 12), 45);
-    Product product3("Buns", "pcs", 15.2, Time(2022, 11, 11, 11, 11, 11), 14);
+    Product product3("Buns", "pcs", 15, Time(2022, 11, 11, 11, 11, 11), 14);
 
     store.add_product(product1);
     store.add_product(product2);
