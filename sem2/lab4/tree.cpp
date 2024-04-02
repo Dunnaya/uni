@@ -100,7 +100,8 @@ struct TreeNode {
     }
 };
 
-struct BinaryTree {
+struct BinaryTree 
+{
     struct Node
     {
         int value;
@@ -111,7 +112,24 @@ struct BinaryTree {
         Node* successor;
 
         Node(int value) : value(value), left(nullptr), right(nullptr), predecessor(nullptr), successor(nullptr) {}
+
+        char op;
+        double val;
+
+        Node(char ch) : op(ch), left(nullptr), right(nullptr) {}
+
+        Node(double v) : val(v), left(nullptr), right(nullptr) {}
     };
+
+    bool isOperator (char ch) 
+    {
+        return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
+    }
+
+    bool isDigit (char ch) 
+    {
+        return ch >= '0' && ch <= '9';
+    }
 
     Node* root;
 
@@ -212,7 +230,177 @@ struct BinaryTree {
     }
 };
 
-int main()
+void interactiveMode() 
 {
+    int choice;
+
+    do 
+    {
+        cout << "Menu:\n";
+        cout << "1. 1,2,3\n";
+        cout << "2. 4,5\n";
+        cout << "3. 6\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+            {
+                do
+                {
+                    switch(choice) 
+                    {
+                        cout << "Menu:\n";
+                        cout << "1. add_child\n";
+                        cout << "2. print_tree\n";
+                        cout << "3. remove_subtree_by_value\n";
+                        cout << "4. Exit\n";
+                        cout << "Enter your choice: ";
+                        cin >> choice;
+
+                        case 1: 
+                        {
+                            
+                        }
+
+                        case 2: 
+                        {
+                        
+                            break;
+                        }
+                        
+                        case 3:
+                        {
+
+                            break;
+                        }
+
+                        default:
+                            cout << "Invalid choice.\n";
+
+                        case 4:
+                            cout << "Exiting...\n";
+                            break;
+                    }
+                } while (choice != 4);
+            } 
+
+            case 2:
+            {
+                do
+                {
+                    switch(choice) 
+                    {
+                        cout << "Menu:\n";
+                        cout << "1. insert (binary)\n";
+                        cout << "2. insertThreadedTree\n";
+                        cout << "3. traversal\n";
+                        cout << "4. Exit\n";
+                        cout << "Enter your choice: ";
+                        cin >> choice;
+
+                        case 1: 
+                        {
+                            
+                        }
+
+                        case 2: 
+                        {
+                        
+                            break;
+                        }
+                        
+                        case 3:
+                        {
+
+                            break;
+                        }
+
+                        default:
+                            cout << "Invalid choice.\n";
+
+                        case 4:
+                            cout << "Exiting...\n";
+                            break;
+                    }
+                } while (choice != 4);
+            }
+
+            case 3:
+            {
+                do
+                {
+                    switch(choice) 
+                    {
+                        cout << "Menu:\n";
+                        cout << "1. \n";
+                        cout << "2. \n";
+                        cout << "3. \n";
+                        cout << "4. Exit\n";
+                        cout << "Enter your choice: ";
+                        cin >> choice;
+
+                        case 1: 
+                        {
+                            
+                        }
+
+                        case 2: 
+                        {
+                        
+                            break;
+                        }
+                        
+                        case 3:
+                        {
+
+                            break;
+                        }
+
+                        default:
+                            cout << "Invalid choice.\n";
+
+                        case 4:
+                            cout << "Exiting...\n";
+                            break;
+                    }
+                } while (choice != 4);
+            } 
+        }         
+    } while (choice != 4);
+}
+
+void demoMode() 
+{}
+
+int main()
+{  
+    int choice;
+
+    cout << "Modes:\n";
+    cout << "1. Interactive\n" ;
+    cout << "2. Demo\n";
+    cout << "Select mode: ";
+    cin >> choice;
+
+    switch(choice)
+    {
+        case 1:
+        {
+            interactiveMode();
+
+            break;
+        }
+
+        case 2:
+        {
+            demoMode();
+
+            break;
+        }
+    }
+    return 0;
 
 }
