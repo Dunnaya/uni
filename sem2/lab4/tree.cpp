@@ -25,34 +25,45 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <string>
+#include <cmath>
+#include <stack>
 using namespace std;
 
-struct TreeNode {
+struct TreeNode 
+{
     int value;
 
     vector<TreeNode*> children;
 
     TreeNode(int value): value(value), children() {};
+    TreeNode() {};
 
-    void add_child(int value, int min, int max) {
+    void add_child(int value, int min, int max) 
+    {
         TreeNode* newTreeNode = new TreeNode(value);
         TreeNode* min_child = this->children[0]; 
         if (this->children.size() < min)
         this->children.push_back(newTreeNode);
-        else { 
-            for(int i = 0; i < this->children.size(); i++) {
+        else 
+        { 
+            for(int i = 0; i < this->children.size(); i++) 
+            {
                 if(min_child->children.size() > this->children[i]->children.size()) 
                 min_child = this->children[i];
             }
 
             if(min_child->children.size() <= max) 
             min_child->children.push_back(newTreeNode);
-            else {
+            else 
+            {
                 if(this->children.size() <= max)
                 this->children.push_back(newTreeNode);
-                else { 
+                else 
+                { 
                     TreeNode* min_child = this->children[0];  
-                    for(int i = 0; i < this->children.size(); i++) {
+                    for(int i = 0; i < this->children.size(); i++) 
+                    {
                         if(min_child->children.size() > this->children[i]->children.size()) 
                         min_child = this->children[i];
                         min_child->children.push_back(newTreeNode);
@@ -62,12 +73,15 @@ struct TreeNode {
         }
     }
 
-    void print_tree(TreeNode* root) {
-        if(root!=nullptr) {
+    void print_tree(TreeNode* root) 
+    {
+        if(root!=nullptr) 
+        {
             cout << root->value;
             if (root->children.empty()) {return;}
             cout << "(";
-            for(TreeNode* child: root->children) {
+            for(TreeNode* child: root->children) 
+            {
                 print_tree(child);
                 cout << " ";
             }
@@ -75,24 +89,28 @@ struct TreeNode {
         }
     }
 
-    void delete_tree(TreeNode*& root) {
-        for(TreeNode*& child: root->children) {
+    void delete_tree(TreeNode*& root) 
+    {
+        for(TreeNode*& child: root->children) 
+        {
             delete_tree(child);
         }
         delete root;
         root = nullptr;
     }
 
-    void remove_subtree_by_value(TreeNode*& root, int value) {
-
-        if (root->value == value) {
+    void remove_subtree_by_value(TreeNode*& root, int value) 
+    {
+        if (root->value == value) 
+        {
             print_tree(root);
             delete_tree(root);
             assert(root==nullptr);
             return;
         }
 
-        for(TreeNode*& child: root->children){
+        for(TreeNode*& child: root->children)
+        {
             remove_subtree_by_value(child, value);
         }
 
@@ -121,15 +139,7 @@ struct BinaryTree
         Node(double v) : val(v), left(nullptr), right(nullptr) {}
     };
 
-    bool isOperator (char ch) 
-    {
-        return ch == '+' || ch == '-' || ch == '*' || ch == '/' || ch == '^';
-    }
-
-    bool isDigit (char ch) 
-    {
-        return ch >= '0' && ch <= '9';
-    }
+    BinaryTree() {this->root = nullptr;};
 
     Node* root;
 
@@ -230,6 +240,97 @@ struct BinaryTree
     }
 };
 
+struct ExprTree 
+{
+    char op;
+    double val;
+    ExprTree *left, *right;
+
+    ExprTree(char c) : op(c), left(nullptr), right(nullptr) {}
+
+    ExprTree(double v) : val(v), left(nullptr), right(nullptr) {}
+
+    static ExprTree* buildExpressionTree(const string& expr) 
+    {
+        if (expr.empty()) return nullptr;
+
+        stack<ExprTree*> st;
+
+        for (int i = 0; i < expr.length(); ++i) 
+        {
+            if (isDigit(expr[i])) 
+            {
+                double num = 0;
+                while (i < expr.length() && isDigit(expr[i])) 
+                {
+                    num = num * 10 + (expr[i] - '0');
+                    ++i;
+                }
+                --i;
+                st.push(new ExprTree(num));
+            } else if (isOperator(expr[i])) {
+                ExprTree* node = new ExprTree(expr[i]);
+                node->right = st.top(); st.pop();
+                node->left = st.top(); st.pop();
+                st.push(node);
+            } else {
+                st.push(new ExprTree(expr[i]));
+            }
+        }
+        return st.top();
+    }
+
+    double evaluate(double x, double y) 
+    {
+        if (!this) return 0;
+
+        if (op) 
+        {
+            double left_val = left->evaluate(x, y);
+            double right_val = right->evaluate(x, y);
+            switch (op) 
+            {
+                case '+': return left_val + right_val;
+                case '-': return left_val - right_val;
+                case '*': return left_val * right_val;
+                case '/': return right_val == 0 ? throw runtime_error("Division by zero!") : left_val / right_val;
+                case '^': return pow(left_val, right_val);
+            }
+        } else if (val) return val;
+        else {
+            if (op == 'x') return x;
+            if (op == 'y') return y;
+            return 0;
+        }
+        return 0;
+    }
+
+    void printExpression() 
+    {
+        if (!this) return;
+
+        if (op) 
+        {
+            cout << "(";
+            left->printExpression();
+            cout << " " << op << " ";
+            right->printExpression();
+            cout << ")";
+        } else if (val) cout << val;
+        else cout << op;
+    }
+
+    static bool isOperator(char c) 
+    {
+        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+    }
+
+    static bool isDigit(char c) 
+    {
+        return c >= '0' && c <= '9';
+    }
+};
+
 void interactiveMode() 
 {
     int choice;
@@ -248,32 +349,50 @@ void interactiveMode()
         {
             case 1:
             {
+                TreeNode* tree = new TreeNode(10000000);
+
                 do
                 {
+                    cout << "Menu:\n";
+                    cout << "1. add_child\n";
+                    cout << "2. print_tree\n";
+                    cout << "3. remove_subtree_by_value\n";
+                    cout << "4. Exit\n";
+                    cout << "Enter your choice: ";
+                    cin >> choice;
+
                     switch(choice) 
                     {
-                        cout << "Menu:\n";
-                        cout << "1. add_child\n";
-                        cout << "2. print_tree\n";
-                        cout << "3. remove_subtree_by_value\n";
-                        cout << "4. Exit\n";
-                        cout << "Enter your choice: ";
-                        cin >> choice;
-
                         case 1: 
                         {
-                            
+                            int root;
+                            if(tree->value == 10000000)
+                            {
+                                cout << "\nEnter the root value: ";
+                                cin >> root;
+                                tree->value = root;
+                            } else {
+                                int value, min, max;
+                                cout << "\nEnter the value, min and max: ";
+                                cin >> value >> min >> max;
+                                if (min > max) exit(0); 
+                                else tree->add_child(value, min, max);
+                            }
+                            break;
                         }
 
                         case 2: 
                         {
-                        
+                            tree->print_tree(tree);
                             break;
                         }
                         
                         case 3:
                         {
-
+                            int value;
+                            cout << "\nEnter subtree value: ";
+                            cin >> value;
+                            tree->remove_subtree_by_value(tree, value);
                             break;
                         }
 
@@ -289,32 +408,41 @@ void interactiveMode()
 
             case 2:
             {
+                BinaryTree* tree;
+
                 do
                 {
+                    cout << "Menu:\n";
+                    cout << "1. insert (binary)\n";
+                    cout << "2. insertThreadedTree\n";
+                    cout << "3. traversal\n";
+                    cout << "4. Exit\n";
+                    cout << "Enter your choice: ";
+                    cin >> choice;
+
                     switch(choice) 
                     {
-                        cout << "Menu:\n";
-                        cout << "1. insert (binary)\n";
-                        cout << "2. insertThreadedTree\n";
-                        cout << "3. traversal\n";
-                        cout << "4. Exit\n";
-                        cout << "Enter your choice: ";
-                        cin >> choice;
-
                         case 1: 
                         {
-                            
+                            int value;
+                            cout << "\nEnter the value: ";
+                            cin >> value;
+                            tree->insert(value);
+                            break;
                         }
 
                         case 2: 
                         {
-                        
+                            int value;
+                            cout << "\nEnter the value: ";
+                            cin >> value;
+                            tree->insertThreadedTree(tree->root, value);
                             break;
                         }
                         
                         case 3:
                         {
-
+                            tree->traversal(tree->root);
                             break;
                         }
 
@@ -330,32 +458,40 @@ void interactiveMode()
 
             case 3:
             {
+                ExprTree* root;
+
                 do
                 {
-                    switch(choice) 
-                    {
-                        cout << "Menu:\n";
-                        cout << "1. \n";
-                        cout << "2. \n";
-                        cout << "3. \n";
-                        cout << "4. Exit\n";
-                        cout << "Enter your choice: ";
-                        cin >> choice;
+                    cout << "Menu:\n";
+                    cout << "1. buildExpressionTree\n";
+                    cout << "2. printExpression\n";
+                    cout << "3. evaluate\n";
+                    cout << "4. Exit\n";
+                    cout << "Enter your choice: ";
+                    cin >> choice;
 
+                    switch(choice)
+                    {
                         case 1: 
                         {
-                            
+                            string expression;
+                            cout << "Enter the expression: ";
+                            getline(cin, expression);
+                            root->buildExpressionTree(expression);
                         }
 
                         case 2: 
                         {
-                        
+                            root->printExpression();
                             break;
                         }
                         
                         case 3:
                         {
-
+                            double x, y;
+                            cout <<"\nEnter x and y: ";
+                            cin >> x >> y;
+                            root->evaluate(x,y);
                             break;
                         }
 
@@ -402,5 +538,4 @@ int main()
         }
     }
     return 0;
-
 }
