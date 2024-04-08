@@ -33,7 +33,6 @@ using namespace std;
 struct TreeNode 
 {
     int value;
-
     vector<TreeNode*> children;
 
     TreeNode(int value): value(value), children() {};
@@ -42,79 +41,87 @@ struct TreeNode
     void add_child(int value, int min, int max) 
     {
         TreeNode* newTreeNode = new TreeNode(value);
+
+        if (this->children.empty()) 
+        {
+            this->children.push_back(newTreeNode);
+            return;
+        }
+
         TreeNode* min_child = this->children[0]; 
         if (this->children.size() < min)
-        this->children.push_back(newTreeNode);
+            this->children.push_back(newTreeNode);
         else 
         { 
             for(int i = 0; i < this->children.size(); i++) 
             {
                 if(min_child->children.size() > this->children[i]->children.size()) 
-                min_child = this->children[i];
+                    min_child = this->children[i];
             }
 
             if(min_child->children.size() <= max) 
-            min_child->children.push_back(newTreeNode);
+                min_child->children.push_back(newTreeNode);
             else 
             {
                 if(this->children.size() <= max)
-                this->children.push_back(newTreeNode);
+                    this->children.push_back(newTreeNode);
                 else 
                 { 
                     TreeNode* min_child = this->children[0];  
                     for(int i = 0; i < this->children.size(); i++) 
                     {
                         if(min_child->children.size() > this->children[i]->children.size()) 
-                        min_child = this->children[i];
-                        min_child->children.push_back(newTreeNode);
+                            min_child = this->children[i];
                     }
+                    min_child->children.push_back(newTreeNode);
                 } 
             }
         }
     }
 
-    void print_tree(TreeNode* root) 
+    void print_tree() 
     {
-        if(root!=nullptr) 
+        if(this!=nullptr) 
         {
-            cout << root->value;
-            if (root->children.empty()) {return;}
+            cout << this->value;
+            if (this->children.empty()) {return;}
             cout << "(";
-            for(TreeNode* child: root->children) 
+            for(TreeNode* child: this->children) 
             {
-                print_tree(child);
+                child->print_tree();
                 cout << " ";
             }
             cout << ")";
         }
     }
 
-    void delete_tree(TreeNode*& root) 
+    void delete_tree() 
     {
-        for(TreeNode*& child: root->children) 
+        for (TreeNode*& child : this->children) 
         {
-            delete_tree(child);
+            child->delete_tree();
+            delete child;
+            child = nullptr;
         }
-        delete root;
-        root = nullptr;
     }
 
-    void remove_subtree_by_value(TreeNode*& root, int value) 
+    void remove_subtree_by_value(int value) 
     {
-        if (root->value == value) 
+        if (this == nullptr) return;
+
+        if (this->value == value) 
         {
-            print_tree(root);
-            delete_tree(root);
-            assert(root==nullptr);
+            print_tree();
+            delete_tree();
             return;
         }
 
-        for(TreeNode*& child: root->children)
+        for(size_t i = 0; i < this->children.size(); ++i)
         {
-            remove_subtree_by_value(child, value);
+            this->children[i]->remove_subtree_by_value(value);
         }
 
-        root->children.erase(remove(root->children.begin(), root->children.end(), nullptr), root->children.end());
+        this->children.erase(remove(this->children.begin(), this->children.end(), nullptr), this->children.end());
     }
 };
 
@@ -145,10 +152,6 @@ struct BinaryTree
 
     Node* insertRecursive(Node* root, int value) 
     {
-        if (root == nullptr) {
-            return new Node(value);
-        }
-
         if (value < root->value) {
             root->left = insertRecursive(root->left, value);
         } else if (value > root->value) {
@@ -160,10 +163,15 @@ struct BinaryTree
     
     void insert(int value) 
     {
-        root = insertRecursive(root, value);
+        if (this->root == nullptr) 
+        {
+            this->root = new Node(value);
+            return;
+        }
+        this->root = insertRecursive(this->root, value);
     }
 
-    void insertThreadedTree(Node*& root, int value)
+    void insertThreadedTree(int value)
     {
         if (root == nullptr)
         {
@@ -173,7 +181,7 @@ struct BinaryTree
 
         Node* cur = root;
         Node* parent = nullptr;
-
+        
         while(cur != nullptr)
         {
             parent = cur;
@@ -212,7 +220,7 @@ struct BinaryTree
         }
     }
 
-    void traversal(Node* root)
+    void traversal()
     {
         if (root == nullptr) return;
 
@@ -348,12 +356,17 @@ void interactiveMode()
         switch(choice)
         {
             case 1:
-            {
-                TreeNode* tree = new TreeNode(10000000);
+            {       
+                cout << "\nCreating a new tree!";
+                int root_val;
+                cout << "\n\nEnter the root value: ";
+                cin >> root_val;
+                TreeNode* tree = new TreeNode(root_val);
+                cout << "\nTree has been created successfully!\n\n";
 
                 do
                 {
-                    cout << "Menu:\n";
+                    cout << "\nMenu:\n";
                     cout << "1. add_child\n";
                     cout << "2. print_tree\n";
                     cout << "3. remove_subtree_by_value\n";
@@ -366,24 +379,19 @@ void interactiveMode()
                         case 1: 
                         {
                             int root;
-                            if(tree->value == 10000000)
-                            {
-                                cout << "\nEnter the root value: ";
-                                cin >> root;
-                                tree->value = root;
-                            } else {
-                                int value, min, max;
-                                cout << "\nEnter the value, min and max: ";
-                                cin >> value >> min >> max;
-                                if (min > max) exit(0); 
-                                else tree->add_child(value, min, max);
-                            }
+                            
+                            int value, min, max;
+                            cout << "\nEnter the value, min and max: ";
+                            cin >> value >> min >> max;
+                            if (min > max) {cout << "3rr0r!"; exit(0);}
+                            else tree->add_child(value, min, max);
+                            
                             break;
                         }
 
                         case 2: 
                         {
-                            tree->print_tree(tree);
+                            tree->print_tree();
                             break;
                         }
                         
@@ -392,7 +400,7 @@ void interactiveMode()
                             int value;
                             cout << "\nEnter subtree value: ";
                             cin >> value;
-                            tree->remove_subtree_by_value(tree, value);
+                            tree->remove_subtree_by_value(value);
                             break;
                         }
 
@@ -404,6 +412,8 @@ void interactiveMode()
                             break;
                     }
                 } while (choice != 4);
+
+                break;
             } 
 
             case 2:
@@ -436,13 +446,13 @@ void interactiveMode()
                             int value;
                             cout << "\nEnter the value: ";
                             cin >> value;
-                            tree->insertThreadedTree(tree->root, value);
+                            tree->insertThreadedTree(value);
                             break;
                         }
                         
                         case 3:
                         {
-                            tree->traversal(tree->root);
+                            tree->traversal();
                             break;
                         }
 
@@ -454,6 +464,8 @@ void interactiveMode()
                             break;
                     }
                 } while (choice != 4);
+
+                break;
             }
 
             case 3:
@@ -503,7 +515,13 @@ void interactiveMode()
                             break;
                     }
                 } while (choice != 4);
-            } 
+
+                break;
+            }
+
+            default:
+            cout << "Invalid choice.\n"; 
+
         }         
     } while (choice != 4);
 }
