@@ -152,14 +152,17 @@ struct BinaryTree
 
     Node* insertRecursive(Node* root, int value) 
     {
-        if (value < root->value) {
+        if (root == nullptr) {
+            // Create a new node for the value
+            root = new Node(value);
+        } else if (value < root->value) {
             root->left = insertRecursive(root->left, value);
         } else if (value > root->value) {
             root->right = insertRecursive(root->right, value);
         }
-
         return root;
     }
+
     
     void insert(int value) 
     {
@@ -171,29 +174,31 @@ struct BinaryTree
         this->root = insertRecursive(this->root, value);
     }
 
-    void insertThreadedTree(int value)
+    void insertThreadedTree(int value) 
     {
-        if (root == nullptr)
+        if (root == nullptr) 
         {
             root = new Node(value);
+            cout << "Created root node with value: " << root->value << endl;
             return;
         }
 
         Node* cur = root;
         Node* parent = nullptr;
-        
-        while(cur != nullptr)
+
+        while (cur != nullptr) 
         {
             parent = cur;
-            if (value < cur->value)
+            if (value < cur->value) 
             {
-                if (cur->left == nullptr)
+                if (cur->left == nullptr) 
                 {
                     cur->left = new Node(value);
+                    cout << "Created left child node with value: " << cur->left->value << endl;
                     cur->left->predecessor = parent->predecessor;
                     cur->left->successor = parent;
 
-                    if(cur->left->predecessor != nullptr)
+                    if (cur->left->predecessor != nullptr) 
                     {
                         cur->left->predecessor->successor = cur->left;
                     }
@@ -201,24 +206,26 @@ struct BinaryTree
                     break;
                 }
                 cur = cur->left;
-            } else {
-                if (cur->isThreaded || cur->right == nullptr)
-                {
-                    Node* temp = cur->right;
-                    cur->right = new Node(value);
-                    cur->isThreaded = false;
-                    cur->right->predecessor = cur;
-                    cur->right->successor = temp;
-                    
-                    if(temp != nullptr)
-                    temp->predecessor = cur->right;
+                } else {
+                    if (cur->isThreaded || cur->right == nullptr) 
+                    {
+                        Node* temp = cur->right;
+                        cur->right = new Node(value);
+                        cout << "Created right child node with value: " << cur->right->value << endl;
+                        cur->isThreaded = false;
+                        cur->right->predecessor = cur;
+                        cur->right->successor = temp;
 
-                    break;
+                        if (temp != nullptr) 
+                        temp->predecessor = cur->right;
+
+                        break;
+                    }
+                    cur = cur->right;
                 }
-                cur = cur->right;
-            }
         }
     }
+
 
     void traversal()
     {
@@ -418,7 +425,7 @@ void interactiveMode()
 
             case 2:
             {
-                BinaryTree* tree;
+                BinaryTree* tree = new BinaryTree();
 
                 do
                 {
