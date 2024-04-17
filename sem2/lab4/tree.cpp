@@ -477,7 +477,7 @@ void interactiveMode()
 
             case 3:
             {
-                ExprTree* root;
+                ExprTree* root = nullptr;
 
                 do
                 {
@@ -495,8 +495,10 @@ void interactiveMode()
                         {
                             string expression;
                             cout << "Enter the expression: ";
+                            cin.ignore();
                             getline(cin, expression);
                             root->buildExpressionTree(expression);
+                            break;
                         }
 
                         case 2: 
