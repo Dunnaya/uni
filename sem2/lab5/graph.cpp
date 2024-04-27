@@ -117,6 +117,15 @@ GraphMatrix list_to_matrix(const GraphAdjList& list)
 {
     GraphMatrix matrix(list.num_vert);
 
+    for(size_t i = 0; i < list.num_vert; i++)
+    {
+        for(const pair<int, int>& edge : list.adjList[i]) // pair<j, weight>, (j is vert)
+        {
+            size_t j = edge.first;
+            int weight = edge.second;
+            add_edge_matrix(matrix, i, j, weight);
+        }
+    }
     return matrix;
 }
 
@@ -125,7 +134,7 @@ void interactiveMode() {}
 void demoMode()
 {   
     //examples for undirected graph
-    GraphMatrix graph(5);
+    /*GraphMatrix graph(5);
 
     add_edge_matrix(graph, 1, 2, 8, 1, false);
     add_edge_matrix(graph, 1, 3, 3, 1, false);
@@ -139,9 +148,9 @@ void demoMode()
     print_matrix(graph.weight_matrix);
 
     GraphAdjList list = matrix_to_list(graph);
-    print_adjList(list);
+    print_adjList(list);*/
     
-    /*GraphAdjList graph_adj(5);
+    GraphAdjList graph_adj(5);
 
     add_edge_adjList(graph_adj, 1, 2, 8, 1, false);
     add_edge_adjList(graph_adj, 1, 3, 3, 1, false);
@@ -152,7 +161,10 @@ void demoMode()
     add_edge_adjList(graph_adj, 3, 5, 1, 1, false);
     add_edge_adjList(graph_adj, 4, 5, 8, 1, false);
 
-    print_adjList(graph_adj);*/
+    print_adjList(graph_adj);
+
+    GraphMatrix matrix = list_to_matrix(graph_adj);
+    print_matrix(matrix.weight_matrix);
 }
 
 void benchmark() {}
