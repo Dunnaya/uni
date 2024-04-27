@@ -1,7 +1,7 @@
-/* 0. Weighted, Directed and Undirected Graph.
+/*
+0. Weighted, Directed and Undirected Graph.
    Реалізувати структуру даних граф на основі матриці суміжності.
    Реалізувати структуру даних граф на основі структури суміжності.
-   + Перехід з одного подання у інше.
 1.
 2. Depth First Search Algorithm (DFS)
 3. */
@@ -106,7 +106,8 @@ GraphAdjList matrix_to_list(const GraphMatrix& matrix)
     {
         for(size_t j = 0; j < matrix.num_vert; j++)
         {
-            
+            if(matrix.weight_matrix[i][j] != INF)
+                add_edge_adjList(list, i, j, matrix.weight_matrix[i][j]);
         }
     }
     return list;
@@ -137,7 +138,10 @@ void demoMode()
 
     print_matrix(graph.weight_matrix);
 
-    GraphAdjList graph_adj(5);
+    GraphAdjList list = matrix_to_list(graph);
+    print_adjList(list);
+    
+    /*GraphAdjList graph_adj(5);
 
     add_edge_adjList(graph_adj, 1, 2, 8, 1, false);
     add_edge_adjList(graph_adj, 1, 3, 3, 1, false);
@@ -148,7 +152,7 @@ void demoMode()
     add_edge_adjList(graph_adj, 3, 5, 1, 1, false);
     add_edge_adjList(graph_adj, 4, 5, 8, 1, false);
 
-    print_adjList(graph_adj);
+    print_adjList(graph_adj);*/
 }
 
 void benchmark() {}
