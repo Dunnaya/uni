@@ -129,7 +129,7 @@ GraphMatrix list_to_matrix(const GraphAdjList& list)
     return matrix;
 }
 
-void DFS_part(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited) 
+void ordinary_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited) 
 {
     isVisited[vert] = true;
     cout << vert << " ";
@@ -138,23 +138,45 @@ void DFS_part(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited)
     {
         size_t neighbor_vert = neighbor.first;
         if(!isVisited[neighbor_vert])
-            DFS_part(graph, neighbor_vert, isVisited);
+            ordinary_DFS(graph, neighbor_vert, isVisited);
     }
 }
 
-void DFS(const GraphAdjList& graph)
+bool compare_neighbors(const pair<int, int>& a, const pair<int, int>& b) //for weighted_DFS
+{
+    return a.second < b.second; //second is a weight
+}
+
+void weighted_DFS(const GraphAdjList& graph, size_t vert, vector<bool> isVisited)
+{
+    isVisited[vert] = true;
+    cout << vert << " ";
+
+    //just sorting the neighboring vertices by increasing the edge weight
+    vector<pair<int, int> > sorted_neighbors(graph.adjList[vert].begin(), graph.adjList[vert].end());
+    sort(sorted_neighbors.begin(), sorted_neighbors.end(), compare_neighbors);
+
+    for(const auto& neighbor : graph.adjList[vert])
+    {
+        size_t neighbor_vert = neighbor.first;
+        if(!isVisited[neighbor_vert])
+            weighted_DFS(graph, neighbor_vert, isVisited);
+    }
+}
+
+void DFS(const GraphAdjList& graph, size_t start_vert)
 {
     vector<bool> isVisited(graph.num_vert, false);
 
-    for(size_t i = 0; i < graph.num_vert; i++)
-    {
-        if(!isVisited[i])
-        {
-            cout << "Connected component: ";
-            DFS_part(graph, i, isVisited);
-            cout << endl;
-        }
-    }
+    cout << "DFS with ordinary neighbor order: ";
+    ordinary_DFS(graph, start_vert, isVisited);
+    cout << endl;
+
+    fill(isVisited.begin(), isVisited.end(), false); //reseting attendance
+
+    cout << "DFS with weighted neighbor order: ";
+    weighted_DFS(graph, start_vert, isVisited);
+    cout << endl;
 }
 
 void interactiveMode() 
@@ -194,9 +216,9 @@ void demoMode()
 
     /*GraphMatrix matrix = list_to_matrix(graph_adj);
     print_matrix(matrix.weight_matrix);*/
-
+    size_t start_vert = 0;
     cout << "DFS (traversal):\n";
-    DFS(graph_adj);
+    DFS(graph_adj, start_vert);
 }
 
 void benchmark() {}
