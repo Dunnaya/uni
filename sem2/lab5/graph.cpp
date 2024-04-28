@@ -2,7 +2,7 @@
 0. Weighted, Directed and Undirected Graph.
    Реалізувати структуру даних граф на основі матриці суміжності.
    Реалізувати структуру даних граф на основі структури суміжності.
-1.
+1. Connected components search
 2. Depth First Search Algorithm (DFS)
 3. */
 
@@ -129,7 +129,36 @@ GraphMatrix list_to_matrix(const GraphAdjList& list)
     return matrix;
 }
 
-void interactiveMode() {}
+void DFS_part(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited) 
+{
+    isVisited[vert] = true;
+    cout << vert << " ";
+
+    for(const auto& neighbor : graph.adjList[vert])
+    {
+        size_t neighbor_vert = neighbor.first;
+        if(!isVisited[neighbor_vert])
+            DFS_part(graph, neighbor_vert, isVisited);
+    }
+}
+
+void DFS(const GraphAdjList& graph)
+{
+    vector<bool> isVisited(graph.num_vert, false);
+
+    for(size_t i = 0; i < graph.num_vert; i++)
+    {
+        if(!isVisited[i])
+        {
+            cout << "Connected component: ";
+            DFS_part(graph, i, isVisited);
+            cout << endl;
+        }
+    }
+}
+
+void interactiveMode() 
+{}
 
 void demoMode()
 {   
@@ -163,8 +192,11 @@ void demoMode()
 
     print_adjList(graph_adj);
 
-    GraphMatrix matrix = list_to_matrix(graph_adj);
-    print_matrix(matrix.weight_matrix);
+    /*GraphMatrix matrix = list_to_matrix(graph_adj);
+    print_matrix(matrix.weight_matrix);*/
+
+    cout << "DFS (traversal):\n";
+    DFS(graph_adj);
 }
 
 void benchmark() {}
