@@ -1,14 +1,17 @@
-/*
-0. Weighted, Directed and Undirected Graph.
-   Реалізувати структуру даних граф на основі матриці суміжності.
-   Реалізувати структуру даних граф на основі структури суміжності.
-1. Is acyclic?
-2. Depth First Search Algorithm (DFS)
-3. */
+/*          - Weighted, Directed and Undirected Graphs -
+0. (1) Matrix.
+   (2) Adj List.
+1. (7) Is acyclic?
+2. (11) Depth First Search Algorithm (DFS).
+3. (15) Floyd's algorithm.
+    - між двома заданими вершинами;
+    - від заданої вершини до всіх інших;
+    - між усіма вершинами графу. done.
+4.*/
 
 #include <iostream>
 #include <vector>
-#include <algorithm> //fill(), min()
+#include <algorithm> //fill(), min() (we didn't use the min func in floyd's algo :) )
 #include <list>
 #include <utility> //pair<>, make_pair() for weight in the adjList
 #include <queue>
@@ -213,13 +216,56 @@ bool hasCycle(const GraphAdjList& graph)
     return false;
 }
 
+//expected that there are no edges of negative weight
+void floyd(const GraphMatrix& graph) //dist between all pairs of vert
+{
+    Matrix dist = graph.weight_matrix;
+
+    for(size_t k = 0; k < graph.num_vert; k++) //intermediate point
+    {
+        for(size_t i = 0; i < graph.num_vert; i++)
+        {
+            for(size_t j = 0; j < graph.num_vert; j++)
+            {
+                if(dist[i][k] != INF && dist[k][j] != INF && dist[i][k] + dist[k][j] < dist[i][j])
+                    dist[i][j] = dist[i][k] + dist[k][j];
+            }
+        }
+    }
+
+    cout << "Shortest paths matrix: \n";
+    print_matrix(dist);
+}
+
+void matrix_menu()
+{
+    cout << "\nHi! It's a matrix menu!";
+}
+
+void adjList_menu()
+{
+    cout << "\nHi! It's adjacency list menu!";
+}
+
 void interactiveMode() 
-{}
+{
+    int type;
+    cout << "\nGraph representation types:\n1. Matrix\n2. Adjacency list\n";
+    cout << "Select a graph representation type: ";
+    cin >> type;
+
+    if(type == 1)
+    matrix_menu();
+    else if(type == 2)
+            adjList_menu();
+        else
+            cout << "Invalid input.";
+}
 
 void demoMode()
 {   
     //examples for undirected graph
-    /*GraphMatrix graph(5);
+    GraphMatrix graph(5);
 
     add_edge_matrix(graph, 1, 2, 8, 1, false);
     add_edge_matrix(graph, 1, 3, 3, 1, false);
@@ -232,7 +278,9 @@ void demoMode()
 
     print_matrix(graph.weight_matrix);
 
-    GraphAdjList list = matrix_to_list(graph);
+    floyd(graph);
+
+    /*GraphAdjList list = matrix_to_list(graph);
     print_adjList(list);*/
     
     GraphAdjList graph_adj(5);
@@ -246,18 +294,18 @@ void demoMode()
     add_edge_adjList(graph_adj, 3, 5, 1, 1, false);
     add_edge_adjList(graph_adj, 4, 5, 8, 1, false);
 
-    print_adjList(graph_adj);
+    /*print_adjList(graph_adj);
 
-    /*GraphMatrix matrix = list_to_matrix(graph_adj);
+    GraphMatrix matrix = list_to_matrix(graph_adj);
     print_matrix(matrix.weight_matrix);*/
     size_t start_vert = 0;
-    cout << "DFS (traversal):\n";
-    DFS(graph_adj, start_vert);
+    //cout << "DFS (traversal):\n";
+    //DFS(graph_adj, start_vert);
 
-    if(hasCycle(graph_adj))
-        cout << "Graph has a cycle." << endl;
-    else
-        cout << "Graph is acyclic." << endl;
+    //if(hasCycle(graph_adj))
+      //  cout << "Graph has a cycle." << endl;
+    //else
+      //  cout << "Graph is acyclic." << endl;
 }
 
 void benchmark() {}
