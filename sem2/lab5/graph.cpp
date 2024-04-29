@@ -15,6 +15,7 @@
 #include <utility> //pair<>, make_pair() for weight in the adjList
 #include <queue>
 #include <cassert>
+#include <stack>
 using namespace std;
 
 void interactiveMode();
@@ -203,7 +204,7 @@ bool has_cycle_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisit
 bool hasCycle(const GraphAdjList& graph)
 {
     vector<bool> isVisited(graph.num_vert, false);
-
+    cout << "The cycle is: ";
     for(size_t i = 0; i < graph.num_vert; i++)
     {
         if(!isVisited[i])
@@ -329,20 +330,62 @@ void dijkstra(const GraphAdjList& graph, size_t start_vert) //shortest dist from
     }
 }
 
+void topological_sort_additional(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited, stack<int>& order)
+{
+    isVisited[vert] = true;
+
+    for (const auto& neighbor : graph.adjList[vert]) 
+    {
+        size_t neighbor_vert = neighbor.first;
+        if (!isVisited[neighbor_vert]) 
+            topological_sort_additional(graph, neighbor_vert, isVisited, order);
+    }
+
+    order.push(vert);
+}
+
+void topological_sort(const GraphAdjList& graph)
+{
+    if(hasCycle(graph))
+    {
+        cout << "\nThe graph contains a cycle. Topological sorting is impossible.";
+        return;
+    }
+
+    vector<bool> isVisited(graph.num_vert, false);
+    stack<int> order;
+
+    for(size_t i = 0; i < graph.num_vert; i++)
+    {
+        if(!isVisited[i])
+            topological_sort_additional(graph, i, isVisited, order);
+    }
+
+    cout << "Topological sorting order:\n";
+    while(!order.empty())
+    {
+        cout << order.top() << " ";
+        order.pop();
+    }
+    cout << endl;
+}
+
 void matrix_menu()
 {
     int choice;
-    cout << "\nHi! It's a matrix menu!";
+    cout << "\n   Matrix menu:";
     cout << "\n1. Enter the matrix\n2. Print the matrix\n3. Matrix to list\n4. Floyd's algorithm (all shortest paths)\n";
-    cout << "5. Modified Floyd's algorithm (shortest path between 2)\n6. Dijkstra's algorithm (shortest path between 1 and the others)";
+    cout << "5. Modified Floyd's algorithm (shortest path between 2)\n6. Dijkstra's algorithm (shortest path between 1 and the others)\n";
+    cout << "7. Check for cyclicity\n8. Topological sort (only for directed acyclic graph)\n";
 }
 
 void adjList_menu()
 {
     int choice;
-    cout << "\nHi! It's adjacency list menu!";
+    cout << "\n   Adjacency list menu:";
     cout << "\n1. Enter the list\n2. Print the list\n3. List to matrix\n4. Floyd's algorithm (all shortest paths)\n";
     cout << "5. Modified Floyd's algorithm (shortest path between 2)\n6. Dijkstra's algorithm (shortest path between 1 and the others)";
+    cout << "7. Check for cyclicity\n8. Topological sort (only for directed acyclic graph)\n";
 }
 
 void interactiveMode() 
@@ -408,6 +451,7 @@ void demoMode()
       //  cout << "Graph is acyclic." << endl;
 
     dijkstra(graph_adj, 0);
+    topological_sort(graph_adj);
 }
 
 void benchmark() {}
