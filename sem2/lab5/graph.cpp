@@ -2,7 +2,7 @@
 0. Weighted, Directed and Undirected Graph.
    Реалізувати структуру даних граф на основі матриці суміжності.
    Реалізувати структуру даних граф на основі структури суміжності.
-1. Connected components search
+1. Is acyclic?
 2. Depth First Search Algorithm (DFS)
 3. */
 
@@ -98,7 +98,7 @@ void print_adjList(const GraphAdjList& graph)
     }
 }
 
-GraphAdjList matrix_to_list(const GraphMatrix& matrix) 
+GraphAdjList matrix_to_list(const GraphMatrix& matrix)
 {
     GraphAdjList list(matrix.num_vert);
 
@@ -179,6 +179,40 @@ void DFS(const GraphAdjList& graph, size_t start_vert)
     cout << endl;
 }
 
+bool has_cycle_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited, size_t start_vert) 
+{
+    isVisited[vert] = true;
+    cout << vert << " ";
+
+    for(const auto& neighbor : graph.adjList[vert])
+    {
+        size_t neighbor_vert = neighbor.first;
+        if(!isVisited[neighbor_vert])
+        {
+            if(has_cycle_DFS(graph, neighbor_vert, isVisited, vert))
+            return true;
+        }
+        else if(neighbor_vert != start_vert)
+                return true;
+    }
+    return false;
+}
+
+bool hasCycle(const GraphAdjList& graph)
+{
+    vector<bool> isVisited(graph.num_vert, false);
+
+    for(size_t i = 0; i < graph.num_vert; i++)
+    {
+        if(!isVisited[i])
+        {
+            if(has_cycle_DFS(graph, i, isVisited, -1))
+                return true;
+        }
+    }
+    return false;
+}
+
 void interactiveMode() 
 {}
 
@@ -219,6 +253,11 @@ void demoMode()
     size_t start_vert = 0;
     cout << "DFS (traversal):\n";
     DFS(graph_adj, start_vert);
+
+    if(hasCycle(graph_adj))
+        cout << "Graph has a cycle." << endl;
+    else
+        cout << "Graph is acyclic." << endl;
 }
 
 void benchmark() {}
