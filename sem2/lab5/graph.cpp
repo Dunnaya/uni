@@ -3,10 +3,9 @@
    (2) Adj List.
 1. (7) Is acyclic?
 2. (11) Depth First Search Algorithm (DFS).
-3. (15) Floyd's algorithm.
-    - між двома заданими вершинами;
-    - від заданої вершини до всіх інших;
-    - між усіма вершинами графу. done.
+3. (14) Dijkstra's algorithm (від заданої вершини до всіх інших).
+   (15) Floyd's algorithm (між усіма вершинами графу).
+    Modified Floyd's algorithm (між двома заданими вершинами).
 4.*/
 
 #include <iostream>
@@ -237,14 +236,65 @@ void floyd(const GraphMatrix& graph) //dist between all pairs of vert
     print_matrix(dist);
 }
 
+void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert) //dist between two given vert
+{
+    Matrix dist = graph.weight_matrix;
+    Matrix path(graph.num_vert, vector<int>(graph.num_vert, -1)); //matrix of paths
+
+    for(size_t k = 0; k < graph.num_vert; k++) //intermediate point
+    {
+        for(size_t i = 0; i < graph.num_vert; i++)
+        {
+            for(size_t j = 0; j < graph.num_vert; j++)
+            {
+                if(dist[i][k] != INF && dist[k][j] != INF && dist[i][k] + dist[k][j] < dist[i][j])
+                {
+                    dist[i][j] = dist[i][k] + dist[k][j];
+                    path[i][j] = k;
+                }
+            }
+        }
+    }
+
+    cout << "Shortest path between " << start_vert << " and " << end_vert << ": ";
+    if(dist[start_vert][end_vert] == INF || start_vert > graph.num_vert || end_vert > graph.num_vert)
+    {
+        cout << "There is no path.\n";
+        return;
+    }
+
+    vector<int> shortest_path;
+    int vertex = end_vert;
+
+    while (vertex != -1) 
+    {
+        shortest_path.push_back(vertex);
+        vertex = path[start_vert][vertex];
+    }
+    cout << start_vert << " -> ";
+    for (int i = shortest_path.size() - 1; i >= 0; --i) 
+    {
+        cout << shortest_path[i];
+        if (i != 0) cout << " -> ";
+    }
+    cout << endl;
+}
+
+void dijkstra()
+{
+    //
+}
+
 void matrix_menu()
 {
     cout << "\nHi! It's a matrix menu!";
+    cout << "\n1. Enter the matrix\n2. Print the matrix\n3. Matrix to list\n4. Floyd's algorithm (all shortest paths)\n5. ";
 }
 
 void adjList_menu()
 {
     cout << "\nHi! It's adjacency list menu!";
+    cout << "\n1. Enter the list\n2. Print the list\n3. List to matrix\n4. Floyd's algorithm (all shortest paths)\n5. ";
 }
 
 void interactiveMode() 
@@ -279,6 +329,8 @@ void demoMode()
     print_matrix(graph.weight_matrix);
 
     floyd(graph);
+
+    floyd_modified(graph, 0, 2);
 
     /*GraphAdjList list = matrix_to_list(graph);
     print_adjList(list);*/
