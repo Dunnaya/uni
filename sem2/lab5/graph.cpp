@@ -238,6 +238,12 @@ void floyd(const GraphMatrix& graph) //dist between all pairs of vert
 
 void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert) //dist between two given vert
 {
+    if (start_vert < 0 || start_vert >= graph.num_vert || end_vert < 0 || end_vert >= graph.num_vert) 
+    {
+        cout << "Invalid input.\n";
+        return;
+    }
+
     Matrix dist = graph.weight_matrix;
     Matrix path(graph.num_vert, vector<int>(graph.num_vert, -1)); //matrix of paths
 
@@ -280,21 +286,63 @@ void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert
     cout << endl;
 }
 
-void dijkstra()
+//можна було також реалізувати як вивід рядка матриці з алг. Флойда
+void dijkstra(const GraphAdjList& graph, size_t start_vert) //shortest dist from given vert to others
 {
-    //
+    if (start_vert < 0 || start_vert >= graph.num_vert) 
+    {
+        cout << "Invalid input.\n";
+        return;
+    }
+
+    vector<int> dist(graph.num_vert, INF);
+    dist[start_vert] = 0;
+
+    priority_queue<pair<int, int>, vector<pair<int, int> >, greater<pair<int, int> > > priority_q;
+    priority_q.push(make_pair(0, start_vert));
+
+    while(!priority_q.empty())
+    {
+        int cur_vert = priority_q.top().second;
+        priority_q.pop();
+
+        for(const auto& neighbor : graph.adjList[cur_vert])
+        {
+            int neigh_vert = neighbor.first;
+            int weight = neighbor.second;
+
+            if(dist[neigh_vert] > dist[cur_vert] + weight)
+            {
+                dist[neigh_vert] = dist[cur_vert] + weight;
+                priority_q.push(make_pair(dist[neigh_vert], neigh_vert));
+            }
+        }
+    }
+
+    cout << "Shortest distances from vertex " << start_vert << ":\n";
+    for(size_t i = 0; i < graph.num_vert; i++)
+    {
+        if(dist[i] == INF)
+            cout << "Vertex " << i << ": no path.";
+        else
+            cout << "Vertex " << i << ": " << dist[i] << endl;
+    }
 }
 
 void matrix_menu()
 {
+    int choice;
     cout << "\nHi! It's a matrix menu!";
-    cout << "\n1. Enter the matrix\n2. Print the matrix\n3. Matrix to list\n4. Floyd's algorithm (all shortest paths)\n5. ";
+    cout << "\n1. Enter the matrix\n2. Print the matrix\n3. Matrix to list\n4. Floyd's algorithm (all shortest paths)\n";
+    cout << "5. Modified Floyd's algorithm (shortest path between 2)\n6. Dijkstra's algorithm (shortest path between 1 and the others)";
 }
 
 void adjList_menu()
 {
+    int choice;
     cout << "\nHi! It's adjacency list menu!";
-    cout << "\n1. Enter the list\n2. Print the list\n3. List to matrix\n4. Floyd's algorithm (all shortest paths)\n5. ";
+    cout << "\n1. Enter the list\n2. Print the list\n3. List to matrix\n4. Floyd's algorithm (all shortest paths)\n";
+    cout << "5. Modified Floyd's algorithm (shortest path between 2)\n6. Dijkstra's algorithm (shortest path between 1 and the others)";
 }
 
 void interactiveMode() 
@@ -358,6 +406,8 @@ void demoMode()
       //  cout << "Graph has a cycle." << endl;
     //else
       //  cout << "Graph is acyclic." << endl;
+
+    dijkstra(graph_adj, 0);
 }
 
 void benchmark() {}
