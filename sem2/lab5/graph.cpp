@@ -6,7 +6,8 @@
 3. (14) Dijkstra's algorithm (від заданої вершини до всіх інших).
    (15) Floyd's algorithm (між усіма вершинами графу).
     Modified Floyd's algorithm (між двома заданими вершинами).
-4.*/
+4. (18) Topological sort (DFS)
+5.*/
 
 #include <iostream>
 #include <vector>
