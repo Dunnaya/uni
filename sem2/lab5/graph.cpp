@@ -13,7 +13,7 @@
 
 #include <iostream>
 #include <vector>
-#include <algorithm> //fill(), min() (we didn't use the min func in floyd's algo :) )
+#include <algorithm> //fill()
 #include <list>
 #include <utility> //pair<>, make_pair() for weight in the adjList
 #include <queue>
@@ -268,15 +268,7 @@ bool isConnected(const GraphAdjList& graph)
     vector<bool> isVisited(graph.num_vert, false);
     size_t start_vert = 0;
 
-    if(graph.num_vert > 0)
-    {
-        isVisited[start_vert] = true;
-        for(const auto& neighbor : graph.adjList[start_vert])
-        {
-            size_t neighbor_vert = neighbor.first;
-            isVisited[neighbor_vert] = true;
-        }
-    }
+    ordinary_DFS(graph, start_vert, isVisited);
 
     for(bool visited : isVisited)
     {
