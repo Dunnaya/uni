@@ -1,15 +1,15 @@
 /*          - Weighted, Directed and Undirected Graphs -
 0. (1) Matrix.
    (2) Adj List.
-1. (5) Is connected?                                                                        (undone)
+1. (5) Is connected?
    (7) Is acyclic?
 2. (11) Depth First Search Algorithm (DFS).
 3. (14) Dijkstra's algorithm (від заданої вершини до всіх інших).
    (15) Floyd's algorithm (між усіма вершинами графу).
     Modified Floyd's algorithm (між двома заданими вершинами).
 4. (18) Topological sort (DFS).
-5. (19) Spanning tree (DFS).                                                                (undone)
-6. (21) Min weight spanning tree (Kruskal). (undirected connected graph)                    (undone)*/
+5. (19) Spanning tree (DFS).
+6. (21) Min weight spanning tree (Kruskal).*/
 
 #include <iostream>
 #include <vector>
