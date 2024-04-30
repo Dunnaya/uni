@@ -441,7 +441,7 @@ void topological_sort(const GraphAdjList& graph)
     cout << endl;
 }
 
-void dfs_mst(const GraphAdjList& graph, size_t start_vert, vector<bool>& isVisited, GraphAdjList& mst)
+void dfs_st(const GraphAdjList& graph, size_t start_vert, vector<bool>& isVisited, GraphAdjList& st, int& total_weight)
 {
     isVisited[start_vert] = true;
 
@@ -452,20 +452,20 @@ void dfs_mst(const GraphAdjList& graph, size_t start_vert, vector<bool>& isVisit
 
         if(!isVisited[neighbor_vert])
         {
-            mst.adjList[start_vert].push_back(make_pair(neighbor_vert, weight));
-            mst.adjList[neighbor_vert].push_back(make_pair(start_vert, weight));
+            st.adjList[start_vert].push_back(make_pair(neighbor_vert, weight));
+            st.adjList[neighbor_vert].push_back(make_pair(start_vert, weight));
+            total_weight += weight;
             //add_edge_adjList(mst, start_vert, neighbor_vert, weight);
-            dfs_mst(graph, neighbor_vert, isVisited, mst);
+            dfs_st(graph, neighbor_vert, isVisited, st, total_weight);
         }
     }
 }
 
-GraphAdjList min_spanning_tree(const GraphAdjList& graph)
+pair<GraphAdjList, int> spanning_tree(const GraphAdjList& graph)
 {
-    if (graph.num_vert == 0) return GraphAdjList(0); //is empty?
-
-    GraphAdjList mst(graph.num_vert);
+    GraphAdjList st(graph.num_vert);
     vector<bool> isVisited(graph.num_vert, false);
+    int total_weight = 0;
 
     size_t start_vert = 0;
     for (size_t i = 0; i < graph.num_vert; i++) 
@@ -477,9 +477,9 @@ GraphAdjList min_spanning_tree(const GraphAdjList& graph)
         }
     }
 
-    dfs_mst(graph, start_vert, isVisited, mst);
+    dfs_st(graph, start_vert, isVisited, st, total_weight);
 
-    return mst;
+    return make_pair(st, total_weight);
 }
 
 
@@ -560,8 +560,11 @@ void demoMode()
       cout << "Graph is not connected." << endl;
 
     cout << "Min spanning tree:\n";
-    GraphAdjList mst = min_spanning_tree(graph_adj);
-    print_adjList(mst);
+    pair<GraphAdjList, int> st_pair = spanning_tree(graph_adj);
+    GraphAdjList st = st_pair.first;
+    int total_weight = st_pair.second;
+    print_adjList(st);
+    cout << "Total weight of the tree: " << total_weight << "\n";
 
     /*print_adjList(graph_adj);
 
