@@ -67,6 +67,28 @@ void print_matrix(const Matrix& matrix)
     }
 }
 
+GraphMatrix generate_random_graph_matrix(size_t num_vertex, int max_weight, bool isDirected = false) 
+{
+    GraphMatrix graph(num_vertex);
+
+    int edges_added = 0;
+    while (edges_added < num_vertex) 
+    {
+        size_t u = rand() % num_vertex;
+        size_t v = rand() % num_vertex;
+        int weight = 1 + rand() % max_weight;
+
+        if (u != v && graph.weight_matrix[u][v] == INF) 
+        {
+            graph.weight_matrix[u][v] = weight;
+            if(!isDirected) graph.weight_matrix[v][u] = weight;
+            edges_added++;
+        }
+    }
+
+    return graph;
+}
+
 struct GraphAdjList
 {
     vector<list<pair<int, int> > > adjList;
@@ -100,6 +122,28 @@ void print_adjList(const GraphAdjList& graph)
         }
         cout << endl;
     }
+}
+
+GraphAdjList generate_random_graph_list(size_t num_vert, int max_weight, bool isDirected = false)
+{
+    GraphAdjList graph(num_vert);
+
+    for (size_t from = 0; from < num_vert; from++)
+    {
+        for (size_t to = 0; to < num_vert; to++)
+        {
+            if (from != to && rand() % 2 == 1)
+            {
+                int weight = 1 + rand() % max_weight;
+
+                graph.adjList[from].push_back(make_pair(to, weight));
+                if (!isDirected && from != to)
+                    graph.adjList[to].push_back(make_pair(from, weight));
+            }
+        }
+    }
+
+    return graph;
 }
 
 GraphAdjList matrix_to_list(const GraphMatrix& matrix)
@@ -349,7 +393,7 @@ void topological_sort(const GraphAdjList& graph)
 {
     if(hasCycle(graph))
     {
-        cout << "\nThe graph contains a cycle. Topological sorting is impossible.";
+        cout << "\nThe graph contains a cycle. Topological sorting is impossible.\n";
         return;
     }
 
@@ -371,22 +415,24 @@ void topological_sort(const GraphAdjList& graph)
     cout << endl;
 }
 
+
+
 void matrix_menu()
 {
     int choice;
     cout << "\n   Matrix menu:";
-    cout << "\n1. Enter the matrix\n2. Print the matrix\n3. Matrix to list\n4. Floyd's algorithm (all shortest paths)\n";
-    cout << "5. Modified Floyd's algorithm (shortest path between 2)\n6. Dijkstra's algorithm (shortest path between 1 and the others)\n";
-    cout << "7. Check for cyclicity\n8. Topological sort (only for directed acyclic graph)\n";
+    cout << "\n1. Enter the matrix\n2. Generate random matrix\n3. Print the matrix\n4. Matrix to list\n5. Floyd's algorithm (all shortest paths)\n";
+    cout << "6. Modified Floyd's algorithm (shortest path between 2)\n7. Dijkstra's algorithm (shortest path between 1 and the others)\n";
+    cout << "8. Check for cyclicity\n9. Topological sort (only for directed acyclic graph)\n";
 }
 
 void adjList_menu()
 {
     int choice;
     cout << "\n   Adjacency list menu:";
-    cout << "\n1. Enter the list\n2. Print the list\n3. List to matrix\n4. Floyd's algorithm (all shortest paths)\n";
-    cout << "5. Modified Floyd's algorithm (shortest path between 2)\n6. Dijkstra's algorithm (shortest path between 1 and the others)";
-    cout << "7. Check for cyclicity\n8. Topological sort (only for directed acyclic graph)\n";
+    cout << "\n1. Enter the list\n2. Generate random list\n3. Print the list\n4. List to matrix\n5. Floyd's algorithm (all shortest paths)\n";
+    cout << "6. Modified Floyd's algorithm (shortest path between 2)\n7. Dijkstra's algorithm (shortest path between 1 and the others)";
+    cout << "8. Check for cyclicity\n9. Topological sort (only for directed acyclic graph)\n";
 }
 
 void interactiveMode() 
@@ -453,6 +499,22 @@ void demoMode()
 
     dijkstra(graph_adj, 0);
     topological_sort(graph_adj);
+
+    cout << "Random directed graph (matrix):\n";
+    GraphMatrix random_graph_directed = generate_random_graph_matrix(5, 8, true);
+    print_matrix(random_graph_directed.weight_matrix);
+
+    cout << "Random undirected graph (matrix):\n";
+    GraphMatrix random_graph_undirected = generate_random_graph_matrix(5, 8, false);
+    print_matrix(random_graph_undirected.weight_matrix);
+
+    cout << "Random directed graph (list):\n";
+    GraphAdjList random_graph_dir = generate_random_graph_list(5, 8, true);
+    print_adjList(random_graph_dir);
+
+    cout << "Random graph undirected (list):\n";
+    GraphAdjList random_graph_undir = generate_random_graph_list(5, 8, false);
+    print_adjList(random_graph_undir);
 }
 
 void benchmark() {}
