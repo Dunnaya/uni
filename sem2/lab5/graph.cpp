@@ -441,6 +441,49 @@ void topological_sort(const GraphAdjList& graph)
     cout << endl;
 }
 
+void dfs_mst(const GraphAdjList& graph, size_t start_vert, vector<bool>& isVisited, GraphAdjList& mst)
+{
+    isVisited[start_vert] = true;
+
+    for (const auto& neighbor : graph.adjList[start_vert]) 
+    {
+        size_t neighbor_vert = neighbor.first;
+        int weight = neighbor.second;
+
+        if(!isVisited[neighbor_vert])
+        {
+            mst.adjList[start_vert].push_back(make_pair(neighbor_vert, weight));
+            mst.adjList[neighbor_vert].push_back(make_pair(start_vert, weight));
+            //add_edge_adjList(mst, start_vert, neighbor_vert, weight);
+            dfs_mst(graph, neighbor_vert, isVisited, mst);
+        }
+    }
+}
+
+GraphAdjList min_spanning_tree(const GraphAdjList& graph)
+{
+    if (graph.num_vert == 0) return GraphAdjList(0); //is empty?
+
+    GraphAdjList mst(graph.num_vert);
+    vector<bool> isVisited(graph.num_vert, false);
+
+    size_t start_vert = 0;
+    for (size_t i = 0; i < graph.num_vert; i++) 
+    {
+        if (!isVisited[i]) 
+        {
+            start_vert = i;
+            break;
+        }
+    }
+
+    dfs_mst(graph, start_vert, isVisited, mst);
+
+    return mst;
+}
+
+
+
 
 
 void matrix_menu()
@@ -515,6 +558,10 @@ void demoMode()
       cout << "Graph is connected." << endl;
     else
       cout << "Graph is not connected." << endl;
+
+    cout << "Min spanning tree:\n";
+    GraphAdjList mst = min_spanning_tree(graph_adj);
+    print_adjList(mst);
 
     /*print_adjList(graph_adj);
 
