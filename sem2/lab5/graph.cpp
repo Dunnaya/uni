@@ -1,13 +1,15 @@
 /*          - Weighted, Directed and Undirected Graphs -
 0. (1) Matrix.
    (2) Adj List.
-1. (7) Is acyclic?
+1. (5) Is connected?                                                                        (undone)
+   (7) Is acyclic?
 2. (11) Depth First Search Algorithm (DFS).
 3. (14) Dijkstra's algorithm (від заданої вершини до всіх інших).
    (15) Floyd's algorithm (між усіма вершинами графу).
     Modified Floyd's algorithm (між двома заданими вершинами).
-4. (18) Topological sort (DFS)
-5.*/
+4. (18) Topological sort (DFS).
+5. (19) Spanning tree (DFS).                                                                (undone)
+6. (21) Min weight spanning tree (Kruskal). (undirected connected graph)                    (undone)*/
 
 #include <iostream>
 #include <vector>
@@ -261,6 +263,30 @@ bool hasCycle(const GraphAdjList& graph)
     return false;
 }
 
+bool isConnected(const GraphAdjList& graph)
+{
+    vector<bool> isVisited(graph.num_vert, false);
+    size_t start_vert = 0;
+
+    if(graph.num_vert > 0)
+    {
+        isVisited[start_vert] = true;
+        for(const auto& neighbor : graph.adjList[start_vert])
+        {
+            size_t neighbor_vert = neighbor.first;
+            isVisited[neighbor_vert] = true;
+        }
+    }
+
+    for(bool visited : isVisited)
+    {
+        if(!visited)
+            return false;
+    }
+
+    return true;
+}
+
 //expected that there are no edges of negative weight
 void floyd(const GraphMatrix& graph) //dist between all pairs of vert
 {
@@ -483,6 +509,12 @@ void demoMode()
     add_edge_adjList(graph_adj, 3, 4, 1, 1, false);
     add_edge_adjList(graph_adj, 3, 5, 1, 1, false);
     add_edge_adjList(graph_adj, 4, 5, 8, 1, false);
+
+    isConnected(graph_adj);
+    if(isConnected(graph_adj))
+      cout << "Graph is connected." << endl;
+    else
+      cout << "Graph is not connected." << endl;
 
     /*print_adjList(graph_adj);
 
