@@ -20,6 +20,8 @@
 #include <queue>
 #include <cassert>
 #include <stack>
+#include <chrono>
+#include <thread>
 using namespace std;
 
 void interactiveMode();
@@ -611,29 +613,81 @@ GraphMatrix enter_the_matrix(bool isDirected = false)
     return graph;
 }
 
-void matrix_main_menu()
+void matrix_menu()
 {
     int choice;
+
     cout << "\n   Matrix menu:\n";
     cout << "1. Enter the matrix\n";
     cout << "2. Generate random matrix\n";
-    cout << "3. Return to the main menu\n";
+    cout << "3. Exit\n";
     cout << "Enter your choice: ";
     cin >> choice;
 
     switch(choice)
     {
-        do
+        case 1:
         {
-            case 1:
+            bool isDirected;
+            cout << "Is graph directed? (Enter 1 for true or 0 for false): ";
+            cin >> isDirected;
+            const GraphMatrix matrix = enter_the_matrix(isDirected);
+            //print_matrix(matrix.weight_matrix);
+            
+            int choice;
+            do
             {
-                bool isDirected;
-                cout << "Is graph directed? (Enter 1 for true or 0 for false): ";
-                cin >> isDirected;
-                const GraphMatrix matrix = enter_the_matrix(isDirected);
-                //print_matrix(matrix.weight_matrix);
+                cout << "\n   Matrix menu:\n";
+                cout << "1. Print the matrix\n";
+                cout << "2. Matrix to list\n";
+                cout << "3. DFS\n";
+                cout << "4. Floyd's algorithm (all shortest paths)\n";
+                cout << "5. Modified Floyd's algorithm (shortest path between 2)\n";
+                cout << "6. Dijkstra's algorithm\n";
+                cout << "7. Check for connectivity?\n";
+                cout << "8. Check for cyclicity\n";
+                cout << "9. Search for connectivity components.\n";
+                cout << "10. Topological sort (only for directed acyclic graph)\n";
+                cout << "11. Find a spanning tree\n";
+                cout << "12. Kruskal's algorithm (min weight spanning tree)\n";
+                cout << "13. Exit\n";
+                cout << "Enter your choice: ";
+                cin >> choice;
+            
+                switch (choice)
+                {
                 
-                int choice;
+                        case 1:
+                        {
+                            print_matrix(matrix.weight_matrix);
+                            return;
+                        }
+
+                        default:
+                        {
+                            break;
+                        }
+                }
+                break;
+            } while (choice != 13);
+        }
+
+        case 2:
+        {
+            size_t num_vert;
+            int max_weight;
+            bool isDirected;
+            cout << "\nEnter the number of vertices: ";
+            cin >> num_vert;
+            cout << "Enter the max weight of an edge: ";
+            cin >> max_weight;
+            cout << "Is graph directed? (Enter 1 for true or 0 for false): ";
+            cin >> isDirected;
+            const GraphMatrix matrix = generate_random_graph_matrix(num_vert, max_weight, isDirected);
+
+            int choice;
+            do
+            {
                 cout << "\n   Matrix menu:\n";
                 cout << "1. Print the matrix\n";
                 cout << "2. Matrix to list\n";
@@ -656,69 +710,95 @@ void matrix_main_menu()
                     case 1:
                     {
                         print_matrix(matrix.weight_matrix);
-                        return;
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 2:
+                    {
+                        matrix_to_list(matrix);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 3:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 4:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 5:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 6:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 7:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 8:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 9:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 10:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 11:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 12:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 13:
+                    {
+                        cout << "Exiting...\n";
+                        break;
                     }
 
                     default:
-                    {
-                        break;
-                    }
+                        cout << "\nInvalid choice.\n";
                 }
                 break;
-            }
+            } while(choice != 13);
+        }
 
-            case 2:
-            {
-                size_t num_vert;
-                int max_weight;
-                bool isDirected;
-                cout << "\nEnter the number of vertices: ";
-                cin >> num_vert;
-                cout << "Enter the max weight of an edge: ";
-                cin >> max_weight;
-                cout << "Is graph directed? (Enter 1 for true or 0 for false): ";
-                cin >> isDirected;
-                const GraphMatrix matrix = generate_random_graph_matrix(num_vert, max_weight, isDirected);
+        case 3:
+            break;
 
-                int choice;
-                cout << "\n   Matrix menu:\n";
-                cout << "1. Print the matrix\n";
-                cout << "2. Matrix to list\n";
-                cout << "3. DFS\n";
-                cout << "4. Floyd's algorithm (all shortest paths)\n";
-                cout << "5. Modified Floyd's algorithm (shortest path between 2)\n";
-                cout << "6. Dijkstra's algorithm\n";
-                cout << "7. Check for connectivity?\n";
-                cout << "8. Check for cyclicity\n";
-                cout << "9. Search for connectivity components.\n";
-                cout << "10. Topological sort (only for directed acyclic graph)\n";
-                cout << "11. Find a spanning tree\n";
-                cout << "12. Kruskal's algorithm (min weight spanning tree)\n";
-                cout << "13. Exit\n";
-                cout << "Enter your choice: ";
-                cin >> choice;
-
-                switch (choice)
-                {
-                    case 1:
-                    {
-                        print_matrix(matrix.weight_matrix);
-                        return;
-                    }
-
-                    default:
-                    {
-                        break;
-                    }
-                }
-                break;
-            }
-
-            case 3:
-            {
-                break;
-            }
-        } while (choice != 3);
+        default:
+            cout << "\nInvalid choice.\n";
     }
 }
 
@@ -829,38 +909,36 @@ void adjList_menu()
 void interactiveMode() 
 {
     int choice;
-    cout << "\nMain menu:\n1. Matrix representation\n2. Adjacency list representation\n3. Exit\n";
+
+    cout << "\n   Main menu:\n1. Matrix representation\n2. Adjacency list representation\n3. Exit\n";
     cout << "Enter your choice: ";
     cin >> choice;
 
     switch (choice)
     {
-        do 
+        case 1:
         {
-            case 1:
-            {
-                matrix_main_menu();
-                break;
-            }
+            matrix_menu();
+            break;
+        }
 
-            case 2:
-            {
-                adjList_menu();
-                break;
-            }
+        case 2:
+        {
+            adjList_menu();
+            break;
+        }
 
-            case 3:
-            {
-                cout << "Exiting...\n";
-                break;
-            }
-            
-            default:
-            {
-                cout << "Invalid input.";
-                break;
-            }
-        } while(choice != 3);
+        case 3:
+        {
+            cout << "Exiting...\n";
+            break;
+        }
+        
+        default:
+        {
+            cout << "Invalid input.";
+            break;
+        }
     }
 }
 
