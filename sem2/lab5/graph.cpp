@@ -583,25 +583,41 @@ pair<GraphAdjList, int> kruskal(const GraphAdjList& graph)
     return make_pair(mst, totalWeight);
 }
 
-void matrix_menu()
+GraphMatrix enter_the_matrix(bool isDirected = false)
+{
+    size_t num_vertices;
+    cout << "Enter the number of vertices: ";
+    cin >> num_vertices;
+
+    GraphMatrix graph(num_vertices);
+
+    size_t num_edges;
+    cout << "Enter the number of edges: ";
+    cin >> num_edges;
+
+    cout << "Enter the vertices and weight of the edge (from, to, weight):\n";
+    for (size_t i = 0; i < num_edges; i++) 
+    {
+        size_t from, to;
+        int weight;
+        cin >> from >> to >> weight;
+        add_edge_matrix(graph, from, to, weight, 1, true);
+
+        if (!isDirected) {
+            add_edge_matrix(graph, to, from, weight, 1, isDirected);
+        }
+    }
+
+    return graph;
+}
+
+void matrix_main_menu()
 {
     int choice;
     cout << "\n   Matrix menu:\n";
     cout << "1. Enter the matrix\n";
     cout << "2. Generate random matrix\n";
-    cout << "3. Print the matrix\n";
-    cout << "4. Matrix to list\n";
-    cout << "5. DFS\n";
-    cout << "6. Floyd's algorithm (all shortest paths)\n";
-    cout << "7. Modified Floyd's algorithm (shortest path between 2)\n";
-    cout << "8. Dijkstra's algorithm (shortest path between 1 and the others)\n";
-    cout << "9. Check for connectivity?\n";
-    cout << "10. Check for cyclicity\n";
-    cout << "11. Search for connectivity components.\n";
-    cout << "12. Topological sort (only for directed acyclic graph)\n";
-    cout << "13. Find a spanning tree\n";
-    cout << "14. Kruskal's algorithm (min weight spanning tree)\n";
-    cout << "15. Return to the main menu\n";
+    cout << "3. Return to the main menu\n";
     cout << "Enter your choice: ";
     cin >> choice;
 
@@ -611,11 +627,90 @@ void matrix_menu()
         {
             case 1:
             {
+                bool isDirected;
+                cout << "Is graph directed? (Enter 1 for true or 0 for false): ";
+                cin >> isDirected;
+                const GraphMatrix matrix = enter_the_matrix(isDirected);
+                //print_matrix(matrix.weight_matrix);
+                
+                int choice;
+                cout << "\n   Matrix menu:\n";
+                cout << "1. Print the matrix\n";
+                cout << "2. Matrix to list\n";
+                cout << "3. DFS\n";
+                cout << "4. Floyd's algorithm (all shortest paths)\n";
+                cout << "5. Modified Floyd's algorithm (shortest path between 2)\n";
+                cout << "6. Dijkstra's algorithm\n";
+                cout << "7. Check for connectivity?\n";
+                cout << "8. Check for cyclicity\n";
+                cout << "9. Search for connectivity components.\n";
+                cout << "10. Topological sort (only for directed acyclic graph)\n";
+                cout << "11. Find a spanning tree\n";
+                cout << "12. Kruskal's algorithm (min weight spanning tree)\n";
+                cout << "13. Exit\n";
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+                switch (choice)
+                {
+                    case 1:
+                    {
+                        print_matrix(matrix.weight_matrix);
+                        return;
+                    }
+
+                    default:
+                    {
+                        break;
+                    }
+                }
                 break;
             }
 
             case 2:
             {
+                size_t num_vert;
+                int max_weight;
+                bool isDirected;
+                cout << "\nEnter the number of vertices: ";
+                cin >> num_vert;
+                cout << "Enter the max weight of an edge: ";
+                cin >> max_weight;
+                cout << "Is graph directed? (Enter 1 for true or 0 for false): ";
+                cin >> isDirected;
+                const GraphMatrix matrix = generate_random_graph_matrix(num_vert, max_weight, isDirected);
+
+                int choice;
+                cout << "\n   Matrix menu:\n";
+                cout << "1. Print the matrix\n";
+                cout << "2. Matrix to list\n";
+                cout << "3. DFS\n";
+                cout << "4. Floyd's algorithm (all shortest paths)\n";
+                cout << "5. Modified Floyd's algorithm (shortest path between 2)\n";
+                cout << "6. Dijkstra's algorithm\n";
+                cout << "7. Check for connectivity?\n";
+                cout << "8. Check for cyclicity\n";
+                cout << "9. Search for connectivity components.\n";
+                cout << "10. Topological sort (only for directed acyclic graph)\n";
+                cout << "11. Find a spanning tree\n";
+                cout << "12. Kruskal's algorithm (min weight spanning tree)\n";
+                cout << "13. Exit\n";
+                cout << "Enter your choice: ";
+                cin >> choice;
+
+                switch (choice)
+                {
+                    case 1:
+                    {
+                        print_matrix(matrix.weight_matrix);
+                        return;
+                    }
+
+                    default:
+                    {
+                        break;
+                    }
+                }
                 break;
             }
 
@@ -623,67 +718,7 @@ void matrix_menu()
             {
                 break;
             }
-
-            case 4:
-            {
-                break;
-            }
-
-            case 5:
-            {
-                break;
-            }
-
-            case 6:
-            {
-                break;
-            }
-
-            case 7:
-            {
-                break;
-            }
-
-            case 8:
-            {
-                break;
-            }
-
-            case 9:
-            {
-                break;
-            }
-
-            case 10:
-            {
-                break;
-            }
-
-            case 11:
-            {
-                break;
-            }
-
-            case 12:
-            {
-                break;
-            }
-
-            case 13:
-            {
-                break;
-            }
-
-            case 14:
-            {
-                break;
-            }
-
-            case 15:
-            {
-                break;
-            }
-        } while (choice != 15);
+        } while (choice != 3);
     }
 }
 
@@ -698,7 +733,7 @@ void adjList_menu()
     cout << "5. DFS\n";
     cout << "6. Floyd's algorithm (all shortest paths)\n";
     cout << "7. Modified Floyd's algorithm (shortest path between 2)\n";
-    cout << "8. Dijkstra's algorithm (shortest path between 1 and the others)\n";
+    cout << "8. Dijkstra's algorithm\n";
     cout << "9. Check for connectivity?\n";
     cout << "10. Check for cyclicity\n";
     cout << "11. Search for connectivity components.\n";
@@ -804,7 +839,7 @@ void interactiveMode()
         {
             case 1:
             {
-                matrix_menu();
+                matrix_main_menu();
                 break;
             }
 
