@@ -2,6 +2,7 @@
 0. (1) Matrix.
    (2) Adj List.
 1. (5) Is connected?
+   (6) Connected components. (for Kruskal)
    (7) Is acyclic?
 2. (11) Depth First Search Algorithm (DFS).
 3. (14) Dijkstra's algorithm (від заданої вершини до всіх інших).
@@ -279,6 +280,38 @@ bool isConnected(const GraphAdjList& graph)
     return true;
 }
 
+void connected_comp_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited, vector<int>& comp) 
+{
+    isVisited[vert] = true;
+    comp.push_back(vert);
+
+    for(const auto& neighbor : graph.adjList[vert])
+    {
+        size_t neighbor_vert = neighbor.first;
+        if(!isVisited[neighbor_vert])
+            connected_comp_DFS(graph, neighbor_vert, isVisited, comp);
+    }
+}
+
+
+vector<vector<int> > find_connected_components(const GraphAdjList& graph) 
+{
+    vector<vector<int> > connected_components;
+    vector<bool> isVisited(graph.num_vert, false);
+
+    for (size_t i = 0; i < graph.num_vert; ++i) 
+    {
+        if (!isVisited[i]) 
+        {
+            vector<int> component;
+            connected_comp_DFS(graph, i, isVisited, component);
+            connected_components.push_back(component);
+        }
+    }
+
+    return connected_components;
+}
+
 //expected that there are no edges of negative weight
 void floyd(const GraphMatrix& graph) //dist between all pairs of vert
 {
@@ -474,9 +507,79 @@ pair<GraphAdjList, int> spanning_tree(const GraphAdjList& graph)
     return make_pair(st, total_weight);
 }
 
+//additional for Kruskal's algorithm
+struct Edge 
+{
+    int from, to, weight;
+    Edge(int from, int to, int weight) : from(from), to(to), weight(weight) {}
+};
 
+bool edge_compare(const Edge& a, const Edge& b) 
+{
+    return a.weight < b.weight;
+}
 
+int find_parent(int vert, vector<int>& parent) 
+{
+    if (parent[vert] == -1)
+        return vert;
+    return find_parent(parent[vert], parent);
+}
 
+void union_sets(int x, int y, vector<int>& parent) 
+{
+    int parentX = find_parent(x, parent);
+    int parentY = find_parent(y, parent);
+    parent[parentY] = parentX;
+}
+
+pair<GraphAdjList, int> kruskal(const GraphAdjList& graph)
+{
+    if (!isConnected(graph)) 
+    {
+        cout << "Graph isn`t connected.\n";
+        exit(0);
+    }
+
+    vector<Edge> edges;
+    for (size_t i = 0; i < graph.num_vert; ++i) 
+    {
+        for (const auto& neighbor : graph.adjList[i]) 
+        {
+            edges.push_back(Edge(i, neighbor.first, neighbor.second));
+        }
+    }
+
+    sort(edges.begin(), edges.end(), edge_compare);
+
+    vector<int> parent(graph.num_vert, -1);
+    GraphAdjList mst(graph.num_vert);
+
+    int totalWeight = 0;
+    for (const auto& edge : edges) 
+    {
+        int from = edge.from;
+        int to = edge.to;
+        int weight = edge.weight;
+
+        int parentFrom = find_parent(from, parent);
+        int parentTo = find_parent(to, parent);
+
+        if (parentFrom != parentTo) 
+        {
+            totalWeight += weight;
+            union_sets(parentFrom, parentTo, parent);
+            add_edge_adjList(mst, from, to, weight);
+        }
+    }
+    
+    cout << "\nMinimal Spanning Tree (Kruskal's Algorithm):" << endl;
+    print_adjList(mst);
+
+    cout << "Total Weight of the Minimal Spanning Tree: " << totalWeight << endl;
+
+    return make_pair(mst, totalWeight);
+}
 
 void matrix_menu()
 {
@@ -589,6 +692,8 @@ void demoMode()
     cout << "Random graph undirected (list):\n";
     GraphAdjList random_graph_undir = generate_random_graph_list(5, 8, false);
     print_adjList(random_graph_undir);
+
+    kruskal(graph_adj);
 }
 
 void benchmark() {}
