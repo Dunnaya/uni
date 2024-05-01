@@ -2,7 +2,7 @@
 0. (1) Matrix.
    (2) Adj List.
 1. (5) Is connected?
-   (6) Connected components. (for Kruskal)
+   (6) Connected components.
    (7) Is acyclic?
 2. (11) Depth First Search Algorithm (DFS).
 3. (14) Dijkstra's algorithm (від заданої вершини до всіх інших).
@@ -170,7 +170,7 @@ GraphMatrix list_to_matrix(const GraphAdjList& list)
 
     for(size_t i = 0; i < list.num_vert; i++)
     {
-        for(const pair<int, int>& edge : list.adjList[i]) // pair<j, weight>, (j is vert)
+        for(const pair<int, int>& edge : list.adjList[i]) // pair<j, weight>, (j is a vert)
         {
             size_t j = edge.first;
             int weight = edge.second;
@@ -312,8 +312,9 @@ vector<vector<int> > find_connected_components(const GraphAdjList& graph)
     return connected_components;
 }
 
+//dist between all pairs of vert
 //expected that there are no edges of negative weight
-void floyd(const GraphMatrix& graph) //dist between all pairs of vert
+void floyd(const GraphMatrix& graph)
 {
     Matrix dist = graph.weight_matrix;
 
@@ -333,7 +334,8 @@ void floyd(const GraphMatrix& graph) //dist between all pairs of vert
     print_matrix(dist);
 }
 
-void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert) //dist between two given vert
+//dist between two given vert
+void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert)
 {
     if (start_vert < 0 || start_vert >= graph.num_vert || end_vert < 0 || end_vert >= graph.num_vert) 
     {
@@ -383,8 +385,9 @@ void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert
     cout << endl;
 }
 
-//можна було також реалізувати як вивід рядка матриці з алг. Флойда
-void dijkstra(const GraphAdjList& graph, size_t start_vert) //shortest dist from given vert to others
+//shortest dist from given vert to others
+//could also be implemented as the derivation of a row of a matrix from the Floyd's algo
+void dijkstra(const GraphAdjList& graph, size_t start_vert)
 {
     if (start_vert < 0 || start_vert >= graph.num_vert) 
     {
@@ -480,7 +483,6 @@ void dfs_st(const GraphAdjList& graph, size_t start_vert, vector<bool>& isVisite
             st.adjList[start_vert].push_back(make_pair(neighbor_vert, weight));
             st.adjList[neighbor_vert].push_back(make_pair(start_vert, weight));
             total_weight += weight;
-            //add_edge_adjList(mst, start_vert, neighbor_vert, weight);
             dfs_st(graph, neighbor_vert, isVisited, st, total_weight);
         }
     }
@@ -584,34 +586,247 @@ pair<GraphAdjList, int> kruskal(const GraphAdjList& graph)
 void matrix_menu()
 {
     int choice;
-    cout << "\n   Matrix menu:";
-    cout << "\n1. Enter the matrix\n2. Generate random matrix\n3. Print the matrix\n4. Matrix to list\n5. Floyd's algorithm (all shortest paths)\n";
-    cout << "6. Modified Floyd's algorithm (shortest path between 2)\n7. Dijkstra's algorithm (shortest path between 1 and the others)\n";
-    cout << "8. Check for cyclicity\n9. Topological sort (only for directed acyclic graph)\n";
+    cout << "\n   Matrix menu:\n";
+    cout << "1. Enter the matrix\n";
+    cout << "2. Generate random matrix\n";
+    cout << "3. Print the matrix\n";
+    cout << "4. Matrix to list\n";
+    cout << "5. DFS\n";
+    cout << "6. Floyd's algorithm (all shortest paths)\n";
+    cout << "7. Modified Floyd's algorithm (shortest path between 2)\n";
+    cout << "8. Dijkstra's algorithm (shortest path between 1 and the others)\n";
+    cout << "9. Check for connectivity?\n";
+    cout << "10. Check for cyclicity\n";
+    cout << "11. Search for connectivity components.\n";
+    cout << "12. Topological sort (only for directed acyclic graph)\n";
+    cout << "13. Find a spanning tree\n";
+    cout << "14. Kruskal's algorithm (min weight spanning tree)\n";
+    cout << "15. Return to the main menu\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch(choice)
+    {
+        do
+        {
+            case 1:
+            {
+                break;
+            }
+
+            case 2:
+            {
+                break;
+            }
+
+            case 3:
+            {
+                break;
+            }
+
+            case 4:
+            {
+                break;
+            }
+
+            case 5:
+            {
+                break;
+            }
+
+            case 6:
+            {
+                break;
+            }
+
+            case 7:
+            {
+                break;
+            }
+
+            case 8:
+            {
+                break;
+            }
+
+            case 9:
+            {
+                break;
+            }
+
+            case 10:
+            {
+                break;
+            }
+
+            case 11:
+            {
+                break;
+            }
+
+            case 12:
+            {
+                break;
+            }
+
+            case 13:
+            {
+                break;
+            }
+
+            case 14:
+            {
+                break;
+            }
+
+            case 15:
+            {
+                break;
+            }
+        } while (choice != 15);
+    }
 }
 
 void adjList_menu()
 {
     int choice;
-    cout << "\n   Adjacency list menu:";
-    cout << "\n1. Enter the list\n2. Generate random list\n3. Print the list\n4. List to matrix\n5. Floyd's algorithm (all shortest paths)\n";
-    cout << "6. Modified Floyd's algorithm (shortest path between 2)\n7. Dijkstra's algorithm (shortest path between 1 and the others)";
-    cout << "8. Check for cyclicity\n9. Topological sort (only for directed acyclic graph)\n";
+    cout << "\n   List menu:\n";
+    cout << "1. Enter the list\n";
+    cout << "2. Generate random list\n";
+    cout << "3. Print the list\n";
+    cout << "4. List to matrix\n";
+    cout << "5. DFS\n";
+    cout << "6. Floyd's algorithm (all shortest paths)\n";
+    cout << "7. Modified Floyd's algorithm (shortest path between 2)\n";
+    cout << "8. Dijkstra's algorithm (shortest path between 1 and the others)\n";
+    cout << "9. Check for connectivity?\n";
+    cout << "10. Check for cyclicity\n";
+    cout << "11. Search for connectivity components.\n";
+    cout << "12. Topological sort (only for directed acyclic graph)\n";
+    cout << "13. Find a spanning tree\n";
+    cout << "14. Kruskal's algorithm (min weight spanning tree)\n";
+    cout << "15. Return to the main menu\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch(choice)
+    {
+        do
+        {
+            case 1:
+            {
+                break;
+            }
+
+            case 2:
+            {
+                break;
+            }
+
+            case 3:
+            {
+                break;
+            }
+
+            case 4:
+            {
+                break;
+            }
+
+            case 5:
+            {
+                break;
+            }
+
+            case 6:
+            {
+                break;
+            }
+
+            case 7:
+            {
+                break;
+            }
+
+            case 8:
+            {
+                break;
+            }
+
+            case 9:
+            {
+                break;
+            }
+
+            case 10:
+            {
+                break;
+            }
+
+            case 11:
+            {
+                break;
+            }
+
+            case 12:
+            {
+                break;
+            }
+
+            case 13:
+            {
+                break;
+            }
+
+            case 14:
+            {
+                break;
+            }
+
+            case 15:
+            {
+                break;
+            }
+        } while (choice != 15);
+    }
 }
 
 void interactiveMode() 
 {
-    int type;
-    cout << "\nGraph representation types:\n1. Matrix\n2. Adjacency list\n";
-    cout << "Select a graph representation type: ";
-    cin >> type;
+    int choice;
+    cout << "\nMain menu:\n1. Matrix representation\n2. Adjacency list representation\n3. Exit\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
 
-    if(type == 1)
-    matrix_menu();
-    else if(type == 2)
-            adjList_menu();
-        else
-            cout << "Invalid input.";
+    switch (choice)
+    {
+        do 
+        {
+            case 1:
+            {
+                matrix_menu();
+                break;
+            }
+
+            case 2:
+            {
+                adjList_menu();
+                break;
+            }
+
+            case 3:
+            {
+                cout << "Exiting...\n";
+                break;
+            }
+            
+            default:
+            {
+                cout << "Invalid input.";
+                break;
+            }
+        } while(choice != 3);
+    }
 }
 
 void demoMode()
