@@ -656,20 +656,97 @@ void matrix_menu()
             
                 switch (choice)
                 {
-                
-                        case 1:
-                        {
-                            print_matrix(matrix.weight_matrix);
-                            return;
-                        }
+                    case 1:
+                    {
+                        print_matrix(matrix.weight_matrix);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-                        default:
-                        {
-                            break;
-                        }
+                    case 2:
+                    {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        print_adjList(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 3:
+                    {
+                        int start_vert;
+                        cout << "Enter the start vert: ";
+                        cin >> start_vert;
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        DFS(adj_list, start_vert);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 4:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 5:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 6:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 7:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 8:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 9:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 10:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 11:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 12:
+                    {
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 13:
+                    {
+                        cout << "Exiting...\n";
+                        break;
+                    }
+
+                    default:
+                        cout << "\nInvalid choice.\n";
                 }
-                break;
             } while (choice != 13);
+            break;
         }
 
         case 2:
@@ -716,13 +793,19 @@ void matrix_menu()
 
                     case 2:
                     {
-                        matrix_to_list(matrix);
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        print_adjList(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 3:
                     {
+                        int start_vert;
+                        cout << "Enter the start vert: ";
+                        cin >> start_vert;
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        DFS(adj_list, start_vert);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
@@ -995,7 +1078,7 @@ void demoMode()
     print_matrix(matrix.weight_matrix);*/
     size_t start_vert = 0;
     //cout << "DFS (traversal):\n";
-    //DFS(graph_adj, start_vert);
+    DFS(graph_adj, start_vert);
 
     //if(hasCycle(graph_adj))
       //  cout << "Graph has a cycle." << endl;
