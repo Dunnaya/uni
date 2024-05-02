@@ -515,6 +515,11 @@ pair<GraphAdjList, int> spanning_tree(const GraphAdjList& graph)
 
     dfs_st(graph, start_vert, isVisited, st, total_weight);
 
+    cout << "\nSpanning tree:" << endl;
+    print_adjList(st);
+
+    cout << "Total weight of the ST: " << total_weight << endl;
+
     return make_pair(st, total_weight);
 }
 
@@ -1433,7 +1438,7 @@ void demoMode()
       cout << "Graph is not connected.\n" << endl;
     this_thread::sleep_for(chrono::seconds(1));
 
-    cout << "\nLooking for connectivity components:\n";
+    cout << "Looking for connectivity components:\n";
     this_thread::sleep_for(chrono::seconds(1));
     find_connected_components(graph_adj);
     this_thread::sleep_for(chrono::seconds(1));
@@ -1448,7 +1453,7 @@ void demoMode()
 
     //-----BLOCK 2------
 
-    cout << "\nDFS from 1st vertex:\n";
+    cout << "DFS from 1st vertex:\n";
     this_thread::sleep_for(chrono::seconds(1));
     int start_vert_list_DFS = 1;
     DFS(graph_adj, start_vert_list_DFS);
@@ -1461,21 +1466,41 @@ void demoMode()
     floyd(l_to_m);
     this_thread::sleep_for(chrono::seconds(2));
 
-    cout << "\nDijkstra's algorithm:\n";
-    cout << "\nstart vert = 4\n";
+    cout << "\nDijkstra's algorithm:";
+    cout << "\n(start vert = 4)\n";
     this_thread::sleep_for(chrono::seconds(1));
     int start_vert_dijkstra_list = 4;
     dijkstra(graph_adj, start_vert_dijkstra_list);
     this_thread::sleep_for(chrono::seconds(2));
 
-    cout << "\nModified Floyd's algorithm (shortest path between 2 vertices):\n";
+    cout << "\nModified Floyd's algorithm (shortest path between 2 vertices):";
     this_thread::sleep_for(chrono::seconds(1));
-    cout << "\nstart vert = 4; end vert = 2\n";
+    cout << "\n(start vert = 4; end vert = 2)\n";
     this_thread::sleep_for(chrono::seconds(1));
     int start_vert_list_floyd = 4;
     int end_vert_list_floyd = 2;
     floyd_modified(l_to_m, start_vert_list_floyd, end_vert_list_floyd);
     this_thread::sleep_for(chrono::seconds(2));
+
+    //-----BLOCK 4------
+    cout << "\nTopological sorting (works only for directed acyclic graphs):\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    topological_sort(graph_adj);
+    this_thread::sleep_for(chrono::seconds(1));
+
+    //-----BLOCK 5------
+
+    cout << "\nFind a spanning tree:";
+    this_thread::sleep_for(chrono::seconds(1));
+    spanning_tree(graph_adj);
+    this_thread::sleep_for(chrono::seconds(2));
+
+    //-----BLOCK 6------
+
+    cout << "\nKruskal's algorithm (min weight spanning tree):";
+    this_thread::sleep_for(chrono::seconds(1));
+    kruskal(graph_adj);
+    this_thread::sleep_for(chrono::seconds(3));
     
 //------------------MATRIX----------------------------------------------------------------------------------------------------
 
@@ -1534,7 +1559,7 @@ void demoMode()
       cout << "Graph is not connected.\n" << endl;
     this_thread::sleep_for(chrono::seconds(1));
 
-    cout << "\nLooking for connectivity components:\n";
+    cout << "Looking for connectivity components:\n";
     this_thread::sleep_for(chrono::seconds(1));
     find_connected_components(m_to_l);
     this_thread::sleep_for(chrono::seconds(1));
@@ -1549,7 +1574,7 @@ void demoMode()
 
     //-----BLOCK 2------
 
-    cout << "\nDFS from 3rd vertex:\n";
+    cout << "DFS from 3rd vertex:\n";
     this_thread::sleep_for(chrono::seconds(1));
     int start_vert_matr_DFS = 3;
     DFS(m_to_l, start_vert_matr_DFS);
@@ -1563,7 +1588,7 @@ void demoMode()
     this_thread::sleep_for(chrono::seconds(2));
 
     cout << "\nDijkstra's algorithm:";
-    cout << "\nstart vert = 4\n";
+    cout << "\n(start vert = 4)\n";
     this_thread::sleep_for(chrono::seconds(1));
     int start_vert_dijkstra_matr = 4;
     dijkstra(m_to_l, start_vert_dijkstra_matr);
@@ -1571,43 +1596,37 @@ void demoMode()
 
     cout << "\nModified Floyd's algorithm (shortest path between 2 vertices):";
     this_thread::sleep_for(chrono::seconds(1));
-    cout << "\nstart vert = 1; end vert = 3\n";
+    cout << "\n(start vert = 1; end vert = 3)\n";
     this_thread::sleep_for(chrono::seconds(1));
     int start_vert_matr_floyd = 1;
     int end_vert_matr_floyd = 3;
     floyd_modified(graph_matr, start_vert_matr_floyd, end_vert_matr_floyd);
     this_thread::sleep_for(chrono::seconds(2));
 
-//------------------------------------------------------------------------------------------------------------------------------
+    //-----BLOCK 4------
 
-    /*floyd(graph);
+    cout << "\nTopological sorting (works only for directed acyclic graphs):";
+    this_thread::sleep_for(chrono::seconds(1));
+    topological_sort(m_to_l);
+    this_thread::sleep_for(chrono::seconds(1));
 
-    floyd_modified(graph, 0, 2);
+    //-----BLOCK 5------
 
-    cout << "Min spanning tree:\n";
-    pair<GraphAdjList, int> st_pair = spanning_tree(graph_adj);
-    GraphAdjList st = st_pair.first;
-    int total_weight = st_pair.second;
-    print_adjList(st);
-    cout << "Total weight of the tree: " << total_weight << "\n";
+    cout << "\nFind a spanning tree:\n";
+    if (!isConnected(m_to_l)) 
+    {
+        cout << "Graph isn`t connected.\n";
+        this_thread::sleep_for(chrono::seconds(1));
+    } else
+        spanning_tree(m_to_l);
+    this_thread::sleep_for(chrono::seconds(2));
 
-    print_adjList(graph_adj);
+    //-----BLOCK 6------
 
-    GraphMatrix matrix = list_to_matrix(graph_adj);
-    print_matrix(matrix.weight_matrix);
-    size_t start_vert = 0;
-    cout << "DFS (traversal):\n";
-    DFS(graph_adj, start_vert);
-
-    if(hasCycle(graph_adj))
-     cout << "Graph has a cycle." << endl;
-    else
-      cout << "Graph is acyclic." << endl;
-
-    dijkstra(graph_adj, 0);
-    topological_sort(graph_adj);
-
-    kruskal(graph_adj);*/
+    cout << "\nKruskal's algorithm (min weight spanning tree):";
+    this_thread::sleep_for(chrono::seconds(1));
+    kruskal(m_to_l);
+    this_thread::sleep_for(chrono::seconds(1));
 }
 
 void benchmark() {}
