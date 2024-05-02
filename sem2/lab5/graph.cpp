@@ -1428,12 +1428,54 @@ void demoMode()
     cout << "\nChecking the graph for connectivity:\n";
     this_thread::sleep_for(chrono::seconds(1));
     if(isConnected(graph_adj))
-      cout << "Graph is connected." << endl;
+      cout << "Graph is connected.\n" << endl;
     else
-      cout << "Graph is not connected." << endl;
+      cout << "Graph is not connected.\n" << endl;
     this_thread::sleep_for(chrono::seconds(1));
 
+    cout << "\nLooking for connectivity components:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    find_connected_components(graph_adj);
+    this_thread::sleep_for(chrono::seconds(1));
 
+    cout << "\nChecking the graph for cyclicity:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    if(hasCycle(graph_adj))
+        cout << "Graph has a cycle.\n" << endl;
+    else
+        cout << "Graph is acyclic.\n" << endl;
+    this_thread::sleep_for(chrono::seconds(1));
+
+    //-----BLOCK 2------
+
+    cout << "\nDFS from 1st vertex:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    int start_vert_list_DFS = 1;
+    DFS(graph_adj, start_vert_list_DFS);
+    this_thread::sleep_for(chrono::seconds(1));
+
+    //-----BLOCK 3------
+
+    cout << "\nFloyd's algorithm (all shortest paths):\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    floyd(l_to_m);
+    this_thread::sleep_for(chrono::seconds(2));
+
+    cout << "\nDijkstra's algorithm:\n";
+    cout << "\nstart vert = 4\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    int start_vert_dijkstra_list = 4;
+    dijkstra(graph_adj, start_vert_dijkstra_list);
+    this_thread::sleep_for(chrono::seconds(2));
+
+    cout << "\nModified Floyd's algorithm (shortest path between 2 vertices):\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    cout << "\nstart vert = 4; end vert = 2\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    int start_vert_list_floyd = 4;
+    int end_vert_list_floyd = 2;
+    floyd_modified(l_to_m, start_vert_list_floyd, end_vert_list_floyd);
+    this_thread::sleep_for(chrono::seconds(2));
     
 //------------------MATRIX----------------------------------------------------------------------------------------------------
 
@@ -1470,7 +1512,7 @@ void demoMode()
     add_edge_matrix(graph_matr, 1, 4, 5, 1, false);
     add_edge_matrix(graph_matr, 2, 4, 8, 1, false);
     add_edge_matrix(graph_matr, 2, 5, 5, 1, false);
-    add_edge_matrix(graph_matr, 4, 5, 3, 1, false);
+    add_edge_matrix(graph_matr, 4, 5, 2, 1, false);
 
     print_matrix(graph_matr.weight_matrix);
 
@@ -1487,10 +1529,54 @@ void demoMode()
     cout << "\nChecking the graph for connectivity:\n";
     this_thread::sleep_for(chrono::seconds(1));
     if(isConnected(m_to_l))
-      cout << "Graph is connected." << endl;
+      cout << "Graph is connected.\n" << endl;
     else
-      cout << "Graph is not connected." << endl;
+      cout << "Graph is not connected.\n" << endl;
     this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\nLooking for connectivity components:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    find_connected_components(m_to_l);
+    this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\nChecking the graph for cyclicity:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    if(hasCycle(m_to_l))
+        cout << "Graph has a cycle.\n" << endl;
+    else
+        cout << "Graph is acyclic.\n" << endl;
+    this_thread::sleep_for(chrono::seconds(1));
+
+    //-----BLOCK 2------
+
+    cout << "\nDFS from 3rd vertex:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    int start_vert_matr_DFS = 3;
+    DFS(m_to_l, start_vert_matr_DFS);
+    this_thread::sleep_for(chrono::seconds(1));
+
+    //-----BLOCK 3------
+
+    cout << "\nFloyd's algorithm (all shortest paths):\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    floyd(graph_matr);
+    this_thread::sleep_for(chrono::seconds(2));
+
+    cout << "\nDijkstra's algorithm:";
+    cout << "\nstart vert = 4\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    int start_vert_dijkstra_matr = 4;
+    dijkstra(m_to_l, start_vert_dijkstra_matr);
+    this_thread::sleep_for(chrono::seconds(2));
+
+    cout << "\nModified Floyd's algorithm (shortest path between 2 vertices):";
+    this_thread::sleep_for(chrono::seconds(1));
+    cout << "\nstart vert = 1; end vert = 3\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    int start_vert_matr_floyd = 1;
+    int end_vert_matr_floyd = 3;
+    floyd_modified(graph_matr, start_vert_matr_floyd, end_vert_matr_floyd);
+    this_thread::sleep_for(chrono::seconds(2));
 
 //------------------------------------------------------------------------------------------------------------------------------
 
