@@ -305,6 +305,13 @@ vector<vector<int> > find_connected_components(const GraphAdjList& graph)
             vector<int> component;
             connected_comp_DFS(graph, i, isVisited, component);
             connected_components.push_back(component);
+            
+            cout << "Connected component: ";
+            for (size_t j = 0; j < component.size(); ++j)
+            {
+                cout << component[j] << " ";
+            }
+            cout << endl;
         }
     }
 
@@ -422,7 +429,7 @@ void dijkstra(const GraphAdjList& graph, size_t start_vert)
     for(size_t i = 0; i < graph.num_vert; i++)
     {
         if(dist[i] == INF)
-            cout << "Vertex " << i << ": no path.";
+            cout << "Vertex " << i << ": no path.\n";
         else
             cout << "Vertex " << i << ": " << dist[i] << endl;
     }
@@ -536,12 +543,6 @@ void union_sets(int x, int y, vector<int>& parent)
 
 pair<GraphAdjList, int> kruskal(const GraphAdjList& graph)
 {
-    if (!isConnected(graph)) 
-    {
-        cout << "Graph isn`t connected.\n";
-        exit(0);
-    }
-
     vector<Edge> edges;
     for (size_t i = 0; i < graph.num_vert; ++i) 
     {
@@ -690,7 +691,7 @@ void matrix_menu()
                     case 5:
                     {
                         size_t start_vert, end_vert;
-                        cout << "Enter the start and end vertices: ";
+                        cout << "\nEnter the start and end vertices: ";
                         cin >> start_vert >> end_vert;
                         floyd_modified(matrix, start_vert, end_vert);
                         this_thread::sleep_for(chrono::seconds(1));
@@ -700,7 +701,7 @@ void matrix_menu()
                     case 6:
                     {
                         size_t start_vert;
-                        cout << "Enter the start vert";
+                        cout << "\nEnter the start vert: ";
                         cin >> start_vert;
                         GraphAdjList adj_list = matrix_to_list(matrix);
                         dijkstra(adj_list, start_vert);
@@ -732,24 +733,44 @@ void matrix_menu()
 
                     case 9:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        find_connected_components(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 10:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        topological_sort(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 11:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        if (!isConnected(adj_list)) 
+                        {
+                            cout << "Graph isn`t connected.\n";
+                            this_thread::sleep_for(chrono::seconds(1));
+                            continue;
+                        }
+                        spanning_tree(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 12:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        if (!isConnected(adj_list)) 
+                        {
+                            cout << "Graph isn`t connected.\n";
+                            this_thread::sleep_for(chrono::seconds(1));
+                            continue;
+                        }
+                        kruskal(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
@@ -838,7 +859,7 @@ void matrix_menu()
                     case 5:
                     {
                         size_t start_vert, end_vert;
-                        cout << "Enter the start and end vertices: ";
+                        cout << "\nEnter the start and end vertices: ";
                         cin >> start_vert >> end_vert;
                         floyd_modified(matrix, start_vert, end_vert);
                         this_thread::sleep_for(chrono::seconds(1));
@@ -848,7 +869,7 @@ void matrix_menu()
                     case 6:
                     {
                         size_t start_vert;
-                        cout << "Enter the start vert";
+                        cout << "\nEnter the start vert: ";
                         cin >> start_vert;
                         GraphAdjList adj_list = matrix_to_list(matrix);
                         dijkstra(adj_list, start_vert);
@@ -880,24 +901,44 @@ void matrix_menu()
 
                     case 9:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        find_connected_components(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 10:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        topological_sort(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 11:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        if (!isConnected(adj_list)) 
+                        {
+                            cout << "Graph isn`t connected.\n";
+                            this_thread::sleep_for(chrono::seconds(1));
+                            continue;
+                        }
+                        spanning_tree(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 12:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        if (!isConnected(adj_list)) 
+                        {
+                            cout << "Graph isn`t connected.\n";
+                            this_thread::sleep_for(chrono::seconds(1));
+                            continue;
+                        }
+                        kruskal(adj_list);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
