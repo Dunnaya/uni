@@ -1377,43 +1377,126 @@ void interactiveMode()
 
 void demoMode()
 {   
-    //examples for undirected graph
-    GraphMatrix graph(5);
+//------------------LIST------------------------------------------------------------------------------------------------------
 
-    add_edge_matrix(graph, 1, 2, 8, 1, false);
-    add_edge_matrix(graph, 1, 3, 3, 1, false);
-    add_edge_matrix(graph, 1, 4, 1, 1, false);
-    add_edge_matrix(graph, 2, 3, 4, 1, false);
-    add_edge_matrix(graph, 2, 5, 2, 1, false);
-    add_edge_matrix(graph, 3, 4, 1, 1, false);
-    add_edge_matrix(graph, 3, 5, 1, 1, false);
-    add_edge_matrix(graph, 4, 5, 8, 1, false);
+    cout << "\n-----Representation in the form of an adjacency LIST-----\n";
+    this_thread::sleep_for(chrono::seconds(1));
 
-    print_matrix(graph.weight_matrix);
+    //-----BLOCK 0------
 
-    floyd(graph);
+    cout << "\n\t\tGeneration of random graphs:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    cout << "\nGenerating a random directed graph with 4 vertices, max weight of an edge is 9:\n";
+    this_thread::sleep_for(chrono::seconds(2));
+    GraphAdjList random_graph_dir = generate_random_graph_list(4, 9, true);
+    print_adjList(random_graph_dir);
+    this_thread::sleep_for(chrono::seconds(3));
 
-    floyd_modified(graph, 0, 2);
+    cout << "\nGenerating a random undirected graph with 5 vertices, max weight of an edge is 7:\n";
+    this_thread::sleep_for(chrono::seconds(2));
+    GraphAdjList random_graph_undir = generate_random_graph_list(5, 7, false);
+    print_adjList(random_graph_undir);
+    this_thread::sleep_for(chrono::seconds(3));
 
-    /*GraphAdjList list = matrix_to_list(graph);
-    print_adjList(list);*/
-    
+    cout << "\n----------------------------------------------------------------------\n";
+    this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\t\tCreating a specific graph:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    cout << "\nCreating a directed connected acyclic graph with 5 vertices and 4 edges:\n";
+    this_thread::sleep_for(chrono::seconds(2));
+
     GraphAdjList graph_adj(5);
 
-    add_edge_adjList(graph_adj, 1, 2, 8, 1, false);
-    add_edge_adjList(graph_adj, 1, 3, 3, 1, false);
-    add_edge_adjList(graph_adj, 1, 4, 1, 1, false);
-    add_edge_adjList(graph_adj, 2, 3, 4, 1, false);
-    add_edge_adjList(graph_adj, 2, 5, 2, 1, false);
-    add_edge_adjList(graph_adj, 3, 4, 1, 1, false);
-    add_edge_adjList(graph_adj, 3, 5, 1, 1, false);
-    add_edge_adjList(graph_adj, 4, 5, 8, 1, false);
+    add_edge_adjList(graph_adj, 1, 2, 5, 1, true);
+    add_edge_adjList(graph_adj, 2, 5, 8, 1, true);
+    add_edge_adjList(graph_adj, 4, 3, 3, 1, true);
+    add_edge_adjList(graph_adj, 5, 4, 5, 1, true);
 
-    isConnected(graph_adj);
+    print_adjList(graph_adj);
+
+    this_thread::sleep_for(chrono::seconds(3));
+
+    cout << "\nConverting this list into a matrix:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    GraphMatrix l_to_m = list_to_matrix(graph_adj);
+    print_matrix(l_to_m.weight_matrix);
+    this_thread::sleep_for(chrono::seconds(3));
+
+    //-----BLOCK 1------
+
+    cout << "\nChecking the graph for connectivity:\n";
+    this_thread::sleep_for(chrono::seconds(1));
     if(isConnected(graph_adj))
       cout << "Graph is connected." << endl;
     else
       cout << "Graph is not connected." << endl;
+    this_thread::sleep_for(chrono::seconds(1));
+
+
+    
+//------------------MATRIX----------------------------------------------------------------------------------------------------
+
+    cout << "\n-----Representation in the form of an adjacency MATRIX-----\n";
+    this_thread::sleep_for(chrono::seconds(1));
+
+    //-----BLOCK 0------
+
+    cout << "\n\t\tGeneration of random graphs:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    cout << "\nGenerating a random directed graph with 6 vertices, max weight of an edge is 4:\n";
+    this_thread::sleep_for(chrono::seconds(2));
+    GraphMatrix random_graph_directed = generate_random_graph_matrix(6, 4, true);
+    print_matrix(random_graph_directed.weight_matrix);
+    this_thread::sleep_for(chrono::seconds(3));
+
+    cout << "\nGenerating a random undirected graph with 3 vertices, max weight of an edge is 8:\n";
+    this_thread::sleep_for(chrono::seconds(2));
+    GraphMatrix random_graph_undirected = generate_random_graph_matrix(3, 8, false);
+    print_matrix(random_graph_undirected.weight_matrix);
+    this_thread::sleep_for(chrono::seconds(3));
+
+    cout << "\n------------------------------------------------------------------------------\n";
+    this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\t\tCreating a specific graph:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    cout << "\nCreating an undirected disconnected graph with cycles with 5 vertices and 5 edges:\n";
+    this_thread::sleep_for(chrono::seconds(2));
+
+    GraphMatrix graph_matr(5);
+
+    add_edge_matrix(graph_matr, 1, 2, 3, 1, false);
+    add_edge_matrix(graph_matr, 1, 4, 5, 1, false);
+    add_edge_matrix(graph_matr, 2, 4, 8, 1, false);
+    add_edge_matrix(graph_matr, 2, 5, 5, 1, false);
+    add_edge_matrix(graph_matr, 4, 5, 3, 1, false);
+
+    print_matrix(graph_matr.weight_matrix);
+
+    this_thread::sleep_for(chrono::seconds(3));
+
+    cout << "\nConverting this matrix into a list:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    GraphAdjList m_to_l = matrix_to_list(graph_matr);
+    print_adjList(m_to_l);
+    this_thread::sleep_for(chrono::seconds(3));
+
+    //-----BLOCK 1------
+
+    cout << "\nChecking the graph for connectivity:\n";
+    this_thread::sleep_for(chrono::seconds(1));
+    if(isConnected(m_to_l))
+      cout << "Graph is connected." << endl;
+    else
+      cout << "Graph is not connected." << endl;
+    this_thread::sleep_for(chrono::seconds(1));
+
+//------------------------------------------------------------------------------------------------------------------------------
+
+    /*floyd(graph);
+
+    floyd_modified(graph, 0, 2);
 
     cout << "Min spanning tree:\n";
     pair<GraphAdjList, int> st_pair = spanning_tree(graph_adj);
@@ -1422,39 +1505,23 @@ void demoMode()
     print_adjList(st);
     cout << "Total weight of the tree: " << total_weight << "\n";
 
-    /*print_adjList(graph_adj);
+    print_adjList(graph_adj);
 
     GraphMatrix matrix = list_to_matrix(graph_adj);
-    print_matrix(matrix.weight_matrix);*/
+    print_matrix(matrix.weight_matrix);
     size_t start_vert = 0;
-    //cout << "DFS (traversal):\n";
+    cout << "DFS (traversal):\n";
     DFS(graph_adj, start_vert);
 
-    //if(hasCycle(graph_adj))
-      //  cout << "Graph has a cycle." << endl;
-    //else
-      //  cout << "Graph is acyclic." << endl;
+    if(hasCycle(graph_adj))
+     cout << "Graph has a cycle." << endl;
+    else
+      cout << "Graph is acyclic." << endl;
 
     dijkstra(graph_adj, 0);
     topological_sort(graph_adj);
 
-    cout << "Random directed graph (matrix):\n";
-    GraphMatrix random_graph_directed = generate_random_graph_matrix(5, 8, true);
-    print_matrix(random_graph_directed.weight_matrix);
-
-    cout << "Random undirected graph (matrix):\n";
-    GraphMatrix random_graph_undirected = generate_random_graph_matrix(5, 8, false);
-    print_matrix(random_graph_undirected.weight_matrix);
-
-    cout << "Random directed graph (list):\n";
-    GraphAdjList random_graph_dir = generate_random_graph_list(5, 8, true);
-    print_adjList(random_graph_dir);
-
-    cout << "Random graph undirected (list):\n";
-    GraphAdjList random_graph_undir = generate_random_graph_list(5, 8, false);
-    print_adjList(random_graph_undir);
-
-    kruskal(graph_adj);
+    kruskal(graph_adj);*/
 }
 
 void benchmark() {}
