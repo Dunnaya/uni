@@ -575,10 +575,10 @@ pair<GraphAdjList, int> kruskal(const GraphAdjList& graph)
         }
     }
     
-    cout << "\nMinimal Spanning Tree (Kruskal's Algorithm):" << endl;
+    cout << "\nMinimal spanning tree:" << endl;
     print_adjList(mst);
 
-    cout << "Total Weight of the Minimal Spanning Tree: " << totalWeight << endl;
+    cout << "Total weight of the MST: " << totalWeight << endl;
 
     return make_pair(mst, totalWeight);
 }
@@ -612,11 +612,40 @@ GraphMatrix enter_the_matrix(bool isDirected = false)
     return graph;
 }
 
+GraphAdjList enter_the_list(bool isDirected = false)
+{
+    size_t num_vertices;
+    cout << "Enter the number of vertices: ";
+    cin >> num_vertices;
+
+    GraphAdjList graph(num_vertices);
+
+    size_t num_edges;
+    cout << "Enter the number of edges: ";
+    cin >> num_edges;
+
+    cout << "Enter the vertices and weight of the edge (from, to, weight):" << endl;
+    for (int i = 0; i < num_edges; ++i) 
+    {
+        int from, to, weight;
+        cout << "Edge " << (i + 1) << ": ";
+        cin >> from >> to >> weight;
+        if (from < 0 || from >= num_vertices || to < 0 || to >= num_vertices) 
+        {
+            cout << "Invalid vertex index. Please enter vertices within range [0, " << (num_vertices - 1) << "]." << endl;
+            break;
+        }
+        add_edge_adjList(graph, from, to, weight, 0, isDirected);
+    }
+
+    return graph;
+}
+
 void matrix_menu()
 {
     int choice;
 
-    cout << "\n   Matrix menu:\n";
+    cout << "\n  Adjacency matrix menu:\n";
     cout << "1. Enter the matrix\n";
     cout << "2. Generate random matrix\n";
     cout << "3. Exit\n";
@@ -757,6 +786,7 @@ void matrix_menu()
                             continue;
                         }
                         spanning_tree(adj_list);
+                        cout << endl;
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
@@ -925,6 +955,7 @@ void matrix_menu()
                             continue;
                         }
                         spanning_tree(adj_list);
+                        cout << endl;
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
@@ -967,104 +998,341 @@ void matrix_menu()
 void adjList_menu()
 {
     int choice;
-    cout << "\n   List menu:\n";
+
+    cout << "\n  Adjacency list menu:\n";
     cout << "1. Enter the list\n";
     cout << "2. Generate random list\n";
-    cout << "3. Print the list\n";
-    cout << "4. List to matrix\n";
-    cout << "5. DFS\n";
-    cout << "6. Floyd's algorithm (all shortest paths)\n";
-    cout << "7. Modified Floyd's algorithm (shortest path between 2)\n";
-    cout << "8. Dijkstra's algorithm\n";
-    cout << "9. Check for connectivity?\n";
-    cout << "10. Check for cyclicity\n";
-    cout << "11. Search for connectivity components.\n";
-    cout << "12. Topological sort (only for directed acyclic graph)\n";
-    cout << "13. Find a spanning tree\n";
-    cout << "14. Kruskal's algorithm (min weight spanning tree)\n";
-    cout << "15. Return to the main menu\n";
+    cout << "3. Exit\n";
     cout << "Enter your choice: ";
     cin >> choice;
 
     switch(choice)
     {
-        do
+        case 1:
         {
-            case 1:
+            bool isDirected;
+            cout << "Is graph directed? (Enter 1 for true or 0 for false): ";
+            cin >> isDirected;
+            const GraphAdjList adj_list = enter_the_list(isDirected);
+            //print_list(matrix.weight_matrix);
+            
+            int choice;
+            do
             {
-                break;
-            }
+                cout << "\n   List menu:\n";
+                cout << "1. Print the list\n";
+                cout << "2. List to matrix\n";
+                cout << "3. DFS\n";
+                cout << "4. Floyd's algorithm (all shortest paths)\n";
+                cout << "5. Modified Floyd's algorithm (shortest path between 2)\n";
+                cout << "6. Dijkstra's algorithm\n";
+                cout << "7. Check for connectivity\n";
+                cout << "8. Check for cyclicity\n";
+                cout << "9. Search for connectivity components\n";
+                cout << "10. Topological sort (only for directed acyclic graph)\n";
+                cout << "11. Find a spanning tree\n";
+                cout << "12. Kruskal's algorithm (min weight spanning tree)\n";
+                cout << "13. Exit\n";
+                cout << "Enter your choice: ";
+                cin >> choice;
+            
+                switch (choice)
+                {
+                    case 1:
+                    {
+                        print_adjList(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 2:
-            {
-                break;
-            }
+                    case 2:
+                    {
+                        GraphMatrix matrix = list_to_matrix(adj_list);
+                        print_matrix(matrix.weight_matrix);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 3:
-            {
-                break;
-            }
+                    case 3:
+                    {
+                        int start_vert;
+                        cout << "Enter the start vert: ";
+                        cin >> start_vert;
+                        DFS(adj_list, start_vert);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 4:
-            {
-                break;
-            }
+                    case 4:
+                    {
+                        GraphMatrix matrix = list_to_matrix(adj_list);
+                        floyd(matrix);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 5:
-            {
-                break;
-            }
+                    case 5:
+                    {
+                        GraphMatrix matrix = list_to_matrix(adj_list);
+                        size_t start_vert, end_vert;
+                        cout << "\nEnter the start and end vertices: ";
+                        cin >> start_vert >> end_vert;
+                        floyd_modified(matrix, start_vert, end_vert);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 6:
-            {
-                break;
-            }
+                    case 6:
+                    {
+                        size_t start_vert;
+                        cout << "\nEnter the start vert: ";
+                        cin >> start_vert;
+                        dijkstra(adj_list, start_vert);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 7:
-            {
-                break;
-            }
+                    case 7:
+                    {
+                        if(isConnected(adj_list))
+                        cout << "Graph is connected." << endl;
+                        else
+                        cout << "Graph is not connected." << endl;
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 8:
-            {
-                break;
-            }
+                    case 8:
+                    {
+                        if(hasCycle(adj_list))
+                            cout << "Graph has a cycle." << endl;
+                        else
+                            cout << "Graph is acyclic." << endl;
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 9:
-            {
-                break;
-            }
+                    case 9:
+                    {
+                        find_connected_components(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 10:
-            {
-                break;
-            }
+                    case 10:
+                    {
+                        topological_sort(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 11:
-            {
-                break;
-            }
+                    case 11:
+                    {
+                        if (!isConnected(adj_list)) 
+                        {
+                            cout << "Graph isn`t connected.\n";
+                            this_thread::sleep_for(chrono::seconds(1));
+                            continue;
+                        }
+                        spanning_tree(adj_list);
+                        cout << endl;
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 12:
-            {
-                break;
-            }
+                    case 12:
+                    {
+                        if (!isConnected(adj_list)) 
+                        {
+                            cout << "Graph isn`t connected.\n";
+                            this_thread::sleep_for(chrono::seconds(1));
+                            continue;
+                        }
+                        kruskal(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
 
-            case 13:
-            {
-                break;
-            }
+                    case 13:
+                    {
+                        cout << "Exiting...\n";
+                        break;
+                    }
 
-            case 14:
-            {
-                break;
-            }
+                    default:
+                        cout << "\nInvalid choice.\n";
+                }
+            } while (choice != 13);
+            break;
+        }
 
-            case 15:
+        case 2:
+        {
+            size_t num_vert;
+            int max_weight;
+            bool isDirected;
+            cout << "\nEnter the number of vertices: ";
+            cin >> num_vert;
+            cout << "Enter the max weight of an edge: ";
+            cin >> max_weight;
+            cout << "Is graph directed? (Enter 1 for true or 0 for false): ";
+            cin >> isDirected;
+            const GraphAdjList adj_list = generate_random_graph_list(num_vert, max_weight, isDirected);
+
+            int choice;
+            do
             {
-                break;
-            }
-        } while (choice != 15);
+                cout << "\n   List menu:\n";
+                cout << "1. Print the list\n";
+                cout << "2. List to matrix\n";
+                cout << "3. DFS\n";
+                cout << "4. Floyd's algorithm (all shortest paths)\n";
+                cout << "5. Modified Floyd's algorithm (shortest path between 2)\n";
+                cout << "6. Dijkstra's algorithm\n";
+                cout << "7. Check for connectivity\n";
+                cout << "8. Check for cyclicity\n";
+                cout << "9. Search for connectivity components\n";
+                cout << "10. Topological sort (only for directed acyclic graph)\n";
+                cout << "11. Find a spanning tree\n";
+                cout << "12. Kruskal's algorithm (min weight spanning tree)\n";
+                cout << "13. Exit\n";
+                cout << "Enter your choice: ";
+                cin >> choice;
+            
+                switch (choice)
+                {
+                    case 1:
+                    {
+                        print_adjList(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 2:
+                    {
+                        GraphMatrix matrix = list_to_matrix(adj_list);
+                        print_matrix(matrix.weight_matrix);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 3:
+                    {
+                        int start_vert;
+                        cout << "Enter the start vert: ";
+                        cin >> start_vert;
+                        DFS(adj_list, start_vert);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 4:
+                    {
+                        GraphMatrix matrix = list_to_matrix(adj_list);
+                        floyd(matrix);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 5:
+                    {
+                        GraphMatrix matrix = list_to_matrix(adj_list);
+                        size_t start_vert, end_vert;
+                        cout << "\nEnter the start and end vertices: ";
+                        cin >> start_vert >> end_vert;
+                        floyd_modified(matrix, start_vert, end_vert);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 6:
+                    {
+                        size_t start_vert;
+                        cout << "\nEnter the start vert: ";
+                        cin >> start_vert;
+                        dijkstra(adj_list, start_vert);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 7:
+                    {
+                        if(isConnected(adj_list))
+                        cout << "Graph is connected." << endl;
+                        else
+                        cout << "Graph is not connected." << endl;
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 8:
+                    {
+                        if(hasCycle(adj_list))
+                            cout << "Graph has a cycle." << endl;
+                        else
+                            cout << "Graph is acyclic." << endl;
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 9:
+                    {
+                        find_connected_components(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 10:
+                    {
+                        topological_sort(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 11:
+                    {
+                        if (!isConnected(adj_list)) 
+                        {
+                            cout << "Graph isn`t connected.\n";
+                            this_thread::sleep_for(chrono::seconds(1));
+                            continue;
+                        }
+                        spanning_tree(adj_list);
+                        cout << endl;
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 12:
+                    {
+                        if (!isConnected(adj_list)) 
+                        {
+                            cout << "Graph isn`t connected.\n";
+                            this_thread::sleep_for(chrono::seconds(1));
+                            continue;
+                        }
+                        kruskal(adj_list);
+                        this_thread::sleep_for(chrono::seconds(1));
+                        continue;
+                    }
+
+                    case 13:
+                    {
+                        cout << "Exiting...\n";
+                        break;
+                    }
+
+                    default:
+                        cout << "\nInvalid choice.\n";
+                }
+            } while (choice != 13);
+        }
+
+        case 3:
+            break;
+
+        default:
+            cout << "\nInvalid choice.\n";
     }
 }
 
