@@ -232,34 +232,37 @@ void DFS(const GraphAdjList& graph, size_t start_vert)
     cout << endl;
 }
 
-void has_cycle_DFS(const GraphAdjList& graph, vector<int>& visited, size_t vert, bool& has_cycle) 
+bool has_cycle_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited, size_t start_vert) 
 {
-    visited[vert] = 1;
+    isVisited[vert] = true;
 
-    for(auto neighbor : graph.adjList[vert]) 
+    for(const auto& neighbor : graph.adjList[vert])
     {
-        if(visited[neighbor.first] == 0) 
-            has_cycle_DFS(graph, visited, neighbor.first, has_cycle);
-        else if(visited[neighbor.first] == 1)
-            has_cycle = true;
+        size_t neighbor_vert = neighbor.first;
+        if(!isVisited[neighbor_vert])
+        {
+            if(has_cycle_DFS(graph, neighbor_vert, isVisited, vert))
+            return true;
+        }
+        else if(neighbor_vert != start_vert)
+                return true;
     }
-    
-    visited[vert] = 2;
+    return false;
 }
 
 bool hasCycle(const GraphAdjList& graph)
 {
-    vector<int> visited(graph.num_vert, 0);
+    vector<bool> isVisited(graph.num_vert, false);
 
-    bool has_cycle = false;
     for(size_t i = 0; i < graph.num_vert; i++)
     {
-        if(!visited[i])
+        if(!isVisited[i])
         {
-            has_cycle_DFS(graph, visited, i, has_cycle);
+            if(has_cycle_DFS(graph, i, isVisited, -1))
+                return true;
         }
     }
-    return !has_cycle;
+    return false;
 }
 
 
