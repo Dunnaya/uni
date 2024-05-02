@@ -232,39 +232,36 @@ void DFS(const GraphAdjList& graph, size_t start_vert)
     cout << endl;
 }
 
-bool has_cycle_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited, size_t start_vert) 
+void has_cycle_DFS(const GraphAdjList& graph, vector<int>& visited, size_t vert, bool& has_cycle) 
 {
-    isVisited[vert] = true;
-    cout << vert << " ";
+    visited[vert] = 1;
 
-    for(const auto& neighbor : graph.adjList[vert])
+    for(auto neighbor : graph.adjList[vert]) 
     {
-        size_t neighbor_vert = neighbor.first;
-        if(!isVisited[neighbor_vert])
-        {
-            if(has_cycle_DFS(graph, neighbor_vert, isVisited, vert))
-            return true;
-        }
-        else if(neighbor_vert != start_vert)
-                return true;
+        if(visited[neighbor.first] == 0) 
+            has_cycle_DFS(graph, visited, neighbor.first, has_cycle);
+        else if(visited[neighbor.first] == 1)
+            has_cycle = true;
     }
-    return false;
+    
+    visited[vert] = 2;
 }
 
 bool hasCycle(const GraphAdjList& graph)
 {
-    vector<bool> isVisited(graph.num_vert, false);
-    cout << "The cycle is: ";
+    vector<int> visited(graph.num_vert, 0);
+
+    bool has_cycle = false;
     for(size_t i = 0; i < graph.num_vert; i++)
     {
-        if(!isVisited[i])
+        if(!visited[i])
         {
-            if(has_cycle_DFS(graph, i, isVisited, -1))
-                return true;
+            has_cycle_DFS(graph, visited, i, has_cycle);
         }
     }
-    return false;
+    return !has_cycle;
 }
+
 
 bool isConnected(const GraphAdjList& graph)
 {
@@ -597,17 +594,18 @@ GraphMatrix enter_the_matrix(bool isDirected = false)
     cout << "Enter the number of edges: ";
     cin >> num_edges;
 
-    cout << "Enter the vertices and weight of the edge (from, to, weight):\n";
-    for (size_t i = 0; i < num_edges; i++) 
+    cout << "Enter the vertices and weight of the edge (from, to, weight):" << endl;
+    for (int i = 0; i < num_edges; ++i) 
     {
-        size_t from, to;
-        int weight;
+        int from, to, weight;
+        cout << "Edge " << (i + 1) << ": ";
         cin >> from >> to >> weight;
-        add_edge_matrix(graph, from, to, weight, 1, true);
-
-        if (!isDirected) {
-            add_edge_matrix(graph, to, from, weight, 1, isDirected);
+        if (from < 0 || from >= num_vertices || to < 0 || to >= num_vertices) 
+        {
+            cout << "Invalid vertex index. Please enter vertices within range [0, " << (num_vertices - 1) << "]." << endl;
+            break;
         }
+        add_edge_matrix(graph, from, to, weight, 0, isDirected);
     }
 
     return graph;
@@ -644,9 +642,9 @@ void matrix_menu()
                 cout << "4. Floyd's algorithm (all shortest paths)\n";
                 cout << "5. Modified Floyd's algorithm (shortest path between 2)\n";
                 cout << "6. Dijkstra's algorithm\n";
-                cout << "7. Check for connectivity?\n";
+                cout << "7. Check for connectivity\n";
                 cout << "8. Check for cyclicity\n";
-                cout << "9. Search for connectivity components.\n";
+                cout << "9. Search for connectivity components\n";
                 cout << "10. Topological sort (only for directed acyclic graph)\n";
                 cout << "11. Find a spanning tree\n";
                 cout << "12. Kruskal's algorithm (min weight spanning tree)\n";
@@ -684,30 +682,50 @@ void matrix_menu()
 
                     case 4:
                     {
+                        floyd(matrix);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 5:
                     {
+                        size_t start_vert, end_vert;
+                        cout << "Enter the start and end vertices: ";
+                        cin >> start_vert >> end_vert;
+                        floyd_modified(matrix, start_vert, end_vert);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 6:
                     {
+                        size_t start_vert;
+                        cout << "Enter the start vert";
+                        cin >> start_vert;
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        dijkstra(adj_list, start_vert);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 7:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        if(isConnected(adj_list))
+                        cout << "Graph is connected." << endl;
+                        else
+                        cout << "Graph is not connected." << endl;
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 8:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        if(hasCycle(adj_list))
+                            cout << "Graph has a cycle." << endl;
+                        else
+                            cout << "Graph is acyclic." << endl;
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
@@ -772,9 +790,9 @@ void matrix_menu()
                 cout << "4. Floyd's algorithm (all shortest paths)\n";
                 cout << "5. Modified Floyd's algorithm (shortest path between 2)\n";
                 cout << "6. Dijkstra's algorithm\n";
-                cout << "7. Check for connectivity?\n";
+                cout << "7. Check for connectivity\n";
                 cout << "8. Check for cyclicity\n";
-                cout << "9. Search for connectivity components.\n";
+                cout << "9. Search for connectivity components\n";
                 cout << "10. Topological sort (only for directed acyclic graph)\n";
                 cout << "11. Find a spanning tree\n";
                 cout << "12. Kruskal's algorithm (min weight spanning tree)\n";
@@ -812,30 +830,50 @@ void matrix_menu()
 
                     case 4:
                     {
+                        floyd(matrix);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 5:
                     {
+                        size_t start_vert, end_vert;
+                        cout << "Enter the start and end vertices: ";
+                        cin >> start_vert >> end_vert;
+                        floyd_modified(matrix, start_vert, end_vert);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 6:
                     {
+                        size_t start_vert;
+                        cout << "Enter the start vert";
+                        cin >> start_vert;
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        dijkstra(adj_list, start_vert);
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 7:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        if(isConnected(adj_list))
+                        cout << "Graph is connected." << endl;
+                        else
+                        cout << "Graph is not connected." << endl;
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
 
                     case 8:
                     {
+                        GraphAdjList adj_list = matrix_to_list(matrix);
+                        if(hasCycle(adj_list))
+                            cout << "Graph has a cycle." << endl;
+                        else
+                            cout << "Graph is acyclic." << endl;
                         this_thread::sleep_for(chrono::seconds(1));
                         continue;
                     }
