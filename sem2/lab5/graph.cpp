@@ -57,18 +57,21 @@ void add_edge_matrix(GraphMatrix& graph, size_t from, size_t to, int weight, int
         graph.weight_matrix[to][from] = weight;
 }
 
-void print_matrix(const Matrix& matrix)
+void print_matrix(const Matrix& matrix, bool benchmark = false)
 {
     for(size_t i = 0; i < matrix.size(); i++)
     {
         for(size_t j = 0; j < matrix[i].size(); j++)
         {
-            if(matrix[i][j] == INF)
-            {
-                cout << "- ";
-            } else cout << matrix[i][j] << " ";
+                if(matrix[i][j] == INF)
+                {
+                    if(!benchmark)
+                        cout << "- ";
+                } else if(!benchmark)
+                        cout << matrix[i][j] << " ";
         }
-        cout << endl;
+        if(!benchmark)
+            cout << endl;
     }
 }
 
@@ -116,16 +119,19 @@ void add_edge_adjList(GraphAdjList& graph, size_t from, size_t to, int weight, i
         graph.adjList[to].push_back(make_pair(from, weight));
 }
 
-void print_adjList(const GraphAdjList& graph)
+void print_adjList(const GraphAdjList& graph, bool benchmark = false)
 {
     for(size_t i = 0; i < graph.num_vert; i++)
     {
-        cout << "Vertex: " << i << ":";
+        if(!benchmark)
+            cout << "Vertex: " << i << ":";
         for(auto iterator = graph.adjList[i].begin(); iterator != graph.adjList[i].end(); ++iterator)
         {
-            cout << " -> " << iterator->first << "(" << iterator->second << ")"; 
+            if(!benchmark)
+                cout << " -> " << iterator->first << "(" << iterator->second << ")"; 
         }
-        cout << endl;
+        if(!benchmark)
+            cout << endl;
     }
 }
 
@@ -182,16 +188,17 @@ GraphMatrix list_to_matrix(const GraphAdjList& list)
     return matrix;
 }
 
-void ordinary_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited) 
+void ordinary_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited, bool benchmark = false) 
 {
     isVisited[vert] = true;
-    cout << vert << " ";
+    if(!benchmark)
+        cout << vert << " ";
 
     for(const auto& neighbor : graph.adjList[vert])
     {
         size_t neighbor_vert = neighbor.first;
         if(!isVisited[neighbor_vert])
-            ordinary_DFS(graph, neighbor_vert, isVisited);
+            ordinary_DFS(graph, neighbor_vert, isVisited, benchmark);
     }
 }
 
@@ -200,10 +207,11 @@ bool compare_neighbors(const pair<int, int>& a, const pair<int, int>& b) //for w
     return a.second < b.second; //second is a weight
 }
 
-void weighted_DFS(const GraphAdjList& graph, size_t vert, vector<bool> isVisited)
+void weighted_DFS(const GraphAdjList& graph, size_t vert, vector<bool> isVisited, bool benchmark = false)
 {
     isVisited[vert] = true;
-    cout << vert << " ";
+    if(!benchmark)
+        cout << vert << " ";
 
     //just sorting the neighboring vertices by increasing the edge weight
     vector<pair<int, int> > sorted_neighbors(graph.adjList[vert].begin(), graph.adjList[vert].end());
@@ -213,23 +221,27 @@ void weighted_DFS(const GraphAdjList& graph, size_t vert, vector<bool> isVisited
     {
         size_t neighbor_vert = neighbor.first;
         if(!isVisited[neighbor_vert])
-            weighted_DFS(graph, neighbor_vert, isVisited);
+            weighted_DFS(graph, neighbor_vert, isVisited, benchmark);
     }
 }
 
-void DFS(const GraphAdjList& graph, size_t start_vert)
+void DFS(const GraphAdjList& graph, size_t start_vert, bool benchmark = false)
 {
     vector<bool> isVisited(graph.num_vert, false);
 
-    cout << "DFS with ordinary neighbor order: ";
+    if(!benchmark)
+        cout << "DFS with ordinary neighbor order: ";
     ordinary_DFS(graph, start_vert, isVisited);
-    cout << endl;
+    if(!benchmark)
+        cout << endl;
 
     fill(isVisited.begin(), isVisited.end(), false); //reseting attendance
 
-    cout << "DFS with weighted neighbor order: ";
+    if(!benchmark)
+        cout << "DFS with weighted neighbor order: ";
     weighted_DFS(graph, start_vert, isVisited);
-    cout << endl;
+    if(!benchmark)
+        cout << endl;
 }
 
 bool has_cycle_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& isVisited, size_t start_vert) 
@@ -296,7 +308,7 @@ void connected_comp_DFS(const GraphAdjList& graph, size_t vert, vector<bool>& is
 }
 
 
-vector<vector<int> > find_connected_components(const GraphAdjList& graph) 
+vector<vector<int> > find_connected_components(const GraphAdjList& graph, bool benchmark = false) 
 {
     vector<vector<int> > connected_components;
     vector<bool> isVisited(graph.num_vert, false);
@@ -309,12 +321,15 @@ vector<vector<int> > find_connected_components(const GraphAdjList& graph)
             connected_comp_DFS(graph, i, isVisited, component);
             connected_components.push_back(component);
             
-            cout << "Connected component: ";
+            if(!benchmark)
+                cout << "Connected component: ";
             for (size_t j = 0; j < component.size(); ++j)
             {
-                cout << component[j] << " ";
+                if(!benchmark)
+                    cout << component[j] << " ";
             }
-            cout << endl;
+            if(!benchmark)
+                cout << endl;
         }
     }
 
@@ -323,7 +338,7 @@ vector<vector<int> > find_connected_components(const GraphAdjList& graph)
 
 //dist between all pairs of vert
 //expected that there are no edges of negative weight
-void floyd(const GraphMatrix& graph)
+void floyd(const GraphMatrix& graph, bool benchmark = false)
 {
     Matrix dist = graph.weight_matrix;
 
@@ -339,16 +354,18 @@ void floyd(const GraphMatrix& graph)
         }
     }
 
-    cout << "Shortest paths matrix: \n";
-    print_matrix(dist);
+    if(!benchmark)
+        cout << "Shortest paths matrix: \n";
+    print_matrix(dist, benchmark);
 }
 
 //dist between two given vert
-void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert)
+void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert, bool benchmark = false)
 {
     if (start_vert < 0 || start_vert >= graph.num_vert || end_vert < 0 || end_vert >= graph.num_vert) 
     {
-        cout << "Invalid input.\n";
+        if(!benchmark)
+            cout << "Invalid input.\n";
         return;
     }
 
@@ -370,10 +387,12 @@ void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert
         }
     }
 
-    cout << "Shortest path between " << start_vert << " and " << end_vert << ": ";
+    if(!benchmark)
+        cout << "Shortest path between " << start_vert << " and " << end_vert << ": ";
     if(dist[start_vert][end_vert] == INF || start_vert > graph.num_vert || end_vert > graph.num_vert)
     {
-        cout << "There is no path.\n";
+        if(!benchmark)
+            cout << "There is no path.\n";
         return;
     }
 
@@ -385,22 +404,29 @@ void floyd_modified(const GraphMatrix& graph, size_t start_vert, size_t end_vert
         shortest_path.push_back(vertex);
         vertex = path[start_vert][vertex];
     }
-    cout << start_vert << " -> ";
+    if(!benchmark)
+        cout << start_vert << " -> ";
     for (int i = shortest_path.size() - 1; i >= 0; --i) 
     {
+        if(!benchmark)
         cout << shortest_path[i];
-        if (i != 0) cout << " -> ";
+        if (i != 0) 
+            if(!benchmark) 
+                cout << " -> ";
     }
+
+    if(!benchmark)
     cout << endl;
 }
 
 //shortest dist from given vert to others
 //could also be implemented as the derivation of a row of a matrix from the Floyd's algo
-void dijkstra(const GraphAdjList& graph, size_t start_vert)
+void dijkstra(const GraphAdjList& graph, size_t start_vert, bool benchmark = false)
 {
     if (start_vert < 0 || start_vert >= graph.num_vert) 
     {
-        cout << "Invalid input.\n";
+        if(!benchmark)
+            cout << "Invalid input.\n";
         return;
     }
 
@@ -428,13 +454,16 @@ void dijkstra(const GraphAdjList& graph, size_t start_vert)
         }
     }
 
-    cout << "Shortest distances from vertex " << start_vert << ":\n";
+    if(!benchmark)
+        cout << "Shortest distances from vertex " << start_vert << ":\n";
     for(size_t i = 0; i < graph.num_vert; i++)
     {
         if(dist[i] == INF)
-            cout << "Vertex " << i << ": no path.\n";
+            if(!benchmark)
+                cout << "Vertex " << i << ": no path.\n";
         else
-            cout << "Vertex " << i << ": " << dist[i] << endl;
+            if(!benchmark)
+                cout << "Vertex " << i << ": " << dist[i] << endl;
     }
 }
 
@@ -452,11 +481,12 @@ void topological_sort_additional(const GraphAdjList& graph, size_t vert, vector<
     order.push(vert);
 }
 
-void topological_sort(const GraphAdjList& graph)
+void topological_sort(const GraphAdjList& graph, bool benchmark = false)
 {
     if(hasCycle(graph))
     {
-        cout << "\nThe graph contains a cycle. Topological sorting is impossible.\n";
+        if(!benchmark)
+            cout << "\nThe graph contains a cycle. Topological sorting is impossible.\n";
         return;
     }
 
@@ -469,13 +499,16 @@ void topological_sort(const GraphAdjList& graph)
             topological_sort_additional(graph, i, isVisited, order);
     }
 
-    cout << "Topological sorting order:\n";
+    if(!benchmark)
+        cout << "Topological sorting order:\n";
     while(!order.empty())
     {
-        cout << order.top() << " ";
+        if(!benchmark)
+            cout << order.top() << " ";
         order.pop();
     }
-    cout << endl;
+    if(!benchmark)
+        cout << endl;
 }
 
 void dfs_st(const GraphAdjList& graph, size_t start_vert, vector<bool>& isVisited, GraphAdjList& st, int& total_weight)
@@ -497,7 +530,7 @@ void dfs_st(const GraphAdjList& graph, size_t start_vert, vector<bool>& isVisite
     }
 }
 
-pair<GraphAdjList, int> spanning_tree(const GraphAdjList& graph)
+pair<GraphAdjList, int> spanning_tree(const GraphAdjList& graph, bool benchmark = false)
 {
     GraphAdjList st(graph.num_vert);
     vector<bool> isVisited(graph.num_vert, false);
@@ -515,10 +548,12 @@ pair<GraphAdjList, int> spanning_tree(const GraphAdjList& graph)
 
     dfs_st(graph, start_vert, isVisited, st, total_weight);
 
-    cout << "\nSpanning tree:" << endl;
-    print_adjList(st);
+    if(!benchmark)
+        cout << "\nSpanning tree:" << endl;
+    print_adjList(st, benchmark);
 
-    cout << "Total weight of the ST: " << total_weight << endl;
+    if(!benchmark)
+        cout << "Total weight of the ST: " << total_weight << endl;
 
     return make_pair(st, total_weight);
 }
@@ -549,7 +584,7 @@ void union_sets(int x, int y, vector<int>& parent)
     parent[parentY] = parentX;
 }
 
-pair<GraphAdjList, int> kruskal(const GraphAdjList& graph)
+pair<GraphAdjList, int> kruskal(const GraphAdjList& graph, bool benchmark = false)
 {
     vector<Edge> edges;
     for (size_t i = 0; i < graph.num_vert; ++i) 
@@ -583,10 +618,12 @@ pair<GraphAdjList, int> kruskal(const GraphAdjList& graph)
         }
     }
     
-    cout << "\nMinimal spanning tree:" << endl;
-    print_adjList(mst);
+    if(!benchmark)
+        cout << "\nMinimal spanning tree:" << endl;
+    print_adjList(mst, benchmark);
 
-    cout << "Total weight of the MST: " << totalWeight << endl;
+    if(!benchmark)
+        cout << "Total weight of the MST: " << totalWeight << endl;
 
     return make_pair(mst, totalWeight);
 }
@@ -1629,7 +1666,130 @@ void demoMode()
     this_thread::sleep_for(chrono::seconds(1));
 }
 
-void benchmark() {}
+void bench_matr_dir(int n)
+{
+    GraphMatrix matrix = generate_random_graph_matrix(n, 20, true);
+
+    print_matrix(matrix.weight_matrix, true);
+
+    GraphAdjList adj_list = matrix_to_list(matrix);
+
+    DFS(adj_list, 0, true);
+
+    floyd(matrix, true);
+
+    floyd_modified(matrix, 0, n/2, true);
+
+    dijkstra(adj_list, n/2, true);
+
+    isConnected(adj_list);
+
+    hasCycle(adj_list);
+
+    find_connected_components(adj_list, true);
+
+    topological_sort(adj_list, true);
+
+    spanning_tree(adj_list, true);
+
+    kruskal(adj_list, true);
+}
+
+void bench_matr_undir(int n)
+{
+    GraphMatrix matrix = generate_random_graph_matrix(n, 20, false);
+
+    print_matrix(matrix.weight_matrix, true);
+
+    matrix_to_list(matrix);
+
+    GraphAdjList adj_list = matrix_to_list(matrix);
+
+    DFS(adj_list, 0, true);
+
+    floyd(matrix, true);
+
+    floyd_modified(matrix, 0, n/2, true);
+
+    dijkstra(adj_list, n/2, true);
+
+    isConnected(adj_list);
+
+    hasCycle(adj_list);
+
+    find_connected_components(adj_list, true);
+
+    topological_sort(adj_list, true);
+
+    spanning_tree(adj_list, true);
+
+    kruskal(adj_list, true);
+}
+
+void bench_list_dir(int n)
+{
+    GraphAdjList adj_list = generate_random_graph_list(n, 20, true);
+
+    print_adjList(adj_list, true);
+
+    GraphMatrix matrix = list_to_matrix(adj_list);
+
+    DFS(adj_list, 0, true);
+
+    floyd(matrix, true);
+
+    floyd_modified(matrix, 0, n/2, true);
+
+    dijkstra(adj_list, n/2, true);
+
+    isConnected(adj_list);
+
+    hasCycle(adj_list);
+
+    find_connected_components(adj_list, true);
+
+    topological_sort(adj_list, true);
+
+    spanning_tree(adj_list, true);
+
+    kruskal(adj_list, true);
+}
+
+void bench_list_undir(int n)
+{
+    GraphAdjList adj_list = generate_random_graph_list(n, 20, false);
+
+    print_adjList(adj_list, true);
+
+    GraphMatrix matrix = list_to_matrix(adj_list);
+
+    DFS(adj_list, 0, true);
+
+    floyd(matrix, true);
+
+    floyd_modified(matrix, 0, n/2, true);
+
+    dijkstra(adj_list, n/2, true);
+
+    isConnected(adj_list);
+
+    hasCycle(adj_list);
+
+    find_connected_components(adj_list, true);
+
+    topological_sort(adj_list, true);
+
+    spanning_tree(adj_list, true);
+
+    kruskal(adj_list, true);
+}
+
+void benchmark()
+{
+    int n;
+    cout << "Enter the number of vertices for random graphs: ";
+    cin >> n;
+}
 
 int main()
 {
