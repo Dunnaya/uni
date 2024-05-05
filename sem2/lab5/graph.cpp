@@ -283,7 +283,7 @@ bool isConnected(const GraphAdjList& graph)
     vector<bool> isVisited(graph.num_vert, false);
     size_t start_vert = 0;
 
-    ordinary_DFS(graph, start_vert, isVisited);
+    ordinary_DFS(graph, start_vert, isVisited, true);
 
     for(bool visited : isVisited)
     {
@@ -1429,16 +1429,16 @@ void demoMode()
     cout << "\n\t\tGeneration of random graphs:\n";
     this_thread::sleep_for(chrono::seconds(1));
     cout << "\nGenerating a random directed graph with 4 vertices, max weight of an edge is 9:\n";
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
     GraphAdjList random_graph_dir = generate_random_graph_list(4, 9, true);
     print_adjList(random_graph_dir);
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\nGenerating a random undirected graph with 5 vertices, max weight of an edge is 7:\n";
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
     GraphAdjList random_graph_undir = generate_random_graph_list(5, 7, false);
     print_adjList(random_graph_undir);
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\n----------------------------------------------------------------------\n";
     this_thread::sleep_for(chrono::seconds(1));
@@ -1446,7 +1446,7 @@ void demoMode()
     cout << "\n\t\tCreating a specific graph:\n";
     this_thread::sleep_for(chrono::seconds(1));
     cout << "\nCreating a directed connected acyclic graph with 5 vertices and 4 edges:\n";
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     GraphAdjList graph_adj(5);
 
@@ -1457,13 +1457,13 @@ void demoMode()
 
     print_adjList(graph_adj);
 
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\nConverting this list into a matrix:\n";
     this_thread::sleep_for(chrono::seconds(1));
     GraphMatrix l_to_m = list_to_matrix(graph_adj);
     print_matrix(l_to_m.weight_matrix);
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
 
     //-----BLOCK 1------
 
@@ -1501,14 +1501,14 @@ void demoMode()
     cout << "\nFloyd's algorithm (all shortest paths):\n";
     this_thread::sleep_for(chrono::seconds(1));
     floyd(l_to_m);
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\nDijkstra's algorithm:";
     cout << "\n(start vert = 4)\n";
     this_thread::sleep_for(chrono::seconds(1));
     int start_vert_dijkstra_list = 4;
     dijkstra(graph_adj, start_vert_dijkstra_list);
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\nModified Floyd's algorithm (shortest path between 2 vertices):";
     this_thread::sleep_for(chrono::seconds(1));
@@ -1517,7 +1517,7 @@ void demoMode()
     int start_vert_list_floyd = 4;
     int end_vert_list_floyd = 2;
     floyd_modified(l_to_m, start_vert_list_floyd, end_vert_list_floyd);
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     //-----BLOCK 4------
     cout << "\nTopological sorting (works only for directed acyclic graphs):\n";
@@ -1530,14 +1530,14 @@ void demoMode()
     cout << "\nFind a spanning tree:";
     this_thread::sleep_for(chrono::seconds(1));
     spanning_tree(graph_adj);
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     //-----BLOCK 6------
 
     cout << "\nKruskal's algorithm (min weight spanning tree):";
     this_thread::sleep_for(chrono::seconds(1));
     kruskal(graph_adj);
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
     
 //------------------MATRIX----------------------------------------------------------------------------------------------------
 
@@ -1549,16 +1549,16 @@ void demoMode()
     cout << "\n\t\tGeneration of random graphs:\n";
     this_thread::sleep_for(chrono::seconds(1));
     cout << "\nGenerating a random directed graph with 6 vertices, max weight of an edge is 4:\n";
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
     GraphMatrix random_graph_directed = generate_random_graph_matrix(6, 4, true);
     print_matrix(random_graph_directed.weight_matrix);
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\nGenerating a random undirected graph with 3 vertices, max weight of an edge is 8:\n";
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
     GraphMatrix random_graph_undirected = generate_random_graph_matrix(3, 8, false);
     print_matrix(random_graph_undirected.weight_matrix);
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\n------------------------------------------------------------------------------\n";
     this_thread::sleep_for(chrono::seconds(1));
@@ -1566,7 +1566,7 @@ void demoMode()
     cout << "\n\t\tCreating a specific graph:\n";
     this_thread::sleep_for(chrono::seconds(1));
     cout << "\nCreating an undirected disconnected graph with cycles with 5 vertices and 5 edges:\n";
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     GraphMatrix graph_matr(5);
 
@@ -1578,13 +1578,13 @@ void demoMode()
 
     print_matrix(graph_matr.weight_matrix);
 
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\nConverting this matrix into a list:\n";
     this_thread::sleep_for(chrono::seconds(1));
     GraphAdjList m_to_l = matrix_to_list(graph_matr);
     print_adjList(m_to_l);
-    this_thread::sleep_for(chrono::seconds(3));
+    this_thread::sleep_for(chrono::seconds(1));
 
     //-----BLOCK 1------
 
@@ -1622,14 +1622,14 @@ void demoMode()
     cout << "\nFloyd's algorithm (all shortest paths):\n";
     this_thread::sleep_for(chrono::seconds(1));
     floyd(graph_matr);
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\nDijkstra's algorithm:";
     cout << "\n(start vert = 4)\n";
     this_thread::sleep_for(chrono::seconds(1));
     int start_vert_dijkstra_matr = 4;
     dijkstra(m_to_l, start_vert_dijkstra_matr);
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\nModified Floyd's algorithm (shortest path between 2 vertices):";
     this_thread::sleep_for(chrono::seconds(1));
@@ -1638,7 +1638,7 @@ void demoMode()
     int start_vert_matr_floyd = 1;
     int end_vert_matr_floyd = 3;
     floyd_modified(graph_matr, start_vert_matr_floyd, end_vert_matr_floyd);
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     //-----BLOCK 4------
 
@@ -1656,7 +1656,7 @@ void demoMode()
         this_thread::sleep_for(chrono::seconds(1));
     } else
         spanning_tree(m_to_l);
-    this_thread::sleep_for(chrono::seconds(2));
+    this_thread::sleep_for(chrono::seconds(1));
 
     //-----BLOCK 6------
 
