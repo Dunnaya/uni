@@ -2103,6 +2103,7 @@ void bench_list_undir(int vert, int edge)
 
 void benchmark()
 {
+    //for graphs with the num_edges >= num_vert it needs a lot of time, but it works!
     int vert, edge;
     cout << "\nEnter the number of vertices and edges for random graphs: ";
     cout << "(max num of vertices is n(n-1)/2)\n";
