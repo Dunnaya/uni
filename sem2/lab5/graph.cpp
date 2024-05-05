@@ -78,12 +78,39 @@ void print_matrix(const Matrix& matrix, bool benchmark = false)
 GraphMatrix generate_random_graph_matrix(size_t num_vertex, int max_weight, bool isDirected = false) 
 {
     GraphMatrix graph(num_vertex);
-
     int edges_added = 0;
     while (edges_added < num_vertex) 
     {
         size_t u = rand() % num_vertex;
         size_t v = rand() % num_vertex;
+        int weight = 1 + rand() % max_weight;
+
+        if (u != v && graph.weight_matrix[u][v] == INF) 
+        {
+            graph.weight_matrix[u][v] = weight;
+            if(!isDirected) graph.weight_matrix[v][u] = weight;
+            edges_added++;
+        }
+    }
+
+    return graph;
+}
+
+GraphMatrix generate_random_graph_matrix_bench(size_t num_vert, int max_weight, int num_edges, bool isDirected = false) 
+{
+    if(num_edges > (num_vert*(num_vert-1)/2))
+    {
+        cout << "Invalid input.\n";
+        return 0;
+    }
+
+    GraphMatrix graph(num_vert);
+
+    int edges_added = 0;
+    while (edges_added < num_edges) 
+    {
+        size_t u = rand() % num_vert;
+        size_t v = rand() % num_vert;
         int weight = 1 + rand() % max_weight;
 
         if (u != v && graph.weight_matrix[u][v] == INF) 
@@ -150,6 +177,50 @@ GraphAdjList generate_random_graph_list(size_t num_vert, int max_weight, bool is
                 graph.adjList[from].push_back(make_pair(to, weight));
                 if (!isDirected && from != to)
                     graph.adjList[to].push_back(make_pair(from, weight));
+            }
+        }
+    }
+
+    return graph;
+}
+
+GraphAdjList generate_random_graph_list_bench(size_t num_vert, int max_weight, int num_edges, bool isDirected = false)
+{
+    if(num_edges > (num_vert*(num_vert-1)/2))
+    {
+        cout << "Invalid input.\n";
+        return 0;
+    }
+
+    GraphAdjList graph(num_vert);
+
+    int edges_added = 0;
+    while (edges_added < num_edges)
+    {
+        size_t from = rand() % num_vert;
+        size_t to = rand() % num_vert;
+
+        if (from != to)
+        {
+            int weight = 1 + rand() % max_weight;
+
+            // Перевірка, чи існує ребро вже між цими вершинами
+            bool edge_exists = false;
+            for (const auto& neighbor : graph.adjList[from])
+            {
+                if (neighbor.first == to)
+                {
+                    edge_exists = true;
+                    break;
+                }
+            }
+
+            if (!edge_exists)
+            {
+                graph.adjList[from].push_back(make_pair(to, weight));
+                if (!isDirected)
+                    graph.adjList[to].push_back(make_pair(from, weight));
+                edges_added++;
             }
         }
     }
@@ -1666,12 +1737,12 @@ void demoMode()
     this_thread::sleep_for(chrono::seconds(1));
 }
 
-void bench_matr_dir(int n)
+void bench_matr_dir(int vert, int edge)
 {
     auto start = chrono::high_resolution_clock::now();
 
     auto start_generating = chrono::high_resolution_clock::now();
-    GraphMatrix matrix = generate_random_graph_matrix(n, 20, true);
+    GraphMatrix matrix = generate_random_graph_matrix_bench(vert, 20, edge, true);
     auto end_generating = chrono::high_resolution_clock::now();
 
     auto start_printing = chrono::high_resolution_clock::now();
@@ -1691,11 +1762,11 @@ void bench_matr_dir(int n)
     auto end_floyd = chrono::high_resolution_clock::now();
 
     auto start_floyd_mod = chrono::high_resolution_clock::now();
-    floyd_modified(matrix, 0, n/2, true);
+    floyd_modified(matrix, 0, vert/2, true);
     auto end_floyd_mod = chrono::high_resolution_clock::now();
 
     auto start_dijkstra = chrono::high_resolution_clock::now();
-    dijkstra(adj_list, n/2, true);
+    dijkstra(adj_list, vert/2, true);
     auto end_dijkstra = chrono::high_resolution_clock::now();
 
     auto start_isConnected = chrono::high_resolution_clock::now();
@@ -1741,13 +1812,13 @@ void bench_matr_dir(int n)
 
     cout << "\nDirected matrix:\n";
 
-    cout << "Time generating matrix: " << durationGenerating.count() << endl;
-    cout << "Time printing matrix: " << durationPrinting.count() << endl;
-    cout << "Time converting matrix to list: " << durationConverting.count() << endl;
-    cout << "Time DFS: " << durationDFS.count() << endl;
+    cout << "Time generating list: " << durationGenerating.count() << endl;
+    cout << "Time printing list: " << durationPrinting.count() << endl;
+    cout << "Time converting list to matrix: " << durationConverting.count() << endl;
+    cout << "Time DFS (from 0): " << durationDFS.count() << endl;
     cout << "Time Floyd: " << durationFloyd.count() << endl;
-    cout << "Time Floyd modified: " << durationFloydMod.count() << endl;
-    cout << "Time Dijkstra: " << durationDijkstra.count() << endl;
+    cout << "Time Floyd modified (from 0 to n/2 vert): " << durationFloydMod.count() << endl;
+    cout << "Time Dijkstra (from n/2 vert): " << durationDijkstra.count() << endl;
     cout << "Time isConnected: " << durationIsConnected.count() << endl;
     cout << "Time hasCycle: " << durationHasCycle.count() << endl;
     cout << "Time finding connected components: " << durationFindComp.count() << endl;
@@ -1757,12 +1828,12 @@ void bench_matr_dir(int n)
     cout << "Duration: " << durationAll.count() << endl;
 }
 
-void bench_matr_undir(int n)
+void bench_matr_undir(int vert, int edge)
 {
     auto start = chrono::high_resolution_clock::now();
 
     auto start_generating = chrono::high_resolution_clock::now();
-    GraphMatrix matrix = generate_random_graph_matrix(n, 20, false);
+    GraphMatrix matrix = generate_random_graph_matrix_bench(vert, 20, edge, false);
     auto end_generating = chrono::high_resolution_clock::now();
 
     auto start_printing = chrono::high_resolution_clock::now();
@@ -1782,11 +1853,11 @@ void bench_matr_undir(int n)
     auto end_floyd = chrono::high_resolution_clock::now();
 
     auto start_floyd_mod = chrono::high_resolution_clock::now();
-    floyd_modified(matrix, 0, n/2, true);
+    floyd_modified(matrix, 0, vert/2, true);
     auto end_floyd_mod = chrono::high_resolution_clock::now();
 
     auto start_dijkstra = chrono::high_resolution_clock::now();
-    dijkstra(adj_list, n/2, true);
+    dijkstra(adj_list, vert/2, true);
     auto end_dijkstra = chrono::high_resolution_clock::now();
 
     auto start_isConnected = chrono::high_resolution_clock::now();
@@ -1832,13 +1903,13 @@ void bench_matr_undir(int n)
 
     cout << "\nUnirected matrix:\n";
 
-    cout << "Time generating matrix: " << durationGenerating.count() << endl;
-    cout << "Time printing matrix: " << durationPrinting.count() << endl;
-    cout << "Time converting matrix to list: " << durationConverting.count() << endl;
-    cout << "Time DFS: " << durationDFS.count() << endl;
+    cout << "Time generating list: " << durationGenerating.count() << endl;
+    cout << "Time printing list: " << durationPrinting.count() << endl;
+    cout << "Time converting list to matrix: " << durationConverting.count() << endl;
+    cout << "Time DFS (from 0): " << durationDFS.count() << endl;
     cout << "Time Floyd: " << durationFloyd.count() << endl;
-    cout << "Time Floyd modified: " << durationFloydMod.count() << endl;
-    cout << "Time Dijkstra: " << durationDijkstra.count() << endl;
+    cout << "Time Floyd modified (from 0 to n/2 vert): " << durationFloydMod.count() << endl;
+    cout << "Time Dijkstra (from n/2 vert): " << durationDijkstra.count() << endl;
     cout << "Time isConnected: " << durationIsConnected.count() << endl;
     cout << "Time hasCycle: " << durationHasCycle.count() << endl;
     cout << "Time finding connected components: " << durationFindComp.count() << endl;
@@ -1848,12 +1919,12 @@ void bench_matr_undir(int n)
     cout << "Duration: " << durationAll.count() << endl;
 }
 
-void bench_list_dir(int n)
+void bench_list_dir(int vert, int edge)
 {
     auto start = chrono::high_resolution_clock::now();
 
     auto start_generating = chrono::high_resolution_clock::now();
-    GraphAdjList adj_list = generate_random_graph_list(n, 20, true);
+    GraphAdjList adj_list = generate_random_graph_list_bench(vert, 20, edge, true);
     auto end_generating = chrono::high_resolution_clock::now();
 
     auto start_printing = chrono::high_resolution_clock::now();
@@ -1873,11 +1944,11 @@ void bench_list_dir(int n)
     auto end_floyd = chrono::high_resolution_clock::now();
 
     auto start_floyd_mod = chrono::high_resolution_clock::now();
-    floyd_modified(matrix, 0, n/2, true);
+    floyd_modified(matrix, 0, vert/2, true);
     auto end_floyd_mod = chrono::high_resolution_clock::now();
 
     auto start_dijkstra = chrono::high_resolution_clock::now();
-    dijkstra(adj_list, n/2, true);
+    dijkstra(adj_list, vert/2, true);
     auto end_dijkstra = chrono::high_resolution_clock::now();
 
     auto start_isConnected = chrono::high_resolution_clock::now();
@@ -1926,10 +1997,10 @@ void bench_list_dir(int n)
     cout << "Time generating list: " << durationGenerating.count() << endl;
     cout << "Time printing list: " << durationPrinting.count() << endl;
     cout << "Time converting list to matrix: " << durationConverting.count() << endl;
-    cout << "Time DFS: " << durationDFS.count() << endl;
+    cout << "Time DFS (from 0): " << durationDFS.count() << endl;
     cout << "Time Floyd: " << durationFloyd.count() << endl;
-    cout << "Time Floyd modified: " << durationFloydMod.count() << endl;
-    cout << "Time Dijkstra: " << durationDijkstra.count() << endl;
+    cout << "Time Floyd modified (from 0 to n/2 vert): " << durationFloydMod.count() << endl;
+    cout << "Time Dijkstra (from n/2 vert): " << durationDijkstra.count() << endl;
     cout << "Time isConnected: " << durationIsConnected.count() << endl;
     cout << "Time hasCycle: " << durationHasCycle.count() << endl;
     cout << "Time finding connected components: " << durationFindComp.count() << endl;
@@ -1939,12 +2010,12 @@ void bench_list_dir(int n)
     cout << "Duration: " << durationAll.count() << endl;
 }
 
-void bench_list_undir(int n)
+void bench_list_undir(int vert, int edge)
 {
     auto start = chrono::high_resolution_clock::now();
 
     auto start_generating = chrono::high_resolution_clock::now();
-    GraphAdjList adj_list = generate_random_graph_list(n, 20, false);
+    GraphAdjList adj_list = generate_random_graph_list_bench(vert, 20, edge, false);
     auto end_generating = chrono::high_resolution_clock::now();
 
     auto start_printing = chrono::high_resolution_clock::now();
@@ -1964,11 +2035,11 @@ void bench_list_undir(int n)
     auto end_floyd = chrono::high_resolution_clock::now();
 
     auto start_floyd_mod = chrono::high_resolution_clock::now();
-    floyd_modified(matrix, 0, n/2, true);
+    floyd_modified(matrix, 0, vert/2, true);
     auto end_floyd_mod = chrono::high_resolution_clock::now();
 
     auto start_dijkstra = chrono::high_resolution_clock::now();
-    dijkstra(adj_list, n/2, true);
+    dijkstra(adj_list, vert/2, true);
     auto end_dijkstra = chrono::high_resolution_clock::now();
 
     auto start_isConnected = chrono::high_resolution_clock::now();
@@ -2017,10 +2088,10 @@ void bench_list_undir(int n)
     cout << "Time generating list: " << durationGenerating.count() << endl;
     cout << "Time printing list: " << durationPrinting.count() << endl;
     cout << "Time converting list to matrix: " << durationConverting.count() << endl;
-    cout << "Time DFS: " << durationDFS.count() << endl;
+    cout << "Time DFS (from 0): " << durationDFS.count() << endl;
     cout << "Time Floyd: " << durationFloyd.count() << endl;
-    cout << "Time Floyd modified: " << durationFloydMod.count() << endl;
-    cout << "Time Dijkstra: " << durationDijkstra.count() << endl;
+    cout << "Time Floyd modified (from 0 to n/2 vert): " << durationFloydMod.count() << endl;
+    cout << "Time Dijkstra (from n/2 vert): " << durationDijkstra.count() << endl;
     cout << "Time isConnected: " << durationIsConnected.count() << endl;
     cout << "Time hasCycle: " << durationHasCycle.count() << endl;
     cout << "Time finding connected components: " << durationFindComp.count() << endl;
@@ -2032,14 +2103,15 @@ void bench_list_undir(int n)
 
 void benchmark()
 {
-    int n;
-    cout << "\nEnter the number of vertices for random graphs: ";
-    cin >> n;
+    int vert, edge;
+    cout << "\nEnter the number of vertices and edges for random graphs: ";
+    cout << "(max num of vertices is n(n-1)/2)\n";
+    cin >> vert >> edge;
 
-    bench_matr_undir(n);
-    bench_matr_dir(n);
-    bench_list_undir(n);
-    bench_list_dir(n);
+    bench_matr_undir(vert, edge);
+    bench_matr_dir(vert, edge);
+    bench_list_undir(vert, edge);
+    bench_list_dir(vert, edge);
 }
 
 int main()
