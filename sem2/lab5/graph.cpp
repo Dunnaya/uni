@@ -231,7 +231,7 @@ void DFS(const GraphAdjList& graph, size_t start_vert, bool benchmark = false)
 
     if(!benchmark)
         cout << "DFS with ordinary neighbor order: ";
-    ordinary_DFS(graph, start_vert, isVisited);
+    ordinary_DFS(graph, start_vert, isVisited, benchmark);
     if(!benchmark)
         cout << endl;
 
@@ -239,7 +239,7 @@ void DFS(const GraphAdjList& graph, size_t start_vert, bool benchmark = false)
 
     if(!benchmark)
         cout << "DFS with weighted neighbor order: ";
-    weighted_DFS(graph, start_vert, isVisited);
+    weighted_DFS(graph, start_vert, isVisited, benchmark);
     if(!benchmark)
         cout << endl;
 }
@@ -321,7 +321,7 @@ vector<vector<int> > find_connected_components(const GraphAdjList& graph, bool b
             connected_comp_DFS(graph, i, isVisited, component);
             connected_components.push_back(component);
             
-            if(!benchmark)
+            if(!benchmark) 
                 cout << "Connected component: ";
             for (size_t j = 0; j < component.size(); ++j)
             {
