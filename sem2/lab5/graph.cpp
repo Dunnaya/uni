@@ -1759,103 +1759,287 @@ void bench_matr_dir(int n)
 
 void bench_matr_undir(int n)
 {
+    auto start = chrono::high_resolution_clock::now();
+
+    auto start_generating = chrono::high_resolution_clock::now();
     GraphMatrix matrix = generate_random_graph_matrix(n, 20, false);
+    auto end_generating = chrono::high_resolution_clock::now();
 
+    auto start_printing = chrono::high_resolution_clock::now();
     print_matrix(matrix.weight_matrix, true);
+    auto end_printing = chrono::high_resolution_clock::now();
 
-    matrix_to_list(matrix);
-
+    auto start_converting = chrono::high_resolution_clock::now();
     GraphAdjList adj_list = matrix_to_list(matrix);
+    auto end_converting = chrono::high_resolution_clock::now();
 
+    auto start_DFS = chrono::high_resolution_clock::now();
     DFS(adj_list, 0, true);
+    auto end_DFS = chrono::high_resolution_clock::now();
 
+    auto start_floyd = chrono::high_resolution_clock::now();
     floyd(matrix, true);
+    auto end_floyd = chrono::high_resolution_clock::now();
 
+    auto start_floyd_mod = chrono::high_resolution_clock::now();
     floyd_modified(matrix, 0, n/2, true);
+    auto end_floyd_mod = chrono::high_resolution_clock::now();
 
+    auto start_dijkstra = chrono::high_resolution_clock::now();
     dijkstra(adj_list, n/2, true);
+    auto end_dijkstra = chrono::high_resolution_clock::now();
 
+    auto start_isConnected = chrono::high_resolution_clock::now();
     isConnected(adj_list);
+    auto end_isConnected = chrono::high_resolution_clock::now();
 
+    auto start_hasCycle = chrono::high_resolution_clock::now();
     hasCycle(adj_list);
+    auto end_hasCycle = chrono::high_resolution_clock::now();
 
+    auto start_finding_comp = chrono::high_resolution_clock::now();
     find_connected_components(adj_list, true);
+    auto end_finding_comp = chrono::high_resolution_clock::now();
 
+    auto start_topological = chrono::high_resolution_clock::now();
     topological_sort(adj_list, true);
+    auto end_topological = chrono::high_resolution_clock::now();
 
+    auto start_sp_tree = chrono::high_resolution_clock::now();
     spanning_tree(adj_list, true);
+    auto end_sp_tree = chrono::high_resolution_clock::now();
 
+    auto start_kruskal = chrono::high_resolution_clock::now();
     kruskal(adj_list, true);
+    auto end_kruskal = chrono::high_resolution_clock::now();
+
+    auto end = chrono::high_resolution_clock::now();
+
+    auto durationAll = chrono::duration_cast<chrono::milliseconds>(end - start);
+    auto durationGenerating = chrono::duration_cast<chrono::milliseconds>(end_generating - start_generating);
+    auto durationPrinting = chrono::duration_cast<chrono::milliseconds>(end_printing - start_printing);
+    auto durationConverting = chrono::duration_cast<chrono::milliseconds>(end_converting - start_converting);
+    auto durationDFS = chrono::duration_cast<chrono::milliseconds>(end_DFS - start_DFS);
+    auto durationFloyd = chrono::duration_cast<chrono::milliseconds>(end_floyd - start_floyd);
+    auto durationFloydMod = chrono::duration_cast<chrono::milliseconds>(end_floyd_mod - start_floyd_mod);
+    auto durationDijkstra = chrono::duration_cast<chrono::milliseconds>(end_dijkstra - start_dijkstra);
+    auto durationIsConnected = chrono::duration_cast<chrono::milliseconds>(end_isConnected - start_isConnected);
+    auto durationHasCycle = chrono::duration_cast<chrono::milliseconds>(end_hasCycle - start_hasCycle);
+    auto durationFindComp = chrono::duration_cast<chrono::milliseconds>(end_finding_comp - start_finding_comp);
+    auto durationTopological = chrono::duration_cast<chrono::milliseconds>(end_topological - start_topological);
+    auto durationSpTree = chrono::duration_cast<chrono::milliseconds>(end_sp_tree - start_sp_tree);
+    auto durationKruskal = chrono::duration_cast<chrono::milliseconds>(end_kruskal - start_kruskal);
+
+    cout << "\nUnirected matrix:\n";
+
+    cout << "Time generating matrix: " << durationGenerating.count() << endl;
+    cout << "Time printing matrix: " << durationPrinting.count() << endl;
+    cout << "Time converting matrix to list: " << durationConverting.count() << endl;
+    cout << "Time DFS: " << durationDFS.count() << endl;
+    cout << "Time Floyd: " << durationFloyd.count() << endl;
+    cout << "Time Floyd modified: " << durationFloydMod.count() << endl;
+    cout << "Time Dijkstra: " << durationDijkstra.count() << endl;
+    cout << "Time isConnected: " << durationIsConnected.count() << endl;
+    cout << "Time hasCycle: " << durationHasCycle.count() << endl;
+    cout << "Time finding connected components: " << durationFindComp.count() << endl;
+    cout << "Time topological sorting: " << durationTopological.count() << endl;
+    cout << "Time finding spanning tree: " << durationSpTree.count() << endl;
+    cout << "Time Kruskal: " << durationKruskal.count() << endl;
+    cout << "Duration: " << durationAll.count() << endl;
 }
 
 void bench_list_dir(int n)
 {
+    auto start = chrono::high_resolution_clock::now();
+
+    auto start_generating = chrono::high_resolution_clock::now();
     GraphAdjList adj_list = generate_random_graph_list(n, 20, true);
+    auto end_generating = chrono::high_resolution_clock::now();
 
+    auto start_printing = chrono::high_resolution_clock::now();
     print_adjList(adj_list, true);
+    auto end_printing = chrono::high_resolution_clock::now();
 
+    auto start_converting = chrono::high_resolution_clock::now();
     GraphMatrix matrix = list_to_matrix(adj_list);
+    auto end_converting = chrono::high_resolution_clock::now();
 
+    auto start_DFS = chrono::high_resolution_clock::now();
     DFS(adj_list, 0, true);
+    auto end_DFS = chrono::high_resolution_clock::now();
 
+    auto start_floyd = chrono::high_resolution_clock::now();
     floyd(matrix, true);
+    auto end_floyd = chrono::high_resolution_clock::now();
 
+    auto start_floyd_mod = chrono::high_resolution_clock::now();
     floyd_modified(matrix, 0, n/2, true);
+    auto end_floyd_mod = chrono::high_resolution_clock::now();
 
+    auto start_dijkstra = chrono::high_resolution_clock::now();
     dijkstra(adj_list, n/2, true);
+    auto end_dijkstra = chrono::high_resolution_clock::now();
 
+    auto start_isConnected = chrono::high_resolution_clock::now();
     isConnected(adj_list);
+    auto end_isConnected = chrono::high_resolution_clock::now();
 
+    auto start_hasCycle = chrono::high_resolution_clock::now();
     hasCycle(adj_list);
+    auto end_hasCycle = chrono::high_resolution_clock::now();
 
+    auto start_finding_comp = chrono::high_resolution_clock::now();
     find_connected_components(adj_list, true);
+    auto end_finding_comp = chrono::high_resolution_clock::now();
 
+    auto start_topological = chrono::high_resolution_clock::now();
     topological_sort(adj_list, true);
+    auto end_topological = chrono::high_resolution_clock::now();
 
+    auto start_sp_tree = chrono::high_resolution_clock::now();
     spanning_tree(adj_list, true);
+    auto end_sp_tree = chrono::high_resolution_clock::now();
 
+    auto start_kruskal = chrono::high_resolution_clock::now();
     kruskal(adj_list, true);
+    auto end_kruskal = chrono::high_resolution_clock::now();
+
+    auto end = chrono::high_resolution_clock::now();
+
+    auto durationAll = chrono::duration_cast<chrono::milliseconds>(end - start);
+    auto durationGenerating = chrono::duration_cast<chrono::milliseconds>(end_generating - start_generating);
+    auto durationPrinting = chrono::duration_cast<chrono::milliseconds>(end_printing - start_printing);
+    auto durationConverting = chrono::duration_cast<chrono::milliseconds>(end_converting - start_converting);
+    auto durationDFS = chrono::duration_cast<chrono::milliseconds>(end_DFS - start_DFS);
+    auto durationFloyd = chrono::duration_cast<chrono::milliseconds>(end_floyd - start_floyd);
+    auto durationFloydMod = chrono::duration_cast<chrono::milliseconds>(end_floyd_mod - start_floyd_mod);
+    auto durationDijkstra = chrono::duration_cast<chrono::milliseconds>(end_dijkstra - start_dijkstra);
+    auto durationIsConnected = chrono::duration_cast<chrono::milliseconds>(end_isConnected - start_isConnected);
+    auto durationHasCycle = chrono::duration_cast<chrono::milliseconds>(end_hasCycle - start_hasCycle);
+    auto durationFindComp = chrono::duration_cast<chrono::milliseconds>(end_finding_comp - start_finding_comp);
+    auto durationTopological = chrono::duration_cast<chrono::milliseconds>(end_topological - start_topological);
+    auto durationSpTree = chrono::duration_cast<chrono::milliseconds>(end_sp_tree - start_sp_tree);
+    auto durationKruskal = chrono::duration_cast<chrono::milliseconds>(end_kruskal - start_kruskal);
+
+    cout << "\nDirected adj list:\n";
+
+    cout << "Time generating list: " << durationGenerating.count() << endl;
+    cout << "Time printing list: " << durationPrinting.count() << endl;
+    cout << "Time converting list to matrix: " << durationConverting.count() << endl;
+    cout << "Time DFS: " << durationDFS.count() << endl;
+    cout << "Time Floyd: " << durationFloyd.count() << endl;
+    cout << "Time Floyd modified: " << durationFloydMod.count() << endl;
+    cout << "Time Dijkstra: " << durationDijkstra.count() << endl;
+    cout << "Time isConnected: " << durationIsConnected.count() << endl;
+    cout << "Time hasCycle: " << durationHasCycle.count() << endl;
+    cout << "Time finding connected components: " << durationFindComp.count() << endl;
+    cout << "Time topological sorting: " << durationTopological.count() << endl;
+    cout << "Time finding spanning tree: " << durationSpTree.count() << endl;
+    cout << "Time Kruskal: " << durationKruskal.count() << endl;
+    cout << "Duration: " << durationAll.count() << endl;
 }
 
 void bench_list_undir(int n)
 {
+    auto start = chrono::high_resolution_clock::now();
+
+    auto start_generating = chrono::high_resolution_clock::now();
     GraphAdjList adj_list = generate_random_graph_list(n, 20, false);
+    auto end_generating = chrono::high_resolution_clock::now();
 
+    auto start_printing = chrono::high_resolution_clock::now();
     print_adjList(adj_list, true);
+    auto end_printing = chrono::high_resolution_clock::now();
 
+    auto start_converting = chrono::high_resolution_clock::now();
     GraphMatrix matrix = list_to_matrix(adj_list);
+    auto end_converting = chrono::high_resolution_clock::now();
 
+    auto start_DFS = chrono::high_resolution_clock::now();
     DFS(adj_list, 0, true);
+    auto end_DFS = chrono::high_resolution_clock::now();
 
+    auto start_floyd = chrono::high_resolution_clock::now();
     floyd(matrix, true);
+    auto end_floyd = chrono::high_resolution_clock::now();
 
+    auto start_floyd_mod = chrono::high_resolution_clock::now();
     floyd_modified(matrix, 0, n/2, true);
+    auto end_floyd_mod = chrono::high_resolution_clock::now();
 
+    auto start_dijkstra = chrono::high_resolution_clock::now();
     dijkstra(adj_list, n/2, true);
+    auto end_dijkstra = chrono::high_resolution_clock::now();
 
+    auto start_isConnected = chrono::high_resolution_clock::now();
     isConnected(adj_list);
+    auto end_isConnected = chrono::high_resolution_clock::now();
 
+    auto start_hasCycle = chrono::high_resolution_clock::now();
     hasCycle(adj_list);
+    auto end_hasCycle = chrono::high_resolution_clock::now();
 
+    auto start_finding_comp = chrono::high_resolution_clock::now();
     find_connected_components(adj_list, true);
+    auto end_finding_comp = chrono::high_resolution_clock::now();
 
+    auto start_topological = chrono::high_resolution_clock::now();
     topological_sort(adj_list, true);
+    auto end_topological = chrono::high_resolution_clock::now();
 
+    auto start_sp_tree = chrono::high_resolution_clock::now();
     spanning_tree(adj_list, true);
+    auto end_sp_tree = chrono::high_resolution_clock::now();
 
+    auto start_kruskal = chrono::high_resolution_clock::now();
     kruskal(adj_list, true);
+    auto end_kruskal = chrono::high_resolution_clock::now();
+
+    auto end = chrono::high_resolution_clock::now();
+
+    auto durationAll = chrono::duration_cast<chrono::milliseconds>(end - start);
+    auto durationGenerating = chrono::duration_cast<chrono::milliseconds>(end_generating - start_generating);
+    auto durationPrinting = chrono::duration_cast<chrono::milliseconds>(end_printing - start_printing);
+    auto durationConverting = chrono::duration_cast<chrono::milliseconds>(end_converting - start_converting);
+    auto durationDFS = chrono::duration_cast<chrono::milliseconds>(end_DFS - start_DFS);
+    auto durationFloyd = chrono::duration_cast<chrono::milliseconds>(end_floyd - start_floyd);
+    auto durationFloydMod = chrono::duration_cast<chrono::milliseconds>(end_floyd_mod - start_floyd_mod);
+    auto durationDijkstra = chrono::duration_cast<chrono::milliseconds>(end_dijkstra - start_dijkstra);
+    auto durationIsConnected = chrono::duration_cast<chrono::milliseconds>(end_isConnected - start_isConnected);
+    auto durationHasCycle = chrono::duration_cast<chrono::milliseconds>(end_hasCycle - start_hasCycle);
+    auto durationFindComp = chrono::duration_cast<chrono::milliseconds>(end_finding_comp - start_finding_comp);
+    auto durationTopological = chrono::duration_cast<chrono::milliseconds>(end_topological - start_topological);
+    auto durationSpTree = chrono::duration_cast<chrono::milliseconds>(end_sp_tree - start_sp_tree);
+    auto durationKruskal = chrono::duration_cast<chrono::milliseconds>(end_kruskal - start_kruskal);
+
+    cout << "\nUndirected adj list:\n";
+
+    cout << "Time generating list: " << durationGenerating.count() << endl;
+    cout << "Time printing list: " << durationPrinting.count() << endl;
+    cout << "Time converting list to matrix: " << durationConverting.count() << endl;
+    cout << "Time DFS: " << durationDFS.count() << endl;
+    cout << "Time Floyd: " << durationFloyd.count() << endl;
+    cout << "Time Floyd modified: " << durationFloydMod.count() << endl;
+    cout << "Time Dijkstra: " << durationDijkstra.count() << endl;
+    cout << "Time isConnected: " << durationIsConnected.count() << endl;
+    cout << "Time hasCycle: " << durationHasCycle.count() << endl;
+    cout << "Time finding connected components: " << durationFindComp.count() << endl;
+    cout << "Time topological sorting: " << durationTopological.count() << endl;
+    cout << "Time finding spanning tree: " << durationSpTree.count() << endl;
+    cout << "Time Kruskal: " << durationKruskal.count() << endl;
+    cout << "Duration: " << durationAll.count() << endl;
 }
 
 void benchmark()
 {
     int n;
-    cout << "Enter the number of vertices for random graphs: ";
+    cout << "\nEnter the number of vertices for random graphs: ";
     cin >> n;
 
-    //bench_matr_undir(n);
+    bench_matr_undir(n);
     bench_matr_dir(n);
-    //bench_list_undir(n);
-    //bench_list_dir(n);
+    bench_list_undir(n);
+    bench_list_dir(n);
 }
 
 int main()
