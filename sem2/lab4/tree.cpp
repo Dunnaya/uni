@@ -28,6 +28,8 @@
 #include <string>
 #include <cmath>
 #include <stack>
+#include <algorithm>
+#include <unordered_map>
 using namespace std;
 
 struct TreeNode 
@@ -132,18 +134,12 @@ struct BinaryTree
         int value;
         Node* left;
         Node* right;
-        bool isThreaded;
-        Node* predecessor;
-        Node* successor;
+        bool rthread;
+        bool lthread;
 
-        Node(int value) : value(value), left(nullptr), right(nullptr), predecessor(nullptr), successor(nullptr) {}
+        Node(int value) : value(value), left(nullptr), right(nullptr), lthread(true), rthread(true) {}
+        Node(){}
 
-        char op;
-        double val;
-
-        Node(char ch) : op(ch), left(nullptr), right(nullptr) {}
-
-        Node(double v) : val(v), left(nullptr), right(nullptr) {}
     };
 
     BinaryTree() {this->root = nullptr;};
@@ -176,175 +172,403 @@ struct BinaryTree
 
     void insertThreadedTree(int value) 
     {
-        if (root == nullptr) 
-        {
-            root = new Node(value);
-            cout << "Created root node with value: " << root->value << endl;
-            return;
-        }
+            // Searching for a Node with given value 
+        Node *ptr = root; 
+        Node *par = NULL; // Parent of key to be inserted 
+        while (ptr != NULL) 
+        { 
+            par = ptr; // Update parent pointer 
 
-        Node* cur = root;
-        Node* parent = nullptr;
+            // Moving on left subtree. 
+            if (value < ptr->value) 
+            { 
+                if (ptr -> lthread == false) 
+                    ptr = ptr -> left; 
+                else
+                    break; 
+            } 
 
-        while (cur != nullptr) 
-        {
-            parent = cur;
-            if (value < cur->value) 
-            {
-                if (cur->left == nullptr) 
-                {
-                    cur->left = new Node(value);
-                    cout << "Created left child node with value: " << cur->left->value << endl;
-                    cur->left->predecessor = parent->predecessor;
-                    cur->left->successor = parent;
+            // Moving on right subtree. 
+            else
+            { 
+                if (ptr->rthread == false) 
+                    ptr = ptr -> right; 
+                else
+                    break; 
+            } 
+        } 
 
-                    if (cur->left->predecessor != nullptr) 
-                    {
-                        cur->left->predecessor->successor = cur->left;
-                    }
-                    parent->predecessor = cur->left;
-                    break;
-                }
-                cur = cur->left;
-                } else {
-                    if (cur->isThreaded || cur->right == nullptr) 
-                    {
-                        Node* temp = cur->right;
-                        cur->right = new Node(value);
-                        cout << "Created right child node with value: " << cur->right->value << endl;
-                        cur->isThreaded = false;
-                        cur->right->predecessor = cur;
-                        cur->right->successor = temp;
+        // Create a new node 
+        Node *tmp = new Node; 
+        tmp -> value = value; 
+        tmp -> lthread = true; 
+        tmp -> rthread = true; 
 
-                        if (temp != nullptr) 
-                        temp->predecessor = cur->right;
-
-                        break;
-                    }
-                    cur = cur->right;
-                }
-        }
+        if (par == NULL) 
+        { 
+            root = tmp; 
+            tmp -> left = NULL; 
+            tmp -> right = NULL; 
+        } 
+        else if (value < (par -> value)) 
+        { 
+            tmp -> left = par -> left; 
+            tmp -> right = par; 
+            par -> lthread = false; 
+            par -> left = tmp; 
+        } 
+        else
+        { 
+            tmp -> left = par; 
+            tmp -> right = par -> right; 
+            par -> rthread = false; 
+            par -> right = tmp; 
+        } 
+  
     }
 
+    Node *inorderSuccessor(struct Node *ptr) 
+    { 
+        // If rthread is set, we can quickly find 
+        if (ptr -> rthread == true) 
+            return ptr->right; 
+    
+        // Else return leftmost child of right subtree 
+        ptr = ptr -> right; 
+        while (ptr -> lthread == false) 
+            ptr = ptr -> left; 
+        return ptr; 
+    } 
+  
 
-    void traversal()
+    void threadedTraversal()
     {
-        if (root == nullptr) return;
-
-        Node* cur = root;
-        while(cur->left != nullptr)
+        if (root == NULL) 
+        printf("Tree is empty"); 
+    
+        // Reach leftmost node 
+        struct Node *ptr = root; 
+        while (ptr -> lthread == false) 
+            ptr = ptr -> left; 
+    
+        // One by one print successors 
+        while (ptr != NULL) 
+        { 
+            cout << ptr -> value << " "; 
+            ptr = inorderSuccessor(ptr); 
+        } 
+    }
+    
+    void traversal(Node* cur)
+    {   
+        if (cur != nullptr) 
         {
-            cur = cur->left;
-        }
+            if(cur -> left != nullptr) {traversal(cur->left);};
 
-        while(cur != nullptr)
-        {
-            cout << cur->value << " ";
+            cout << cur -> value << " ";
 
-            if(!cur->isThreaded)
-            {
-                cur = cur->right;
-                while(cur != nullptr && cur->left != nullptr)
-                {
-                    cur = cur->left;
-                }
-            } else {
-                cur = cur->successor;
-            }
+            if(cur -> right != nullptr) {traversal(cur->right);};
         }
     }
 };
 
 struct ExprTree 
 {
-    char op;
-    double val;
-    ExprTree *left, *right;
 
-    ExprTree(char c) : op(c), left(nullptr), right(nullptr) {}
-
-    ExprTree(double v) : val(v), left(nullptr), right(nullptr) {}
-
-    static ExprTree* buildExpressionTree(const string& expr) 
+    struct TreeNode 
     {
-        if (expr.empty()) return nullptr;
+       string value;
+        TreeNode* left;
+        TreeNode* right;
 
-        stack<ExprTree*> st;
+        TreeNode(string val) : value(val), left(nullptr), right(nullptr) {}
+    };
 
-        for (int i = 0; i < expr.length(); ++i) 
+    string expression;
+    TreeNode* root;
+
+    ExprTree(string expr) : expression(expr), root(nullptr) {}
+
+    int precedence(char op) 
+    {
+        unordered_map <char, int> prec;
+        prec['+'] = 1;
+        prec['-'] = 1;
+        prec['*'] = 2;
+        prec['/'] = 2;
+        prec['^'] = 3;
+        return prec[op];
+    }
+
+    string infixToPostfix(const string& expression) 
+    {
+        string postfix;
+        stack<char> operatorStack;
+
+        for (size_t i = 0; i < expression.size(); ++i) 
         {
-            if (isDigit(expr[i])) 
+            if (expression[i] == ' ')
+                continue;
+
+            if (isdigit(expression[i]) || expression[i] == '.' || isalpha(expression[i])) 
             {
-                double num = 0;
-                while (i < expr.length() && isDigit(expr[i])) 
+                string operand;
+                while (isdigit(expression[i]) || expression[i] == '.' || isalpha(expression[i])) 
                 {
-                    num = num * 10 + (expr[i] - '0');
-                    ++i;
+                    operand += expression[i++];
                 }
+                postfix += operand + ' ';
                 --i;
-                st.push(new ExprTree(num));
-            } else if (isOperator(expr[i])) {
-                ExprTree* node = new ExprTree(expr[i]);
-                node->right = st.top(); st.pop();
-                node->left = st.top(); st.pop();
-                st.push(node);
+            } else if (expression[i] == '(') {
+                operatorStack.push(expression[i]);
+            } else if (expression[i] == ')') {
+                while (!operatorStack.empty() && operatorStack.top() != '(') {
+                    postfix += operatorStack.top();
+                    postfix += ' ';
+                    operatorStack.pop();
+                }
+                operatorStack.pop();
             } else {
-                st.push(new ExprTree(expr[i]));
+                while (!operatorStack.empty() && precedence(operatorStack.top()) >= precedence(expression[i])) {
+                    postfix += operatorStack.top();
+                    postfix += ' ';
+                    operatorStack.pop();
+                }
+                operatorStack.push(expression[i]);
             }
         }
-        return st.top();
+
+        while (!operatorStack.empty()) 
+        {
+            postfix += operatorStack.top();
+            postfix += ' ';
+            operatorStack.pop();
+        }
+
+        return postfix;
     }
 
-    double evaluate(double x, double y) 
+    TreeNode* constructExpressionTree(const string& postfix) 
     {
-        if (!this) return 0;
+        stack<TreeNode*> expressionStack;
 
-        if (op) 
+        for (size_t i = 0; i < postfix.size(); ++i) 
         {
-            double left_val = left->evaluate(x, y);
-            double right_val = right->evaluate(x, y);
-            switch (op) 
+            if (isdigit(postfix[i]) || postfix[i] == '.' || isalpha(postfix[i])) 
             {
-                case '+': return left_val + right_val;
-                case '-': return left_val - right_val;
-                case '*': return left_val * right_val;
-                case '/': return right_val == 0 ? throw runtime_error("Division by zero!") : left_val / right_val;
-                case '^': return pow(left_val, right_val);
+                string operand;
+                while (isdigit(postfix[i]) || postfix[i] == '.' || isalpha(postfix[i])) 
+                {
+                    operand += postfix[i++];
+                }
+                expressionStack.push(new TreeNode(operand));
+                --i;
+            } else if (postfix[i] != ' ') {
+                TreeNode* opNode = new TreeNode(string(1, postfix[i]));
+                opNode->right = expressionStack.top();
+                expressionStack.pop();
+                opNode->left = expressionStack.top();
+                expressionStack.pop();
+                expressionStack.push(opNode);
             }
-        } else if (val) return val;
-        else {
-            if (op == 'x') return x;
-            if (op == 'y') return y;
-            return 0;
         }
-        return 0;
+
+        return expressionStack.top();
     }
 
-    void printExpression() 
+    void simplifyExpression(TreeNode* &root) 
     {
-        if (!this) return;
+        if (!root || (isdigit(root->value[0]) && !isalpha(root->value[0])))
+            return;
 
-        if (op) 
+        bool simplified = true;
+        while (simplified) 
         {
-            cout << "(";
-            left->printExpression();
-            cout << " " << op << " ";
-            right->printExpression();
-            cout << ")";
-        } else if (val) cout << val;
-        else cout << op;
+            simplified = false;
+
+            if (root->left)
+                simplifyExpression(root->left);
+
+            if (root->right)
+                simplifyExpression(root->right);
+
+            if (root->value == "+") 
+            {
+                if (root->right && root->right->value == "0") 
+                {
+                    delete root->right;
+                    root->right = nullptr;
+                    TreeNode *temp = root;
+                    root = root -> left;
+                    delete temp;
+                    simplified = true;
+                } else if (root->left && root->left->value == "0") {
+                    delete root->left;
+                    root->left = nullptr;
+                    TreeNode *temp = root;
+                    root = root->right;
+                    delete temp;
+                    simplified = true;
+                } else if (root->left && root->left->value == "0" && root->right && root->right->value == "0") {
+                    delete root->left;
+                    delete root->right;
+                    root->left = nullptr;
+                    root->right = nullptr;
+                    root->value = "0";
+                    simplified = true;
+                }
+            } else if (root->value == "-") {
+                if (root->right && root->right->value == "0") {
+                    delete root->right;
+                    root->right = nullptr;
+                    simplified = true;
+                }
+            } else if (root->value == "*") {
+                if (root->right && (root->right->value == "0" || (root->left && root->left->value == "0"))) {
+                    delete root->left;
+                    delete root->right;
+                    root->left = nullptr;
+                    root->right = nullptr;
+                    root->value = "0";
+                    simplified = true;
+                } else if (root->right && root->right->value == "1") {
+                    root = root -> left;
+                    simplified = true;
+                } else if (root->left && root->left->value == "1") {
+                    root = root -> right;
+                    simplified = true;
+                }
+            } else if (root->value == "/") {
+                if (root->right && root->right->value == "1") {
+                    delete root->right;
+                    root->right = nullptr;
+                    simplified = true;
+                } else if (root->left && root->left->value == "0") {
+                    delete root->left;
+                    delete root->right;
+                    root->left = nullptr;
+                    root->right = nullptr;
+                    root->value = "0";
+                    simplified = true;
+                }
+            }
+        }
+
+        if ((root->value == "+" || root->value == "-") && !root->left && !root->right) 
+        {
+            delete root;
+            root = nullptr;
+        }
     }
 
-    static bool isOperator(char c) 
+    double evaluateExpression(TreeNode* root, unordered_map<char, double>& variables) 
     {
-        return c == '+' || c == '-' || c == '*' || c == '/' || c == '^';
+        if (!root)
+            return 0.0;
+
+        if (isdigit(root->value[0]))
+            return stod(root->value);
+        else if (isalpha(root->value[0])) {
+            char variable = root->value[0];
+            if (variables.find(variable) != variables.end())
+            {
+                return variables[variable];
+            } else {
+                double value;
+                cout << "Enter the value for " << variable << ": ";
+                cin >> value;
+                variables[variable] = value;
+                return value;
+            }
+        }
+
+        double leftValue = evaluateExpression(root->left, variables);
+        double rightValue = evaluateExpression(root->right, variables);
+
+        switch (root->value[0]) {
+            case '+': return leftValue + rightValue;
+            case '-': return leftValue - rightValue;
+            case '*': return leftValue * rightValue;
+            case '/': {
+                if (rightValue == 0) 
+                {
+                    throw runtime_error("ERROR: Division by 0");
+                }
+                return leftValue / rightValue;
+            }
+            case '^': 
+            {
+                if (rightValue < 0 && leftValue == 0) 
+                {
+                    throw runtime_error("ERROR: Division by 0");
+                } 
+                return pow(leftValue, rightValue);
+            }
+            default: return 0.0;
+        }
     }
 
-    static bool isDigit(char c) 
+    void printExpressionTree(TreeNode* root) 
     {
-        return c >= '0' && c <= '9';
+        if (root) 
+        {
+            bool isOperator = root->value.size() == 1 && !isdigit(root->value[0]);
+
+            if (isOperator && (root->value == "/" || root->value == "^")) 
+            {
+                bool leftIsOperator = root->left && (root->left->value.size() == 1 && !isdigit(root->left->value[0]));
+                bool rightIsOperator = root->right && (root->right->value.size() == 1 && !isdigit(root->right->value[0]));
+
+                if (leftIsOperator && root->left->value != "*" && !isalpha(root->left->value[0])) 
+                {
+                    cout << "(";
+                    printExpressionTree(root->left);
+                    cout << ")";
+                } else {
+                    printExpressionTree(root->left);
+                }
+
+                cout << root->value << " ";
+
+                if (rightIsOperator) 
+                {
+                    cout << "(";
+                    printExpressionTree(root->right);
+                    cout << ")";
+                } else {
+                    printExpressionTree(root->right);
+                }
+            } else {
+                printExpressionTree(root->left);
+                cout << root->value << " ";
+                printExpressionTree(root->right);
+            }
+        }
+    }
+    //Decorative(?) methods for easier calling
+    void build() 
+    {
+        string postfixExpression = infixToPostfix(expression);
+        root = constructExpressionTree(postfixExpression);
+    }
+
+    void simplify() 
+    {
+        simplifyExpression(this->root);
+    }
+
+    void evaluate(unordered_map<char, double>& variables) 
+    {
+        double result = evaluateExpression(this->root, variables);
+        cout << "Evaluation result: " << result << endl;
+    }
+    
+    void print() 
+    {
+        printExpressionTree(this->root);
     }
 };
+
 
 void interactiveMode() 
 {
@@ -352,10 +576,10 @@ void interactiveMode()
 
     do 
     {
-        cout << "Menu:\n";
-        cout << "1. 1,2,3\n";
-        cout << "2. 4,5\n";
-        cout << "3. 6\n";
+        cout << "\nMenu:\n";
+        cout << "1. Tree\n";
+        cout << "2. Binary tree\n";
+        cout << "3. Expression tree\n";
         cout << "4. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -410,13 +634,14 @@ void interactiveMode()
                             tree->remove_subtree_by_value(value);
                             break;
                         }
-
+                        case 4:
+                        {    
+                        cout << "Exiting...\n";
+                        break;
+                        }
+                        
                         default:
                             cout << "Invalid choice.\n";
-
-                        case 4:
-                            cout << "Exiting...\n";
-                            break;
                     }
                 } while (choice != 4);
 
@@ -429,11 +654,12 @@ void interactiveMode()
 
                 do
                 {
-                    cout << "Menu:\n";
+                    cout << "\nMenu:\n";
                     cout << "1. insert (binary)\n";
-                    cout << "2. insertThreadedTree\n";
-                    cout << "3. traversal\n";
-                    cout << "4. Exit\n";
+                    cout << "2. traversal\n";
+                    cout << "3. insertThreadedTree\n";
+                    cout << "4. Threaded Tree Traversal\n";
+                    cout << "5. Exit\n";
                     cout << "Enter your choice: ";
                     cin >> choice;
 
@@ -448,7 +674,14 @@ void interactiveMode()
                             break;
                         }
 
-                        case 2: 
+                        
+                        case 2:
+                        {
+                            tree->traversal(tree->root);
+                            break; 
+                        }
+
+                        case 3: 
                         {
                             int value;
                             cout << "\nEnter the value: ";
@@ -456,35 +689,43 @@ void interactiveMode()
                             tree->insertThreadedTree(value);
                             break;
                         }
-                        
-                        case 3:
+
+                        case 4:
                         {
-                            tree->traversal();
+                            tree->threadedTraversal();
                             break;
                         }
 
-                        default:
-                            cout << "Invalid choice.\n";
-
-                        case 4:
+                        case 5:
+                        {
                             cout << "Exiting...\n";
                             break;
+                        }
+                        
+                        default:
+                            cout << "Invalid choice.\n";
                     }
-                } while (choice != 4);
+                } while (choice != 5);
 
                 break;
             }
 
             case 3:
-            {
-                ExprTree* root = nullptr;
-
+            {   
+                string expr;
+                cout << "Enter the expression: ";
+                cin.ignore();
+                getline(cin, expr);
+                ExprTree tree(expr); 
+                tree.build();
+                cout << "Expression tree built successfully.";
                 do
                 {
-                    cout << "Menu:\n";
-                    cout << "1. buildExpressionTree\n";
-                    cout << "2. printExpression\n";
-                    cout << "3. evaluate\n";
+                    int choice2;
+                    cout << "\nMenu:\n";
+                    cout << "1. Print expression\n";
+                    cout << "2. Simplify expression\n";
+                    cout << "3. Evaluate expression\n";
                     cout << "4. Exit\n";
                     cout << "Enter your choice: ";
                     cin >> choice;
@@ -493,34 +734,32 @@ void interactiveMode()
                     {
                         case 1: 
                         {
-                            string expression;
-                            cout << "Enter the expression: ";
-                            cin.ignore();
-                            getline(cin, expression);
-                            root->buildExpressionTree(expression);
+                            tree.print();
                             break;
                         }
 
                         case 2: 
                         {
-                            root->printExpression();
+                            tree.simplify();
+                            cout << "Simplified tree: \n";
+                            tree.print();
                             break;
                         }
                         
                         case 3:
                         {
-                            double x, y;
-                            cout <<"\nEnter x and y: ";
-                            cin >> x >> y;
-                            root->evaluate(x,y);
+                            unordered_map<char, double> variables;
+                            tree.evaluate(variables);
                             break;
                         }
 
+                        case 4:
+                           {
+                             cout << "Exiting...\n";
+                             break;
+                           }
                         default:
                             cout << "Invalid choice.\n";
-
-                        case 4:
-                            cout << "Exiting...\n";
                             break;
                     }
                 } while (choice != 4);
@@ -536,7 +775,74 @@ void interactiveMode()
 }
 
 void demoMode() 
-{}
+{
+
+    cout << "\n ----------------------------------DEMO MODE----------------------------------";
+    cout << endl << "Simple tree (TASKS 1-3)";
+    cout << "\nROOT = 6 \nAdded children: 4, 8, 1, 2, 3, 5, 9. \nThis is how it looks: \n\t";
+    TreeNode* tree = new TreeNode(6);
+    tree->add_child(4, 0, 2);
+    tree->add_child(8, 2, 3);
+    tree->add_child(1, 0, 1);
+    tree->add_child(2, 1, 3);
+    tree->add_child(3, 2, 4);
+    tree->add_child(5, 2, 4);
+    tree->add_child(9, 0, 9);
+    tree->print_tree();
+    
+    cout << endl << endl;
+    cout << "Binary tree (TASK 4)" << endl;
+    cout << "Added children: integers 1 through 10; \nTraversal type: in-order.\n\t";
+    BinaryTree *treeBin = new BinaryTree();
+    treeBin->insert(4);
+    treeBin->insert(2);
+    treeBin->insert(1);
+    treeBin->insert(3);
+    treeBin->insert(6);
+    treeBin->insert(5);
+    treeBin->insert(7);
+    treeBin->insert(10);
+    treeBin->insert(9);
+    treeBin->insert(8);
+    treeBin->traversal(treeBin->root);
+
+    cout << endl << endl;
+    cout << "Threaded Binary tree (TASK 5)" << endl;
+    cout << "Added children: integers 1 through 11, 48; \nTraversal type: in-order.\n\t";
+    BinaryTree *treeBin2 = new BinaryTree();
+    treeBin2->insertThreadedTree(4);
+    treeBin2->insertThreadedTree(2);
+    treeBin2->insertThreadedTree(1);
+    treeBin2->insertThreadedTree(3);
+    treeBin2->insertThreadedTree(6);
+    treeBin2->insertThreadedTree(5);
+    treeBin2->insertThreadedTree(7);
+    treeBin2->insertThreadedTree(10);
+    treeBin2->insertThreadedTree(9);
+    treeBin2->insertThreadedTree(8);
+    treeBin2->insertThreadedTree(48);
+    treeBin2->insertThreadedTree(11);
+    treeBin2->threadedTraversal();
+    
+    cout << endl << endl;
+    cout << "Expression Tree(TASK 6)";
+    string expression = "0 + 120 * x^2 - 140 * y * 1 + 30 / (10 - 4)";
+    cout << endl << "Expression used: " << expression << endl;
+    ExprTree treeExpr(expression);
+    treeExpr.build();
+    cout << "Printing the expression through traversal, before simplifying:\n\t";
+    treeExpr.print(); cout << endl;
+    cout << "Simplified expression: \n\t";
+    treeExpr.simplify();
+    treeExpr.print(); cout << endl;
+    cout << "For demonstration, variable x = 15.34, variable y = 20.01\n\t";
+    unordered_map <char, double> variables;
+    variables['x'] = 15.34;
+    variables['y'] = 20.01;
+    treeExpr.evaluate(variables);
+
+    cout << "\nPLEASE EXPAND THE TERMINAL TO SEE EVERYTHING.";
+}
 
 int main()
 {  
