@@ -77,7 +77,7 @@ void playerMove()
     int x, y;
     do
     {
-        cout << "Enter row #(1-3) and column #(1-3): ";
+        cout << "\nEnter row #(1-3) and column #(1-3): ";
         cin >> x;
         cin >> y;
         x--;
@@ -97,7 +97,31 @@ void playerMove()
 
 void computerMove() 
 {
+    int bestVal = INT_MIN;
+    int bestMoveX = -1;
+    int bestMoveY = -1;
 
+    for(int i = 0; i < 3; i++) 
+    {
+        for(int j = 0; j < 3; j++) 
+        {
+            if (board[i][j] == ' ') 
+            {
+                board[i][j] = computer;
+                int moveVal = minimax(false);
+                board[i][j] = ' ';
+
+                if (moveVal > bestVal) 
+                {
+                    bestVal = moveVal;
+                    bestMoveX = i;
+                    bestMoveY = j;
+                }
+            }
+        }
+    }
+
+    board[bestMoveX][bestMoveY] = computer;
 }
 
 char checkWinner() 
@@ -159,4 +183,40 @@ int minimax(bool maximizing)
     } else if (checkFreeSpaces() == 0) {
         return 0;
     }
+
+    if (maximizing) //for computer
+    {
+        int bestVal = INT_MIN;
+        for (int i = 0; i < 3; ++i) 
+        {
+            for (int j = 0; j < 3; ++j) 
+            {
+                if (board[i][j] == ' ') 
+                {
+                    board[i][j] = computer;
+                    bestVal = max(bestVal, minimax(false));
+                    board[i][j] = ' ';
+                }
+            }
+        }
+        score = bestVal;
+    } 
+    else //minimizing for player
+    {
+        int bestVal = INT_MAX;
+        for (int i = 0; i < 3; ++i) 
+        {
+            for (int j = 0; j < 3; ++j) 
+            {
+                if (board[i][j] == ' ') 
+                {
+                    board[i][j] = player;
+                    bestVal = min(bestVal, minimax(true));
+                    board[i][j] = ' ';
+                }
+            }
+        }
+        score = bestVal;
+    }
+    return score;
 }
