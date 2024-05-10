@@ -7,6 +7,12 @@ using namespace std;
 
 int main() 
 {
+   menu();
+   return 0;
+}
+
+void startGame1()
+{
     char winner = ' ';
 
     resetBoard();
@@ -31,7 +37,6 @@ int main()
     }
     printBoard();
     printWinner(winner);
-    return 0;
 }
 
 void resetBoard() 
@@ -219,4 +224,73 @@ int minimax(bool maximizing)
         score = bestVal;
     }
     return score;
+}
+
+void menu()
+{
+    int choice;
+
+    cout << "\n   Menu:\n";
+    cout << "1. 1 Player\n";
+    cout << "2. 2 Players\n";
+    cout << "3. Exit\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch(choice)
+    {
+        case 1:
+        {
+            char again;
+            startGame1();
+            cout << "\n\nWanna play again?\ny - Yes\nn - No\n";
+            cin >> again;
+
+            switch (again)
+            {
+                case 'y':
+                {
+                    menu();
+                    break;
+                }
+
+                case 'Y':
+                {
+                    menu();
+                    break;
+                }
+
+                case 'n':
+                {
+                    cout << "Exiting...";
+                    break;
+                }
+
+                case 'N':
+                {
+                    cout << "Exiting...";
+                    break;
+                }
+            
+                default:
+                    cout << "Invalid choice.\n";
+            }
+
+            break;
+        }
+
+        case 2:
+        {
+            break;
+        }
+
+        case 3:
+        {
+            cout << "Exiting...";
+            break;
+        }
+
+        default:
+            cout << "Invalid choice.\n";
+    }
 }
