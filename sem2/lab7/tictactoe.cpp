@@ -1,9 +1,7 @@
-// p - r - o - j - e - c - t //
-// tic-tac-toe game
 // minimax algorithm
 #include <iostream>
 using namespace std;
-#include "minimax.h"
+#include "tictactoe.h"
 
 int main() 
 {
