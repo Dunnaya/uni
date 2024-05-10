@@ -3,18 +3,7 @@
 // minimax algorithm
 #include <iostream>
 using namespace std;
-
-char board[3][3];
-const char player = 'X';
-const char computer = 'O';
-
-void resetBoard();
-void printBoard();
-int checkFreeSpaces();
-void playerMove();
-void computerMove();
-char checkWinner();
-void printWinner(char);
+#include "minimax.h"
 
 int main() 
 {
