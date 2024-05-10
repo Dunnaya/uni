@@ -1,3 +1,4 @@
+// tic-tac-toe game
 // minimax algorithm
 #include <iostream>
 using namespace std;
@@ -37,13 +38,41 @@ void startGame1()
     printWinner(winner);
 }
 
+void startGame2()
+{
+    char winner = ' ';
+
+    resetBoard();
+
+    while (winner == ' ' && checkFreeSpaces() != 0)
+    {
+        printBoard();
+        
+        playerMove();
+        winner = checkWinner();
+        if(winner != ' ' || checkFreeSpaces() == 0)
+        {
+            break;
+        }
+
+        player2Move();
+        winner = checkWinner();
+        if(winner != ' ' || checkFreeSpaces() == 0)
+        {
+            break;
+        }
+    }
+    printBoard();
+    printWinner2(winner);
+}
+
 void resetBoard() 
 {
     for(int i = 0; i < 3; i++) 
     {
         for(int j = 0; j < 3; j++) 
         {
-            board[i][j] = ' '; // just replace all with empty spaces
+            board[i][j] = ' ';
         }
     }
 }
@@ -93,6 +122,29 @@ void playerMove()
         else 
         {
             board[x][y] = player;
+            break;
+        }
+    } while (board[x][y] != ' ');
+}
+
+void player2Move() 
+{
+    int x, y;
+    do
+    {
+        cout << "\nEnter row #(1-3) and column #(1-3): ";
+        cin >> x;
+        cin >> y;
+        x--;
+        y--;
+
+        if(board[x][y] != ' ')
+        {
+            cout << "Invalid move!\n";
+        }
+        else 
+        {
+            board[x][y] = player2;
             break;
         }
     } while (board[x][y] != ' ');
@@ -175,6 +227,22 @@ void printWinner(char winner)
     }
 }
 
+void printWinner2(char winner) 
+{
+    if(winner == player)
+    {
+      cout << "Player #1 wins!";
+    }
+    else if(winner == player2)
+    {
+      cout << "Player #2 wins!";
+    }
+    else
+    {
+      cout << "It's a tie!";
+    }
+}
+
 int minimax(bool maximizing) 
 {
     int score = 0;
@@ -224,6 +292,43 @@ int minimax(bool maximizing)
     return score;
 }
 
+void playAgain()
+{
+    char again;
+    cout << "\n\nWanna play again?\ny - Yes\nn - No\n";
+    cin >> again;
+
+    switch (again)
+    {
+        case 'y':
+        {
+            menu();
+            break;
+        }
+
+        case 'Y':
+        {
+            menu();
+            break;
+        }
+
+        case 'n':
+        {
+            cout << "Exiting...";
+            break;
+        }
+
+        case 'N':
+        {
+            cout << "Exiting...";
+            break;
+        }
+    
+        default:
+            cout << "Invalid choice.\n";
+    }
+}
+
 void menu()
 {
     int choice;
@@ -239,46 +344,15 @@ void menu()
     {
         case 1:
         {
-            char again;
             startGame1();
-            cout << "\n\nWanna play again?\ny - Yes\nn - No\n";
-            cin >> again;
-
-            switch (again)
-            {
-                case 'y':
-                {
-                    menu();
-                    break;
-                }
-
-                case 'Y':
-                {
-                    menu();
-                    break;
-                }
-
-                case 'n':
-                {
-                    cout << "Exiting...";
-                    break;
-                }
-
-                case 'N':
-                {
-                    cout << "Exiting...";
-                    break;
-                }
-            
-                default:
-                    cout << "Invalid choice.\n";
-            }
-
+            playAgain();
             break;
         }
 
         case 2:
         {
+            startGame2();
+            playAgain();
             break;
         }
 
