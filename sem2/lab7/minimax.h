@@ -5,8 +5,6 @@ char board[3][3];
 const char player = 'X';
 const char computer = 'O';
 
-const int INF = INT_MAX/2;
-
 void resetBoard();
 void printBoard();
 int checkFreeSpaces();
