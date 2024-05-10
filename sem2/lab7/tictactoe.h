@@ -15,4 +15,6 @@ void printWinner(char);
 
 int minimax(bool maximizing);
 
+void menu();
+
 #endif // MINIMAX_H
