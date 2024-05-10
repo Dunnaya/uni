@@ -147,3 +147,16 @@ void printWinner(char winner)
       cout << "It's a tie!";
     }
 }
+
+int minimax(bool maximizing) 
+{
+    int score = 0;
+    char win = checkWinner();
+    if (win == computer) {
+        return 10;
+    } else if (win == player) {
+        return -10;
+    } else if (checkFreeSpaces() == 0) {
+        return 0;
+    }
+}
