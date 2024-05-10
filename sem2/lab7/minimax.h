@@ -15,13 +15,6 @@ void computerMove();
 char checkWinner();
 void printWinner(char);
 
-struct Move 
-{
-    int row;
-    int col;
-};
-
-void bestMove();
-int minimax(char board[3][3], bool isMaximizing, int depth);
+int minimax(bool maximizing);
 
 #endif // MINIMAX_H
