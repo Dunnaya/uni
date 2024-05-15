@@ -10,7 +10,7 @@ int main()
    return 0;
 }
 
-void startGame1()
+void startGame(bool isComputer = true)
 {
     char winner = ' ';
 
@@ -20,50 +20,26 @@ void startGame1()
     {
         printBoard();
 
-        playerMove();
+        playerMove(true);
         winner = checkWinner();
         if(winner != ' ' || checkFreeSpaces() == 0)
         {
             break;
         }
 
-        computerMove();
-        winner = checkWinner();
-        if(winner != ' ' || checkFreeSpaces() == 0)
-        {
-            break;
-        }
-    }
-    printBoard();
-    printWinner(winner);
-}
+        if(isComputer) computerMove();
+        else playerMove(false);
 
-void startGame2()
-{
-    char winner = ' ';
-
-    resetBoard();
-
-    while (winner == ' ' && checkFreeSpaces() != 0)
-    {
-        printBoard();
-        
-        playerMove();
-        winner = checkWinner();
-        if(winner != ' ' || checkFreeSpaces() == 0)
-        {
-            break;
-        }
-
-        player2Move();
         winner = checkWinner();
         if(winner != ' ' || checkFreeSpaces() == 0)
         {
             break;
         }
     }
+
     printBoard();
-    printWinner2(winner);
+    if(isComputer) printWinner(winner, true);
+    else printWinner(winner, false);
 }
 
 void resetBoard() 
@@ -104,7 +80,7 @@ int checkFreeSpaces()
     return freeSpaces;
 }
 
-void playerMove() 
+void playerMove(bool is1Player = true) 
 {
     int x, y;
     do
@@ -121,30 +97,8 @@ void playerMove()
         }
         else 
         {
-            board[x][y] = player;
-            break;
-        }
-    } while (board[x][y] != ' ');
-}
-
-void player2Move() 
-{
-    int x, y;
-    do
-    {
-        cout << "\nEnter row #(1-3) and column #(1-3): ";
-        cin >> x;
-        cin >> y;
-        x--;
-        y--;
-
-        if(board[x][y] != ' ')
-        {
-            cout << "Invalid move!\n";
-        }
-        else 
-        {
-            board[x][y] = player2;
+            if (is1Player) board[x][y] = player;
+            else board[x][y] = player2;
             break;
         }
     } while (board[x][y] != ' ');
@@ -210,35 +164,37 @@ char checkWinner()
     return ' ';
 }
 
-void printWinner(char winner) 
+void printWinner(char winner, bool is1Player = true) 
 {
-    if(winner == player)
+    if(is1Player)
     {
-      cout << "You win!";
+        if(winner == player)
+        {
+        cout << "You win!";
+        }
+        else if(winner == computer)
+        {
+        cout << "You lose!";
+        }
+        else
+        {
+        cout << "It's a tie!";
+        }
     }
-    else if(winner == computer)
+    else 
     {
-      cout << "You lose!";
-    }
-    else
-    {
-      cout << "It's a tie!";
-    }
-}
-
-void printWinner2(char winner) 
-{
-    if(winner == player)
-    {
-      cout << "Player #1 wins!";
-    }
-    else if(winner == player2)
-    {
-      cout << "Player #2 wins!";
-    }
-    else
-    {
-      cout << "It's a tie!";
+        if(winner == player)
+        {
+        cout << "Player #1 wins!";
+        }
+        else if(winner == player2)
+        {
+        cout << "Player #2 wins!";
+        }
+        else
+        {
+        cout << "It's a tie!";
+        }
     }
 }
 
@@ -343,14 +299,14 @@ void menu()
     {
         case 1:
         {
-            startGame1();
+            startGame(true);
             playAgain();
             break;
         }
 
         case 2:
         {
-            startGame2();
+            startGame(false);
             playAgain();
             break;
         }
