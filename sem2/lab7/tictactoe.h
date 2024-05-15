@@ -9,17 +9,14 @@ const char computer = 'O';
 void resetBoard();
 void printBoard();
 int checkFreeSpaces();
-void playerMove();
-void player2Move();
+void playerMove(bool);
 void computerMove();
 char checkWinner();
-void printWinner(char);
-void printWinner2(char); 
+void printWinner(char, bool);
 
 int minimax(bool maximizing);
 
-void startGame1();
-void startGame2();
+void startGame(bool);
 void playAgain();
 
 void menu();
