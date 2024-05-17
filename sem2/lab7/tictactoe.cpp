@@ -13,7 +13,7 @@ int main()
    return 0;
 }
 
-pair<int, int> getValidInput(const string& prompt) 
+pair<int, int> getValidInputMove(const string& prompt) 
 {
     pair<int, int> values;
     bool validInput = false;
@@ -39,6 +39,34 @@ pair<int, int> getValidInput(const string& prompt)
     }
 
     return values;
+}
+
+int getValidInputMenu(const string& prompt) 
+{
+    int value;
+    bool validInput = false;
+    int choice;
+
+    while (!validInput) 
+    {
+        cout << prompt;
+        cin >> choice;
+
+        if (cin.fail() || choice < 1 || choice > 3) 
+        {
+            cerr << "\n\tInvalid input.\n\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } 
+        else 
+        {
+            validInput = true;
+            value = choice;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    return value;
 }
 
 void startGame(bool isComputer = true)
@@ -126,7 +154,7 @@ void playerMove(bool is1Player = true)
 
     do
     {
-        move = getValidInput("Enter row and column #(1-3) separated by space: ");
+        move = getValidInputMove("Enter row and column #(1-3) separated by space: ");
         int x = move.first - 1;
         int y = move.second - 1;
 
@@ -156,7 +184,7 @@ void computerMove()
             if (board[i][j] == ' ') 
             {
                 board[i][j] = computer;
-                int moveVal = minimax(false, INT_MIN, INT_MAX, true);
+                int moveVal = minimax(false, INT_MIN, INT_MAX, 0, true);
                 board[i][j] = ' ';
 
                 if (moveVal > bestVal) 
@@ -237,18 +265,18 @@ void printWinner(char winner, bool is1Player = true)
     }
 }
 
-int minimax(bool maximizing, int alpha, int beta, bool showLogic = true) 
+int minimax(bool maximizing, int alpha, int beta, int depth = 0, bool showLogic = true) 
 {
     int score = 0;
     char win = checkWinner();
     if (win == computer)
-        return 10;
+        return 10 - depth;
     if (win == player)
-        return -10;
+        return depth - 10;
     if (checkFreeSpaces() == 0)
         return 0;
 
-    if (maximizing) // for computer
+    if (maximizing)
     {
         int bestVal = INT_MIN;
         for (int i = 0; i < 3; ++i) 
@@ -258,14 +286,20 @@ int minimax(bool maximizing, int alpha, int beta, bool showLogic = true)
                 if (board[i][j] == ' ') 
                 {
                     board[i][j] = computer;
-                    bestVal = max(bestVal, minimax(false, alpha, beta, showLogic));
-                    if(showLogic)
-                        cout << "Maximizing: (" << i << ", " << j << ") - Score: " << bestVal << endl;
+                    int value = minimax(false, alpha, beta, depth + 1, showLogic);
+                    bestVal = max(bestVal, value);
+
+                    if (showLogic && depth < 3)
+                        cout << string(2 * depth, ' ') << "Max: (" << i << ", " << j << ") - Score: " << value << " Alpha: " << alpha << " Beta: " << beta << endl;
                     
                     board[i][j] = ' ';
                     alpha = max(alpha, bestVal);
                     if (beta <= alpha) // beta cut-off
+                    {
+                        if (showLogic)
+                            cout << string(2 * depth, ' ') << "Beta cut-off at depth " << depth << endl;
                         break;
+                    }
                 }
             }
             if (beta <= alpha) // beta cut-off
@@ -273,7 +307,7 @@ int minimax(bool maximizing, int alpha, int beta, bool showLogic = true)
         }
         score = bestVal;
     } 
-    else // minimizing for player
+    else
     {
         int bestVal = INT_MAX;
         for (int i = 0; i < 3; ++i) 
@@ -283,15 +317,20 @@ int minimax(bool maximizing, int alpha, int beta, bool showLogic = true)
                 if (board[i][j] == ' ') 
                 {
                     board[i][j] = player;
-                    bestVal = min(bestVal, minimax(true, alpha, beta, showLogic));
+                    int value = minimax(true, alpha, beta, depth + 1, showLogic);
+                    bestVal = min(bestVal, value);
 
-                    if(showLogic)
-                        cout << "Minimizing: (" << i << ", " << j << ") - Score: " << bestVal << endl;
+                    if (showLogic && depth < 3)
+                        cout << string(2 * depth, ' ') << "Min: (" << i << ", " << j << ") - Score: " << value << " Alpha: " << alpha << " Beta: " << beta << endl;
                     
                     board[i][j] = ' ';
                     beta = min(beta, bestVal);
                     if (beta <= alpha) // alpha cut-off
+                    {
+                        if (showLogic)
+                            cout << string(2 * depth, ' ') << "Alpha cut-off at depth " << depth << endl;
                         break;
+                    }
                 }
             }
             if (beta <= alpha) // alpha cut-off
@@ -313,39 +352,53 @@ void clearConsole()
 
 void playAgain()
 {
-    char again;
-    cout << "\n\nWanna play again?\ny - Yes\nn - No\n";
-    cin >> again;
+    char again = getValidInputForPlayAgain();
 
     switch (again)
     {
         case 'y':
-        {
-            menu();
-            break;
-        }
-
         case 'Y':
-        {
             menu();
             break;
-        }
 
         case 'n':
-        {
-            cout << "Exiting...";
-            break;
-        }
-
         case 'N':
-        {
-            cout << "Exiting...";
+            cout << "Exiting...\n";
             break;
-        }
-    
+
         default:
-            cout << "Invalid choice.\n";
+            break;
     }
+}
+
+char getValidInputForPlayAgain()
+{
+    char again;
+    bool validInput = false;
+
+    while (!validInput)
+    {
+        cout << "\n\nWanna play again?\ny - Yes\nn - No\n";
+        cin >> again;
+
+        switch (again)
+        {
+            case 'y':
+            case 'Y':
+            case 'n':
+            case 'N':
+                validInput = true;
+                break;
+
+            default:
+                cout << "\n\tInvalid choice. Please enter 'y' or 'n'.";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                break;
+        }
+    }
+
+    return again;
 }
 
 void menu()
@@ -356,8 +409,7 @@ void menu()
     cout << "1. 1 Player\n";
     cout << "2. 2 Players\n";
     cout << "3. Exit\n";
-    cout << "Enter your choice: ";
-    cin >> choice;
+    choice = getValidInputMenu("Enter your choice: ");
 
     switch(choice)
     {
