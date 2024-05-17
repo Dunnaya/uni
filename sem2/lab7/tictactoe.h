@@ -14,9 +14,11 @@ void computerMove();
 char checkWinner();
 void printWinner(char, bool);
 void clearConsole();
-pair<int, int> getValidInput(const string&);
+pair<int, int> getValidInputMove(const string&);
+int getValidInputMenu(const string&); 
+char getValidInputForPlayAgain();
 
-int minimax(bool maximizing, int alpha, int beta, bool);
+int minimax(bool maximizing, int alpha, int beta, int depth, bool);
 
 void startGame(bool);
 void playAgain();
