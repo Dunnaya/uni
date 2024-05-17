@@ -2,8 +2,6 @@
 // minimax algorithm + alpha-beta pruning
 #include <iostream>
 #include <cstdlib>
-#include <chrono>
-#include <thread>
 using namespace std;
 #include "tictactoe.h"
 
