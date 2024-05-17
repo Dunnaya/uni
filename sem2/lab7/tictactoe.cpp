@@ -13,63 +13,7 @@ int main()
    return 0;
 }
 
-pair<int, int> getValidInputMove(const string& prompt) 
-{
-    pair<int, int> values;
-    bool validInput = false;
-    int x, y;
-
-    while (!validInput) 
-    {
-        cout << prompt;
-        cin >> x >> y;
-
-        if (cin.fail() || x < 1 || x > 3 || y < 1 || y > 3) 
-        {
-            cerr << "\n\tInvalid input. Please enter two numbers between 1 and 3 separated by a space.\n\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        } 
-        else 
-        {
-            validInput = true;
-            values = make_pair(x, y);
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
-
-    return values;
-}
-
-int getValidInputMenu(const string& prompt) 
-{
-    int value;
-    bool validInput = false;
-    int choice;
-
-    while (!validInput) 
-    {
-        cout << prompt;
-        cin >> choice;
-
-        if (cin.fail() || choice < 1 || choice > 3) 
-        {
-            cerr << "\n\tInvalid input.\n\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        } 
-        else 
-        {
-            validInput = true;
-            value = choice;
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        }
-    }
-
-    return value;
-}
-
-void startGame(bool isComputer = true)
+void startGame(bool isComputer = true, bool showLogic = false)
 {
     char winner = ' ';
 
@@ -77,7 +21,8 @@ void startGame(bool isComputer = true)
 
     while (winner == ' ' && checkFreeSpaces() != 0)
     {
-        //clearConsole();
+        if(!showLogic)
+            clearConsole();
         cout << "\tTIC TAC TOE\n";
         printBoard();
 
@@ -88,7 +33,7 @@ void startGame(bool isComputer = true)
             break;
         }
 
-        if(isComputer) computerMove();
+        if(isComputer) computerMove(showLogic);
         else playerMove(false);
 
         winner = checkWinner();
@@ -98,7 +43,8 @@ void startGame(bool isComputer = true)
         }
     }
 
-    //clearConsole();
+    if(!showLogic)
+        clearConsole();
     cout << "\tTIC TAC TOE\n";
     printBoard();
     if(isComputer) printWinner(winner, true);
@@ -171,7 +117,35 @@ void playerMove(bool is1Player = true)
     } while (board[move.first-1][move.second-1] != ' ');
 }
 
-void computerMove() 
+pair<int, int> getValidInputMove(const string& prompt) 
+{
+    pair<int, int> values;
+    bool validInput = false;
+    int x, y;
+
+    while (!validInput) 
+    {
+        cout << prompt;
+        cin >> x >> y;
+
+        if (cin.fail() || x < 1 || x > 3 || y < 1 || y > 3) 
+        {
+            cerr << "\n\tInvalid input. Please enter two numbers between 1 and 3 separated by a space.\n\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } 
+        else 
+        {
+            validInput = true;
+            values = make_pair(x, y);
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    return values;
+}
+
+void computerMove(bool showLogic = false) 
 {
     int bestVal = INT_MIN;
     int bestMoveX = -1;
@@ -184,7 +158,7 @@ void computerMove()
             if (board[i][j] == ' ') 
             {
                 board[i][j] = computer;
-                int moveVal = minimax(false, INT_MIN, INT_MAX, 0, true);
+                int moveVal = minimax(false, INT_MIN, INT_MAX, 0, showLogic);
                 board[i][j] = ' ';
 
                 if (moveVal > bestVal) 
@@ -265,7 +239,7 @@ void printWinner(char winner, bool is1Player = true)
     }
 }
 
-int minimax(bool maximizing, int alpha, int beta, int depth = 0, bool showLogic = true) 
+int minimax(bool maximizing, int alpha, int beta, int depth = 0, bool showLogic = false) 
 {
     int score = 0;
     char win = checkWinner();
@@ -408,32 +382,68 @@ void menu()
     cout << "\n   Menu:\n";
     cout << "1. 1 Player\n";
     cout << "2. 2 Players\n";
-    cout << "3. Exit\n";
+    cout << "3. Show computer's logic mode\n";
+    cout << "4. Exit\n";
     choice = getValidInputMenu("Enter your choice: ");
 
     switch(choice)
     {
         case 1:
         {
-            startGame(true);
+            startGame(true, false);
             playAgain();
             break;
         }
 
         case 2:
         {
-            startGame(false);
+            startGame(false, false);
             playAgain();
             break;
         }
 
         case 3:
         {
+            startGame(true, true);
+            playAgain();
+            break;
+        }
+
+        case 4:
+        {
             cout << "Exiting...";
             break;
         }
 
         default:
-            cout << "Invalid choice.\n";
+            break;
     }
+}
+
+int getValidInputMenu(const string& prompt) 
+{
+    int value;
+    bool validInput = false;
+    int choice;
+
+    while (!validInput) 
+    {
+        cout << prompt;
+        cin >> choice;
+
+        if (cin.fail() || choice < 1 || choice > 4) 
+        {
+            cerr << "\n\tInvalid input.\n\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } 
+        else 
+        {
+            validInput = true;
+            value = choice;
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    return value;
 }
