@@ -49,7 +49,7 @@ void startGame(bool isComputer = true)
 
     while (winner == ' ' && checkFreeSpaces() != 0)
     {
-        clearConsole();
+        //clearConsole();
         cout << "\tTIC TAC TOE\n";
         printBoard();
 
@@ -70,7 +70,7 @@ void startGame(bool isComputer = true)
         }
     }
 
-    clearConsole();
+    //clearConsole();
     cout << "\tTIC TAC TOE\n";
     printBoard();
     if(isComputer) printWinner(winner, true);
@@ -156,7 +156,7 @@ void computerMove()
             if (board[i][j] == ' ') 
             {
                 board[i][j] = computer;
-                int moveVal = minimax(false, INT_MIN, INT_MAX);
+                int moveVal = minimax(false, INT_MIN, INT_MAX, true);
                 board[i][j] = ' ';
 
                 if (moveVal > bestVal) 
@@ -237,7 +237,7 @@ void printWinner(char winner, bool is1Player = true)
     }
 }
 
-int minimax(bool maximizing, int alpha, int beta) 
+int minimax(bool maximizing, int alpha, int beta, bool showLogic = true) 
 {
     int score = 0;
     char win = checkWinner();
@@ -248,7 +248,7 @@ int minimax(bool maximizing, int alpha, int beta)
     if (checkFreeSpaces() == 0)
         return 0;
 
-    if (maximizing) //for computer
+    if (maximizing) // for computer
     {
         int bestVal = INT_MIN;
         for (int i = 0; i < 3; ++i) 
@@ -258,17 +258,22 @@ int minimax(bool maximizing, int alpha, int beta)
                 if (board[i][j] == ' ') 
                 {
                     board[i][j] = computer;
-                    bestVal = max(bestVal, minimax(false, alpha, beta));
+                    bestVal = max(bestVal, minimax(false, alpha, beta, showLogic));
+                    if(showLogic)
+                        cout << "Maximizing: (" << i << ", " << j << ") - Score: " << bestVal << endl;
+                    
                     board[i][j] = ' ';
                     alpha = max(alpha, bestVal);
-                    if(beta <= alpha) //beta cut-off
+                    if (beta <= alpha) // beta cut-off
                         break;
                 }
             }
+            if (beta <= alpha) // beta cut-off
+                break;
         }
         score = bestVal;
     } 
-    else //minimizing for player
+    else // minimizing for player
     {
         int bestVal = INT_MAX;
         for (int i = 0; i < 3; ++i) 
@@ -278,13 +283,19 @@ int minimax(bool maximizing, int alpha, int beta)
                 if (board[i][j] == ' ') 
                 {
                     board[i][j] = player;
-                    bestVal = min(bestVal, minimax(true, alpha, beta));
+                    bestVal = min(bestVal, minimax(true, alpha, beta, showLogic));
+
+                    if(showLogic)
+                        cout << "Minimizing: (" << i << ", " << j << ") - Score: " << bestVal << endl;
+                    
                     board[i][j] = ' ';
                     beta = min(beta, bestVal);
-                    if(beta <= alpha)
+                    if (beta <= alpha) // alpha cut-off
                         break;
                 }
             }
+            if (beta <= alpha) // alpha cut-off
+                break;
         }
         score = bestVal;
     }
