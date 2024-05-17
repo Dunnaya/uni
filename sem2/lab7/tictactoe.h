@@ -13,8 +13,10 @@ void playerMove(bool);
 void computerMove();
 char checkWinner();
 void printWinner(char, bool);
+void clearConsole();
+int getValidInput();
 
-int minimax(bool maximizing);
+int minimax(bool maximizing, int alpha, int beta);
 
 void startGame(bool);
 void playAgain();
