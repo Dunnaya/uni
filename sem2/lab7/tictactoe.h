@@ -16,7 +16,7 @@ void printWinner(char, bool);
 void clearConsole();
 pair<int, int> getValidInput(const string&);
 
-int minimax(bool maximizing, int alpha, int beta);
+int minimax(bool maximizing, int alpha, int beta, bool);
 
 void startGame(bool);
 void playAgain();
