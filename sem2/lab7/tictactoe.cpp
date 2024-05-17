@@ -2,6 +2,8 @@
 // minimax algorithm + alpha-beta pruning
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
 using namespace std;
 #include "tictactoe.h"
 
@@ -48,7 +50,7 @@ void startGame(bool isComputer = true)
     while (winner == ' ' && checkFreeSpaces() != 0)
     {
         clearConsole();
-        cout << "TIC TAC TOE\n";
+        cout << "\tTIC TAC TOE\n";
         printBoard();
 
         playerMove(true);
@@ -69,7 +71,7 @@ void startGame(bool isComputer = true)
     }
 
     clearConsole();
-    cout << "TIC TAC TOE\n";
+    cout << "\tTIC TAC TOE\n";
     printBoard();
     if(isComputer) printWinner(winner, true);
     else printWinner(winner, false);
@@ -88,11 +90,11 @@ void resetBoard()
 
 void printBoard() 
 {
-    cout << " " << board[0][0] << " | " << board[0][1] << " | " << board[0][2] << " \n";
-    cout << "---|---|---\n";
-    cout << " " << board[1][0] << " | " << board[1][1] << " | " << board[1][2] << " \n";
-    cout << "---|---|---\n";
-    cout << " " << board[2][0] << " | " << board[2][1] << " | " << board[2][2] << " \n";
+    cout << "\t " << board[0][0] << " | " << board[0][1] << " | " << board[0][2] << " \n";
+    cout << "\t---|---|---\n";
+    cout << "\t " << board[1][0] << " | " << board[1][1] << " | " << board[1][2] << " \n";
+    cout << "\t---|---|---\n";
+    cout << "\t " << board[2][0] << " | " << board[2][1] << " | " << board[2][2] << " \n";
 }
 
 
@@ -116,6 +118,12 @@ int checkFreeSpaces()
 void playerMove(bool is1Player = true) 
 {
     pair<int, int> move;
+
+    if (is1Player)
+        cout << "\n Player1 turn\n";
+    else 
+        cout << "\n Player2 turn:\n";
+
     do
     {
         move = getValidInput("Enter row and column #(1-3) separated by space: ");
@@ -201,30 +209,30 @@ void printWinner(char winner, bool is1Player = true)
     {
         if(winner == player)
         {
-        cout << "You win!";
+        cout << "\n\tYou win!";
         }
         else if(winner == computer)
         {
-        cout << "You lose!";
+        cout << "\n\tYou lose!";
         }
         else
         {
-        cout << "It's a tie!";
+        cout << "\n\tIt's a tie!";
         }
     }
     else 
     {
         if(winner == player)
         {
-        cout << "Player #1 wins!";
+        cout << "\n      Player #1 wins!";
         }
         else if(winner == player2)
         {
-        cout << "Player #2 wins!";
+        cout << "\n      Player #2 wins!";
         }
         else
         {
-        cout << "It's a tie!";
+        cout << "\n\tIt's a tie!";
         }
     }
 }
