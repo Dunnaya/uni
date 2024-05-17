@@ -1,6 +1,7 @@
 // tic-tac-toe game
-// minimax algorithm
+// minimax algorithm + alpha-beta pruning
 #include <iostream>
+#include <cstdlib>
 using namespace std;
 #include "tictactoe.h"
 
@@ -8,6 +9,34 @@ int main()
 {
    menu();
    return 0;
+}
+
+pair<int, int> getValidInput(const string& prompt) 
+{
+    pair<int, int> values;
+    bool validInput = false;
+    int x, y;
+
+    while (!validInput) 
+    {
+        cout << prompt;
+        cin >> x >> y;
+
+        if (cin.fail() || x < 1 || x > 3 || y < 1 || y > 3) 
+        {
+            cerr << "\n\tInvalid input. Please enter two numbers between 1 and 3 separated by a space.\n\n";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        } 
+        else 
+        {
+            validInput = true;
+            values = make_pair(x, y);
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+    }
+
+    return values;
 }
 
 void startGame(bool isComputer = true)
@@ -18,6 +47,8 @@ void startGame(bool isComputer = true)
 
     while (winner == ' ' && checkFreeSpaces() != 0)
     {
+        clearConsole();
+        cout << "TIC TAC TOE\n";
         printBoard();
 
         playerMove(true);
@@ -37,6 +68,8 @@ void startGame(bool isComputer = true)
         }
     }
 
+    clearConsole();
+    cout << "TIC TAC TOE\n";
     printBoard();
     if(isComputer) printWinner(winner, true);
     else printWinner(winner, false);
@@ -82,18 +115,16 @@ int checkFreeSpaces()
 
 void playerMove(bool is1Player = true) 
 {
-    int x, y;
+    pair<int, int> move;
     do
     {
-        cout << "\nEnter row #(1-3) and column #(1-3): ";
-        cin >> x;
-        cin >> y;
-        x--;
-        y--;
+        move = getValidInput("Enter row and column #(1-3) separated by space: ");
+        int x = move.first - 1;
+        int y = move.second - 1;
 
         if(board[x][y] != ' ')
         {
-            cout << "Invalid move!\n";
+            cout << "\n\tInvalid move! The cell is already occupied.\n\n";
         }
         else 
         {
@@ -101,7 +132,7 @@ void playerMove(bool is1Player = true)
             else board[x][y] = player2;
             break;
         }
-    } while (board[x][y] != ' ');
+    } while (board[move.first-1][move.second-1] != ' ');
 }
 
 void computerMove() 
@@ -117,7 +148,7 @@ void computerMove()
             if (board[i][j] == ' ') 
             {
                 board[i][j] = computer;
-                int moveVal = minimax(false);
+                int moveVal = minimax(false, INT_MIN, INT_MAX);
                 board[i][j] = ' ';
 
                 if (moveVal > bestVal) 
@@ -198,17 +229,16 @@ void printWinner(char winner, bool is1Player = true)
     }
 }
 
-int minimax(bool maximizing) 
+int minimax(bool maximizing, int alpha, int beta) 
 {
     int score = 0;
     char win = checkWinner();
-    if (win == computer) {
+    if (win == computer)
         return 10;
-    } else if (win == player) {
+    if (win == player)
         return -10;
-    } else if (checkFreeSpaces() == 0) {
+    if (checkFreeSpaces() == 0)
         return 0;
-    }
 
     if (maximizing) //for computer
     {
@@ -220,8 +250,11 @@ int minimax(bool maximizing)
                 if (board[i][j] == ' ') 
                 {
                     board[i][j] = computer;
-                    bestVal = max(bestVal, minimax(false));
+                    bestVal = max(bestVal, minimax(false, alpha, beta));
                     board[i][j] = ' ';
+                    alpha = max(alpha, bestVal);
+                    if(beta <= alpha) //beta cut-off
+                        break;
                 }
             }
         }
@@ -237,14 +270,26 @@ int minimax(bool maximizing)
                 if (board[i][j] == ' ') 
                 {
                     board[i][j] = player;
-                    bestVal = min(bestVal, minimax(true));
+                    bestVal = min(bestVal, minimax(true, alpha, beta));
                     board[i][j] = ' ';
+                    beta = min(beta, bestVal);
+                    if(beta <= alpha)
+                        break;
                 }
             }
         }
         score = bestVal;
     }
     return score;
+}
+
+void clearConsole() 
+{
+#ifdef _WIN32
+    system("cls");
+#else
+    system("clear");
+#endif
 }
 
 void playAgain()
