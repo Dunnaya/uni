@@ -14,7 +14,7 @@ void computerMove();
 char checkWinner();
 void printWinner(char, bool);
 void clearConsole();
-int getValidInput();
+pair<int, int> getValidInput(const string&);
 
 int minimax(bool maximizing, int alpha, int beta);
 
