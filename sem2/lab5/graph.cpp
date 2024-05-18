@@ -22,6 +22,11 @@
 #include <stack>
 #include <chrono>
 #include <thread>
+
+#include "windows.h"
+#include "psapi.h"
+#include <benchmark.h>
+
 using namespace std;
 
 void interactiveMode();
@@ -1742,55 +1747,68 @@ void bench_matr_dir(int vert, int edge)
     auto start = chrono::high_resolution_clock::now();
 
     auto start_generating = chrono::high_resolution_clock::now();
-    GraphMatrix matrix = generate_random_graph_matrix_bench(vert, 20, edge, true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Create random graph");
+        GraphMatrix matrix = generate_random_graph_matrix_bench(vert, 20, edge, true);
     auto end_generating = chrono::high_resolution_clock::now();
 
     auto start_printing = chrono::high_resolution_clock::now();
-    print_matrix(matrix.weight_matrix, true);
+        bmMem = new BenchmarkMax("Print graph");
+        print_matrix(matrix.weight_matrix, true);
     auto end_printing = chrono::high_resolution_clock::now();
 
     auto start_converting = chrono::high_resolution_clock::now();
-    GraphAdjList adj_list = matrix_to_list(matrix);
+        bmMem = new BenchmarkMax("Matrix to list");
+        GraphAdjList adj_list = matrix_to_list(matrix);
     auto end_converting = chrono::high_resolution_clock::now();
 
     auto start_DFS = chrono::high_resolution_clock::now();
-    DFS(adj_list, 0, true);
+        bmMem = new BenchmarkMax("DFS");
+        DFS(adj_list, 0, true);
     auto end_DFS = chrono::high_resolution_clock::now();
 
     auto start_floyd = chrono::high_resolution_clock::now();
-    floyd(matrix, true);
+        bmMem = new BenchmarkMax("Floyd");
+        floyd(matrix, true);
     auto end_floyd = chrono::high_resolution_clock::now();
 
     auto start_floyd_mod = chrono::high_resolution_clock::now();
-    floyd_modified(matrix, 0, vert/2, true);
+        bmMem = new BenchmarkMax("Floyd mod");
+        floyd_modified(matrix, 0, vert/2, true);
     auto end_floyd_mod = chrono::high_resolution_clock::now();
 
     auto start_dijkstra = chrono::high_resolution_clock::now();
-    dijkstra(adj_list, vert/2, true);
+        bmMem = new BenchmarkMax("Dijkstra");
+        dijkstra(adj_list, vert/2, true);
     auto end_dijkstra = chrono::high_resolution_clock::now();
 
     auto start_isConnected = chrono::high_resolution_clock::now();
-    isConnected(adj_list);
+        bmMem = new BenchmarkMax("Is connected");
+        isConnected(adj_list);
     auto end_isConnected = chrono::high_resolution_clock::now();
 
     auto start_hasCycle = chrono::high_resolution_clock::now();
-    hasCycle(adj_list);
+        bmMem = new BenchmarkMax("Has cycle");
+        hasCycle(adj_list);
     auto end_hasCycle = chrono::high_resolution_clock::now();
 
     auto start_finding_comp = chrono::high_resolution_clock::now();
-    find_connected_components(adj_list, true);
+        bmMem = new BenchmarkMax("Find connected components");
+        find_connected_components(adj_list, true);
     auto end_finding_comp = chrono::high_resolution_clock::now();
 
     auto start_topological = chrono::high_resolution_clock::now();
-    topological_sort(adj_list, true);
+        bmMem = new BenchmarkMax("Topological sort");
+        topological_sort(adj_list, true);
     auto end_topological = chrono::high_resolution_clock::now();
 
     auto start_sp_tree = chrono::high_resolution_clock::now();
-    spanning_tree(adj_list, true);
+        bmMem = new BenchmarkMax("Spanning tree");
+        spanning_tree(adj_list, true);
     auto end_sp_tree = chrono::high_resolution_clock::now();
 
     auto start_kruskal = chrono::high_resolution_clock::now();
-    kruskal(adj_list, true);
+        bmMem = new BenchmarkMax("Kruskal");
+        kruskal(adj_list, true);
     auto end_kruskal = chrono::high_resolution_clock::now();
 
     auto end = chrono::high_resolution_clock::now();
@@ -1833,55 +1851,68 @@ void bench_matr_undir(int vert, int edge)
     auto start = chrono::high_resolution_clock::now();
 
     auto start_generating = chrono::high_resolution_clock::now();
-    GraphMatrix matrix = generate_random_graph_matrix_bench(vert, 20, edge, false);
+        BenchmarkMax* bmMem = new BenchmarkMax("Create random graph");
+        GraphMatrix matrix = generate_random_graph_matrix_bench(vert, 20, edge, false);
     auto end_generating = chrono::high_resolution_clock::now();
 
     auto start_printing = chrono::high_resolution_clock::now();
-    print_matrix(matrix.weight_matrix, true);
+        bmMem = new BenchmarkMax("Print graph");
+        print_matrix(matrix.weight_matrix, true);
     auto end_printing = chrono::high_resolution_clock::now();
 
     auto start_converting = chrono::high_resolution_clock::now();
-    GraphAdjList adj_list = matrix_to_list(matrix);
+        bmMem = new BenchmarkMax("Matrix to list");
+        GraphAdjList adj_list = matrix_to_list(matrix);
     auto end_converting = chrono::high_resolution_clock::now();
 
     auto start_DFS = chrono::high_resolution_clock::now();
-    DFS(adj_list, 0, true);
+        bmMem = new BenchmarkMax("DFS");
+        DFS(adj_list, 0, true);
     auto end_DFS = chrono::high_resolution_clock::now();
 
     auto start_floyd = chrono::high_resolution_clock::now();
-    floyd(matrix, true);
+        bmMem = new BenchmarkMax("Floyd");
+        floyd(matrix, true);
     auto end_floyd = chrono::high_resolution_clock::now();
 
     auto start_floyd_mod = chrono::high_resolution_clock::now();
-    floyd_modified(matrix, 0, vert/2, true);
+        bmMem = new BenchmarkMax("Floyd mod");
+        floyd_modified(matrix, 0, vert/2, true);
     auto end_floyd_mod = chrono::high_resolution_clock::now();
 
     auto start_dijkstra = chrono::high_resolution_clock::now();
-    dijkstra(adj_list, vert/2, true);
+        bmMem = new BenchmarkMax("Dijkstra");
+        dijkstra(adj_list, vert/2, true);
     auto end_dijkstra = chrono::high_resolution_clock::now();
 
     auto start_isConnected = chrono::high_resolution_clock::now();
-    isConnected(adj_list);
+        bmMem = new BenchmarkMax("Is connected");
+        isConnected(adj_list);
     auto end_isConnected = chrono::high_resolution_clock::now();
 
     auto start_hasCycle = chrono::high_resolution_clock::now();
-    hasCycle(adj_list);
+        bmMem = new BenchmarkMax("Has cycle");
+        hasCycle(adj_list);
     auto end_hasCycle = chrono::high_resolution_clock::now();
 
     auto start_finding_comp = chrono::high_resolution_clock::now();
-    find_connected_components(adj_list, true);
+        bmMem = new BenchmarkMax("Find connected components");
+        find_connected_components(adj_list, true);
     auto end_finding_comp = chrono::high_resolution_clock::now();
 
     auto start_topological = chrono::high_resolution_clock::now();
-    topological_sort(adj_list, true);
+        bmMem = new BenchmarkMax("Topological sort");
+        topological_sort(adj_list, true);
     auto end_topological = chrono::high_resolution_clock::now();
 
     auto start_sp_tree = chrono::high_resolution_clock::now();
-    spanning_tree(adj_list, true);
+        bmMem = new BenchmarkMax("Spanning tree");
+        spanning_tree(adj_list, true);
     auto end_sp_tree = chrono::high_resolution_clock::now();
 
     auto start_kruskal = chrono::high_resolution_clock::now();
-    kruskal(adj_list, true);
+        bmMem = new BenchmarkMax("Kruskal");
+        kruskal(adj_list, true);
     auto end_kruskal = chrono::high_resolution_clock::now();
 
     auto end = chrono::high_resolution_clock::now();
@@ -1924,55 +1955,68 @@ void bench_list_dir(int vert, int edge)
     auto start = chrono::high_resolution_clock::now();
 
     auto start_generating = chrono::high_resolution_clock::now();
-    GraphAdjList adj_list = generate_random_graph_list_bench(vert, 20, edge, true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Create random graph");
+        GraphAdjList adj_list = generate_random_graph_list_bench(vert, 20, edge, true);
     auto end_generating = chrono::high_resolution_clock::now();
 
     auto start_printing = chrono::high_resolution_clock::now();
-    print_adjList(adj_list, true);
+        bmMem = new BenchmarkMax("Print graph");
+        print_adjList(adj_list, true);
     auto end_printing = chrono::high_resolution_clock::now();
 
     auto start_converting = chrono::high_resolution_clock::now();
-    GraphMatrix matrix = list_to_matrix(adj_list);
+        bmMem = new BenchmarkMax("List to matrix");
+        GraphMatrix matrix = list_to_matrix(adj_list);
     auto end_converting = chrono::high_resolution_clock::now();
 
     auto start_DFS = chrono::high_resolution_clock::now();
-    DFS(adj_list, 0, true);
+        bmMem = new BenchmarkMax("DFS");
+        DFS(adj_list, 0, true);
     auto end_DFS = chrono::high_resolution_clock::now();
 
     auto start_floyd = chrono::high_resolution_clock::now();
-    floyd(matrix, true);
+        bmMem = new BenchmarkMax("Floyd");
+        floyd(matrix, true);
     auto end_floyd = chrono::high_resolution_clock::now();
 
     auto start_floyd_mod = chrono::high_resolution_clock::now();
-    floyd_modified(matrix, 0, vert/2, true);
+        bmMem = new BenchmarkMax("Floyd mod");
+        floyd_modified(matrix, 0, vert/2, true);
     auto end_floyd_mod = chrono::high_resolution_clock::now();
 
     auto start_dijkstra = chrono::high_resolution_clock::now();
-    dijkstra(adj_list, vert/2, true);
+        bmMem = new BenchmarkMax("Dijkstra");
+        dijkstra(adj_list, vert/2, true);
     auto end_dijkstra = chrono::high_resolution_clock::now();
 
     auto start_isConnected = chrono::high_resolution_clock::now();
-    isConnected(adj_list);
+        bmMem = new BenchmarkMax("Is connected");
+        isConnected(adj_list);
     auto end_isConnected = chrono::high_resolution_clock::now();
 
     auto start_hasCycle = chrono::high_resolution_clock::now();
-    hasCycle(adj_list);
+        bmMem = new BenchmarkMax("Has cycle");
+        hasCycle(adj_list);
     auto end_hasCycle = chrono::high_resolution_clock::now();
 
     auto start_finding_comp = chrono::high_resolution_clock::now();
-    find_connected_components(adj_list, true);
+        bmMem = new BenchmarkMax("Find connected components");
+        find_connected_components(adj_list, true);
     auto end_finding_comp = chrono::high_resolution_clock::now();
 
     auto start_topological = chrono::high_resolution_clock::now();
-    topological_sort(adj_list, true);
+        bmMem = new BenchmarkMax("Topological sort");
+        topological_sort(adj_list, true);
     auto end_topological = chrono::high_resolution_clock::now();
 
     auto start_sp_tree = chrono::high_resolution_clock::now();
-    spanning_tree(adj_list, true);
+        bmMem = new BenchmarkMax("Spanning tree");
+        spanning_tree(adj_list, true);
     auto end_sp_tree = chrono::high_resolution_clock::now();
 
     auto start_kruskal = chrono::high_resolution_clock::now();
-    kruskal(adj_list, true);
+        bmMem = new BenchmarkMax("Kruskal");
+        kruskal(adj_list, true);
     auto end_kruskal = chrono::high_resolution_clock::now();
 
     auto end = chrono::high_resolution_clock::now();
@@ -2015,55 +2059,68 @@ void bench_list_undir(int vert, int edge)
     auto start = chrono::high_resolution_clock::now();
 
     auto start_generating = chrono::high_resolution_clock::now();
-    GraphAdjList adj_list = generate_random_graph_list_bench(vert, 20, edge, false);
+        BenchmarkMax* bmMem = new BenchmarkMax("Create random graph");
+        GraphAdjList adj_list = generate_random_graph_list_bench(vert, 20, edge, false);
     auto end_generating = chrono::high_resolution_clock::now();
 
     auto start_printing = chrono::high_resolution_clock::now();
-    print_adjList(adj_list, true);
+        bmMem = new BenchmarkMax("Print graph");
+        print_adjList(adj_list, true);
     auto end_printing = chrono::high_resolution_clock::now();
 
     auto start_converting = chrono::high_resolution_clock::now();
-    GraphMatrix matrix = list_to_matrix(adj_list);
+        bmMem = new BenchmarkMax("List to matrix");
+        GraphMatrix matrix = list_to_matrix(adj_list);
     auto end_converting = chrono::high_resolution_clock::now();
 
     auto start_DFS = chrono::high_resolution_clock::now();
-    DFS(adj_list, 0, true);
+        bmMem = new BenchmarkMax("DFS");
+        DFS(adj_list, 0, true);
     auto end_DFS = chrono::high_resolution_clock::now();
 
     auto start_floyd = chrono::high_resolution_clock::now();
-    floyd(matrix, true);
+        bmMem = new BenchmarkMax("Floyd");
+        floyd(matrix, true);
     auto end_floyd = chrono::high_resolution_clock::now();
 
     auto start_floyd_mod = chrono::high_resolution_clock::now();
-    floyd_modified(matrix, 0, vert/2, true);
+        bmMem = new BenchmarkMax("Floyd mod");
+        floyd_modified(matrix, 0, vert/2, true);
     auto end_floyd_mod = chrono::high_resolution_clock::now();
 
     auto start_dijkstra = chrono::high_resolution_clock::now();
-    dijkstra(adj_list, vert/2, true);
+        bmMem = new BenchmarkMax("Dijkstra");
+        dijkstra(adj_list, vert/2, true);
     auto end_dijkstra = chrono::high_resolution_clock::now();
 
     auto start_isConnected = chrono::high_resolution_clock::now();
-    isConnected(adj_list);
+        bmMem = new BenchmarkMax("Is connected");
+        isConnected(adj_list);
     auto end_isConnected = chrono::high_resolution_clock::now();
 
     auto start_hasCycle = chrono::high_resolution_clock::now();
-    hasCycle(adj_list);
+        bmMem = new BenchmarkMax("Has cycle");
+        hasCycle(adj_list);
     auto end_hasCycle = chrono::high_resolution_clock::now();
 
     auto start_finding_comp = chrono::high_resolution_clock::now();
-    find_connected_components(adj_list, true);
+        bmMem = new BenchmarkMax("Find connected components");
+        find_connected_components(adj_list, true);
     auto end_finding_comp = chrono::high_resolution_clock::now();
 
     auto start_topological = chrono::high_resolution_clock::now();
-    topological_sort(adj_list, true);
+        bmMem = new BenchmarkMax("Topological sort");
+        topological_sort(adj_list, true);
     auto end_topological = chrono::high_resolution_clock::now();
 
     auto start_sp_tree = chrono::high_resolution_clock::now();
-    spanning_tree(adj_list, true);
+        bmMem = new BenchmarkMax("Spanning tree");
+        spanning_tree(adj_list, true);
     auto end_sp_tree = chrono::high_resolution_clock::now();
 
     auto start_kruskal = chrono::high_resolution_clock::now();
-    kruskal(adj_list, true);
+        bmMem = new BenchmarkMax("Kruskal");
+        kruskal(adj_list, true);
     auto end_kruskal = chrono::high_resolution_clock::now();
 
     auto end = chrono::high_resolution_clock::now();
