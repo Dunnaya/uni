@@ -700,7 +700,8 @@ void linked_list_menu()
         cout << "5. Search elements in range\n";
         cout << "6. Print the list\n";
         cout << "7. Generate random elements\n";
-        cout << "8. Exit\n";
+        cout << "8. Clear the list\n";
+        cout << "9. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -771,6 +772,11 @@ void linked_list_menu()
             case 8:
             {
                 list.clear();
+                break;
+            }
+
+            case 9:
+            {
                 cout << "Exiting...\n";
                 break;
             }
@@ -781,7 +787,7 @@ void linked_list_menu()
                 break;
             }
         }
-    } while (choice != 8);
+    } while (choice != 9);
 }
 
 void array_list_menu()
@@ -798,7 +804,8 @@ void array_list_menu()
         cout << "5. Search elements in range\n";
         cout << "6. Print the list\n";
         cout << "7. Generate random elements\n";
-        cout << "8. Exit\n";
+        cout << "8. Clear the list\n";
+        cout << "9. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -869,6 +876,11 @@ void array_list_menu()
             case 8:
             {
                 list.clear();
+                break;
+            }
+
+            case 9:
+            {
                 cout << "Exiting...\n";
                 break;
             }
@@ -879,7 +891,7 @@ void array_list_menu()
                 break;
             }
         }
-    } while (choice != 8);
+    } while (choice != 9);
 }
 
 void binary_tree_menu()
@@ -896,7 +908,8 @@ void binary_tree_menu()
         cout << "5. Search elements in range\n";
         cout << "6. Print the list\n";
         cout << "7. Generate random elements\n";
-        cout << "8. Exit\n";
+        cout << "8. Clear the list\n";
+        cout << "9. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -967,6 +980,11 @@ void binary_tree_menu()
             case 8:
             {
                 tree.clear();
+                break;
+            }
+
+            case 9:
+            {
                 cout << "Exiting...\n";
                 break;
             }
@@ -977,7 +995,7 @@ void binary_tree_menu()
                 break;
             }
         }
-    } while (choice != 8);
+    } while (choice != 9);
 }
 
 void avl_tree_menu()
@@ -994,7 +1012,8 @@ void avl_tree_menu()
         cout << "5. Search elements in range\n";
         cout << "6. Print the list\n";
         cout << "7. Generate random elements\n";
-        cout << "8. Exit\n";
+        cout << "8. Clear the list\n";
+        cout << "9. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -1065,6 +1084,11 @@ void avl_tree_menu()
             case 8:
             {
                 tree.clear();
+                break;
+            }
+
+            case 9:
+            {
                 cout << "Exiting...\n";
                 break;
             }
@@ -1075,7 +1099,7 @@ void avl_tree_menu()
                 break;
             }
         }
-    } while (choice != 8);
+    } while (choice != 9);
 }
 
 void twothree_tree_menu()
