@@ -18,6 +18,10 @@
 #include <cstdlib>
 using namespace std;
 
+void interactiveMode();
+void demoMode();
+void benchmark();
+
 struct Point 
 {
     double x, y, z;
@@ -682,7 +686,456 @@ struct AVLTree
     }
 };
 
-int main() 
+void linked_list_menu()
+{
+    LinkedList list;
+    int choice;
+    do
+    {
+        cout << "\n  Linked list menu:\n";
+        cout << "1. Create an empty list\n";
+        cout << "2. Add an element\n";
+        cout << "3. Delete the element\n";
+        cout << "4. Searh for the element\n";
+        cout << "5. Search elements in range\n";
+        cout << "6. Print the list\n";
+        cout << "7. Generate random elements\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+            {
+                list.createEmptyList();
+                break;
+            }
+
+            case 2:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to add (x,y,z): ";
+                cin >> x >> y >> z;
+                list.add(x, y, z);
+                break;
+            }
+
+            case 3:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to remove (x,y,z): ";
+                cin >> x >> y >> z;
+                list.remove(x, y, z);
+                break;
+            }
+
+            case 4:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to find (x,y,z): ";
+                cin >> x >> y >> z;
+                list.search(x, y, z);
+                break;
+            }
+
+            case 5:
+            {
+                double xmin, ymin, zmin;
+                cout << "Enter the 1st point in a range (x,y,z): ";
+                cin >> xmin >> ymin >> zmin;
+
+                double xmax,ymax,zmax;
+                cout << "Enter the 2nd point in a range (x,y,z): ";
+                cin >> xmax >> ymax >> zmax;
+
+                list.searchInRange(xmin, xmax, ymin, ymax, zmin, zmax);
+                break;
+            }
+
+            case 6:
+            {
+                list.print();
+                break;
+            }
+
+            case 7:
+            {
+                int n;
+                cout << "How many elements you want to generate?\n";
+                cin >> n;
+                list.fillRandom(n);
+                break;
+            }
+
+            case 8:
+            {
+                list.clear();
+                cout << "Exiting...\n";
+                break;
+            }
+            
+            default:
+            {
+                cout << "Invalid input.";
+                break;
+            }
+        }
+    } while (choice != 8);
+}
+
+void array_list_menu()
+{
+    ArrayList list;
+    int choice;
+    do
+    {
+        cout << "\n  Array list menu:\n";
+        cout << "1. Create an empty list\n";
+        cout << "2. Add an element\n";
+        cout << "3. Delete the element\n";
+        cout << "4. Searh for the element\n";
+        cout << "5. Search elements in range\n";
+        cout << "6. Print the list\n";
+        cout << "7. Generate random elements\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+            {
+                list.createEmptyList();
+                break;
+            }
+
+            case 2:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to add (x,y,z): ";
+                cin >> x >> y >> z;
+                list.add(x, y, z);
+                break;
+            }
+
+            case 3:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to remove (x,y,z): ";
+                cin >> x >> y >> z;
+                list.remove(x, y, z);
+                break;
+            }
+
+            case 4:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to find (x,y,z): ";
+                cin >> x >> y >> z;
+                list.search(x, y, z);
+                break;
+            }
+
+            case 5:
+            {
+                double xmin, ymin, zmin;
+                cout << "Enter the 1st point in a range (x,y,z): ";
+                cin >> xmin >> ymin >> zmin;
+
+                double xmax,ymax,zmax;
+                cout << "Enter the 2nd point in a range (x,y,z): ";
+                cin >> xmax >> ymax >> zmax;
+
+                list.searchInRange(xmin, xmax, ymin, ymax, zmin, zmax);
+                break;
+            }
+
+            case 6:
+            {
+                list.print();
+                break;
+            }
+
+            case 7:
+            {
+                int n;
+                cout << "How many elements you want to generate?\n";
+                cin >> n;
+                list.fillRandom(n);
+                break;
+            }
+
+            case 8:
+            {
+                list.clear();
+                cout << "Exiting...\n";
+                break;
+            }
+            
+            default:
+            {
+                cout << "Invalid input.";
+                break;
+            }
+        }
+    } while (choice != 8);
+}
+
+void binary_tree_menu()
+{
+    BST tree;
+    int choice;
+    do
+    {
+        cout << "\n  Binary tree menu:\n";
+        cout << "1. Create an empty tree\n";
+        cout << "2. Add an element\n";
+        cout << "3. Delete the element\n";
+        cout << "4. Searh for the element\n";
+        cout << "5. Search elements in range\n";
+        cout << "6. Print the list\n";
+        cout << "7. Generate random elements\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+            {
+                tree.createEmptyTree();
+                break;
+            }
+
+            case 2:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to add (x,y,z): ";
+                cin >> x >> y >> z;
+                tree.add(x, y, z);
+                break;
+            }
+
+            case 3:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to remove (x,y,z): ";
+                cin >> x >> y >> z;
+                tree.remove(x, y, z);
+                break;
+            }
+
+            case 4:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to find (x,y,z): ";
+                cin >> x >> y >> z;
+                tree.search(x, y, z);
+                break;
+            }
+
+            case 5:
+            {
+                double xmin, ymin, zmin;
+                cout << "Enter the 1st point in a range (x,y,z): ";
+                cin >> xmin >> ymin >> zmin;
+
+                double xmax,ymax,zmax;
+                cout << "Enter the 2nd point in a range (x,y,z): ";
+                cin >> xmax >> ymax >> zmax;
+
+                tree.searchInRange(xmin, xmax, ymin, ymax, zmin, zmax);
+                break;
+            }
+
+            case 6:
+            {
+                tree.print();
+                break;
+            }
+
+            case 7:
+            {
+                int n;
+                cout << "How many elements you want to generate?\n";
+                cin >> n;
+                tree.fillRandom(n);
+                break;
+            }
+
+            case 8:
+            {
+                tree.clear();
+                cout << "Exiting...\n";
+                break;
+            }
+            
+            default:
+            {
+                cout << "Invalid input.";
+                break;
+            }
+        }
+    } while (choice != 8);
+}
+
+void avl_tree_menu()
+{
+    AVLTree tree;
+    int choice;
+    do
+    {
+        cout << "\n  AVL tree menu:\n";
+        cout << "1. Create an empty tree\n";
+        cout << "2. Add an element\n";
+        cout << "3. Delete the element\n";
+        cout << "4. Searh for the element\n";
+        cout << "5. Search elements in range\n";
+        cout << "6. Print the list\n";
+        cout << "7. Generate random elements\n";
+        cout << "8. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+            {
+                tree.createEmptyTree();
+                break;
+            }
+
+            case 2:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to add (x,y,z): ";
+                cin >> x >> y >> z;
+                tree.add(x, y, z);
+                break;
+            }
+
+            case 3:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to remove (x,y,z): ";
+                cin >> x >> y >> z;
+                tree.remove(x, y, z);
+                break;
+            }
+
+            case 4:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to find (x,y,z): ";
+                cin >> x >> y >> z;
+                tree.search(x, y, z);
+                break;
+            }
+
+            case 5:
+            {
+                double xmin, ymin, zmin;
+                cout << "Enter the 1st point in a range (x,y,z): ";
+                cin >> xmin >> ymin >> zmin;
+
+                double xmax,ymax,zmax;
+                cout << "Enter the 2nd point in a range (x,y,z): ";
+                cin >> xmax >> ymax >> zmax;
+
+                tree.searchInRange(xmin, xmax, ymin, ymax, zmin, zmax);
+                break;
+            }
+
+            case 6:
+            {
+                tree.print();
+                break;
+            }
+
+            case 7:
+            {
+                int n;
+                cout << "How many elements you want to generate?\n";
+                cin >> n;
+                tree.fillRandom(n);
+                break;
+            }
+
+            case 8:
+            {
+                tree.clear();
+                cout << "Exiting...\n";
+                break;
+            }
+            
+            default:
+            {
+                cout << "Invalid input.";
+                break;
+            }
+        }
+    } while (choice != 8);
+}
+
+void twothree_tree_menu()
+{}
+
+void interactiveMode()
+{
+    int choice;
+
+    cout << "\n   Main menu:\n1. Linked List\n2. Array list\n3. Binary tree\n4. AVL tree\n5. 2-3 tree\n6. Exit\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice)
+    {
+        case 1:
+        {
+            linked_list_menu();
+            break;
+        }
+
+        case 2:
+        {
+            array_list_menu();
+            break;
+        }
+
+        case 3:
+        {
+            binary_tree_menu();
+            break;
+        }
+
+        case 4:
+        {
+            avl_tree_menu();
+            break;
+        }
+
+        case 5:
+        {
+            twothree_tree_menu();
+            break;
+        }
+
+        case 6:
+        {
+            cout << "Exiting...\n";
+            break;
+        }
+        
+        default:
+        {
+            cout << "Invalid input.";
+            break;
+        }
+    }
+}
+
+void demoMode()
 {
     LinkedList list;
     list.createEmptyList();
@@ -742,6 +1195,41 @@ int main()
     AVLtree.searchInRange(2, 5, 2, 5, 2, 5);
     cout << endl;
     AVLtree.clear();
+}
 
+void benchmark()
+{}
+
+int main() 
+{
+    int choice;
+
+    cout << "Modes:\n";
+    cout << "1. Interactive\n" ;
+    cout << "2. Demo\n";
+    cout << "3. Benchmark\n";
+    cout << "Select mode: ";
+    cin >> choice;
+
+    switch(choice)
+    {
+        case 1:
+        {
+            interactiveMode();
+            break;
+        }
+
+        case 2:
+        {
+            demoMode();
+            break;
+        }
+
+        case 3:
+        {
+            benchmark();
+            break;
+        }
+    }
     return 0;
 }
