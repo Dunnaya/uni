@@ -978,7 +978,7 @@ struct two3Tree
                     assert(this->children[1] == current_child);
                     assert(this->children[2] == nullptr);
                     delete current_child;
-                    this->children[1] = nullptr; // maybe not needed - this will be fixed in parent rebalance?
+                    this->children[1] = nullptr;
                     return false;
                 }
 
@@ -1237,19 +1237,19 @@ struct two3Tree
                 data[1].print();
             }
 
-            std::cout << "(";
+            cout << "(";
             if (children[0])
                 children[0]->print_as_tree();
             
-            std::cout << ",";
+            cout << ",";
             if (children[1])
                 children[1]->print_as_tree();
             
-            std::cout << ",";
+            cout << ",";
             if (children[2])
                 children[2]->print_as_tree();
             
-            std::cout << ")";
+            cout << ")";
         }
 
         void print_in_order() 
@@ -1258,7 +1258,7 @@ struct two3Tree
                 children[0]->print_in_order();
             
             data[0].print();
-            std::cout << " ";
+            cout << " ";
 
             if (children[1])
                 children[1]->print_in_order();
@@ -1266,7 +1266,7 @@ struct two3Tree
             if (size == 2) 
             {
                 data[1].print();
-                std::cout << " ";
+                cout << " ";
 
                 if (children[2])
                     children[2]->print_in_order();
@@ -1276,7 +1276,7 @@ struct two3Tree
 
     TreeNode* root;
 
-    void find_elements_by_range_recursive(TreeNode* node, Point& min_modulus, Point& max_modulus, std::vector<Point>& result) 
+    void find_elements_by_range_recursive(TreeNode* node, Point& min_modulus, Point& max_modulus, vector<Point>& result) 
     {
         if (!node) return;
 
@@ -1341,8 +1341,8 @@ struct two3Tree
         if (root)
             root->print_as_tree();
         else
-            std::cout << "The tree is empty.";
-        std::cout << std::endl;
+            cout << "The tree is empty.";
+        cout << endl;
     }
 
     void print_in_order() 
@@ -1350,8 +1350,8 @@ struct two3Tree
         if (root) 
             root->print_in_order();
         else 
-            std::cout << "The tree is empty.";
-        std::cout << std::endl;
+            cout << "The tree is empty.";
+        cout << endl;
     }
 
     void print_all() 
@@ -1380,9 +1380,9 @@ struct two3Tree
         return false;
     }
 
-    std::vector<Point> find_elements_by_range(Point min_modulus, Point max_modulus) 
+    vector<Point> find_elements_by_range(Point min_modulus, Point max_modulus) 
     {
-        std::vector<Point> result;
+        vector<Point> result;
         find_elements_by_range_recursive(root, min_modulus, max_modulus, result);
         return result;
     }
@@ -1804,7 +1804,7 @@ void avl_tree_menu()
     } while (choice != 9);
 }
 
-/*void twth_tree_menu();
+void twth_tree_menu()
 {
     two3Tree tree;
     Point point;
@@ -1879,6 +1879,7 @@ void avl_tree_menu()
                         cout << " ";
                     }
                     cout << endl;
+                }
                 break;
             }
 
@@ -1909,7 +1910,7 @@ void avl_tree_menu()
             }
         }
     } while (choice != 7);
-}*/
+}
 
 void interactiveMode()
 {
@@ -1947,7 +1948,7 @@ void interactiveMode()
 
         case 5:
         {
-            //twth_tree_menu();
+            twth_tree_menu();
             break;
         }
 
