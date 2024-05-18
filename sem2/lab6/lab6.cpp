@@ -16,6 +16,8 @@
 
 #include <iostream>
 #include <cstdlib>
+#include <chrono>
+#include <thread>
 using namespace std;
 
 void interactiveMode();
@@ -1161,64 +1163,88 @@ void interactiveMode()
 
 void demoMode()
 {
+    cout << "\n\tLinked list:\n\n";
     LinkedList list;
+    cout << "Creating an empty list:\n";
     list.createEmptyList();
-    list.fillRandom(10);
+    cout << "\nAdding 9 random elements and the (1.1, 1.1, 1.1) point:\n";
+    list.add(1.1, 1.1, 1.1);
+    list.fillRandom(9);
     cout << "List: ";
     list.print();
-    cout << "Removing (0.5, 0.5, 0.5) from the list..." << endl;
-    list.remove(0.5, 0.5, 0.5);
+    cout << "\nSearching for (1.1, 1.1, 1.1): " << (list.search(1.1, 1.1, 1.1) ? "Found" : "Not Found") << endl;
+    cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
+    list.searchInRange(0, 7, 0, 6, 0, 5);
+    cout << "\nRemoving (1.1, 1.1, 1.1) from the list...\n";
+    list.remove(1.1, 1.1, 1.1);
     cout << "List after removal: ";
     list.print();
-    cout << "Searching for (0.3, 0.3, 0.3): " << (list.search(0.3, 0.3, 0.3) ? "Found" : "Not Found") << endl;
-    list.searchInRange(2, 5, 2, 5, 2, 5);
     list.clear();
 
+        this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\tArray list:\n\n";
     srand(time(nullptr));
     ArrayList arrayList;
+    cout << "Creating an empty list:\n";
     arrayList.createEmptyList();
-    arrayList.fillRandom(10);
-    cout << "ArrayList: ";
+    cout << "\nAdding 9 random elements and the (2.2, 2.2, 2.2) point:\n";
+    arrayList.add(2.2, 2.2, 2.2);
+    arrayList.fillRandom(9);
+    cout << "List: ";
     arrayList.print();
-    cout << "Removing (0.5, 0.5, 0.5) from the list..." << endl;
-    arrayList.remove(0.5, 0.5, 0.5);
+    cout << "\nSearching for (1.1, 1.1, 1.1): " << (arrayList.search(1.1, 1.1, 1.1) ? "Found" : "Not Found") << endl;
+    cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
+    arrayList.searchInRange(0, 7, 0, 6, 0, 5);
+    cout << "\nRemoving (2.2, 2.2, 2.2) from the list...\n";
+    arrayList.remove(2.2, 2.2, 2.2);
     cout << "List after removal: ";
     arrayList.print();
-    cout << "Searching for (0.3, 0.3, 0.3): " << (arrayList.search(0.3, 0.3, 0.3) ? "Found" : "Not Found") << endl;
-    arrayList.searchInRange(2, 5, 2, 5, 2, 5);
     arrayList.clear();
 
+        this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\tBinary tree:\n\n";
     srand(time(nullptr));
     BST BSTtree;
+    cout << "Creating an empty list:\n";
     BSTtree.createEmptyTree();
-    BSTtree.fillRandom(10);
-    cout << "BST: ";
+    cout << "\nAdding 9 random elements and the (3.3, 3.3, 3.3) point:\n";
+    BSTtree.add(3.3, 3.3, 3.3);
+    BSTtree.fillRandom(9);
+    cout << "List: ";
     BSTtree.print();
-    cout << "Removing (0.5, 0.5, 0.5) from the tree..." << endl;
-    BSTtree.remove(0.5, 0.5, 0.5);
-    cout << "Tree after removal: ";
+    cout << "\nSearching for (3.3, 3.3, 3.3): " << (BSTtree.search(3.3, 3.3, 3.3) ? "Found" : "Not Found") << endl;
+    cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
+    BSTtree.searchInRange(0, 7, 0, 6, 0, 5);
+    cout << "\nRemoving (3.3, 3.3, 3.3) from the list...\n";
+    BSTtree.remove(3.3, 3.3, 3.3);
+    cout << "List after removal: ";
     BSTtree.print();
-    cout << "Searching for (0.3, 0.3, 0.3): " << (BSTtree.search(0.3, 0.3, 0.3) ? "Found" : "Not Found") << endl;
-    cout << "Points in range (2, 5, 2, 5, 2, 5): ";
-    BSTtree.searchInRange(2, 5, 2, 5, 2, 5);
-    cout << endl;
     BSTtree.clear();
 
+        this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\tAVL tree:\n\n";
     srand(time(nullptr));
     AVLTree AVLtree;
+    cout << "Creating an empty list:\n";
     AVLtree.createEmptyTree();
-    AVLtree.fillRandom(10);
-    cout << "AVLTree: ";
+    cout << "\nAdding 9 random elements and the (4.4, 4.4, 4.4) point:\n";
+    AVLtree.add(4.4, 4.4, 4.4);
+    AVLtree.fillRandom(9);
+    cout << "List: ";
     AVLtree.print();
-    cout << "Removing (0.5, 0.5, 0.5) from the tree..." << endl;
-    AVLtree.remove(0.5, 0.5, 0.5);
-    cout << "Tree after removal: ";
+    cout << "\nSearching for (3.3, 3.3, 3.3): " << (AVLtree.search(3.3, 3.3, 3.3) ? "Found" : "Not Found") << endl;
+    cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
+    AVLtree.searchInRange(0, 7, 0, 6, 0, 5);
+    cout << "\nRemoving (4.4, 4.4, 4.4) from the list...\n";
+    AVLtree.remove(4.4, 4.4, 4.4);
+    cout << "List after removal: ";
     AVLtree.print();
-    cout << "Searching for (0.3, 0.3, 0.3): " << (AVLtree.search(0.3, 0.3, 0.3) ? "Found" : "Not Found") << endl;
-    cout << "Points in range (2, 5, 2, 5, 2, 5): ";
-    AVLtree.searchInRange(2, 5, 2, 5, 2, 5);
-    cout << endl;
     AVLtree.clear();
+
+        this_thread::sleep_for(chrono::seconds(1));
 }
 
 void benchmark()
