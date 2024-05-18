@@ -1,21 +1,16 @@
 /* Реалізувати структуру даних «впорядкований список» на основі:
-1. doneЗв’язного списку (Linked List)
-2. doneСписку на основі масиву (Array List)
-3. doneБінарного дерева пошуку (без балансування)
-4. doneАВЛ-дерева
+1. Зв’язного списку (Linked List)
+2. Списку на основі масиву (Array List)
+3. Бінарного дерева пошуку (без балансування)
+4. АВЛ-дерева
 5. 2-3 дерева
-   Координати точок в тривимірному просторі (дійсні), сортування за x-y-z, за зростанням
    
-   Реалізувати операції: 
-   створення пустого списку, 
-   додавання елементу, вилучення елементу, 
-   пошук елементів за значенням та за діапазоном значень, 
-   вивід елементів у правильному порядку, 
-   ?виконання певних дій над усіма елементами в правильному порядку. 
-   Також реалізувати заповнення списку заданою кількістю випадкових елементів.*/
+    Координати точок в тривимірному просторі (дійсні), сортування за x-y-z, за зростанням*/
 
 #include <iostream>
 #include <cstdlib>
+#include <vector>
+#include <cassert>
 #include <chrono>
 #include <thread>
 using namespace std;
@@ -24,12 +19,12 @@ void interactiveMode();
 void demoMode();
 void benchmark();
 
-struct Point 
+struct PointList 
 {
     double x, y, z;
-    Point* next;
+    PointList* next;
 
-    Point(double x, double y, double z) : x(x), y(y), z(z), next(nullptr) {}
+    PointList(double x, double y, double z) : x(x), y(y), z(z), next(nullptr) {}
 };
 
 struct PointTree
@@ -51,9 +46,62 @@ struct PointAVL
     PointAVL(double x, double y, double z) : x(x), y(y), z(z), left(nullptr), right(nullptr), height(1) {}
 };
 
+struct Point //2-3 tree
+{
+    double x, y, z;
+    Point* next;
+
+    Point(double x = 0, double y = 0, double z = 0) : x(x), y(y), z(z), next(nullptr) {}
+
+    // Operator <
+    bool operator<(const Point& other) const 
+    {
+        if (x != other.x) return x < other.x;
+        if (y != other.y) return y < other.y;
+        return z < other.z;
+    }
+
+    // Operator >
+    bool operator>(const Point& other) const 
+    {
+        if (x != other.x) return x > other.x;
+        if (y != other.y) return y > other.y;
+        return z > other.z;
+    }
+
+    // Operator <=
+    bool operator<=(const Point& other) const 
+    {
+        return !(*this > other);
+    }
+
+    // Operator >=
+    bool operator>=(const Point& other) const 
+    {
+        return !(*this < other);
+    }
+
+    // Operator ==
+    bool operator==(const Point& other) const 
+    {
+        return x == other.x && y == other.y && z == other.z;
+    }
+
+    // Operator !=
+    bool operator!=(const Point& other) const 
+    {
+        return !(*this == other);
+    }
+
+    void print() const
+    {
+        cout << "(" << x << ", " << y << ", " << z << ") ";
+    }
+};
+
 struct LinkedList 
 {
-    Point* head;
+    PointList* head;
 
     LinkedList() : head(nullptr) {}
 
@@ -65,7 +113,7 @@ struct LinkedList
 
     void add(double x, double y, double z) 
     {
-        Point* newNode = createPoint(x, y, z);
+        PointList* newNode = createPoint(x, y, z);
         if (!head || head->x > x || (head->x == x && head->y > y) || (head->x == x && head->y == y && head->z > z)) 
         {
             newNode->next = head;
@@ -73,7 +121,7 @@ struct LinkedList
         } 
         else 
         {
-            Point* current = head;
+            PointList* current = head;
             while (current->next && 
                    (current->next->x < x ||
                     (current->next->x == x && current->next->y < y) ||
@@ -88,8 +136,8 @@ struct LinkedList
 
     void remove(double x, double y, double z) 
     {
-        Point* current = head;
-        Point* prev = nullptr;
+        PointList* current = head;
+        PointList* prev = nullptr;
         while (current && !(current->x == x && current->y == y && current->z == z)) 
         {
             prev = current;
@@ -107,7 +155,7 @@ struct LinkedList
 
     bool search(double x, double y, double z) 
     {
-        Point* current = head;
+        PointList* current = head;
         while (current) 
         {
             if (current->x == x && current->y == y && current->z == z)
@@ -119,7 +167,7 @@ struct LinkedList
 
     void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) 
     {
-        Point* current = head;
+        PointList* current = head;
         bool found = false;
         while (current) 
         {
@@ -139,7 +187,7 @@ struct LinkedList
 
     void print() 
     {
-        Point* current = head;
+        PointList* current = head;
         while (current) 
         {
             cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
@@ -152,7 +200,7 @@ struct LinkedList
     {
         while (head) 
         {
-            Point* temp = head;
+            PointList* temp = head;
             head = head->next;
             delete temp;
         }
@@ -169,15 +217,15 @@ struct LinkedList
         }
     }
 
-    Point* createPoint(double x, double y, double z) 
+    PointList* createPoint(double x, double y, double z) 
     {
-        return new Point(x, y, z);
+        return new PointList(x, y, z);
     }
 };
 
 struct ArrayList 
 {
-    Point* head;
+    PointList* head;
 
     ArrayList() : head(nullptr) {}
 
@@ -189,13 +237,13 @@ struct ArrayList
 
     void add(double x, double y, double z) 
     {
-        Point* newPoint = createPoint(x, y, z);
+        PointList* newPoint = createPoint(x, y, z);
         if (!head || head->x > x || (head->x == x && head->y > y) || (head->x == x && head->y == y && head->z > z)) 
         {
             newPoint->next = head;
             head = newPoint;
         } else {
-            Point* current = head;
+            PointList* current = head;
             while (current->next && 
                    (current->next->x < x ||
                     (current->next->x == x && current->next->y < y) ||
@@ -210,8 +258,8 @@ struct ArrayList
 
     void remove(double x, double y, double z) 
     {
-        Point* current = head;
-        Point* prev = nullptr;
+        PointList* current = head;
+        PointList* prev = nullptr;
         while (current && !(current->x == x && current->y == y && current->z == z)) 
         {
             prev = current;
@@ -229,7 +277,7 @@ struct ArrayList
 
     bool search(double x, double y, double z) const 
     {
-        Point* current = head;
+        PointList* current = head;
         while (current) 
         {
             if (current->x == x && current->y == y && current->z == z)
@@ -241,7 +289,7 @@ struct ArrayList
 
     void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) const
     {
-        Point* current = head;
+        PointList* current = head;
         bool found = false;
         while (current) 
         {
@@ -262,7 +310,7 @@ struct ArrayList
 
     void print() const 
     {
-        Point* current = head;
+        PointList* current = head;
         while (current) 
         {
             cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
@@ -275,7 +323,7 @@ struct ArrayList
     {
         while (head) 
         {
-            Point* temp = head;
+            PointList* temp = head;
             head = head->next;
             delete temp;
         }
@@ -293,9 +341,9 @@ struct ArrayList
         }
     }
 
-    Point* createPoint(double x, double y, double z) 
+    PointList* createPoint(double x, double y, double z) 
     {
-        return new Point(x, y, z);
+        return new PointList(x, y, z);
     }
 };
 
@@ -685,6 +733,658 @@ struct AVLTree
             double z = rand() % 1000 / 100.0;
             add(x, y, z);
         }
+    }
+};
+
+struct two3Tree 
+{
+    struct TreeNode 
+    {
+        Point data[2];
+        int size;
+        TreeNode* children[3];
+        TreeNode* parent;
+
+        TreeNode(Point data1, TreeNode* parent = nullptr) 
+        {
+            this->data[0] = data1;
+            this->size = 1;
+            children[0] = children[1] = children[2] = nullptr;
+            this->parent = parent;
+        }
+
+        TreeNode(Point data1, Point data2, TreeNode* parent = nullptr) 
+        {
+            assert(data1 <= data2);
+            this->data[0] = data1;
+            this->data[1] = data2;
+            this->size = 2;
+            children[0] = children[1] = children[2] = nullptr;
+            this->parent = parent;
+        }
+
+        TreeNode(Point data1, Point data2, Point data3, TreeNode* parent = nullptr) 
+        {
+            assert(data1 <= data2);
+            assert(data2 <= data3);
+
+            this->data[0] = data2;
+            this->size = 1;
+            this->children[0] = new TreeNode(data1, this);
+            this->children[1] = new TreeNode(data3, this);
+            this->children[2] = nullptr;
+
+            this->parent = parent;
+
+        }
+
+        void add_single_data(Point data) 
+        {
+            assert(size == 1);
+
+            if (data > this->data[0]) 
+            {
+                this->data[1] = data;
+                size = 2;
+            }
+            else 
+            {
+                this->data[1] = this->data[0];
+                this->data[0] = data;
+                size = 2;
+            }
+        }
+
+        TreeNode* add_and_split(Point new_data) 
+        {
+            if (children[0] == nullptr) 
+            {
+                if (size == 1) 
+                {
+                    add_single_data(new_data);
+                    return nullptr;
+                }
+                else 
+                {
+                    if (new_data < data[0])
+                        return new TreeNode(new_data, data[0], data[1]);
+                    else if (new_data < data[1])
+                        return new TreeNode(data[0], new_data, data[1]);
+                    else
+                        return new TreeNode(data[0], data[1], new_data);
+                }
+            }
+
+            TreeNode* extra = nullptr;
+
+            if (size == 1) 
+            {
+                if (new_data < data[0]) 
+                {
+                    extra = children[0]->add_and_split(new_data);
+                    if (!extra) return nullptr;
+                    data[1] = data[0];
+                    data[0] = extra->data[0];
+                    children[2] = children[1];
+                    children[0] = extra->children[0];
+                    children[1] = extra->children[1];
+                    size = 2;
+                    return nullptr;
+                }
+                else 
+                {
+                    extra = children[1]->add_and_split(new_data);
+                    if (!extra) return nullptr;
+                    data[1] = extra->data[0];
+                    children[1] = extra->children[0];
+                    children[2] = extra->children[1];
+                    size = 2;
+                    return nullptr;
+                }
+            }
+            else 
+            {
+                if (new_data < data[0]) 
+                {
+                    extra = children[0]->add_and_split(new_data);
+                    if (!extra) return nullptr;
+                    TreeNode* result = new TreeNode(extra->data[0], data[0], data[1]);
+                    result->children[0]->children[0] = extra->children[0];
+                    result->children[0]->children[1] = extra->children[1];
+                    result->children[1]->children[0] = children[1];
+                    result->children[1]->children[1] = children[2];
+                    return result;
+                }
+                else if (new_data < data[1]) 
+                {
+                    extra = children[1]->add_and_split(new_data);
+                    if (!extra) return nullptr;
+                    TreeNode* result = new TreeNode(data[0], extra->data[0], data[1]);
+                    result->children[0]->children[0] = children[0];
+                    result->children[0]->children[1] = extra->children[0];
+                    result->children[1]->children[0] = extra->children[1];
+                    result->children[1]->children[1] = children[2];
+                    return result;
+                }
+                else 
+                {
+                    extra = children[2]->add_and_split(new_data);
+                    if (!extra) return nullptr;
+                    TreeNode* result = new TreeNode(data[0], data[1], extra->data[0]);
+                    result->children[0]->children[0] = children[0];
+                    result->children[0]->children[1] = children[1];
+                    result->children[1]->children[0] = extra->children[0];
+                    result->children[1]->children[1] = extra->children[1];
+                    return result;
+                }
+            }
+        }
+
+        TreeNode* find_max_subtree() 
+        {
+            if (children[2]) 
+            {
+                assert(size == 2);
+                return children[2]->find_max_subtree();
+            }
+
+            if (children[1]) 
+            {
+                assert(size == 1);
+                return children[1]->find_max_subtree();
+            }
+
+            assert(children[0] == nullptr);
+
+            return this;
+        }
+
+        Point get_max_data() 
+        {
+            if (size == 2) 
+                return data[1];
+            else
+                return data[0];
+        }
+
+        enum RemoveResult { Removed, NotFound, NeedParentRemove };
+
+        bool rebalance(int index_current_child) 
+        {
+            assert(index_current_child < size + 1);
+            TreeNode* current_child = children[index_current_child];
+            assert(current_child);
+            assert(current_child->size == 0);
+            TreeNode* left_child = nullptr;
+
+            if (index_current_child > 0) 
+            { 
+                left_child = children[index_current_child - 1]; 
+            }
+
+            TreeNode* right_child = (index_current_child < size) ?
+                children[index_current_child + 1] :
+                nullptr;
+
+            assert(left_child != nullptr || right_child != nullptr);
+
+            if (left_child && left_child->size == 2) 
+            {
+                assert(index_current_child - 1 >= 0);
+                current_child->data[0] = this->data[index_current_child - 1];
+                this->data[index_current_child - 1] = left_child->data[1];
+
+                current_child->children[1] = current_child->children[0];
+                current_child->children[0] = left_child->children[2];
+                left_child->children[2] = nullptr;
+
+                current_child->size = 1;
+                left_child->size = 1;
+                return true;
+            }
+
+            if (right_child && right_child->size == 2) 
+            {
+                assert(index_current_child < this->size);
+                current_child->data[0] = this->data[index_current_child];
+                this->data[index_current_child] = right_child->data[0];
+                right_child->data[0] = right_child->data[1];
+
+                current_child->children[1] = right_child->children[0];
+                right_child->children[0] = right_child->children[1];
+                right_child->children[1] = right_child->children[2];
+                right_child->children[2] = nullptr;
+
+                current_child->size = 1;
+                right_child->size = 1;
+                return true;
+            }
+
+            if (left_child) 
+            {
+                assert(left_child->size == 1);
+                assert(index_current_child - 1 >= 0);
+
+                left_child->data[1] = this->data[index_current_child - 1];
+
+                left_child->children[2] = current_child->children[0];
+
+                left_child->size = 2;
+                this->size--;
+
+                if (this->size == 0) 
+                {
+                    assert(this->children[0] == left_child);
+                    assert(this->children[1] == current_child);
+                    assert(this->children[2] == nullptr);
+                    delete current_child;
+                    this->children[1] = nullptr; // maybe not needed - this will be fixed in parent rebalance?
+                    return false;
+                }
+
+                assert(this->size == 1);
+
+                if (index_current_child == 1) 
+                {
+                    this->data[0] = this->data[1];
+                    assert(this->children[0] == left_child);
+                    assert(this->children[1] == current_child);
+                    delete current_child;
+                    this->children[1] = this->children[2];
+                    this->children[2] = nullptr;
+                    return true;
+                }
+
+                assert(index_current_child == 2); 
+                {
+                    assert(this->children[1] == left_child);
+                    assert(this->children[2] == current_child);
+                    delete current_child;
+                    this->children[2] = nullptr;
+                    return true;
+                }
+            }
+
+            assert(right_child != nullptr);
+            assert(right_child->size == 1);
+
+            right_child->data[1] = right_child->data[0];
+            right_child->data[0] = this->data[index_current_child];
+            assert(right_child->data[0] < right_child->data[1]);
+
+            if (current_child->children[0] != nullptr) 
+            {
+                assert(right_child->children[0] != nullptr);
+                assert(right_child->children[1] != nullptr);
+                
+                right_child->children[2] = right_child->children[1];
+                right_child->children[1] = right_child->children[0];
+                right_child->children[0] = current_child->children[0];
+
+            }
+            else 
+            {
+                assert(current_child->children[0] == nullptr);
+                assert(right_child->children[0] == nullptr);
+                assert(right_child->children[1] == nullptr);
+            }
+
+            right_child->size = 2;
+            this->size--;
+
+            if (this->size == 0) 
+            {
+                assert(this->children[0] == current_child);
+                assert(this->children[1] == right_child);
+                assert(this->children[2] == nullptr);
+                delete current_child;
+                this->children[0] = this->children[1];
+                this->children[1] = nullptr;
+                return false;
+            }
+            assert(this->size == 1);
+
+            if (index_current_child == 0) 
+            {
+                assert(this->children[0] == current_child);
+                assert(this->children[1] == right_child);
+                this->data[0] = this->data[1];
+                delete current_child;
+                this->children[0] = this->children[1];
+                this->children[1] = this->children[2];
+                this->children[2] = nullptr;
+                return true;
+            }
+
+            assert(index_current_child == 1); 
+            {
+                assert(this->children[1] == current_child);
+                assert(this->children[2] == right_child);
+                delete current_child;
+                this->children[1] = this->children[2];
+                this->children[2] = nullptr;
+                return true;
+            }
+        }
+
+        RemoveResult remove(Point data_to_remove) 
+        {
+            if (children[0] == nullptr) 
+            {
+                if (size == 1) 
+                {
+                    if (data[0] == data_to_remove) 
+                    {
+                        size = 0;
+                        return NeedParentRemove;
+                    }
+                    else
+                        return NotFound;
+                }
+                else 
+                {
+                    if (data[0] == data_to_remove) 
+                    {
+                        data[0] = data[1];
+                        size = 1;
+                        return Removed;
+                    }
+                    else if (data[1] == data_to_remove) 
+                    {
+                        size = 1;
+                        return Removed;
+                    }
+                    else
+                        return NotFound;
+                }
+            }
+
+            if (size == 1) 
+            {
+                if (data_to_remove < data[0]) 
+                {
+                    RemoveResult result = children[0]->remove(data_to_remove);
+
+                    if (result == NeedParentRemove) 
+                    {
+                        rebalance(0);
+                        if (this->size == 0) 
+                            return NeedParentRemove;
+                        else 
+                            return Removed;
+                    }
+                    else
+                        return result;
+                }
+                else if (data_to_remove > data[0]) 
+                {
+                    RemoveResult result = children[1]->remove(data_to_remove);
+
+                    if (result == NeedParentRemove) 
+                    {
+                        rebalance(1);
+                        if (this->size == 0)
+                            return NeedParentRemove;
+                        else
+                            return Removed;
+                    }
+                    else
+                        return result;
+                }
+                else 
+                {
+                    TreeNode* prev = children[0]->find_max_subtree();
+                    assert(prev->children[0] == nullptr);
+                    Point prev_data = prev->get_max_data();
+                    data[0] = prev_data;
+
+                    RemoveResult result = this->children[0]->remove(prev_data);
+                    assert(result != NotFound);
+
+                    if (result == Removed)
+                        return Removed;
+                    rebalance(0);
+
+                    if (this->size == 0)
+                        return NeedParentRemove;
+                    else 
+                        return Removed;
+                }
+            }
+
+            if (size == 2) 
+            {
+                if (data_to_remove < data[0]) 
+                {
+                    RemoveResult result = children[0]->remove(data_to_remove);
+
+                    if (result == NeedParentRemove) 
+                    {
+                        rebalance(0);
+                        assert(this->size > 0);
+                        return Removed;
+                    }
+                    else
+                        return result;
+                }
+                else if (data_to_remove == data[0]) 
+                {
+                    TreeNode* prev = children[0]->find_max_subtree();
+                    assert(prev->children[0] == nullptr);
+                    Point prev_data = prev->get_max_data();
+                    data[0] = prev_data;
+                    RemoveResult result = this->children[0]->remove(prev_data);
+                    assert(result != NotFound);
+
+                    if (result == Removed)
+                        return Removed;
+                    rebalance(0);
+
+                    assert(this->size > 0);
+                    return Removed;
+                }
+                else if (data_to_remove < data[1]) 
+                {
+                    RemoveResult result = children[1]->remove(data_to_remove);
+                    if (result == NeedParentRemove) 
+                    {
+                        rebalance(1);
+                        assert(this->size > 0);
+                        return Removed;
+                    }
+                    else
+                        return result;
+                }
+                else if (data_to_remove == data[1]) 
+                {
+                    TreeNode* prev = children[1]->find_max_subtree();
+                    assert(prev->children[0] == nullptr);
+                    Point prev_data = prev->get_max_data();
+                    data[1] = prev_data;
+                    RemoveResult result = this->children[1]->remove(prev_data);
+                    assert(result != NotFound);
+
+                    if (result == Removed)
+                        return Removed;
+                    rebalance(1);
+
+                    assert(this->size > 0);
+                    return Removed;
+                }
+                else 
+                {
+                    RemoveResult result = children[2]->remove(data_to_remove);
+
+                    if (result == NeedParentRemove) 
+                    {
+                        rebalance(2);
+                        assert(this->size > 0);
+                        return Removed;
+                    }
+                    else
+                        return result;
+                }
+            }
+        }
+
+        void print_as_tree() 
+        {
+            data[0].print();
+
+            if (size == 2)
+            {
+                std::cout << ";"; 
+                data[1].print();
+            }
+
+            std::cout << "(";
+            if (children[0])
+                children[0]->print_as_tree();
+            
+            std::cout << ",";
+            if (children[1])
+                children[1]->print_as_tree();
+            
+            std::cout << ",";
+            if (children[2])
+                children[2]->print_as_tree();
+            
+            std::cout << ")";
+        }
+
+        void print_in_order() 
+        {
+            if (children[0])
+                children[0]->print_in_order();
+            
+            data[0].print();
+            std::cout << " ";
+
+            if (children[1])
+                children[1]->print_in_order();
+
+            if (size == 2) 
+            {
+                data[1].print();
+                std::cout << " ";
+
+                if (children[2])
+                    children[2]->print_in_order();
+            }
+        }
+    };
+
+    TreeNode* root;
+
+    void find_elements_by_range_recursive(TreeNode* node, Point& min_modulus, Point& max_modulus, std::vector<Point>& result) 
+    {
+        if (!node) return;
+
+        if (node->data[0] >= min_modulus && node->data[0] <= max_modulus)
+            result.push_back(node->data[0]);
+        
+        if (node->size == 2 && node->data[1] >= min_modulus && node->data[1] <= max_modulus)
+            result.push_back(node->data[1]);
+        
+        if (node->children[0] && node->data[0] >= min_modulus)
+            find_elements_by_range_recursive(node->children[0], min_modulus, max_modulus, result);
+
+        if (node->children[1] && node->data[0] <= max_modulus)
+            find_elements_by_range_recursive(node->children[1], min_modulus, max_modulus, result);
+        
+        if (node->children[2] && node->size == 2 && node->data[1] <= max_modulus)
+            find_elements_by_range_recursive(node->children[2], min_modulus, max_modulus, result);
+    }
+
+    two3Tree() 
+    {
+        root = nullptr;
+    }
+
+    void add(Point data) 
+    {
+        if (!root)
+            root = new TreeNode(data);
+        else 
+        {
+            TreeNode* extra = root->add_and_split(data);
+            if (extra)
+                root = extra;
+        }
+
+    }
+
+    bool remove(Point data) 
+    {
+        TreeNode::RemoveResult result = root->remove(data);
+        if (result == TreeNode::NotFound)
+            return false;
+        if (result == TreeNode::Removed)
+            return true;
+        if (result == TreeNode::NeedParentRemove) 
+        {
+            root = root->children[0];
+            return true;
+        }
+    }
+
+    void generate(int count) 
+    {
+        for (int i = 0; i < count; ++i) 
+        {
+            add(Point(rand()% 100, rand() % 100, rand() % 100));
+        }
+    }
+
+    void print_as_tree() 
+    {
+        if (root)
+            root->print_as_tree();
+        else
+            std::cout << "The tree is empty.";
+        std::cout << std::endl;
+    }
+
+    void print_in_order() 
+    {
+        if (root) 
+            root->print_in_order();
+        else 
+            std::cout << "The tree is empty.";
+        std::cout << std::endl;
+    }
+
+    void print_all() 
+    {
+        print_as_tree();
+        print_in_order();
+    }
+
+    bool find_element_by_val(Point z) 
+    {
+        TreeNode* current = root;
+
+        while (current) 
+        {
+            if (current->data[0] == z || (current->size == 2 && current->data[1] == z))
+                return current;
+            else if (current->size == 1 && z < current->data[0]) 
+                current = current->children[0];
+            else if (current->size == 2 && z < current->data[0]) 
+                current = current->children[0];
+            else if (current->size == 2 && z < current->data[1]) 
+                current = current->children[1];
+            else 
+                current = current->children[2];
+        }
+        return false;
+    }
+
+    std::vector<Point> find_elements_by_range(Point min_modulus, Point max_modulus) 
+    {
+        std::vector<Point> result;
+        find_elements_by_range_recursive(root, min_modulus, max_modulus, result);
+        return result;
     }
 };
 
@@ -1104,8 +1804,112 @@ void avl_tree_menu()
     } while (choice != 9);
 }
 
-void twothree_tree_menu()
-{}
+/*void twth_tree_menu();
+{
+    two3Tree tree;
+    Point point;
+    int choice;
+    do
+    {
+        cout << "\n  AVL tree menu:\n";
+        cout << "1. Add an element\n";
+        cout << "2. Delete the element\n";
+        cout << "3. Searh for the element\n";
+        cout << "4. Search elements in range\n";
+        cout << "5. Print tree as tree\n";
+        cout << "6. Print tree in order\n";
+        cout << "7. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch(choice)
+        {
+            case 1:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to add (x,y,z): ";
+                cin >> x >> y >> z;
+                point = Point(x, y, z);
+                tree.add(point);
+                break;
+            }
+
+            case 2:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to remove (x,y,z): ";
+                cin >> x >> y >> z;
+                point = Point(x, y, z);
+                if (tree.remove(point))
+                    cout << "Point removed.\n";
+                else
+                    cout << "Point not found.\n";
+                break;
+            }
+
+            case 3:
+            {
+                double x, y, z;
+                cout << "Enter the point you want to find (x,y,z): ";
+                cin >> x >> y >> z;
+                point = Point(x, y, z);
+                if (tree.find_element_by_val(point))
+                    cout << "Point found.\n";
+                else
+                    cout << "Point not found.\n";
+                break;
+            }
+
+            case 4:
+            {
+                double x, y, z;
+                Point min_modulus, max_modulus;
+                cout << "Enter minimum modulus point (x y z): ";
+                cin >> x >> y >> z;
+                min_modulus = Point(x, y, z);
+                cout << "Enter maximum modulus point (x y z): ";
+                cin >> x >> y >> z;
+                max_modulus = Point(x, y, z);
+                {
+                    vector<Point> points = tree.find_elements_by_range(min_modulus, max_modulus);
+                    cout << "Points in range:\n";
+                    for (const Point& p : points) 
+                    {
+                        p.print();
+                        cout << " ";
+                    }
+                    cout << endl;
+                break;
+            }
+
+            case 5:
+            {
+                cout << "Tree structure:\n";
+                tree.print_as_tree();
+                break;
+            }
+
+            case 6:
+            {
+                cout << "Tree in order:\n";
+                tree.print_in_order();
+                break;
+            }
+
+            case 7:
+            {
+                cout << "Exiting...\n";
+                break;
+            }
+            
+            default:
+            {
+                cout << "Invalid input.";
+                break;
+            }
+        }
+    } while (choice != 7);
+}*/
 
 void interactiveMode()
 {
@@ -1143,7 +1947,7 @@ void interactiveMode()
 
         case 5:
         {
-            twothree_tree_menu();
+            //twth_tree_menu();
             break;
         }
 
