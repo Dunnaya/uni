@@ -105,10 +105,11 @@ struct LinkedList
 
     LinkedList() : head(nullptr) {}
 
-    void createEmptyList() 
+    void createEmptyList(bool bench = false) 
     {
         head = nullptr;
-        cout << "An empty list was successfully created!\n";
+        if(!bench)
+            cout << "An empty list was successfully created!\n";
     }
 
     void add(double x, double y, double z) 
@@ -165,7 +166,7 @@ struct LinkedList
         return false;
     }
 
-    void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) 
+    void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax, bool bench = false) 
     {
         PointList* current = head;
         bool found = false;
@@ -175,22 +176,27 @@ struct LinkedList
                 current->y >= yMin && current->y <= yMax &&
                 current->z >= zMin && current->z <= zMax) 
             {
-                cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
+                if(!bench)
+                    cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
                 found = true;
             }
             current = current->next;
         }
         if (!found)
-            cout << "No points found in the range." << endl;
-        else cout << endl;
+        {
+            if(!bench)
+                cout << "No points found in the range." << endl;
+        }
+        else if(!bench) cout << endl;
     }
 
-    void print() 
+    void print(bool bench = false) 
     {
         PointList* current = head;
         while (current) 
         {
-            cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
+            if(!bench)
+                cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
             current = current->next;
         }
         cout << endl;
@@ -229,10 +235,11 @@ struct ArrayList
 
     ArrayList() : head(nullptr) {}
 
-    void createEmptyList() 
+    void createEmptyList(bool bench = false) 
     {
         head = nullptr;
-        cout << "An empty list was successfully created!\n";
+        if(!bench)
+            cout << "An empty list was successfully created!\n";
     }
 
     void add(double x, double y, double z) 
@@ -287,7 +294,7 @@ struct ArrayList
         return false;
     }
 
-    void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) const
+    void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax, bool bench = false) const
     {
         PointList* current = head;
         bool found = false;
@@ -297,23 +304,28 @@ struct ArrayList
                 current->y >= yMin && current->y <= yMax &&
                 current->z >= zMin && current->z <= zMax) 
             {
-                cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
+                if(!bench)
+                    cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
                 found = true;
             }
             current = current->next;
         }
         if (!found)
-            cout << "No points found in the range." << endl;
-        else
+        {
+            if(!bench)
+                cout << "No points found in the range." << endl;
+        }
+        else if(!bench)
             cout << endl;
     }
 
-    void print() const 
+    void print(bool bench = false) const 
     {
         PointList* current = head;
         while (current) 
         {
-            cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
+            if(!bench)
+                cout << "(" << current->x << ", " << current->y << ", " << current->z << ") ";
             current = current->next;
         }
         cout << endl;
@@ -353,10 +365,11 @@ struct BST
 
     BST() : root(nullptr) {}
 
-    void createEmptyTree() 
+    void createEmptyTree(bool bench = false) 
     {
         root = nullptr;
-        cout << "An empty tree was successfully created!\n";
+        if(!bench)
+            cout << "An empty tree was successfully created!\n";
     }
 
     void add(double x, double y, double z) 
@@ -440,36 +453,38 @@ struct BST
         return searchRecursively(node->right, x, y, z);
     }
 
-    void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) const 
+    void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax, bool bench = false) const 
     {
-        searchInRangeRecursively(root, xMin, xMax, yMin, yMax, zMin, zMax);
+        searchInRangeRecursively(root, xMin, xMax, yMin, yMax, zMin, zMax, bench);
     }
 
-    void searchInRangeRecursively(PointTree* node, double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) const 
+    void searchInRangeRecursively(PointTree* node, double xMin, double xMax, double yMin, double yMax, double zMin, double zMax, bool bench) const 
     {
         if (!node) return;
         if (node->x >= xMin && node->x <= xMax && node->y >= yMin && node->y <= yMax && node->z >= zMin && node->z <= zMax) 
         {
-            cout << "(" << node->x << ", " << node->y << ", " << node->z << ") ";
+            if(!bench)
+                cout << "(" << node->x << ", " << node->y << ", " << node->z << ") ";
         }
         if (xMin < node->x || (xMin == node->x && yMin < node->y) || (xMin == node->x && yMin == node->y && zMin < node->z))
-            searchInRangeRecursively(node->left, xMin, xMax, yMin, yMax, zMin, zMax);
+            searchInRangeRecursively(node->left, xMin, xMax, yMin, yMax, zMin, zMax, bench);
         if (xMax > node->x || (xMax == node->x && yMax > node->y) || (xMax == node->x && yMax == node->y && zMax > node->z))
-            searchInRangeRecursively(node->right, xMin, xMax, yMin, yMax, zMin, zMax);
+            searchInRangeRecursively(node->right, xMin, xMax, yMin, yMax, zMin, zMax, bench);
     }
 
-    void print() const 
+    void print(bool bench = false) const 
     {
-        printRecursively(root);
+        printRecursively(root, bench);
         cout << endl;
     }
 
-    void printRecursively(PointTree* node) const 
+    void printRecursively(PointTree* node, bool bench) const 
     {
         if (!node) return;
-        printRecursively(node->left);
-        cout << "(" << node->x << ", " << node->y << ", " << node->z << ") ";
-        printRecursively(node->right);
+        printRecursively(node->left, bench);
+        if(!bench)
+            cout << "(" << node->x << ", " << node->y << ", " << node->z << ") ";
+        printRecursively(node->right, bench);
     }
 
     void clear() 
@@ -571,10 +586,11 @@ struct AVLTree
         return node;
     }
 
-    void createEmptyTree() 
+    void createEmptyTree(bool bench = false) 
     {
         root = nullptr;
-        cout << "An empty tree was successfully created!\n";
+        if(!bench)
+            cout << "An empty tree was successfully created!\n";
     }
 
     void add(double x, double y, double z) 
@@ -670,42 +686,44 @@ struct AVLTree
         return searchRecursively(node->right, x, y, z);
     }
 
-    void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) const 
+    void searchInRange(double xMin, double xMax, double yMin, double yMax, double zMin, double zMax, bool bench = false) const 
     {
-        searchInRangeRecursively(root, xMin, xMax, yMin, yMax, zMin, zMax);
+        searchInRangeRecursively(root, xMin, xMax, yMin, yMax, zMin, zMax, bench);
     }
 
-    void searchInRangeRecursively(PointAVL* node, double xMin, double xMax, double yMin, double yMax, double zMin, double zMax) const 
+    void searchInRangeRecursively(PointAVL* node, double xMin, double xMax, double yMin, double yMax, double zMin, double zMax, bool bench) const 
     {
         if (!node) 
             return;
 
         if (node->x >= xMin && node->x <= xMax && node->y >= yMin && node->y <= yMax && node->z >= zMin && node->z <= zMax) 
         {
-            cout << "(" << node->x << ", " << node->y << ", " << node->z << ") ";
+            if(!bench)
+                cout << "(" << node->x << ", " << node->y << ", " << node->z << ") ";
         }
 
         if (xMin < node->x || (xMin == node->x && yMin < node->y) || (xMin == node->x && yMin == node->y && zMin < node->z))
-            searchInRangeRecursively(node->left, xMin, xMax, yMin, yMax, zMin, zMax);
+            searchInRangeRecursively(node->left, xMin, xMax, yMin, yMax, zMin, zMax, bench);
 
         if (xMax > node->x || (xMax == node->x && yMax > node->y) || (xMax == node->x && yMax == node->y && zMax > node->z))
-            searchInRangeRecursively(node->right, xMin, xMax, yMin, yMax, zMin, zMax);
+            searchInRangeRecursively(node->right, xMin, xMax, yMin, yMax, zMin, zMax, bench);
     }
 
-    void print() const 
+    void print(bool bench = false) const 
     {
-        printRecursively(root);
+        printRecursively(root, bench);
         cout << endl;
     }
 
-    void printRecursively(PointAVL* node) const 
+    void printRecursively(PointAVL* node, bool bench) const 
     {
         if (!node) 
             return;
 
-        printRecursively(node->left);
-        cout << "(" << node->x << ", " << node->y << ", " << node->z << ") ";
-        printRecursively(node->right);
+        printRecursively(node->left, bench);
+        if(!bench)
+            cout << "(" << node->x << ", " << node->y << ", " << node->z << ") ";
+        printRecursively(node->right, bench);
     }
 
     void clear() 
@@ -1227,49 +1245,63 @@ struct two3Tree
             }
         }
 
-        void print_as_tree() 
+        void print_as_tree(bool bench) 
         {
-            data[0].print();
+            if(!bench)
+                data[0].print();
 
             if (size == 2)
             {
-                cout << ";"; 
-                data[1].print();
+                if(!bench)
+                {
+                    cout << ";"; 
+                    data[1].print();
+                }
             }
 
-            cout << "(";
+            if(!bench)
+                cout << "(";
             if (children[0])
-                children[0]->print_as_tree();
-            
-            cout << ",";
+                children[0]->print_as_tree(bench);
+
+            if(!bench)
+                cout << ",";
             if (children[1])
-                children[1]->print_as_tree();
+                children[1]->print_as_tree(bench);
             
-            cout << ",";
+            if(!bench)
+                cout << ",";
             if (children[2])
-                children[2]->print_as_tree();
+                children[2]->print_as_tree(bench);
             
-            cout << ")";
+            if(!bench)
+                cout << ")";
         }
 
-        void print_in_order() 
+        void print_in_order(bool bench) 
         {
             if (children[0])
-                children[0]->print_in_order();
+                children[0]->print_in_order(bench);
             
-            data[0].print();
-            cout << " ";
+            if(!bench)
+            {
+                data[0].print();
+                cout << " ";
+            }
 
             if (children[1])
-                children[1]->print_in_order();
+                children[1]->print_in_order(bench);
 
             if (size == 2) 
             {
-                data[1].print();
-                cout << " ";
+                if(!bench)
+                {
+                    data[1].print();
+                    cout << " ";
+                }
 
                 if (children[2])
-                    children[2]->print_in_order();
+                    children[2]->print_in_order(bench);
             }
         }
     };
@@ -1342,22 +1374,24 @@ struct two3Tree
         }
     }
 
-    void print_as_tree() 
+    void print_as_tree(bool bench = false) 
     {
         if (root)
-            root->print_as_tree();
-        else
+            root->print_as_tree(bench);
+        else if(!bench)
             cout << "The tree is empty.";
-        cout << endl;
+        if(!bench)
+            cout << endl;
     }
 
-    void print_in_order() 
+    void print_in_order(bool bench = false) 
     {
         if (root) 
-            root->print_in_order();
-        else 
+            root->print_in_order(bench);
+        else if(!bench)
             cout << "The tree is empty.";
-        cout << endl;
+        if(!bench)
+            cout << endl;
     }
 
     bool find_element_by_val(Point z) 
@@ -2094,19 +2128,19 @@ void benchmark()
     cout << "\n\tLinked list:\n\n";
     LinkedList list;
     cout << "Time creating an empty list:\n";
-    list.createEmptyList();
+    list.createEmptyList(true);
     cout << "\nTime adding n random elements:\n";
     list.add(1.1, 1.1, 1.1);
     list.fillRandom(n-1);
     cout << "\nTime printing the list: ";
-    list.print();
+    list.print(true);
     cout << "\nTime searching for specific point: \n";
     list.search(1.1, 1.1, 1.1);
     cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    list.searchInRange(1, 9, 1, 9, 1, 9);
+    list.searchInRange(1, 9, 1, 9, 1, 9, true);
     cout << "\nTime removing a specific point from the list: \n";
     list.remove(1.1, 1.1, 1.1);
-    cout << "Time clearing the list: \n";
+    cout << "\nTime clearing the list: \n";
     list.clear();
 
         this_thread::sleep_for(chrono::seconds(1));
@@ -2115,19 +2149,19 @@ void benchmark()
     srand(time(nullptr));
     ArrayList arrayList;
     cout << "Time creating an empty list:\n";
-    arrayList.createEmptyList();
+    arrayList.createEmptyList(true);
     cout << "\nTime adding n random elements:\n";
     arrayList.add(1.1, 1.1, 1.1);
     arrayList.fillRandom(n-1);
     cout << "\nTime printing the list: ";
-    arrayList.print();
+    arrayList.print(true);
     cout << "\nTime searching for specific point: \n";
     arrayList.search(1.1, 1.1, 1.1);
     cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    arrayList.searchInRange(1, 9, 1, 9, 1, 9);
+    arrayList.searchInRange(1, 9, 1, 9, 1, 9, true);
     cout << "\nTime removing a specific point from the list: \n";
     arrayList.remove(1.1, 1.1, 1.1);
-    cout << "Time clearing the list: \n";
+    cout << "\nTime clearing the list: \n";
     arrayList.clear();
 
         this_thread::sleep_for(chrono::seconds(1));
@@ -2136,19 +2170,19 @@ void benchmark()
     srand(time(nullptr));
     BST BSTtree;
     cout << "Time creating an empty tree:\n";
-    BSTtree.createEmptyTree();
+    BSTtree.createEmptyTree(true);
     cout << "\nTime adding n random elements:\n";
     BSTtree.add(1.1, 1.1, 1.1);
     BSTtree.fillRandom(n-1);
     cout << "\nTime printing the tree: ";
-    BSTtree.print();
+    BSTtree.print(true);
     cout << "\nTime searching for specific point: \n";
     BSTtree.search(1.1, 1.1, 1.1);
     cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    BSTtree.searchInRange(1, 9, 1, 9, 1, 9);
+    BSTtree.searchInRange(1, 9, 1, 9, 1, 9, true);
     cout << "\nTime removing a specific point from the tree: \n";
     BSTtree.remove(1.1, 1.1, 1.1);
-    cout << "Time clearing the tree: \n";
+    cout << "\nTime clearing the tree: \n";
     BSTtree.clear();
 
         this_thread::sleep_for(chrono::seconds(1));
@@ -2157,36 +2191,36 @@ void benchmark()
     srand(time(nullptr));
     AVLTree AVLtree;
     cout << "Time creating an empty tree:\n";
-    AVLtree.createEmptyTree();
+    AVLtree.createEmptyTree(true);
     cout << "\nTime adding n random elements:\n";
     AVLtree.add(1.1, 1.1, 1.1);
     AVLtree.fillRandom(n-1);
     cout << "\nTime printing the tree: ";
-    AVLtree.print();
+    AVLtree.print(true);
     cout << "\nTime searching for specific point: \n";
     AVLtree.search(1.1, 1.1, 1.1);
     cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    AVLtree.searchInRange(1, 9, 1, 9, 1, 9);
+    AVLtree.searchInRange(1, 9, 1, 9, 1, 9, true);
     cout << "\nTime removing a specific point from the tree: \n";
     AVLtree.remove(1.1, 1.1, 1.1);
-    cout << "Time clearing the tree: \n";
+    cout << "\nTime clearing the tree: \n";
     AVLtree.clear();
 
         this_thread::sleep_for(chrono::seconds(1));
 
     cout << "\n\t2-3 tree:\n\n";
     two3Tree tree23;
-    cout << "\nTime adding n random elements:\n";
+    cout << "Time adding n random elements:\n";
     Point point1 = Point(1.1, 1.1, 1.1);
     Point point2 = Point(1, 1, 1);
     Point point3 = Point(9, 9, 9);
     tree23.add(point1);
     tree23.fillRandom(n-1);
     cout << "\nTime printing the tree in order: ";
-    tree23.print_in_order();
-    cout << "\nTime printing the tree as a tree: ";
-    tree23.print_as_tree();
-    cout << "\nTime searching for specific point: \n";
+    tree23.print_in_order(true);
+    cout << "\n\nTime printing the tree as a tree: ";
+    tree23.print_as_tree(true);
+    cout << "\n\nTime searching for specific point: \n";
     tree23.find_element_by_val(point1);
     cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
     tree23.find_elements_by_range(point2, point3);
