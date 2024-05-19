@@ -1233,7 +1233,7 @@ struct two3Tree
 
             if (size == 2)
             {
-                std::cout << ";"; 
+                cout << ";"; 
                 data[1].print();
             }
 
@@ -1328,11 +1328,17 @@ struct two3Tree
         }
     }
 
-    void generate(int count) 
+    void fillRandom(int count)
     {
+        Point point;
+
         for (int i = 0; i < count; ++i) 
         {
-            add(Point(rand()% 100, rand() % 100, rand() % 100));
+            double x = rand() % 1000 / 100.0;
+            double y = rand() % 1000 / 100.0;
+            double z = rand() % 1000 / 100.0;
+            point = Point(x, y, z);
+            add(point);
         }
     }
 
@@ -1811,14 +1817,15 @@ void twth_tree_menu()
     int choice;
     do
     {
-        cout << "\n  AVL tree menu:\n";
+        cout << "\n  2-3 tree menu:\n";
         cout << "1. Add an element\n";
         cout << "2. Delete the element\n";
         cout << "3. Searh for the element\n";
         cout << "4. Search elements in range\n";
         cout << "5. Print tree as tree\n";
         cout << "6. Print tree in order\n";
-        cout << "7. Exit\n";
+        cout << "7. Generate random elements\n";
+        cout << "8. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -1862,14 +1869,14 @@ void twth_tree_menu()
 
             case 4:
             {
-                double x, y, z;
+                double xmin, xmax, ymin, ymax, zmin, zmax;
                 Point min_modulus, max_modulus;
                 cout << "Enter minimum modulus point (x y z): ";
-                cin >> x >> y >> z;
-                min_modulus = Point(x, y, z);
+                cin >> xmin >> ymin >> zmin;
+                min_modulus = Point(xmin, ymin, zmin);
                 cout << "Enter maximum modulus point (x y z): ";
-                cin >> x >> y >> z;
-                max_modulus = Point(x, y, z);
+                cin >> xmax >> ymax >> zmax;
+                max_modulus = Point(xmax, ymax, zmax);
                 {
                     vector<Point> points = tree.find_elements_by_range(min_modulus, max_modulus);
                     cout << "Points in range:\n";
@@ -1899,6 +1906,15 @@ void twth_tree_menu()
 
             case 7:
             {
+                int n;
+                cout << "How many elements you want to generate?\n";
+                cin >> n;
+                tree.fillRandom(n);
+                break;
+            }
+
+            case 8:
+            {
                 cout << "Exiting...\n";
                 break;
             }
@@ -1909,7 +1925,7 @@ void twth_tree_menu()
                 break;
             }
         }
-    } while (choice != 7);
+    } while (choice != 8);
 }
 
 void interactiveMode()
@@ -2022,7 +2038,7 @@ void demoMode()
     cout << "\nSearching for (3.3, 3.3, 3.3): " << (BSTtree.search(3.3, 3.3, 3.3) ? "Found" : "Not Found") << endl;
     cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
     BSTtree.searchInRange(0, 7, 0, 6, 0, 5);
-    cout << "\nRemoving (3.3, 3.3, 3.3) from the list...\n";
+    cout << "\n\nRemoving (3.3, 3.3, 3.3) from the list...\n";
     BSTtree.remove(3.3, 3.3, 3.3);
     cout << "List after removal: ";
     BSTtree.print();
@@ -2043,13 +2059,36 @@ void demoMode()
     cout << "\nSearching for (3.3, 3.3, 3.3): " << (AVLtree.search(3.3, 3.3, 3.3) ? "Found" : "Not Found") << endl;
     cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
     AVLtree.searchInRange(0, 7, 0, 6, 0, 5);
-    cout << "\nRemoving (4.4, 4.4, 4.4) from the list...\n";
+    cout << "\n\nRemoving (4.4, 4.4, 4.4) from the list...\n";
     AVLtree.remove(4.4, 4.4, 4.4);
     cout << "List after removal: ";
     AVLtree.print();
     AVLtree.clear();
 
         this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\t2-3 tree:\n\n";
+    two3Tree tree23;
+    cout << "Creating an empty tree...\n";
+    cout << "\nAdding 8 random elements and the (1.1, 1.1, 1.1) and (5.5, 5.5, 5.5) points:\n";
+    Point point1 = Point(1.1, 1.1, 1.1);
+    Point point2 = Point(5.5, 5.5, 5.5);
+    Point point3 = Point(0, 0, 0);
+    Point point4 = Point(7, 6, 5);
+    tree23.add(point1);
+    tree23.add(point2);
+    tree23.fillRandom(8);
+    cout << "\nTree in order: ";
+    tree23.print_in_order();
+    cout << "\nTree as a tree: ";
+    tree23.print_as_tree();
+    cout << "\nSearching for (1.1, 1.1, 1.1): " << (tree23.find_element_by_val(point1) ? "Found" : "Not Found") << endl;
+    cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
+    tree23.find_elements_by_range(point3, point4);
+    cout << "\nRemoving (1.1, 1.1, 1.1) from the tree...\n";
+    tree23.remove(point1);
+    cout << "Tree after removal: ";
+    tree23.print_in_order();
 }
 
 void benchmark()
