@@ -2124,94 +2124,206 @@ void benchmark()
     int n;
     cout << "Enter the n:";
     cin >> n;
+//-------------------------------------------------------------------------------
+    auto startLL = chrono::high_resolution_clock::now();
 
-    cout << "\n\tLinked list:\n\n";
-    LinkedList list;
-    cout << "Time creating an empty list:\n";
-    list.createEmptyList(true);
-    cout << "\nTime adding n random elements:\n";
-    list.add(1.1, 1.1, 1.1);
-    list.fillRandom(n-1);
-    cout << "\nTime printing the list: ";
-    list.print(true);
-    cout << "\nTime searching for specific point: \n";
-    list.search(1.1, 1.1, 1.1);
-    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    list.searchInRange(1, 9, 1, 9, 1, 9, true);
-    cout << "\nTime removing a specific point from the list: \n";
-    list.remove(1.1, 1.1, 1.1);
-    cout << "\nTime clearing the list: \n";
-    list.clear();
+            cout << "\n\tLinked list:\n\n";
 
+        LinkedList list;
+
+    auto startCreating = chrono::high_resolution_clock::now();
+        list.createEmptyList(true);
+    auto endCreating = chrono::high_resolution_clock::now();
+    auto durationCreating = chrono::duration_cast<chrono::milliseconds>(endCreating - startCreating);
+    cout << "Time creating an empty list: " << durationCreating.count() << endl;
+
+    auto startGenerating = chrono::high_resolution_clock::now();
+        list.add(5, 5, 5);
+        list.fillRandom(n-1);
+    auto endGenerating = chrono::high_resolution_clock::now();
+    auto durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
+    cout << "Time adding n random elements: " << durationGenerating.count();
+
+    auto startPrinting = chrono::high_resolution_clock::now();
+        list.print(true);
+    auto endPrinting = chrono::high_resolution_clock::now();
+    auto durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
+    cout << "Time printing the list: " << durationPrinting.count() << endl;
+
+    auto startSearching = chrono::high_resolution_clock::now();
+        list.search(5, 5, 5);
+    auto endSearching = chrono::high_resolution_clock::now();
+    auto durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
+    cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
+
+    auto startSearchInRange = chrono::high_resolution_clock::now();
+        list.searchInRange(1, 9, 1, 9, 1, 9, true);
+    auto endSearchInRange = chrono::high_resolution_clock::now();
+    auto durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
+    cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
+
+    auto startRemoving = chrono::high_resolution_clock::now();
+        list.remove(5, 5, 5);
+    auto endRemoving = chrono::high_resolution_clock::now();
+    auto durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
+    cout << "Time removing a specific point from the list: " << durationRemoving.count() << endl;
+
+    auto startClearing = chrono::high_resolution_clock::now();
+        list.clear();
+    auto endClearing = chrono::high_resolution_clock::now();
+    auto durationClearing = chrono::duration_cast<chrono::milliseconds>(endClearing - startClearing);
+    cout << "Time clearing the list: " << durationClearing.count() << endl;
+
+    auto endLL = chrono::high_resolution_clock::now();
+
+    auto durationLL = chrono::duration_cast<chrono::milliseconds>(endLL - startLL);
+    cout << "Time using linked list: " << durationLL.count() << endl;
+//-------------------------------------------------------------------------------
         this_thread::sleep_for(chrono::seconds(1));
+//-------------------------------------------------------------------------------
+    auto startArrL = chrono::high_resolution_clock::now();
 
-    cout << "\n\tArray list:\n\n";
+            cout << "\n\tArray list:\n\n";
+
     srand(time(nullptr));
-    ArrayList arrayList;
-    cout << "Time creating an empty list:\n";
-    arrayList.createEmptyList(true);
-    cout << "\nTime adding n random elements:\n";
-    arrayList.add(1.1, 1.1, 1.1);
-    arrayList.fillRandom(n-1);
-    cout << "\nTime printing the list: ";
-    arrayList.print(true);
-    cout << "\nTime searching for specific point: \n";
-    arrayList.search(1.1, 1.1, 1.1);
-    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    arrayList.searchInRange(1, 9, 1, 9, 1, 9, true);
-    cout << "\nTime removing a specific point from the list: \n";
-    arrayList.remove(1.1, 1.1, 1.1);
-    cout << "\nTime clearing the list: \n";
-    arrayList.clear();
+        ArrayList arrayList;
 
+    startCreating = chrono::high_resolution_clock::now();
+        arrayList.createEmptyList(true);
+    endCreating = chrono::high_resolution_clock::now();
+    durationCreating = chrono::duration_cast<chrono::milliseconds>(endCreating - startCreating);
+    cout << "Time creating an empty list: " << durationCreating.count() << endl;
+
+    startGenerating = chrono::high_resolution_clock::now();
+        arrayList.add(5, 5, 5);
+        arrayList.fillRandom(n-1); 
+    endGenerating = chrono::high_resolution_clock::now();
+    durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
+    cout << "Time adding n random elements: " << durationGenerating.count();
+
+    startPrinting = chrono::high_resolution_clock::now();
+        arrayList.print(true);
+    endPrinting = chrono::high_resolution_clock::now();
+    durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
+    cout << "Time printing the list: " << durationPrinting.count() << endl;
+
+    startSearching = chrono::high_resolution_clock::now();
+        arrayList.search(5, 5, 5);
+    endSearching = chrono::high_resolution_clock::now();
+    durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
+    cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
+
+    startSearchInRange = chrono::high_resolution_clock::now();
+        arrayList.searchInRange(1, 9, 1, 9, 1, 9, true);
+    endSearchInRange = chrono::high_resolution_clock::now();
+    durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
+    cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
+
+    startRemoving = chrono::high_resolution_clock::now();
+        arrayList.remove(5, 5, 5);
+    endRemoving = chrono::high_resolution_clock::now();
+    durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
+    cout << "Time removing a specific point from the list: " << durationRemoving.count() << endl;
+
+    startClearing = chrono::high_resolution_clock::now();
+     arrayList.clear();
+    endClearing = chrono::high_resolution_clock::now();
+    durationClearing = chrono::duration_cast<chrono::milliseconds>(endClearing - startClearing);
+    cout << "Time clearing the list: " << durationClearing.count() << endl;
+
+    auto endArrL = chrono::high_resolution_clock::now();
+
+    auto durationArrL = chrono::duration_cast<chrono::milliseconds>(endArrL - startArrL);
+    cout << "Time using array list: " << durationArrL.count() << endl;
+//-------------------------------------------------------------------------------
         this_thread::sleep_for(chrono::seconds(1));
+//-------------------------------------------------------------------------------
+    auto startBST = chrono::high_resolution_clock::now();
 
-    cout << "\n\tBinary tree:\n\n";
+            cout << "\n\tBinary tree:\n\n";
+
     srand(time(nullptr));
-    BST BSTtree;
-    cout << "Time creating an empty tree:\n";
-    BSTtree.createEmptyTree(true);
-    cout << "\nTime adding n random elements:\n";
-    BSTtree.add(1.1, 1.1, 1.1);
-    BSTtree.fillRandom(n-1);
-    cout << "\nTime printing the tree: ";
-    BSTtree.print(true);
-    cout << "\nTime searching for specific point: \n";
-    BSTtree.search(1.1, 1.1, 1.1);
-    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    BSTtree.searchInRange(1, 9, 1, 9, 1, 9, true);
-    cout << "\nTime removing a specific point from the tree: \n";
-    BSTtree.remove(1.1, 1.1, 1.1);
-    cout << "\nTime clearing the tree: \n";
-    BSTtree.clear();
+        BST BSTtree;
 
+    startCreating = chrono::high_resolution_clock::now();
+        BSTtree.createEmptyTree(true);
+    endCreating = chrono::high_resolution_clock::now();
+    durationCreating = chrono::duration_cast<chrono::milliseconds>(endCreating - startCreating);
+    cout << "Time creating an empty tree: " << durationCreating.count() << endl;
+
+    startGenerating = chrono::high_resolution_clock::now();
+        BSTtree.add(5, 5, 5);
+        BSTtree.fillRandom(n-1);
+    endGenerating = chrono::high_resolution_clock::now();
+    durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
+    cout << "Time adding n random elements: " << durationGenerating.count();
+    
+    startPrinting = chrono::high_resolution_clock::now();
+        BSTtree.print(true);
+    endPrinting = chrono::high_resolution_clock::now();
+    durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
+    cout << "Time printing the tree: " << durationPrinting.count() << endl;
+
+    startSearching = chrono::high_resolution_clock::now();
+        BSTtree.search(5, 5, 5);
+    endSearching = chrono::high_resolution_clock::now();
+    durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
+    cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
+
+    startSearchInRange = chrono::high_resolution_clock::now();
+        BSTtree.searchInRange(1, 9, 1, 9, 1, 9, true);
+    endSearchInRange = chrono::high_resolution_clock::now();
+    durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
+    cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
+
+    startRemoving = chrono::high_resolution_clock::now();
+        BSTtree.remove(5, 5, 5);
+    endRemoving = chrono::high_resolution_clock::now();
+    durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
+    cout << "Time removing a specific point from the tree: " << durationRemoving.count() << endl;
+
+    startClearing = chrono::high_resolution_clock::now();
+        BSTtree.clear();
+    endClearing = chrono::high_resolution_clock::now();
+    durationClearing = chrono::duration_cast<chrono::milliseconds>(endClearing - startClearing);
+    cout << "Time clearing the tree: " << durationClearing.count() << endl;
+
+    auto endBST = chrono::high_resolution_clock::now();
+
+    auto durationBST = chrono::duration_cast<chrono::milliseconds>(endBST - startBST);
+    cout << "Time using BST: " << durationBST.count() << endl;
+//-------------------------------------------------------------------------------
         this_thread::sleep_for(chrono::seconds(1));
+//-------------------------------------------------------------------------------
 
-    cout << "\n\tAVL tree:\n\n";
+            cout << "\n\tAVL tree:\n\n";
+
     srand(time(nullptr));
     AVLTree AVLtree;
     cout << "Time creating an empty tree:\n";
     AVLtree.createEmptyTree(true);
     cout << "\nTime adding n random elements:\n";
-    AVLtree.add(1.1, 1.1, 1.1);
+    AVLtree.add(5, 5, 5);
     AVLtree.fillRandom(n-1);
     cout << "\nTime printing the tree: ";
     AVLtree.print(true);
     cout << "\nTime searching for specific point: \n";
-    AVLtree.search(1.1, 1.1, 1.1);
+    AVLtree.search(5, 5, 5);
     cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
     AVLtree.searchInRange(1, 9, 1, 9, 1, 9, true);
     cout << "\nTime removing a specific point from the tree: \n";
-    AVLtree.remove(1.1, 1.1, 1.1);
+    AVLtree.remove(5, 5, 5);
     cout << "\nTime clearing the tree: \n";
     AVLtree.clear();
-
+//-------------------------------------------------------------------------------
         this_thread::sleep_for(chrono::seconds(1));
+//-------------------------------------------------------------------------------
 
-    cout << "\n\t2-3 tree:\n\n";
+            cout << "\n\t2-3 tree:\n\n";
+
     two3Tree tree23;
     cout << "Time adding n random elements:\n";
-    Point point1 = Point(1.1, 1.1, 1.1);
+    Point point1 = Point(5, 5, 5);
     Point point2 = Point(1, 1, 1);
     Point point3 = Point(9, 9, 9);
     tree23.add(point1);
