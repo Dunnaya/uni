@@ -1360,12 +1360,6 @@ struct two3Tree
         cout << endl;
     }
 
-    void print_all() 
-    {
-        print_as_tree();
-        print_in_order();
-    }
-
     bool find_element_by_val(Point z) 
     {
         TreeNode* current = root;
@@ -2028,7 +2022,7 @@ void demoMode()
     cout << "\n\tBinary tree:\n\n";
     srand(time(nullptr));
     BST BSTtree;
-    cout << "Creating an empty list:\n";
+    cout << "Creating an empty tree:\n";
     BSTtree.createEmptyTree();
     cout << "\nAdding 9 random elements and the (3.3, 3.3, 3.3) point:\n";
     BSTtree.add(3.3, 3.3, 3.3);
@@ -2038,9 +2032,9 @@ void demoMode()
     cout << "\nSearching for (3.3, 3.3, 3.3): " << (BSTtree.search(3.3, 3.3, 3.3) ? "Found" : "Not Found") << endl;
     cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
     BSTtree.searchInRange(0, 7, 0, 6, 0, 5);
-    cout << "\n\nRemoving (3.3, 3.3, 3.3) from the list...\n";
+    cout << "\n\nRemoving (3.3, 3.3, 3.3) from the tree...\n";
     BSTtree.remove(3.3, 3.3, 3.3);
-    cout << "List after removal: ";
+    cout << "Tree after removal: ";
     BSTtree.print();
     BSTtree.clear();
 
@@ -2049,7 +2043,7 @@ void demoMode()
     cout << "\n\tAVL tree:\n\n";
     srand(time(nullptr));
     AVLTree AVLtree;
-    cout << "Creating an empty list:\n";
+    cout << "Creating an empty tree:\n";
     AVLtree.createEmptyTree();
     cout << "\nAdding 9 random elements and the (4.4, 4.4, 4.4) point:\n";
     AVLtree.add(4.4, 4.4, 4.4);
@@ -2059,9 +2053,9 @@ void demoMode()
     cout << "\nSearching for (3.3, 3.3, 3.3): " << (AVLtree.search(3.3, 3.3, 3.3) ? "Found" : "Not Found") << endl;
     cout << "\nSearching for points in range (0, 0, 0) - (7, 6, 5):\n";
     AVLtree.searchInRange(0, 7, 0, 6, 0, 5);
-    cout << "\n\nRemoving (4.4, 4.4, 4.4) from the list...\n";
+    cout << "\n\nRemoving (4.4, 4.4, 4.4) from the tree...\n";
     AVLtree.remove(4.4, 4.4, 4.4);
-    cout << "List after removal: ";
+    cout << "Tree after removal: ";
     AVLtree.print();
     AVLtree.clear();
 
@@ -2092,7 +2086,113 @@ void demoMode()
 }
 
 void benchmark()
-{}
+{
+    int n;
+    cout << "Enter the n:";
+    cin >> n;
+
+    cout << "\n\tLinked list:\n\n";
+    LinkedList list;
+    cout << "Time creating an empty list:\n";
+    list.createEmptyList();
+    cout << "\nTime adding n random elements:\n";
+    list.add(1.1, 1.1, 1.1);
+    list.fillRandom(n-1);
+    cout << "\nTime printing the list: ";
+    list.print();
+    cout << "\nTime searching for specific point: \n";
+    list.search(1.1, 1.1, 1.1);
+    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
+    list.searchInRange(1, 9, 1, 9, 1, 9);
+    cout << "\nTime removing a specific point from the list: \n";
+    list.remove(1.1, 1.1, 1.1);
+    cout << "Time clearing the list: \n";
+    list.clear();
+
+        this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\tArray list:\n\n";
+    srand(time(nullptr));
+    ArrayList arrayList;
+    cout << "Time creating an empty list:\n";
+    arrayList.createEmptyList();
+    cout << "\nTime adding n random elements:\n";
+    arrayList.add(1.1, 1.1, 1.1);
+    arrayList.fillRandom(n-1);
+    cout << "\nTime printing the list: ";
+    arrayList.print();
+    cout << "\nTime searching for specific point: \n";
+    arrayList.search(1.1, 1.1, 1.1);
+    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
+    arrayList.searchInRange(1, 9, 1, 9, 1, 9);
+    cout << "\nTime removing a specific point from the list: \n";
+    arrayList.remove(1.1, 1.1, 1.1);
+    cout << "Time clearing the list: \n";
+    arrayList.clear();
+
+        this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\tBinary tree:\n\n";
+    srand(time(nullptr));
+    BST BSTtree;
+    cout << "Time creating an empty tree:\n";
+    BSTtree.createEmptyTree();
+    cout << "\nTime adding n random elements:\n";
+    BSTtree.add(1.1, 1.1, 1.1);
+    BSTtree.fillRandom(n-1);
+    cout << "\nTime printing the tree: ";
+    BSTtree.print();
+    cout << "\nTime searching for specific point: \n";
+    BSTtree.search(1.1, 1.1, 1.1);
+    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
+    BSTtree.searchInRange(1, 9, 1, 9, 1, 9);
+    cout << "\nTime removing a specific point from the tree: \n";
+    BSTtree.remove(1.1, 1.1, 1.1);
+    cout << "Time clearing the tree: \n";
+    BSTtree.clear();
+
+        this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\tAVL tree:\n\n";
+    srand(time(nullptr));
+    AVLTree AVLtree;
+    cout << "Time creating an empty tree:\n";
+    AVLtree.createEmptyTree();
+    cout << "\nTime adding n random elements:\n";
+    AVLtree.add(1.1, 1.1, 1.1);
+    AVLtree.fillRandom(n-1);
+    cout << "\nTime printing the tree: ";
+    AVLtree.print();
+    cout << "\nTime searching for specific point: \n";
+    AVLtree.search(1.1, 1.1, 1.1);
+    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
+    AVLtree.searchInRange(1, 9, 1, 9, 1, 9);
+    cout << "\nTime removing a specific point from the tree: \n";
+    AVLtree.remove(1.1, 1.1, 1.1);
+    cout << "Time clearing the tree: \n";
+    AVLtree.clear();
+
+        this_thread::sleep_for(chrono::seconds(1));
+
+    cout << "\n\t2-3 tree:\n\n";
+    two3Tree tree23;
+    cout << "\nTime adding n random elements:\n";
+    Point point1 = Point(1.1, 1.1, 1.1);
+    Point point2 = Point(1, 1, 1);
+    Point point3 = Point(9, 9, 9);
+    tree23.add(point1);
+    tree23.fillRandom(n-1);
+    cout << "\nTime printing the tree in order: ";
+    tree23.print_in_order();
+    cout << "\nTime printing the tree as a tree: ";
+    tree23.print_as_tree();
+    cout << "\nTime searching for specific point: \n";
+    tree23.find_element_by_val(point1);
+    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
+    tree23.find_elements_by_range(point2, point3);
+    cout << "\nTime removing a specific point from the tree: \n";
+    tree23.remove(point1);
+}
 
 int main() 
 {
