@@ -15,6 +15,10 @@
 #include <thread>
 using namespace std;
 
+#include "windows.h"
+#include "psapi.h"
+#include <benchmark.h>
+
 void interactiveMode();
 void demoMode();
 void benchmark();
@@ -2133,6 +2137,7 @@ void benchmark()
 
     auto startCreating = chrono::high_resolution_clock::now();
         list.createEmptyList(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Create an empty list: ");
     auto endCreating = chrono::high_resolution_clock::now();
     auto durationCreating = chrono::duration_cast<chrono::milliseconds>(endCreating - startCreating);
     cout << "Time creating an empty list: " << durationCreating.count() << endl;
@@ -2140,36 +2145,42 @@ void benchmark()
     auto startGenerating = chrono::high_resolution_clock::now();
         list.add(5, 5, 5);
         list.fillRandom(n-1);
+        BenchmarkMax* bmMem = new BenchmarkMax("Generate random elements: ");
     auto endGenerating = chrono::high_resolution_clock::now();
     auto durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
     cout << "Time adding n random elements: " << durationGenerating.count();
 
     auto startPrinting = chrono::high_resolution_clock::now();
         list.print(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Print the list: ");
     auto endPrinting = chrono::high_resolution_clock::now();
     auto durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
     cout << "Time printing the list: " << durationPrinting.count() << endl;
 
     auto startSearching = chrono::high_resolution_clock::now();
         list.search(5, 5, 5);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search for specific point: ");
     auto endSearching = chrono::high_resolution_clock::now();
     auto durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
     cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
 
     auto startSearchInRange = chrono::high_resolution_clock::now();
         list.searchInRange(1, 9, 1, 9, 1, 9, true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search in range: ");
     auto endSearchInRange = chrono::high_resolution_clock::now();
     auto durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
     cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
 
     auto startRemoving = chrono::high_resolution_clock::now();
         list.remove(5, 5, 5);
+        BenchmarkMax* bmMem = new BenchmarkMax("Remove specific point: ");
     auto endRemoving = chrono::high_resolution_clock::now();
     auto durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
     cout << "Time removing a specific point from the list: " << durationRemoving.count() << endl;
 
     auto startClearing = chrono::high_resolution_clock::now();
         list.clear();
+        BenchmarkMax* bmMem = new BenchmarkMax("Clear the list: ");
     auto endClearing = chrono::high_resolution_clock::now();
     auto durationClearing = chrono::duration_cast<chrono::milliseconds>(endClearing - startClearing);
     cout << "Time clearing the list: " << durationClearing.count() << endl;
@@ -2190,6 +2201,7 @@ void benchmark()
 
     startCreating = chrono::high_resolution_clock::now();
         arrayList.createEmptyList(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Create an empty list: ");
     endCreating = chrono::high_resolution_clock::now();
     durationCreating = chrono::duration_cast<chrono::milliseconds>(endCreating - startCreating);
     cout << "Time creating an empty list: " << durationCreating.count() << endl;
@@ -2197,36 +2209,42 @@ void benchmark()
     startGenerating = chrono::high_resolution_clock::now();
         arrayList.add(5, 5, 5);
         arrayList.fillRandom(n-1); 
+        BenchmarkMax* bmMem = new BenchmarkMax("Generate random elements: ");
     endGenerating = chrono::high_resolution_clock::now();
     durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
     cout << "Time adding n random elements: " << durationGenerating.count();
 
     startPrinting = chrono::high_resolution_clock::now();
         arrayList.print(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Print the list: ");
     endPrinting = chrono::high_resolution_clock::now();
     durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
     cout << "Time printing the list: " << durationPrinting.count() << endl;
 
     startSearching = chrono::high_resolution_clock::now();
         arrayList.search(5, 5, 5);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search for specific point: ");
     endSearching = chrono::high_resolution_clock::now();
     durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
     cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
 
     startSearchInRange = chrono::high_resolution_clock::now();
         arrayList.searchInRange(1, 9, 1, 9, 1, 9, true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search in range: ");
     endSearchInRange = chrono::high_resolution_clock::now();
     durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
     cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
 
     startRemoving = chrono::high_resolution_clock::now();
         arrayList.remove(5, 5, 5);
+        BenchmarkMax* bmMem = new BenchmarkMax("Remove specific point: ");
     endRemoving = chrono::high_resolution_clock::now();
     durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
     cout << "Time removing a specific point from the list: " << durationRemoving.count() << endl;
 
     startClearing = chrono::high_resolution_clock::now();
      arrayList.clear();
+        BenchmarkMax* bmMem = new BenchmarkMax("Clear the list: ");
     endClearing = chrono::high_resolution_clock::now();
     durationClearing = chrono::duration_cast<chrono::milliseconds>(endClearing - startClearing);
     cout << "Time clearing the list: " << durationClearing.count() << endl;
@@ -2247,6 +2265,7 @@ void benchmark()
 
     startCreating = chrono::high_resolution_clock::now();
         BSTtree.createEmptyTree(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Create an empty tree: ");
     endCreating = chrono::high_resolution_clock::now();
     durationCreating = chrono::duration_cast<chrono::milliseconds>(endCreating - startCreating);
     cout << "Time creating an empty tree: " << durationCreating.count() << endl;
@@ -2254,36 +2273,42 @@ void benchmark()
     startGenerating = chrono::high_resolution_clock::now();
         BSTtree.add(5, 5, 5);
         BSTtree.fillRandom(n-1);
+        BenchmarkMax* bmMem = new BenchmarkMax("Generate random elements: ");
     endGenerating = chrono::high_resolution_clock::now();
     durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
     cout << "Time adding n random elements: " << durationGenerating.count();
     
     startPrinting = chrono::high_resolution_clock::now();
         BSTtree.print(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Print the tree: ");
     endPrinting = chrono::high_resolution_clock::now();
     durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
     cout << "Time printing the tree: " << durationPrinting.count() << endl;
 
     startSearching = chrono::high_resolution_clock::now();
         BSTtree.search(5, 5, 5);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search for specific point: ");
     endSearching = chrono::high_resolution_clock::now();
     durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
     cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
 
     startSearchInRange = chrono::high_resolution_clock::now();
         BSTtree.searchInRange(1, 9, 1, 9, 1, 9, true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search in range: ");
     endSearchInRange = chrono::high_resolution_clock::now();
     durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
     cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
 
     startRemoving = chrono::high_resolution_clock::now();
         BSTtree.remove(5, 5, 5);
+        BenchmarkMax* bmMem = new BenchmarkMax("Remove specific point: ");
     endRemoving = chrono::high_resolution_clock::now();
     durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
     cout << "Time removing a specific point from the tree: " << durationRemoving.count() << endl;
 
     startClearing = chrono::high_resolution_clock::now();
         BSTtree.clear();
+        BenchmarkMax* bmMem = new BenchmarkMax("Clear the tree: ");
     endClearing = chrono::high_resolution_clock::now();
     durationClearing = chrono::duration_cast<chrono::milliseconds>(endClearing - startClearing);
     cout << "Time clearing the tree: " << durationClearing.count() << endl;
@@ -2304,6 +2329,7 @@ void benchmark()
 
     startCreating = chrono::high_resolution_clock::now();
         AVLtree.createEmptyTree(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Create an empty tree: ");
     endCreating = chrono::high_resolution_clock::now();
     durationCreating = chrono::duration_cast<chrono::milliseconds>(endCreating - startCreating);
     cout << "Time creating an empty tree: " << durationCreating.count() << endl;
@@ -2311,36 +2337,42 @@ void benchmark()
     startGenerating = chrono::high_resolution_clock::now();
         AVLtree.add(5, 5, 5);
         AVLtree.fillRandom(n-1);
+        BenchmarkMax* bmMem = new BenchmarkMax("Generate random elements: ");
     endGenerating = chrono::high_resolution_clock::now();
     durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
     cout << "Time adding n random elements: " << durationGenerating.count();
     
     startPrinting = chrono::high_resolution_clock::now();
         AVLtree.print(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Print the tree: ");
     endPrinting = chrono::high_resolution_clock::now();
     durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
     cout << "Time printing the tree: " << durationPrinting.count() << endl;
 
     startSearching = chrono::high_resolution_clock::now();
         AVLtree.search(5, 5, 5);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search for specific point: ");
     endSearching = chrono::high_resolution_clock::now();
     durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
     cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
 
     startSearchInRange = chrono::high_resolution_clock::now();
         AVLtree.searchInRange(1, 9, 1, 9, 1, 9, true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search in range: ");
     endSearchInRange = chrono::high_resolution_clock::now();
     durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
     cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
     
     startRemoving = chrono::high_resolution_clock::now();
         AVLtree.remove(5, 5, 5);
+        BenchmarkMax* bmMem = new BenchmarkMax("Remove specific point: ");
     endRemoving = chrono::high_resolution_clock::now();
     durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
     cout << "Time removing a specific point from the tree: " << durationRemoving.count() << endl;
     
     startClearing = chrono::high_resolution_clock::now();
         AVLtree.clear();
+        BenchmarkMax* bmMem = new BenchmarkMax("Clear the tree: ");
     endClearing = chrono::high_resolution_clock::now();
     durationClearing = chrono::duration_cast<chrono::milliseconds>(endClearing - startClearing);
     cout << "Time clearing the tree: " << durationClearing.count() << endl;
@@ -2349,7 +2381,7 @@ void benchmark()
 
     auto durationAVL = chrono::duration_cast<chrono::milliseconds>(endAVL - startAVL);
     cout << "Time using AVL tree: " << durationAVL.count() << endl;
-    
+
 //-------------------------------------------------------------------------------
 
     auto start23tree = chrono::high_resolution_clock::now();
@@ -2362,24 +2394,28 @@ void benchmark()
         Point point1 = Point(5, 5, 5);
         tree23.add(point1);
         tree23.fillRandom(n-1);
+        BenchmarkMax* bmMem = new BenchmarkMax("Generate random elements: ");
     endGenerating = chrono::high_resolution_clock::now();
     durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
     cout << "Time adding n random elements: " << durationGenerating.count() << endl;
 
     startPrinting = chrono::high_resolution_clock::now();
         tree23.print_in_order(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Print the tree in order: ");
     endPrinting = chrono::high_resolution_clock::now();
     durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
     cout << "Time printing the tree in order: " << durationPrinting.count() << endl;
 
     auto startPrintingTree = chrono::high_resolution_clock::now();
         tree23.print_as_tree(true);
+        BenchmarkMax* bmMem = new BenchmarkMax("Print the tree as a tree: ");
     auto endPrintingTree = chrono::high_resolution_clock::now();
     auto durationPrintingTree = chrono::duration_cast<chrono::milliseconds>(endPrintingTree - startPrintingTree);
     cout << "Time printing the tree as a tree: " << durationPrintingTree.count() << endl;
 
     startSearching = chrono::high_resolution_clock::now();
         tree23.find_element_by_val(point1);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search for specific point: ");
     endSearching = chrono::high_resolution_clock::now();
     durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
     cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
@@ -2388,12 +2424,14 @@ void benchmark()
         Point point2 = Point(1, 1, 1);
         Point point3 = Point(9, 9, 9);
         tree23.find_elements_by_range(point2, point3);
+        BenchmarkMax* bmMem = new BenchmarkMax("Search in range: ");
     endSearchInRange = chrono::high_resolution_clock::now();
     durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
     cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
     
     startRemoving = chrono::high_resolution_clock::now();
         tree23.remove(point1);
+        BenchmarkMax* bmMem = new BenchmarkMax("Remove specific point: ");
     endRemoving = chrono::high_resolution_clock::now();
     durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
     cout << "Time removing a specific point from the tree: " << durationRemoving.count() << endl;
