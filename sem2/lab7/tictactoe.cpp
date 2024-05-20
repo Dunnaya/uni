@@ -2,6 +2,7 @@
 // minimax algorithm + alpha-beta pruning
 #include <iostream>
 #include <cstdlib>
+#include <limits>
 using namespace std;
 #include "tictactoe.h"
 
@@ -29,6 +30,13 @@ void startGame(bool isComputer = true, bool showLogic = false)
         if(winner != ' ' || checkFreeSpaces() == 0)
         {
             break;
+        }
+
+        if(!showLogic)
+        {
+            clearConsole();
+            cout << "\tTIC TAC TOE\n";
+            printBoard();
         }
 
         if(isComputer) computerMove(showLogic);
