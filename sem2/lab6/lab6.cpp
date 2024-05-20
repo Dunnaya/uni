@@ -2178,9 +2178,9 @@ void benchmark()
 
     auto durationLL = chrono::duration_cast<chrono::milliseconds>(endLL - startLL);
     cout << "Time using linked list: " << durationLL.count() << endl;
+
 //-------------------------------------------------------------------------------
-        this_thread::sleep_for(chrono::seconds(1));
-//-------------------------------------------------------------------------------
+
     auto startArrL = chrono::high_resolution_clock::now();
 
             cout << "\n\tArray list:\n\n";
@@ -2235,9 +2235,9 @@ void benchmark()
 
     auto durationArrL = chrono::duration_cast<chrono::milliseconds>(endArrL - startArrL);
     cout << "Time using array list: " << durationArrL.count() << endl;
+
 //-------------------------------------------------------------------------------
-        this_thread::sleep_for(chrono::seconds(1));
-//-------------------------------------------------------------------------------
+
     auto startBST = chrono::high_resolution_clock::now();
 
             cout << "\n\tBinary tree:\n\n";
@@ -2292,52 +2292,116 @@ void benchmark()
 
     auto durationBST = chrono::duration_cast<chrono::milliseconds>(endBST - startBST);
     cout << "Time using BST: " << durationBST.count() << endl;
+
 //-------------------------------------------------------------------------------
-        this_thread::sleep_for(chrono::seconds(1));
-//-------------------------------------------------------------------------------
+
+    auto startAVL = chrono::high_resolution_clock::now();
 
             cout << "\n\tAVL tree:\n\n";
 
     srand(time(nullptr));
-    AVLTree AVLtree;
-    cout << "Time creating an empty tree:\n";
-    AVLtree.createEmptyTree(true);
-    cout << "\nTime adding n random elements:\n";
-    AVLtree.add(5, 5, 5);
-    AVLtree.fillRandom(n-1);
-    cout << "\nTime printing the tree: ";
-    AVLtree.print(true);
-    cout << "\nTime searching for specific point: \n";
-    AVLtree.search(5, 5, 5);
-    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    AVLtree.searchInRange(1, 9, 1, 9, 1, 9, true);
-    cout << "\nTime removing a specific point from the tree: \n";
-    AVLtree.remove(5, 5, 5);
-    cout << "\nTime clearing the tree: \n";
-    AVLtree.clear();
+        AVLTree AVLtree;
+
+    startCreating = chrono::high_resolution_clock::now();
+        AVLtree.createEmptyTree(true);
+    endCreating = chrono::high_resolution_clock::now();
+    durationCreating = chrono::duration_cast<chrono::milliseconds>(endCreating - startCreating);
+    cout << "Time creating an empty tree: " << durationCreating.count() << endl;
+
+    startGenerating = chrono::high_resolution_clock::now();
+        AVLtree.add(5, 5, 5);
+        AVLtree.fillRandom(n-1);
+    endGenerating = chrono::high_resolution_clock::now();
+    durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
+    cout << "Time adding n random elements: " << durationGenerating.count();
+    
+    startPrinting = chrono::high_resolution_clock::now();
+        AVLtree.print(true);
+    endPrinting = chrono::high_resolution_clock::now();
+    durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
+    cout << "Time printing the tree: " << durationPrinting.count() << endl;
+
+    startSearching = chrono::high_resolution_clock::now();
+        AVLtree.search(5, 5, 5);
+    endSearching = chrono::high_resolution_clock::now();
+    durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
+    cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
+
+    startSearchInRange = chrono::high_resolution_clock::now();
+        AVLtree.searchInRange(1, 9, 1, 9, 1, 9, true);
+    endSearchInRange = chrono::high_resolution_clock::now();
+    durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
+    cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
+    
+    startRemoving = chrono::high_resolution_clock::now();
+        AVLtree.remove(5, 5, 5);
+    endRemoving = chrono::high_resolution_clock::now();
+    durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
+    cout << "Time removing a specific point from the tree: " << durationRemoving.count() << endl;
+    
+    startClearing = chrono::high_resolution_clock::now();
+        AVLtree.clear();
+    endClearing = chrono::high_resolution_clock::now();
+    durationClearing = chrono::duration_cast<chrono::milliseconds>(endClearing - startClearing);
+    cout << "Time clearing the tree: " << durationClearing.count() << endl;
+
+    auto endAVL = chrono::high_resolution_clock::now();
+
+    auto durationAVL = chrono::duration_cast<chrono::milliseconds>(endAVL - startAVL);
+    cout << "Time using AVL tree: " << durationAVL.count() << endl;
+    
 //-------------------------------------------------------------------------------
-        this_thread::sleep_for(chrono::seconds(1));
-//-------------------------------------------------------------------------------
+
+    auto start23tree = chrono::high_resolution_clock::now();
 
             cout << "\n\t2-3 tree:\n\n";
 
-    two3Tree tree23;
-    cout << "Time adding n random elements:\n";
-    Point point1 = Point(5, 5, 5);
-    Point point2 = Point(1, 1, 1);
-    Point point3 = Point(9, 9, 9);
-    tree23.add(point1);
-    tree23.fillRandom(n-1);
-    cout << "\nTime printing the tree in order: ";
-    tree23.print_in_order(true);
-    cout << "\n\nTime printing the tree as a tree: ";
-    tree23.print_as_tree(true);
-    cout << "\n\nTime searching for specific point: \n";
-    tree23.find_element_by_val(point1);
-    cout << "\nTime searching for points in range (1, 1, 1) - (9, 9, 9):\n";
-    tree23.find_elements_by_range(point2, point3);
-    cout << "\nTime removing a specific point from the tree: \n";
-    tree23.remove(point1);
+        two3Tree tree23;
+
+    startGenerating = chrono::high_resolution_clock::now();
+        Point point1 = Point(5, 5, 5);
+        tree23.add(point1);
+        tree23.fillRandom(n-1);
+    endGenerating = chrono::high_resolution_clock::now();
+    durationGenerating = chrono::duration_cast<chrono::milliseconds>(endGenerating - startGenerating);
+    cout << "Time adding n random elements: " << durationGenerating.count() << endl;
+
+    startPrinting = chrono::high_resolution_clock::now();
+        tree23.print_in_order(true);
+    endPrinting = chrono::high_resolution_clock::now();
+    durationPrinting = chrono::duration_cast<chrono::milliseconds>(endPrinting - startPrinting);
+    cout << "Time printing the tree in order: " << durationPrinting.count() << endl;
+
+    auto startPrintingTree = chrono::high_resolution_clock::now();
+        tree23.print_as_tree(true);
+    auto endPrintingTree = chrono::high_resolution_clock::now();
+    auto durationPrintingTree = chrono::duration_cast<chrono::milliseconds>(endPrintingTree - startPrintingTree);
+    cout << "Time printing the tree as a tree: " << durationPrintingTree.count() << endl;
+
+    startSearching = chrono::high_resolution_clock::now();
+        tree23.find_element_by_val(point1);
+    endSearching = chrono::high_resolution_clock::now();
+    durationSearching = chrono::duration_cast<chrono::milliseconds>(endSearching - startSearching);
+    cout << "Time searching for specific point (in the middle): " << durationSearching.count() << endl;
+    
+    startSearchInRange = chrono::high_resolution_clock::now();
+        Point point2 = Point(1, 1, 1);
+        Point point3 = Point(9, 9, 9);
+        tree23.find_elements_by_range(point2, point3);
+    endSearchInRange = chrono::high_resolution_clock::now();
+    durationSearchInRange = chrono::duration_cast<chrono::milliseconds>(endSearchInRange - startSearchInRange);
+    cout << "Time searching for points in range (1, 1, 1) - (9, 9, 9): " << durationSearchInRange.count() << endl;
+    
+    startRemoving = chrono::high_resolution_clock::now();
+        tree23.remove(point1);
+    endRemoving = chrono::high_resolution_clock::now();
+    durationRemoving = chrono::duration_cast<chrono::milliseconds>(endRemoving - startRemoving);
+    cout << "Time removing a specific point from the tree: " << durationRemoving.count() << endl;
+
+    auto end23tree = chrono::high_resolution_clock::now();
+
+    auto duration23tree = chrono::duration_cast<chrono::milliseconds>(end23tree - start23tree);
+    cout << "Time using 2-3 tree: " << duration23tree.count() << endl;
 }
 
 int main() 
