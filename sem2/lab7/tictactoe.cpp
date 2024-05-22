@@ -368,6 +368,8 @@ char getValidInputForPlayAgain()
             case 'n':
             case 'N':
                 validInput = true;
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 break;
 
             default:
