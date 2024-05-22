@@ -1,5 +1,5 @@
-#ifndef MINIMAX_H
-#define MINIMAX_H
+#ifndef TICTACTOE_H
+#define TICTACTOE_H
 
 char board[3][3];
 const char player = 'X';
