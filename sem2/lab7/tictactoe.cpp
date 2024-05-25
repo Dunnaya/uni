@@ -3,6 +3,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <limits>
+#include <vector>
+#include <chrono>
+#include <thread>
 using namespace std;
 #include "tictactoe.h"
 
@@ -12,48 +15,48 @@ int main()
    return 0;
 }
 
-void startGame(bool isComputer = true, bool showLogic = false)
+void startGame(bool isComputer = true, bool showLogic = false) 
 {
     char winner = ' ';
 
     resetBoard();
+    pointLogs.clear();
 
-    while (winner == ' ' && checkFreeSpaces() != 0)
+    while (winner == ' ' && checkFreeSpaces() != 0) 
     {
-        if(!showLogic)
+        if (!showLogic)
             clearConsole();
         cout << "\tTIC TAC TOE\n";
         printBoard();
 
         playerMove(true);
         winner = checkWinner();
-        if(winner != ' ' || checkFreeSpaces() == 0)
-        {
+        if (winner != ' ' || checkFreeSpaces() == 0)
             break;
-        }
 
-        if(!showLogic)
+        if (!showLogic) 
         {
             clearConsole();
             cout << "\tTIC TAC TOE\n";
             printBoard();
         }
 
-        if(isComputer) computerMove(showLogic);
+        if (isComputer) computerMove(showLogic);
         else playerMove(false);
 
         winner = checkWinner();
-        if(winner != ' ' || checkFreeSpaces() == 0)
-        {
+        if (winner != ' ' || checkFreeSpaces() == 0)
             break;
-        }
+
+        if (showLogic)
+            showLogicMenu();
     }
 
-    if(!showLogic)
+    if (!showLogic)
         clearConsole();
     cout << "\tTIC TAC TOE\n";
     printBoard();
-    if(isComputer) printWinner(winner, true);
+    if (isComputer) printWinner(winner, true);
     else printWinner(winner, false);
 }
 
@@ -164,7 +167,7 @@ void computerMove(bool showLogic = false)
             if (board[i][j] == ' ') 
             {
                 board[i][j] = computer;
-                int moveVal = minimax(false, INT_MIN, INT_MAX, 0, showLogic);
+                int moveVal = minimax(false, INT_MIN, INT_MAX, 0, showLogic, nullptr);
                 board[i][j] = ' ';
 
                 if (moveVal > bestVal) 
@@ -185,28 +188,20 @@ char checkWinner()
     for(int i = 0; i < 3; i++)
     {
         if(board[i][0] == board[i][1] && board[i][0] == board[i][2] && board[i][0] != ' ')
-        {
             return board[i][0];
-        }
     }
 
     for(int i = 0; i < 3; i++)
     {
         if(board[0][i] == board[1][i] && board[0][i] == board[2][i] && board[0][i] != ' ')
-        {
             return board[0][i];
-        }
     }
 
     if(board[0][0] == board[1][1] && board[0][0] == board[2][2] && board[0][0] != ' ')
-    {
         return board[0][0];
-    }
 
     if(board[0][2] == board[1][1] && board[0][2] == board[2][0] && board[0][2] != ' ')
-    {
         return board[0][2];
-    }
 
     return ' ';
 }
@@ -245,7 +240,7 @@ void printWinner(char winner, bool is1Player = true)
     }
 }
 
-int minimax(bool maximizing, int alpha, int beta, int depth = 0, bool showLogic = false) 
+int minimax(bool maximizing, int alpha, int beta, int depth = 0, bool showLogic = false, PointInfo* parent = nullptr) 
 {
     int score = 0;
     char win = checkWinner();
@@ -256,7 +251,7 @@ int minimax(bool maximizing, int alpha, int beta, int depth = 0, bool showLogic 
     if (checkFreeSpaces() == 0)
         return 0;
 
-    if (maximizing)
+    if (maximizing) 
     {
         int bestVal = INT_MIN;
         for (int i = 0; i < 3; ++i) 
@@ -266,28 +261,28 @@ int minimax(bool maximizing, int alpha, int beta, int depth = 0, bool showLogic 
                 if (board[i][j] == ' ') 
                 {
                     board[i][j] = computer;
-                    int value = minimax(false, alpha, beta, depth + 1, showLogic);
+                    PointInfo current = {i, j, 0, alpha, beta, depth};
+                    int value = minimax(false, alpha, beta, depth + 1, showLogic, &current);
                     bestVal = max(bestVal, value);
+                    current.score = value;
 
-                    if (showLogic && depth < 3)
-                        cout << string(2 * depth, ' ') << "Max: (" << i << ", " << j << ") - Score: " << value << " Alpha: " << alpha << " Beta: " << beta << endl;
-                    
+                    if (parent)
+                        parent->children.push_back(current);
+                    else
+                        pointLogs.push_back(current);
+
                     board[i][j] = ' ';
                     alpha = max(alpha, bestVal);
-                    if (beta <= alpha) // beta cut-off
-                    {
-                        if (showLogic)
-                            cout << string(2 * depth, ' ') << "Beta cut-off at depth " << depth << endl;
+                    if (beta <= alpha)
                         break;
-                    }
                 }
             }
-            if (beta <= alpha) // beta cut-off
+            if (beta <= alpha)
                 break;
         }
         score = bestVal;
     } 
-    else
+    else 
     {
         int bestVal = INT_MAX;
         for (int i = 0; i < 3; ++i) 
@@ -297,23 +292,23 @@ int minimax(bool maximizing, int alpha, int beta, int depth = 0, bool showLogic 
                 if (board[i][j] == ' ') 
                 {
                     board[i][j] = player;
-                    int value = minimax(true, alpha, beta, depth + 1, showLogic);
+                    PointInfo current = {i, j, 0, alpha, beta, depth};
+                    int value = minimax(true, alpha, beta, depth + 1, showLogic, &current);
                     bestVal = min(bestVal, value);
+                    current.score = value;
 
-                    if (showLogic && depth < 3)
-                        cout << string(2 * depth, ' ') << "Min: (" << i << ", " << j << ") - Score: " << value << " Alpha: " << alpha << " Beta: " << beta << endl;
-                    
+                    if (parent)
+                        parent->children.push_back(current);
+                    else
+                        pointLogs.push_back(current);
+
                     board[i][j] = ' ';
                     beta = min(beta, bestVal);
-                    if (beta <= alpha) // alpha cut-off
-                    {
-                        if (showLogic)
-                            cout << string(2 * depth, ' ') << "Alpha cut-off at depth " << depth << endl;
+                    if (beta <= alpha)
                         break;
-                    }
                 }
             }
-            if (beta <= alpha) // alpha cut-off
+            if (beta <= alpha)
                 break;
         }
         score = bestVal;
@@ -383,48 +378,90 @@ char getValidInputForPlayAgain()
     return again;
 }
 
-void menu()
+void displayPointInfo(const PointInfo& point, int indent = 0) 
+{
+    cout << string(indent, ' ') << "Point (" << point.x << ", " << point.y << ") - Score: " 
+    << point.score << " Alpha: " << point.alpha << " Beta: " << point.beta << " Depth: " << point.depth << endl;
+
+    for (const auto& child : point.children) 
+    {
+        displayPointInfo(child, indent + 2);
+    }
+}
+
+void showLogicMenu() 
+{
+    while (true) 
+    {
+        this_thread::sleep_for(chrono::seconds(1));
+
+        cout << "\n   Logic Paths Menu:\n";
+
+        for (size_t i = 0; i < pointLogs.size(); ++i) 
+        {
+            cout << i + 1 << ". (" << pointLogs[i].x << ", " << pointLogs[i].y << ")\n";
+        }
+
+        cout << pointLogs.size() + 1 << ". Back to Game\n";
+
+        int choice;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        if (choice == pointLogs.size() + 1)
+            break;
+
+        if (choice > 0 && choice <= pointLogs.size())
+            displayPointInfo(pointLogs[choice - 1]);
+    }
+}
+
+void menu() 
 {
     int choice;
 
-    cout << "\n   Menu:\n";
-    cout << "1. 1 Player\n";
-    cout << "2. 2 Players\n";
-    cout << "3. Show computer's logic mode\n";
-    cout << "4. Exit\n";
-    choice = getValidInputMenu("Enter your choice: ");
-
-    switch(choice)
+    while (true) 
     {
-        case 1:
-        {
-            startGame(true, false);
-            playAgain();
-            break;
-        }
+        cout << "\n   Menu:\n";
+        cout << "1. 1 Player\n";
+        cout << "2. 2 Players\n";
+        cout << "3. Show computer's logic mode\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-        case 2:
+        switch (choice) 
         {
-            startGame(false, false);
-            playAgain();
-            break;
-        }
+            case 1: 
+            {
+                startGame(true, false);
+                playAgain();
+                break;
+            }
 
-        case 3:
-        {
-            startGame(true, true);
-            playAgain();
-            break;
-        }
+            case 2: 
+            {
+                startGame(false, false);
+                playAgain();
+                break;
+            }
 
-        case 4:
-        {
-            cout << "Exiting...";
-            break;
-        }
+            case 3: 
+            {
+                startGame(true, true);
+                playAgain();
+                break;
+            }
 
-        default:
-            break;
+            case 4: 
+            {
+                cout << "Exiting...\n";
+                return;
+            }
+
+            default:
+                break;
+        }
     }
 }
 
