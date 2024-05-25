@@ -6,6 +6,19 @@ const char player = 'X';
 const char player2 = 'O';
 const char computer = 'O';
 
+struct PointInfo 
+{
+    int x;
+    int y;
+    int score;
+    int alpha;
+    int beta;
+    int depth;
+    vector<PointInfo> children;
+};
+
+vector<PointInfo> pointLogs;
+
 void resetBoard();
 void printBoard();
 int checkFreeSpaces();
@@ -18,7 +31,10 @@ pair<int, int> getValidInputMove(const string&);
 int getValidInputMenu(const string&); 
 char getValidInputForPlayAgain();
 
-int minimax(bool maximizing, int alpha, int beta, int depth, bool);
+int minimax(bool maximizing, int alpha, int beta, int depth, bool, PointInfo* parent);
+
+void displayPointInfo(const PointInfo&, int indent); 
+void showLogicMenu();
 
 void startGame(bool, bool);
 void playAgain();
