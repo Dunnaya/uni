@@ -420,48 +420,45 @@ void menu()
 {
     int choice;
 
-    while (true) 
+    cout << "\n   Menu:\n";
+    cout << "1. 1 Player\n";
+    cout << "2. 2 Players\n";
+    cout << "3. Show computer's logic mode\n";
+    cout << "4. Exit\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice) 
     {
-        cout << "\n   Menu:\n";
-        cout << "1. 1 Player\n";
-        cout << "2. 2 Players\n";
-        cout << "3. Show computer's logic mode\n";
-        cout << "4. Exit\n";
-        cout << "Enter your choice: ";
-        cin >> choice;
-
-        switch (choice) 
+        case 1: 
         {
-            case 1: 
-            {
-                startGame(true, false);
-                playAgain();
-                break;
-            }
-
-            case 2: 
-            {
-                startGame(false, false);
-                playAgain();
-                break;
-            }
-
-            case 3: 
-            {
-                startGame(true, true);
-                playAgain();
-                break;
-            }
-
-            case 4: 
-            {
-                cout << "Exiting...\n";
-                return;
-            }
-
-            default:
-                break;
+            startGame(true, false);
+            playAgain();
+            break;
         }
+
+        case 2: 
+        {
+            startGame(false, false);
+            playAgain();
+            break;
+        }
+
+        case 3: 
+        {
+            startGame(true, true);
+            playAgain();
+            break;
+        }
+
+        case 4: 
+        {
+            cout << "Exiting...\n";
+            return;
+        }
+
+        default:
+            break;
     }
 }
 
