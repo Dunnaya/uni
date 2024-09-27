@@ -8,41 +8,76 @@
 class Note
 {
     protected:
-    std::string content;
-    std::time_t createdAt;
-    std::vector<std::string> tags;
+
+        std::string content;
+        std::time_t createdAt;
+        std::vector<std::string> tags;
 
     public:
-    Note(const std::string& text) : content(text) 
-    {
-        createdAt = std::time(nullptr);
-    }
 
-    void addTag();
-    void removeTag();
-    bool hasTag();
+        Note(const std::string& text) : content(text) 
+        {
+            createdAt = std::time(nullptr);
+        }
 
-    void clear()
-    {
-        content.clear();
-    }
+        void addTag();
+        void removeTag();
+        bool hasTag();
 
-    std::time_t getCreatedAt() const 
-    {
-        return createdAt;
-    }
+        void clear()
+        {
+            content.clear();
+        }
 
-    std::string getContent() const 
-    {
-        return content;
-    }
+        std::time_t getCreatedAt() const 
+        {
+            return createdAt;
+        }
+
+        std::string getContent() const 
+        {
+            return content;
+        }
 };
 
-class Notebook;
+class Notebook
+{
+    private:
+
+        std::vector<Note*> notes; //like... uhm... the collection of notes...
+
+    public:
+
+        void addNote(Note* note)
+        {
+            notes.push_back(note);
+        }
+
+        void deleteNote();
+};
+
 class MarkdownNote;
 class PlainTextNote;
-class Tags;
-class File;
+
+class Tags
+{
+    public:
+        void addTag();
+        void removeTag();
+        bool hasTag();
+};
+
+class File
+{
+    protected:
+        std::string fileName;
+
+    public:
+    //file constructor
+
+    bool exists();
+};
+
 class MarkdownFile;
 class PlainTextFile;
 class FileManager;
