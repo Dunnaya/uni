@@ -53,10 +53,10 @@ class Notebook
         //or
         
         /**
-         * \brief
+         * \brief Func doing something lol ^-^
          * @param note
         */
-        void addNote(Note* note) //when you move the cursor over the function, the documentation is displayed (wow that's crazy bro)
+        void addNote(Note* note) //when you move the cursor over the function, the documentation is displayed
         {
             notes.push_back(note);
         }
@@ -93,5 +93,5 @@ class PDFExporter;
 
 int main()
 {
-    std::cout<<"puke";
+    std::cout<<"hii :3 wrld!";
 }
