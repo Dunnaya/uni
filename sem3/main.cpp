@@ -131,8 +131,37 @@ class File
         }
 };
 
-class MarkdownNote;
-class PlainTextNote;
+class MarkdownNote
+{
+    private:
+        
+        std::string markdownVer;
+
+    public:
+
+        //constructor
+
+        std::string preview();
+
+        std::string exportToFile();
+
+        std::string exportToPDF();
+
+        std::string getMarkdownVer() const
+        {
+            return markdownVer;
+        }
+};
+
+class PlainTextNote : public Note
+{
+    public:
+        PlainTextNote(const std::string text) : Note(text) {}
+        
+        std::string preview();
+
+        std::string exportToFile();
+};
 
 class Tags
 {
@@ -143,8 +172,16 @@ class Tags
         bool hasTag(const std::string tag);
 };
 
-class MarkdownFile;
-class PlainTextFile;
+class MarkdownFile : public File
+{
+
+};
+
+class PlainTextFile : public File
+{
+
+};
+
 class FileManager;
 
 class PDFExporter
