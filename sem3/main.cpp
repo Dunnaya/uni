@@ -1,3 +1,12 @@
+/**
+ * @file main.cpp
+ * @author DS1 (holydunnaya@gmail.com)
+ * @brief 
+ * @version 0.1
+ * @date 2024-09-28
+ * 
+ */
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -20,9 +29,20 @@ class Note
             createdAt = std::time(nullptr);
         }
 
-        void addTag();
-        void removeTag();
-        bool hasTag();
+        void addTag(const std::string& tag)
+        {
+            tags.push_back(tag);
+        }
+
+        void removeTag(const std::string& tag)
+        {
+            tags.erase(std::remove(tags.begin(), tags.end(), tag), tags.end());
+        }
+
+        bool hasTag(const std::string& tag) const
+        {
+            return std::find(tags.begin(), tags.end(), tag) != tags.end();
+        }
 
         void clear()
         {
@@ -62,6 +82,7 @@ class PlainTextNote;
 class Tags
 {
     public:
+
         void addTag();
         void removeTag();
         bool hasTag();
@@ -70,6 +91,7 @@ class Tags
 class File
 {
     protected:
+
         std::string fileName;
 
     public:
