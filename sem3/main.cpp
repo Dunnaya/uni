@@ -47,16 +47,8 @@ class Notebook
         std::vector<Note*> notes; //like... uhm... the collection of notes...
 
     public:
-        /// @brief 
-        /// @param note
-
-        //or
         
-        /**
-         * \brief Func doing something lol ^-^
-         * @param note
-        */
-        void addNote(Note* note) //when you move the cursor over the function, the documentation is displayed
+        void addNote(Note* note)
         {
             notes.push_back(note);
         }
