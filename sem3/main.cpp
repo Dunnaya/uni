@@ -87,7 +87,7 @@ class Notebook
         std::vector<Note*> findNotesByTag(const std::string& tag)
         {
             std::vector<Note*> foundNotes;
-            
+
             for(auto note : notes)
             {
                 if(note -> hasTag(tag))
@@ -96,6 +96,25 @@ class Notebook
 
             return foundNotes;
         }
+
+        void sortNotesBy(); //there will be method of sorting notes by date or smth like that
+};
+
+class File
+{
+    protected:
+
+        std::string fileName;
+        std::time_t lastModified;
+
+    public:
+
+        File(const std::string& name) : fileName(name)
+        {
+            lastModified = std::time(nullptr);
+        }
+
+        bool exists();
 };
 
 class MarkdownNote;
@@ -110,22 +129,18 @@ class Tags
         bool hasTag(const std::string tag);
 };
 
-class File
-{
-    protected:
-
-        std::string fileName;
-
-    public:
-    //file constructor
-
-    bool exists();
-};
-
 class MarkdownFile;
 class PlainTextFile;
 class FileManager;
-class PDFExporter;
+
+class PDFExporter
+{
+    void exportToPDF(const Note& note, const std::string& fileName)
+    {
+        //i need to find a library for this shi
+        std::cout << "Exporting note to PDF: " << fileName << " ..." << "\n";
+    }
+};
 
 int main()
 {
