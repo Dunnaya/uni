@@ -114,7 +114,21 @@ class File
             lastModified = std::time(nullptr);
         }
 
-        bool exists();
+        bool exists() const
+        {
+            std::ifstream file(fileName);
+            return file.good(); //returns true if stream is ok, if file was not opened ot if there is an error it will return false
+        }
+
+        std::time_t getLastModified() const
+        {
+            return lastModified;
+        }
+
+        std::string getFileName() const
+        {
+            return fileName;
+        }
 };
 
 class MarkdownNote;
