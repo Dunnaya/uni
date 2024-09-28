@@ -73,7 +73,29 @@ class Notebook
             notes.push_back(note);
         }
 
-        void deleteNote();
+        void deleteNote(int index)
+        {
+            if(index >= 0 && index < notes.size())
+                notes.erase(notes.begin() + index);
+        }
+
+        int getNumOfNotes() const
+        {
+            return notes.size();
+        }
+
+        std::vector<Note*> findNotesByTag(const std::string& tag)
+        {
+            std::vector<Note*> foundNotes;
+            
+            for(auto note : notes)
+            {
+                if(note -> hasTag(tag))
+                    foundNotes.push_back(note);
+            }
+
+            return foundNotes;
+        }
 };
 
 class MarkdownNote;
@@ -83,9 +105,9 @@ class Tags
 {
     public:
 
-        void addTag();
-        void removeTag();
-        bool hasTag();
+        void addTag(const std::string tag);
+        void removeTag(const std::string tag);
+        bool hasTag(const std::string tag);
 };
 
 class File
