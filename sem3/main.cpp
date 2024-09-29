@@ -32,22 +32,22 @@ class Note
         void addTag(const std::string& tag)
         {
             tags.push_back(tag);
-        } //1
+        }
 
         void removeTag(const std::string& tag)
         {
             tags.erase(std::remove(tags.begin(), tags.end(), tag), tags.end());
-        } //2
+        }
 
         bool hasTag(const std::string& tag) const
         {
             return std::find(tags.begin(), tags.end(), tag) != tags.end();
-        } //3
+        }
 
         void clear()
         {
             content.clear();
-        } //4
+        }
 
         std::time_t getCreatedAt() const 
         {
@@ -58,101 +58,10 @@ class Note
         {
             return content;
         }
-};
 
-class Notebook
-{
-    private:
+        //methods for formatting text before saving 
 
-        std::vector<Note*> notes; //like... uhm... the collection of notes...
-
-    public:
-        
-        void addNote(Note* note)
-        {
-            notes.push_back(note);
-        } //5
-
-        void deleteNote(int index)
-        {
-            if(index >= 0 && index < notes.size())
-                notes.erase(notes.begin() + index);
-        } //6
-
-        int getNumOfNotes() const
-        {
-            return notes.size();
-        }
-
-        std::vector<Note*> findNotesByTag(const std::string& tag)
-        {
-            std::vector<Note*> foundNotes;
-
-            for(auto note : notes)
-            {
-                if(note -> hasTag(tag))
-                    foundNotes.push_back(note);
-            }
-
-            return foundNotes;
-        } //7
-
-        /*void sortNotesByDate() //classique lambda expression (lol it does not work idk why)
-        {
-            std::sort(notes.begin(), notes.end(), [](Note* a, Note* b)
-            {
-                return a->getCreatedAt() < b->getCreatedAt();
-            });
-        } */
-
-        static bool compareNotes(Note* a, Note* b) 
-        {
-            return a->getCreatedAt() < b->getCreatedAt();
-        } //8
-
-        void sortNotesByDate()
-        {
-            std::sort(notes.begin(), notes.end(), compareNotes);
-        } //9
-
-        void displayAllNotes()
-        {
-            for(auto note : notes)
-            {
-                std::cout << "Note: " << note->getContent() << "\n";
-            }
-        } //10
-};
-
-class File
-{
-    protected:
-
-        std::string fileName;
-        std::time_t lastModified;
-
-    public:
-
-        File(const std::string& name) : fileName(name)
-        {
-            lastModified = std::time(nullptr);
-        }
-
-        bool exists() const
-        {
-            std::ifstream file(fileName);
-            return file.good(); //returns true if stream is ok, if file was not opened ot if there is an error it will return false
-        } //11
-
-        std::time_t getLastModified() const
-        {
-            return lastModified;
-        }
-
-        std::string getFileName() const
-        {
-            return fileName;
-        }
+        //a method for searching for keywords
 };
 
 class MarkdownNote : public Note
@@ -166,11 +75,22 @@ class MarkdownNote : public Note
         MarkdownNote(const std::string& text, const std::string& version = "1.0")
             : Note(text), markdownVer(version) {}
 
-        std::string preview();
+        std::string previewAsMarkdown()
+        {
+            return "Markdown preview: " + content;
+        }
 
-        std::string exportToFile();
+        std::string exportToFile()
+        {
+            return "Exporting Markdown to file: " + content;
+
+            //
+        }
 
         std::string exportToPDF();
+
+        //method for parsing Markdown into HTML
+        std::string exportToHTML();
 
         std::string getMarkdownVer() const
         {
@@ -198,6 +118,106 @@ class Tags
         bool hasTag(const std::string tag);
 };
 
+class Notebook
+{
+    private:
+
+        std::vector<Note*> notes; //like... uhm... the collection of notes...
+
+    public:
+        
+        void addNote(Note* note)
+        {
+            notes.push_back(note);
+        }
+
+        void deleteNote(int index)
+        {
+            if(index >= 0 && index < notes.size())
+                notes.erase(notes.begin() + index);
+        }
+
+        Note* getNoteByIndex(int index);
+
+        int getNumOfNotes() const
+        {
+            return notes.size();
+        }
+
+        std::vector<Note*> findNotesByTag(const std::string& tag)
+        {
+            std::vector<Note*> foundNotes;
+
+            for(auto note : notes)
+            {
+                if(note -> hasTag(tag))
+                    foundNotes.push_back(note);
+            }
+
+            return foundNotes;
+        }
+
+        //maybe add findNotesByText
+        //and sortNotesByTags
+
+        /*void sortNotesByDate() //classique lambda expression (lol it does not work idk why)
+        {
+            std::sort(notes.begin(), notes.end(), [](Note* a, Note* b)
+            {
+                return a->getCreatedAt() < b->getCreatedAt();
+            });
+        } */
+
+        static bool compareNotes(Note* a, Note* b) 
+        {
+            return a->getCreatedAt() < b->getCreatedAt();
+        }
+
+        void sortNotesByDate()
+        {
+            std::sort(notes.begin(), notes.end(), compareNotes);
+        }
+
+        void displayAllNotes()
+        {
+            for(auto note : notes)
+            {
+                std::cout << "Note: " << note->getContent() << "\n";
+            }
+        }
+};
+
+class File
+{
+    protected:
+
+        std::string fileName;
+        std::time_t lastModified;
+
+    public:
+
+        File(const std::string& name) : fileName(name)
+        {
+            lastModified = std::time(nullptr);
+        }
+
+        bool exists() const
+        {
+            std::ifstream file(fileName);
+            return file.good(); //returns true if stream is ok, if file was not opened ot if there is an error it will return false
+        }
+
+        std::time_t getLastModified() const
+        {
+            return lastModified;
+        }
+
+        std::string getFileName() const
+        {
+            return fileName;
+        }
+};
+
 class MarkdownFile : public File
 {
     private:
@@ -219,7 +239,7 @@ class MarkdownFile : public File
                 lastModified = std::time(nullptr);
                 file.close();
             }
-        } //12
+        }
 
         void load()
         {
@@ -234,7 +254,7 @@ class MarkdownFile : public File
                 note = loadedNote;
                 file.close();
             }
-        } //13
+        }
 
         MarkdownNote getNote() const
         {
@@ -263,7 +283,7 @@ class PlainTextFile : public File
                 lastModified = std::time(nullptr);
                 file.close();
             }
-        } //14
+        }
 
         void load()
         {
@@ -278,7 +298,7 @@ class PlainTextFile : public File
                 note = loadedNote;
                 file.close();
             }
-        } //15
+        }
 
         PlainTextNote getNote() const
         {
@@ -286,16 +306,51 @@ class PlainTextFile : public File
         }
 };
 
-class FileManager;
+class FileManager //methods for converting notes into different file formats (PDF, txt)
+{
+    private:
+
+        std::string file_path;
+        std::string format;
+
+    public:
+
+        //method to save all notes from notebook to files
+        void saveAll(const Notebook& notebook, const std::string directory);
+
+        //method for loading notes from files into notebook
+        Notebook loadAll(const std::string& directory);
+};
 
 class PDFExporter
 {   
     public:
+
         void exportToPDF(const Note& note, const std::string& fileName)
         {
             //i need to find a library for this shi
+            //maybe QtPdf
             std::cout << "Exporting note to PDF: " << fileName << " ..." << "\n";
         }
+};
+
+class User
+{
+    //username, notebooks, etc.
+};
+
+class Encryption //maybe...
+{
+    //methods for text encryption and decryption
+};
+
+class Renderer //render of the note to the console or GUI
+{
+
+    public:
+
+        static void render(const Note& note);
+        //method for rendering notes with different modes
 };
 
 int main()
