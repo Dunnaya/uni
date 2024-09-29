@@ -32,22 +32,22 @@ class Note
         void addTag(const std::string& tag)
         {
             tags.push_back(tag);
-        }
+        } //1
 
         void removeTag(const std::string& tag)
         {
             tags.erase(std::remove(tags.begin(), tags.end(), tag), tags.end());
-        }
+        } //2
 
         bool hasTag(const std::string& tag) const
         {
             return std::find(tags.begin(), tags.end(), tag) != tags.end();
-        }
+        } //3
 
         void clear()
         {
             content.clear();
-        }
+        } //4
 
         std::time_t getCreatedAt() const 
         {
@@ -71,13 +71,13 @@ class Notebook
         void addNote(Note* note)
         {
             notes.push_back(note);
-        }
+        } //5
 
         void deleteNote(int index)
         {
             if(index >= 0 && index < notes.size())
                 notes.erase(notes.begin() + index);
-        }
+        } //6
 
         int getNumOfNotes() const
         {
@@ -95,7 +95,7 @@ class Notebook
             }
 
             return foundNotes;
-        }
+        } //7
 
         /*void sortNotesByDate() //classique lambda expression (lol it does not work idk why)
         {
@@ -108,12 +108,12 @@ class Notebook
         static bool compareNotes(Note* a, Note* b) 
         {
             return a->getCreatedAt() < b->getCreatedAt();
-        }
+        } //8
 
         void sortNotesByDate()
         {
             std::sort(notes.begin(), notes.end(), compareNotes);
-        }
+        } //9
 
         void displayAllNotes()
         {
@@ -121,7 +121,7 @@ class Notebook
             {
                 std::cout << "Note: " << note->getContent() << "\n";
             }
-        }
+        } //10
 };
 
 class File
@@ -142,7 +142,7 @@ class File
         {
             std::ifstream file(fileName);
             return file.good(); //returns true if stream is ok, if file was not opened ot if there is an error it will return false
-        }
+        } //11
 
         std::time_t getLastModified() const
         {
@@ -209,9 +209,32 @@ class MarkdownFile : public File
         MarkdownFile(const std::string& name, const MarkdownNote& note)
             : File(name), note(note) {}
 
-        void save();
+        void save()
+        {
+            std::ofstream file(fileName);
 
-        void load();
+            if(file.is_open())
+            {
+                file << note.getContent();
+                lastModified = std::time(nullptr);
+                file.close();
+            }
+        } //12
+
+        void load()
+        {
+            std::ifstream file(fileName);
+
+            if(file.is_open())
+            {
+                std::string content((std::istreambuf_iterator<char>(file)),
+                    std::istreambuf_iterator<char>()); //constructor that reads data from a file character by character
+                
+                MarkdownNote loadedNote = MarkdownNote(content);
+                note = loadedNote;
+                file.close();
+            }
+        } //13
 
         MarkdownNote getNote() const
         {
@@ -230,9 +253,32 @@ class PlainTextFile : public File
         PlainTextFile(const std::string& name, const PlainTextNote& note)
             : File(name), note(note) {}
         
-        void save();
+        void save()
+        {
+            std::ofstream file(fileName);
 
-        void load();
+            if(file.is_open())
+            {
+                file << note.getContent();
+                lastModified = std::time(nullptr);
+                file.close();
+            }
+        } //14
+
+        void load()
+        {
+            std::ifstream file(fileName);
+
+            if(file.is_open())
+            {
+                std::string content((std::istreambuf_iterator<char>(file)),
+                    std::istreambuf_iterator<char>());
+
+                PlainTextNote loadedNote = PlainTextNote(content);
+                note = loadedNote;
+                file.close();
+            }
+        } //15
 
         PlainTextNote getNote() const
         {
