@@ -97,12 +97,30 @@ class Notebook
             return foundNotes;
         }
 
-        void sortNotesByDate() //classique lambda expression
+        /*void sortNotesByDate() //classique lambda expression (lol it does not work idk why)
         {
             std::sort(notes.begin(), notes.end(), [](Note* a, Note* b)
             {
-                return a -> getCreatedAt() < b -> getCreatedAt();
+                return a->getCreatedAt() < b->getCreatedAt();
             });
+        } */
+
+        static bool compareNotes(Note* a, Note* b) 
+        {
+            return a->getCreatedAt() < b->getCreatedAt();
+        }
+
+        void sortNotesByDate()
+        {
+            std::sort(notes.begin(), notes.end(), compareNotes);
+        }
+
+        void displayAllNotes()
+        {
+            for(auto note : notes)
+            {
+                std::cout << "Note: " << note->getContent() << "\n";
+            }
         }
 };
 
