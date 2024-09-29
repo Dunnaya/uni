@@ -118,9 +118,9 @@ class Tags
 {
     public:
 
-        void addTag(const std::string tag);
-        void removeTag(const std::string tag);
-        bool hasTag(const std::string tag);
+        virtual void addTag(const std::string tag) = 0;
+        virtual void removeTag(const std::string tag) = 0;
+        virtual bool hasTag(const std::string tag) = 0;
 };
 
 class Notebook
