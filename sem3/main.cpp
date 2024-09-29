@@ -131,7 +131,7 @@ class File
         }
 };
 
-class MarkdownNote
+class MarkdownNote : public Note
 {
     private:
         
@@ -139,7 +139,8 @@ class MarkdownNote
 
     public:
 
-        //constructor
+        MarkdownNote(const std::string& text, const std::string& version = "1.0")
+            : Note(text), markdownVer(version) {}
 
         std::string preview();
 
@@ -156,7 +157,8 @@ class MarkdownNote
 class PlainTextNote : public Note
 {
     public:
-        PlainTextNote(const std::string text) : Note(text) {}
+
+        PlainTextNote(const std::string& text) : Note(text) {}
         
         std::string preview();
 
@@ -174,12 +176,44 @@ class Tags
 
 class MarkdownFile : public File
 {
+    private:
 
+        MarkdownNote note;
+
+    public:
+
+        MarkdownFile(const std::string& name, const MarkdownNote& note)
+            : File(name), note(note) {}
+
+        void save();
+
+        void load();
+
+        MarkdownNote getNote() const
+        {
+            return note;
+        }
 };
 
 class PlainTextFile : public File
 {
+    private:
 
+        PlainTextNote note;
+        
+    public:
+
+        PlainTextFile(const std::string& name, const PlainTextNote& note)
+            : File(name), note(note) {}
+        
+        void save();
+
+        void load();
+
+        PlainTextNote getNote() const
+        {
+            return note;
+        }
 };
 
 class FileManager;
