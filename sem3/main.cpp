@@ -13,6 +13,7 @@
 #include <ctime>
 #include <algorithm>
 #include <fstream>
+#include <filesystem> //for directory_iterator()
 
 class Note
 {
@@ -28,6 +29,10 @@ class Note
         {
             createdAt = std::time(nullptr);
         }
+
+        virtual std::string preview() const = 0;
+
+        virtual std::string exportToFile() const = 0;
 
         void addTag(const std::string& tag)
         {
@@ -75,12 +80,12 @@ class MarkdownNote : public Note
         MarkdownNote(const std::string& text, const std::string& version = "1.0")
             : Note(text), markdownVer(version) {}
 
-        std::string previewAsMarkdown()
+        std::string preview() const override
         {
             return "Markdown preview: " + content;
         }
 
-        std::string exportToFile()
+        std::string exportToFile() const override
         {
             return "Exporting Markdown to file: " + content;
 
@@ -104,9 +109,9 @@ class PlainTextNote : public Note
 
         PlainTextNote(const std::string& text) : Note(text) {}
         
-        std::string preview();
+        std::string preview() const override;
 
-        std::string exportToFile();
+        std::string exportToFile() const override;
 };
 
 class Tags
@@ -321,7 +326,10 @@ class FileManager //methods for converting notes into different file formats (PD
     public:
 
         //method to save all notes from notebook to files
-        void saveAll(const Notebook& notebook, const std::string directory);
+        void saveAll(const Notebook& notebook, const std::string directory)
+        {
+            //
+        }
 
         //method for loading notes from files into notebook
         Notebook loadAll(const std::string& directory);
