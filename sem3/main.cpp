@@ -137,7 +137,12 @@ class Notebook
                 notes.erase(notes.begin() + index);
         }
 
-        Note* getNoteByIndex(int index);
+        Note* getNoteByIndex(int index) const
+        {
+            if(index >= 0 && index < notes.size())
+                return notes[index];
+            return nullptr; //if index is incorrect
+        }
 
         int getNumOfNotes() const
         {
