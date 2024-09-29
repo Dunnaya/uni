@@ -357,11 +357,43 @@ class FileManager //methods for converting notes into different file formats (PD
         //method to save all notes from notebook to files
         void saveAll(const Notebook& notebook, const std::string directory)
         {
-            //
+            for(int i = 0; i < notebook.getNumOfNotes(); ++i)
+            {
+                Note* note = notebook.getNoteByIndex(i);
+                std::string fileName = directory + "/note" + std::to_string(i) + ".txt";
+
+                std::ofstream file(fileName);
+
+                if(file.is_open())
+                {
+                    file << note->getContent();
+                    file.close();
+                }
+            }
         }
 
         //method for loading notes from files into notebook
-        Notebook loadAll(const std::string& directory);
+        Notebook loadAll(const std::string& directory)
+        {
+            Notebook notebook;
+            for(const auto& entry : std::filesystem::directory_iterator(directory))
+            {
+                std::ifstream file(entry.path());
+
+                if(file.is_open())
+                {
+                    std::string line, content;
+                    while(std::getline(file, line))
+                    {
+                        content += line + "\n";
+                    }
+                    
+                    notebook.addNote(new PlainTextNote(content));
+                    file.close();
+                }   
+            }
+            return notebook;
+        }
 };
 
 class PDFExporter
