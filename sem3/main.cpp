@@ -97,7 +97,13 @@ class Notebook
             return foundNotes;
         }
 
-        void sortNotesBy(); //there will be method of sorting notes by date or smth like that
+        void sortNotesByDate() //classique lambda expression
+        {
+            std::sort(notes.begin(), notes.end(), [](Note* a, Note* b)
+            {
+                return a -> getCreatedAt() < b -> getCreatedAt();
+            });
+        }
 };
 
 class File
@@ -219,15 +225,16 @@ class PlainTextFile : public File
 class FileManager;
 
 class PDFExporter
-{
-    void exportToPDF(const Note& note, const std::string& fileName)
-    {
-        //i need to find a library for this shi
-        std::cout << "Exporting note to PDF: " << fileName << " ..." << "\n";
-    }
+{   
+    public:
+        void exportToPDF(const Note& note, const std::string& fileName)
+        {
+            //i need to find a library for this shi
+            std::cout << "Exporting note to PDF: " << fileName << " ..." << "\n";
+        }
 };
 
 int main()
 {
-    std::cout<<"hii :3 wrld!";
+    std::cout << "hii :3 wrld!";
 }
