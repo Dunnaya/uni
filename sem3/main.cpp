@@ -211,6 +211,10 @@ class File
             lastModified = std::time(nullptr);
         }
 
+        virtual void save() const = 0;
+
+        virtual void load() = 0;
+
         bool exists() const
         {
             std::ifstream file(fileName);
@@ -239,26 +243,33 @@ class MarkdownFile : public File
         MarkdownFile(const std::string& name, const MarkdownNote& note)
             : File(name), note(note) {}
 
-        void save()
+        void save() const override
         {
             std::ofstream file(fileName);
 
             if(file.is_open())
             {
                 file << note.getContent();
-                lastModified = std::time(nullptr);
                 file.close();
             }
-        }
+        } //need to change the lastModified
 
-        void load()
+        void load() override
         {
             std::ifstream file(fileName);
 
             if(file.is_open())
             {
+                /*
                 std::string content((std::istreambuf_iterator<char>(file)),
                     std::istreambuf_iterator<char>()); //constructor that reads data from a file character by character
+                    */
+                std::string line, content;
+
+                while(std::getline(file, line))
+                {
+                    content += line + "\n";
+                }
                 
                 MarkdownNote loadedNote = MarkdownNote(content);
                 note = loadedNote;
@@ -283,26 +294,33 @@ class PlainTextFile : public File
         PlainTextFile(const std::string& name, const PlainTextNote& note)
             : File(name), note(note) {}
         
-        void save()
+        void save() const override
         {
             std::ofstream file(fileName);
 
             if(file.is_open())
             {
                 file << note.getContent();
-                lastModified = std::time(nullptr);
                 file.close();
             }
-        }
+        } //need to change the lastModified
 
-        void load()
+        void load() override
         {
             std::ifstream file(fileName);
 
             if(file.is_open())
             {
+                /*
                 std::string content((std::istreambuf_iterator<char>(file)),
                     std::istreambuf_iterator<char>());
+                    */
+                std::string line, content;
+
+                while(std::getline(file, line))
+                {
+                    content += line + "\n";
+                }
 
                 PlainTextNote loadedNote = PlainTextNote(content);
                 note = loadedNote;
