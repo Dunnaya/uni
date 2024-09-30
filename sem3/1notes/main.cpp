@@ -43,7 +43,7 @@ class Note
 
         virtual std::string preview() const = 0;
 
-        virtual std::string exportToFile() const = 0;
+        virtual std::string exportToFile(const std::string& fileName) const = 0;
 
         void addTag(const std::string& tag)
         {
@@ -96,11 +96,18 @@ class MarkdownNote : public Note
             return "Markdown preview: " + content;
         }
 
-        std::string exportToFile() const override
+        std::string exportToFile(const std::string& fileName = "note.md") const override
         {
-            return "Exporting Markdown to file: " + content;
+            std::ofstream file(fileName);
 
-            //
+            if(file.is_open())
+            {
+                file << content;
+                file.close();
+                return "Markdown note exported to " + fileName;
+            } 
+            else
+                return "Failed to open file " + fileName;
         }
 
         std::string exportToPDF();
@@ -122,7 +129,7 @@ class PlainTextNote : public Note
         
         std::string preview() const override;
 
-        std::string exportToFile() const override;
+        std::string exportToFile(const std::string& fileName = "note.txt") const override;
 };
 
 class Tags
