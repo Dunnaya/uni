@@ -93,7 +93,7 @@ class MarkdownNote : public Note
 
         std::string preview() const override
         {
-            return "Markdown preview: " + content;
+            return "Markdown preview:\n" + content + "\n";
         }
 
         /*std::string exportToFile(const std::string& fileName = "note.md") const override
@@ -129,7 +129,10 @@ class PlainTextNote : public Note
 
         PlainTextNote(const std::string& text) : Note(text) {}
         
-        std::string preview() const override;
+        std::string preview() const override
+        {
+            return "Plain Text Note Preview:\n" + content + "\n";
+        }
 
        // std::string exportToFile(const std::string& fileName = "note.txt") const override; !!! DRY !!!
 };
@@ -419,7 +422,82 @@ class PDFExporter
 
 class User
 {
-    //username, notebooks, etc.
+    private:
+
+        std::string username;
+        std::vector<Notebook> notebooks;
+        int activeNotebookIndex;
+
+    public:
+
+        User(const std::string name) : username(name), activeNotebookIndex(0) {}
+
+        std::string getUsername() const
+        {
+            return username;
+        }
+
+        void addNotebook(const Notebook& notebook)
+        {
+            notebooks.push_back(notebook);
+        }
+
+        void deleteNotebook(int index)
+        {
+            if(index >= 0 && index < notebooks.size())
+            {
+                notebooks.erase(notebooks.begin() + index);
+            }
+            else
+                std::cout << "Invalid notebook index.\n";
+        }
+
+        Notebook getActiveNotebook()
+        {
+            return notebooks[activeNotebookIndex];
+        }
+
+        void setActiveNotebook(int index);
+
+        void listNotebooks() const
+        {
+            std::cout << "User " << username << " has the following notebooks:\n";
+
+            for(int i = 0; i < notebooks.size(); ++i)
+            {
+                std::cout << i+1 << ". Notebook: " << notebooks[i].getNumOfNotes() << " notes.\n";
+            }
+        }
+
+        void saveNotebooksToFiles(const std::string& directory)
+        {
+            FileManager fileManager;
+
+            for(int i = 0; i < notebooks.size(); ++i)
+            {
+                fileManager.saveAll(notebooks[i], directory + "/notebook" + std::to_string(i));
+            }
+            std::cout << "All notebooks saved to " << directory << "\n";
+        }
+
+        void loadNotebooksFromFiles(const std::string& directory)
+        {
+            FileManager fileManager;
+            notebooks.clear();
+
+            for(const auto& entry : std::filesystem::directory_iterator(directory))
+            {
+                Notebook notebook = fileManager.loadAll(entry.path().string());
+                notebooks.push_back(notebook);
+            }
+
+            std::cout << "All notebooks loaded from " << directory << "\n";
+        }
+
+        int getNumOfNotebooks()
+        {
+            return notebooks.size();
+        }
 };
 
 class Encryption //maybe...
@@ -438,6 +516,8 @@ class Renderer //render of the note to the console or GUI
 
 int main()
 {
+    User user("Jane Doe");
+
     PlainTextNote note1("This is a plain text note.");
     
     MarkdownNote note2("This is a **markdown** note.");
