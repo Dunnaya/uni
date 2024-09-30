@@ -387,7 +387,7 @@ class FileManager //methods for converting notes into different file formats (PD
                     {
                         content += line + "\n";
                     }
-                    
+
                     notebook.addNote(new PlainTextNote(content));
                     file.close();
                 }   
@@ -429,5 +429,27 @@ class Renderer //render of the note to the console or GUI
 
 int main()
 {
-    std::cout << "hii :3 wrld!";
+    PlainTextNote note1("This is a plain text note.");
+    
+    MarkdownNote note2("This is a **markdown** note.");
+    
+    note1.addTag("personal");
+    note2.addTag("work");
+    
+    Notebook notebook;
+    notebook.addNote(&note1);
+    notebook.addNote(&note2);
+    
+    notebook.displayAllNotes();
+    
+    FileManager fileManager;
+    fileManager.saveAll(notebook, "./notes");
+
+    Notebook loadedNotebook = fileManager.loadAll("./notes");
+    loadedNotebook.displayAllNotes();
+    
+    PDFExporter exporter;
+    exporter.exportToPDF(note1, "note1.pdf");
+
+    return 0;
 }
