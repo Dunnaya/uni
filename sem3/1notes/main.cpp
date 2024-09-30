@@ -8,9 +8,9 @@
  */
 
 /*
-Не менше 9 класів (або інших подібних типів);
-Не менше 15 полів (в сумі в усіх реалізованих класах);
-Не менше 25 нетривіальних методів або функцій.
+Не менше 9 класів (або інших подібних типів); /
+Не менше 15 полів (в сумі в усіх реалізованих класах); /14
+Не менше 25 нетривіальних методів або функцій. /25 (3 repeats)
 Не менше 2 ієрархій успадкування, хоча б одна з який містить не менше 3 класів;
 Не менше 3 незалежних випадків поліморфізму(статичного та динамічного)
 Також має бути правильно реалізовано інкапсуляцію – усі реалізовані поля та методи повинні мати доцільний рівень доступу.
@@ -77,7 +77,21 @@ class Note
 
         //methods for formatting text before saving 
 
-        //a method for searching for keywords
+        std::vector<size_t> searchKeywords(const std::string& keyword) const
+        {
+            std::vector<size_t> positions;
+            size_t pos = content.find(keyword);
+
+            while(pos != std::string::npos)
+            {
+                positions.push_back(pos);
+                pos = content.find(keyword, pos + keyword.length());
+            }
+
+            return positions;
+        }
+
+        //setContent to change the text of the note
 };
 
 class MarkdownNote : public Note
@@ -497,6 +511,102 @@ class User
         int getNumOfNotebooks()
         {
             return notebooks.size();
+        }
+
+        void userMenu()
+        {
+            int choice;
+            
+            do
+            {
+                std::cout << "\n--- Notebook Menu ---\n";
+                std::cout << "1. Create a new Notebook\n";
+                std::cout << "2. Add a note to active Notebook\n";
+                std::cout << "3. Display all notes in active Notebook\n";
+                std::cout << "4. Save all Notebooks to files\n";
+                std::cout << "5. Load Notebooks from files\n";
+                std::cout << "6. List Notebooks\n";
+                std::cout << "0. Exit\n";
+                std::cout << "Enter your choice: ";
+                std::cin >> choice;
+
+                switch (choice)
+                {
+                    case 1:
+                    {
+                        std::string name;
+                        std::cout << "Enter Notebook name: ";
+                        std::cin >> name;
+                        addNotebook(Notebook());
+                        std::cout << "Notebook created.\n";
+
+                        break;
+                    }
+
+                    case 2:
+                    {
+                        if (notebooks.empty())
+                        {
+                            std::cout << "No notebooks available. Please create one first.\n";
+                            break;
+                        }
+
+                        std::string noteText;
+                        std::cout << "Enter Note text: ";
+                        std::cin.ignore(); // Clear the input buffer
+                        std::getline(std::cin, noteText);
+                        notebooks[activeNotebookIndex].addNote(new PlainTextNote(noteText));
+                        std::cout << "Note added to active notebook.\n";
+
+                        break;
+                    }
+
+                    case 3:
+                    {
+                        if (notebooks.empty())
+                        {
+                            std::cout << "No notebooks available.\n";
+                            break;
+                        }
+                        notebooks[activeNotebookIndex].displayAllNotes();
+
+                        break;
+                    }
+
+                    case 4:
+                    {
+                        std::string directory;
+                        std::cout << "Enter directory to save Notebooks: ";
+                        std::cin >> directory;
+                        saveNotebooksToFiles(directory);
+
+                        break;
+                    }
+
+                    case 5:
+                    {
+                        std::string directory;
+                        std::cout << "Enter directory to load Notebooks from: ";
+                        std::cin >> directory;
+                        loadNotebooksFromFiles(directory);
+
+                        break;
+                    }
+
+                    case 6:
+                    {
+                        listNotebooks();
+                        break;
+                    }
+
+                    case 0:
+                        std::cout << "Exiting.........\n";
+                        break;
+
+                    default:
+                        std::cout << "Invalid choice.\n";
+                }
+            } while (choice != 0);
         }
 };
 
