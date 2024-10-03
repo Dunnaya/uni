@@ -229,7 +229,7 @@ class Notebook
         {
             for(auto note : notes)
             {
-                std::cout << "Note: " << note->getContent() << "\n";
+                std::cout << "Note: " << note->getContent() << std::endl;
             }
         }
 };
@@ -430,7 +430,7 @@ class PDFExporter
         {
             //i need to find a library for this shi
             //maybe QtPdf
-            std::cout << "Exporting note to PDF: " << fileName << " ..." << "\n";
+            std::cout << "Exporting note to PDF: " << fileName << " ..." << std::endl;
         }
 };
 
@@ -463,7 +463,7 @@ class User
                 notebooks.erase(notebooks.begin() + index);
             }
             else
-                std::cout << "Invalid notebook index.\n";
+                std::cout << "Invalid notebook index." << std::endl;
         }
 
         Notebook getActiveNotebook()
@@ -475,11 +475,11 @@ class User
 
         void listNotebooks() const
         {
-            std::cout << "User " << username << " has the following notebooks:\n";
+            std::cout << "User " << username << " has the following notebooks:" << std::endl;
 
             for(int i = 0; i < notebooks.size(); ++i)
             {
-                std::cout << i+1 << ". Notebook: " << notebooks[i].getNumOfNotes() << " notes.\n";
+                std::cout << i+1 << ". Notebook: " << notebooks[i].getNumOfNotes() << " notes." << std::endl;
             }
         }
 
@@ -491,7 +491,7 @@ class User
             {
                 fileManager.saveAll(notebooks[i], directory + "/notebook" + std::to_string(i));
             }
-            std::cout << "All notebooks saved to " << directory << "\n";
+            std::cout << "All notebooks saved to " << directory << std::endl;
         }
 
         void loadNotebooksFromFiles(const std::string& directory)
@@ -505,7 +505,7 @@ class User
                 notebooks.push_back(notebook);
             }
 
-            std::cout << "All notebooks loaded from " << directory << "\n";
+            std::cout << "All notebooks loaded from " << directory << std::endl;
         }
 
         int getNumOfNotebooks()
