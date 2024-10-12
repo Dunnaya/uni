@@ -1,8 +1,5 @@
-//alg and compl
-/*
-алгоритм, який за лінійний час визначав би, чи є текстовий
-рядок Т циклічним зсувом іншого рядка Т* (наприклад, abc та cab)
-*/
+/*Розробіть алгоритм, який за лінійний час визначав би, чи є текстовий
+рядок Т циклічним зсувом іншого рядка Т* (наприклад, abc та cab).*/
 #include <iostream>
 #include <string>
 
@@ -11,7 +8,7 @@ bool isCyclicShift(std::string T, std::string T_star)
     std::string S;
 
     if(T.length() != T_star.length())
-        return false; //if they have diff leng cyclic shift is impossible
+        return false; //if they have diff length cyclic shift is impossible
     
     S = T_star + T_star; 
 
@@ -23,17 +20,17 @@ int main()
     std::string T = "bca";
     std::string T_star = "abc";
 
-    std::string T1 = "hui";
+    std::string T1 = "xyz";
 
     if (isCyclicShift(T, T_star))
-       std::cout << "da eto tak\n";
+       std::cout << "true\n";
     else
-       std::cout << "idi nahui eblo\n";
+       std::cout << "false\n";
 
     if (isCyclicShift(T1, T_star))
-        std::cout << "da eto tak\n";
+        std::cout << "true\n";
     else
-        std::cout << "idi nahui eblo\n";
+        std::cout << "false\n";
 
     return 0;
 }
