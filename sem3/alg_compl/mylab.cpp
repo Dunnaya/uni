@@ -17,7 +17,22 @@ bool isCyclicShift(std::string T, std::string T_star)
 
 int main()
 {
-    std::string T = "bca";
+    std::string str1, str2;
+
+    std::cout << "Enter the 1st line: ";
+    std::getline(std::cin, str1);
+
+    std::cout << "Enter the 2nd line: ";
+    std::getline(std::cin, str2);
+
+    isCyclicShift(str1, str2);
+
+    if (isCyclicShift(str1, str2))
+       std::cout << "The 1st line IS cyclic shift of the 2nd line.\n";
+    else
+       std::cout << "The 1st line IS NOT cyclic shift of the 2nd line.\n";
+
+    /*std::string T = "bca";
     std::string T_star = "abc";
 
     std::string T1 = "xyz";
@@ -37,7 +52,7 @@ int main()
     if (isCyclicShift(T2, T_star))
         std::cout << "true\n";
     else
-        std::cout << "false\n";
+        std::cout << "false\n";*/
 
     return 0;
 }
