@@ -18,41 +18,30 @@ bool isCyclicShift(std::string T, std::string T_star)
 int main()
 {
     std::string str1, str2;
+    char choice;
 
-    std::cout << "Enter the 1st line: ";
-    std::getline(std::cin, str1);
+    do 
+    {
+        std::cout << "Enter the 1st line: ";
+        std::getline(std::cin, str1);
 
-    std::cout << "Enter the 2nd line: ";
-    std::getline(std::cin, str2);
+        std::cout << "Enter the 2nd line: ";
+        std::getline(std::cin, str2);
 
-    isCyclicShift(str1, str2);
+        isCyclicShift(str1, str2);
 
-    if (isCyclicShift(str1, str2))
-       std::cout << "The 1st line IS cyclic shift of the 2nd line.\n";
-    else
-       std::cout << "The 1st line IS NOT cyclic shift of the 2nd line.\n";
+        if (isCyclicShift(str1, str2))
+        std::cout << "The 1st line IS cyclic shift of the 2nd line.\n";
+        else
+        std::cout << "The 1st line IS NOT cyclic shift of the 2nd line.\n";
 
-    /*std::string T = "bca";
-    std::string T_star = "abc";
+        std::cout << "Do you want to check another pair of lines? (y/n): ";
+        std::cin >> choice;
+        std::cin.ignore();
 
-    std::string T1 = "xyz";
+    } while(choice == 'y' || choice == 'Y');
 
-    std::string T2 = "ab";
-
-    if (isCyclicShift(T, T_star))
-       std::cout << "true\n";
-    else
-       std::cout << "false\n";
-
-    if (isCyclicShift(T1, T_star))
-        std::cout << "true\n";
-    else
-        std::cout << "false\n";
-
-    if (isCyclicShift(T2, T_star))
-        std::cout << "true\n";
-    else
-        std::cout << "false\n";*/
-
+    std::cout << "Exiting the program...\n";
+    
     return 0;
 }
