@@ -22,12 +22,19 @@ int main()
 
     std::string T1 = "xyz";
 
+    std::string T2 = "ab";
+
     if (isCyclicShift(T, T_star))
        std::cout << "true\n";
     else
        std::cout << "false\n";
 
     if (isCyclicShift(T1, T_star))
+        std::cout << "true\n";
+    else
+        std::cout << "false\n";
+
+    if (isCyclicShift(T2, T_star))
         std::cout << "true\n";
     else
         std::cout << "false\n";
