@@ -15,9 +15,9 @@ void printMatrix(T** matrix, int n)
         {
             //if the element is rlly tiny -> output 0
             if (fabs(matrix[i][j]) < epsilon) //fabs() from cmath - module of a number
-                std::cout << std::setw(5) << std::setprecision(2) << 0 << " ";
+                std::cout << std::setw(7) << std::setprecision(2) << 0 << " ";
             else
-                std::cout << std::setw(5) << std::setprecision(2) << matrix[i][j] << " ";
+                std::cout << std::setw(7) << std::setprecision(2) << matrix[i][j] << " ";
         }
 
         std::cout << std::endl;
