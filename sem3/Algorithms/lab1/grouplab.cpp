@@ -2,7 +2,6 @@
 #include <iostream>
 #include <iomanip>
 #include <cmath>
-using namespace std;
 
 typedef double T;
 
@@ -14,14 +13,14 @@ void printMatrix(T** matrix, int n)
     {
         for (int j = 0; j < n; ++j) 
         {
-            //if the element is tiny -> output 0
-            if (fabs(matrix[i][j]) < epsilon) 
-                cout << setw(5) << setprecision(2) << 0 << " ";
+            //if the element is rlly tiny -> output 0
+            if (fabs(matrix[i][j]) < epsilon) //fabs() from cmath - module of a number
+                std::cout << std::setw(5) << std::setprecision(2) << 0 << " ";
             else
-                cout << setw(5) << setprecision(2) << matrix[i][j] << " ";
+                std::cout << std::setw(5) << std::setprecision(2) << matrix[i][j] << " ";
         }
 
-        cout << endl;
+        std::cout << std::endl;
     }
 }
 
@@ -52,7 +51,7 @@ bool inverseMatrix(T** A, T** invMatrix, int n)
             {
                 if (augmented[k][i] != 0) 
                 {
-                    swap(augmented[i], augmented[k]);
+                    std::swap(augmented[i], augmented[k]);
                     found = true;
                     break;
                 }
@@ -60,7 +59,7 @@ bool inverseMatrix(T** A, T** invMatrix, int n)
 
             if (!found) 
             {
-                cout << "The matrix is ​​degenerate and has no inverse." << endl;
+                std::cout << "The matrix is degenerate and has no inverse." << std::endl;
                 return false;
             }
         }
@@ -111,8 +110,8 @@ int main()
 {
     int n;
 
-    cout << "Enter the matrix size: ";
-    cin >> n;
+    std::cout << "Enter the matrix size: ";
+    std::cin >> n;
 
     //allocation of memory for matrices
     T** A = new T*[n];
@@ -123,22 +122,22 @@ int main()
         invMatrix[i] = new T[n];
     }
 
-    cout << "Enter the elements of matrix A:" << endl;
+    std::cout << "Enter the elements of matrix A:" << std::endl;
     for (int i = 0; i < n; ++i) 
     {
         for (int j = 0; j < n; ++j) 
         {
-            cin >> A[i][j];
+            std::cin >> A[i][j];
         }
     }
 
     if (inverseMatrix(A, invMatrix, n)) 
     {
-        cout << "Inverse matrix:" << endl;
+        std::cout << "Inverse matrix:" << std::endl;
         printMatrix(invMatrix, n);
     } 
     else
-        cout << "Failed to inverse matrix." << endl;
+        std::cout << "Failed to inverse matrix." << std::endl;
 
     //clearing the memory
     for (int i = 0; i < n; ++i) 
