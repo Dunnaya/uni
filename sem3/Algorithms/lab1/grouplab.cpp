@@ -7,7 +7,7 @@ typedef double T;
 
 void printMatrix(T** matrix, int n) 
 {
-    const double epsilon = 1e-10;  //value to compare with 0
+    const double epsilon = 1e-10; //value to compare with 0
 
     for (int i = 0; i < n; ++i) 
     {
@@ -35,7 +35,7 @@ bool inverseMatrix(T** A, T** invMatrix, int n)
 
         for (int j = 0; j < n; ++j) 
         {
-            augmented[i][j] = A[i][j];     //copying elements from A
+            augmented[i][j] = A[i][j]; //copying elements from A
             augmented[i][j+n] = (i == j) ? 1.0 : 0.0;  //and forming a unit matrix
         }
     }
