@@ -16,9 +16,9 @@ void printMatrix(T** matrix, int n)
         {
             //if the element is tiny -> output 0
             if (fabs(matrix[i][j]) < epsilon) 
-                cout << setw(5) << setprecision(5) << 0 << " ";
+                cout << setw(5) << setprecision(2) << 0 << " ";
             else
-                cout << setw(5) << setprecision(5) << matrix[i][j] << " ";
+                cout << setw(5) << setprecision(2) << matrix[i][j] << " ";
         }
 
         cout << endl;
