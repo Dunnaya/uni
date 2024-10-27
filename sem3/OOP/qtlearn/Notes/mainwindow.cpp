@@ -64,6 +64,12 @@ void MainWindow::onRemoveNote(int index)
     removeNote(index);
 }
 
+void MainWindow::onRenameNote(int index, const QString& newTitle)
+{
+    notesManager.renameNote(index, newTitle);
+    ui->notesListWidget->updateCurrentNote(notesManager.note(index));
+}
+
 void MainWindow::addNoteToList(const Note &note)
 {
     ui->notesListWidget->addNote(note);
@@ -111,4 +117,7 @@ void MainWindow::makeConnections()
     connect(&notesManager, &Notebook::noteContentChanged, this, &MainWindow::onNoteContentChanged);
 
     connect(ui->notesListWidget, &NotesListWidget::selectedNoteChanged, this, &MainWindow::onSelectedNoteChanged);
+
+    connect(ui->notesListWidget, &NotesListWidget::removeNote, this, &MainWindow::onRemoveNote);
+    connect(ui->notesListWidget, &NotesListWidget::renameNote, this, &MainWindow::onRenameNote);
 }

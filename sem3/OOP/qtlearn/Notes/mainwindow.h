@@ -32,6 +32,7 @@ private slots:
     //handle NotesListWidget signals
     void onSelectedNoteChanged(int index);
     void onRemoveNote(int index);
+    void onRenameNote(int index, const QString& newTitle);
 
 private:
     void addNoteToList(const Note& note);
