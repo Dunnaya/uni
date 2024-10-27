@@ -100,5 +100,8 @@ void NoteWidget::onRemoveActionTriggered()
 void NoteWidget::onRenameActionTriggered()
 {
     RenameDialog renameDialog(title, this);
-
+    if(renameDialog.exec() == QDialog::Accepted)
+    {
+        emit renameNote(index, renameDialog.newName());
+    }
 }

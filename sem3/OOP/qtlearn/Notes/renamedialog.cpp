@@ -9,6 +9,9 @@ RenameDialog::RenameDialog(const QString& oldName, QWidget *parent)
 {
     ui->setupUi(this);
 
+    connect(ui->newNameLineEdit, &QLineEdit::textChanged,
+            this,  &RenameDialog::onNewNameLEEdited);
+
     ui->newNameLineEdit->setText(oldName);
     ui->newNameLineEdit->setSelection(0, ui->newNameLineEdit->text().size());
 }

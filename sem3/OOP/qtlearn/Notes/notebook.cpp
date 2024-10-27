@@ -48,9 +48,13 @@ void Notebook::removeNote(int index)
 
 void Notebook::renameNote(int index, const QString &newTitle)
 {
-    //TODO
-    Q_UNUSED(index)
-    Q_UNUSED(newTitle)
+    auto found = notes.find(index);
+    if(found != notes.end())
+    {
+        auto& [note, textDocument] = found->second;
+        note.title = newTitle;
+        note.lastModified = QDateTime::currentDateTime();
+    }
 }
 
 const Note &Notebook::note(int index) const
