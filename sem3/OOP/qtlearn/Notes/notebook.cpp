@@ -123,5 +123,3 @@ int nextNoteId()
     static int index = 0;
     return ++index;
 }
-
-

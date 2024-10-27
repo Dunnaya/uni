@@ -25,6 +25,8 @@ public:
 
 signals:
     void selectedNoteChanged(int index);
+    void removeNote(int index);
+    void renameNote(int index, const QString& newTitle);
 
 private:
     Ui::NotesListWidget *ui;

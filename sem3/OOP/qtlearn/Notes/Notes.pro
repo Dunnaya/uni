@@ -12,17 +12,22 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     notebook.cpp \
-    noteslistwidget.cpp
+    noteslistwidget.cpp \
+    notewidget.cpp \
+    renamedialog.cpp
 
 HEADERS += \
     mainwindow.h \
     note.h \
     notebook.h \
-    noteslistwidget.h
+    noteslistwidget.h \
+    notewidget.h \
+    renamedialog.h
 
 FORMS += \
     mainwindow.ui \
-    noteslistwidget.ui
+    noteslistwidget.ui \
+    renamedialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

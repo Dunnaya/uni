@@ -5,11 +5,9 @@
 
 class Note
 {
-    public:
-        int index;
-        QString title;
-        QString content;
-        QDateTime lastModified;
-
-
+public:
+    int index;
+    QString title;
+    QString content;
+    QDateTime lastModified;
 };

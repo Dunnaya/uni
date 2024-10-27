@@ -2,6 +2,7 @@
 #include "ui_noteslistwidget.h"
 
 #include "note.h"
+#include "notewidget.h"
 
 NotesListWidget::NotesListWidget(QWidget *parent)
     : QWidget(parent)
@@ -41,12 +42,17 @@ void NotesListWidget::updateCurrentNote(const Note &note)
     {
         moveCurrentItemToTop(note);
     }
+    else
+    {
+        auto widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(ui->noteListWidget->currentItem()));
+        widget->UpdateContent(note);
+    }
 }
 
 int NotesListWidget::currentNoteId()
 {
     auto* currentItem = ui->noteListWidget->currentItem();
-    int noteId = currentItem->data(Qt::UserRole).toInt();
+    int noteId = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(currentItem))->noteId();
     return noteId;
 }
 
@@ -75,8 +81,15 @@ void NotesListWidget::moveCurrentItemToTop(const Note &note)
 
 void NotesListWidget::setupNoteItem(const Note &note, QListWidgetItem *item)
 {
-    item->setText(note.title);
-    item->setData(Qt::UserRole, note.index);
+    NoteWidget* widget = new NoteWidget(note);
 
+    connect(widget, &NoteWidget::removeNote,
+            this, &NotesListWidget::removeNote);
+
+    connect(widget, &NoteWidget::renameNote,
+            this, &NotesListWidget::renameNote);
+
+    item->setSizeHint(widget->sizeHint());
+    ui->noteListWidget->setItemWidget(item, widget);
     ui->noteListWidget->setCurrentItem(item);
 }

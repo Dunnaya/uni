@@ -50,4 +50,3 @@ signals:
     void newNoteCreated(int index);
     void noteContentChanged(int index);
 };
-
