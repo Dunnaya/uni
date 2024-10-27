@@ -91,10 +91,10 @@ void MainWindow::init()
 {
     auto notesList = notesManager.notebook();
     std::sort(notesList.begin(), notesList.end(),
-            [](const Note& left, const Note& right)
-            {
-                return left.lastModified < right.lastModified;
-            });
+              [](const Note& left, const Note& right)
+              {
+                  return left.lastModified < right.lastModified;
+              });
 
     for(auto& note : notesList)
     {
@@ -112,4 +112,3 @@ void MainWindow::makeConnections()
 
     connect(ui->notesListWidget, &NotesListWidget::selectedNoteChanged, this, &MainWindow::onSelectedNoteChanged);
 }
-

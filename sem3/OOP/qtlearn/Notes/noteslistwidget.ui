@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>302</width>
-    <height>524</height>
+    <width>237</width>
+    <height>494</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,11 +27,7 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QListWidget" name="noteListWidget">
-     <property name="frameShape">
-      <enum>QFrame::Shape::NoFrame</enum>
-     </property>
-    </widget>
+    <widget class="QListWidget" name="noteListWidget"/>
    </item>
   </layout>
  </widget>
