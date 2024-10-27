@@ -11,10 +11,13 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    notebook.cpp \
     noteslistwidget.cpp
 
 HEADERS += \
     mainwindow.h \
+    note.h \
+    notebook.h \
     noteslistwidget.h
 
 FORMS += \
