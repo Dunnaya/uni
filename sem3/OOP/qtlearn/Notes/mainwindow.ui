@@ -43,10 +43,16 @@
         <iconset resource="resources.qrc">
          <normaloff>:/icons/create.svg</normaloff>:/icons/create.svg</iconset>
        </property>
+       <property name="autoDefault">
+        <bool>false</bool>
+       </property>
+       <property name="flat">
+        <bool>false</bool>
+       </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="removeNote">
+      <widget class="QPushButton" name="removeNoteBtn">
        <property name="text">
         <string/>
        </property>
