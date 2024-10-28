@@ -1,5 +1,6 @@
 #include "notebook.h"
 #include "note.h"
+#include "xmlstorage.h"
 
 #include <QTextDocument>
 #include <QSignalMapper>
@@ -102,12 +103,23 @@ void Notebook::onNoteContentChanged(int index)
 
 void Notebook::readNotes()
 {
-    //TODO
+    XmlStorage storage;
+
+    auto savedNotes = storage.read();
+
+    for(auto n : savedNotes)
+    {
+        n.index = nextNoteId();
+        auto& [note, textDocument] = notes[n.index];
+        note = n;
+        textDocument = createNewTextDocument(note);
+    }
 }
 
 void Notebook::writeNotes()
 {
-    //TODO
+    XmlStorage storage;
+    storage.write(notebook());
 }
 
 std::unique_ptr<QTextDocument> Notebook::createNewTextDocument(const Note& note)

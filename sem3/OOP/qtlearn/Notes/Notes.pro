@@ -14,7 +14,8 @@ SOURCES += \
     notebook.cpp \
     noteslistwidget.cpp \
     notewidget.cpp \
-    renamedialog.cpp
+    renamedialog.cpp \
+    xmlstorage.cpp
 
 HEADERS += \
     mainwindow.h \
@@ -22,7 +23,8 @@ HEADERS += \
     notebook.h \
     noteslistwidget.h \
     notewidget.h \
-    renamedialog.h
+    renamedialog.h \
+    xmlstorage.h
 
 FORMS += \
     mainwindow.ui \
