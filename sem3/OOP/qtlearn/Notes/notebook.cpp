@@ -58,6 +58,20 @@ void Notebook::renameNote(int index, const QString &newTitle)
     }
 }
 
+void Notebook::toggleNotePin(int index)
+{
+    auto found = notes.find(index);
+    if(found != notes.end())
+    {
+        auto& [note, textDocument] = found->second;
+        note.isPinned = !note.isPinned;
+        //note.lastModified = QDateTime::currentDateTime();
+
+        emit notePinToggled(index);
+        emit noteContentChanged(index);
+    }
+}
+
 const Note &Notebook::note(int index) const
 {
     return notes.at(index).first;

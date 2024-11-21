@@ -61,12 +61,28 @@ void MainWindow::onSelectedNoteChanged(int index)
 
 void MainWindow::onRemoveNote(int index)
 {
-    removeNote(index);
+    if(index >= 0)
+    {
+        removeNote(index);
+    }
 }
 
 void MainWindow::onRenameNote(int index, const QString& newTitle)
 {
     notesManager.renameNote(index, newTitle);
+    ui->notesListWidget->updateCurrentNote(notesManager.note(index));
+}
+
+void MainWindow::onTogglePinNote()
+{
+    int currentId = ui->notesListWidget->currentNoteId();
+    if (currentId >= 0)
+        ui->notesListWidget->togglePinStatus(currentId);
+}
+
+void MainWindow::onTogglePinRequested(int index)
+{
+    notesManager.toggleNotePin(index);
     ui->notesListWidget->updateCurrentNote(notesManager.note(index));
 }
 
@@ -120,4 +136,6 @@ void MainWindow::makeConnections()
 
     connect(ui->notesListWidget, &NotesListWidget::removeNote, this, &MainWindow::onRemoveNote);
     connect(ui->notesListWidget, &NotesListWidget::renameNote, this, &MainWindow::onRenameNote);
+    connect(ui->notesListWidget, &NotesListWidget::togglePinNote, this, &MainWindow::onTogglePinRequested); //
+
 }

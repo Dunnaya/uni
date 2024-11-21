@@ -33,6 +33,8 @@ private slots:
     void onSelectedNoteChanged(int index);
     void onRemoveNote(int index);
     void onRenameNote(int index, const QString& newTitle);
+    void onTogglePinNote();
+    void onTogglePinRequested(int index);
 
 private:
     void addNoteToList(const Note& note);

@@ -24,6 +24,7 @@ public:
     void addNewNote();
     void removeNote(int index);
     void renameNote(int index, const QString& newTitle);
+    void toggleNotePin(int index);
 
     const Note& note(int index) const;
 
@@ -49,4 +50,5 @@ signals:
 
     void newNoteCreated(int index);
     void noteContentChanged(int index);
+    void notePinToggled(int index);
 };

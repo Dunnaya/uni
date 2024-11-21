@@ -10,4 +10,8 @@ public:
     QString title;
     QString content;
     QDateTime lastModified;
+    bool isPinned = false;
+
+    void setPinned(bool pinned) { isPinned = pinned; } //
+    bool getPinned() const { return isPinned; } //
 };

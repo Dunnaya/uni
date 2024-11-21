@@ -7,6 +7,7 @@ class NotesListWidget;
 }
 
 class Note;
+//class Notebook;
 class QListWidgetItem;
 
 class NotesListWidget : public QWidget
@@ -23,16 +24,26 @@ public:
 
     int currentNoteId();
 
+    void togglePinStatus(int index); //
+    void addNoteToList(const Note& note); //
+
 signals:
     void selectedNoteChanged(int index);
     void removeNote(int index);
     void renameNote(int index, const QString& newTitle);
+    void togglePinNote(int index);
+    void togglePinRequested(int index);
 
 private:
     Ui::NotesListWidget *ui;
 
     void onItemSelectionChanged();
 
+    void refreshNotesList(); //
+
     void moveCurrentItemToTop(const Note& note);
     void setupNoteItem(const Note& note, QListWidgetItem* item);
+
+    Note* findNoteById(int noteId); //
+    //Notebook& notesManager; //
 };
