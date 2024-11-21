@@ -28,5 +28,6 @@ private:
     const QString noteToken = "Note";
     const QString titleToken = "title";
     const QString lastModifiedToken = "modified";
+    const QString isPinnedToken = "isPinned";
     const QString contentToken = "content";
 };

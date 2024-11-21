@@ -15,8 +15,10 @@ NoteWidget::NoteWidget(const Note& note, QWidget *parent)
     index = note.index;
     title = note.title;
     lastModified = note.lastModified.toString(dateTimeFormat);
+    isPinned = note.isPinned;
 
     updateLabels();
+    updatePinDisplay(); //
     setToolTip(QString("%0\n%1").arg(title).arg(lastModified));
 }
 
@@ -29,9 +31,19 @@ void NoteWidget::UpdateContent(const Note &note)
 {
     title = note.title;
     lastModified = note.lastModified.toString(dateTimeFormat);
+    isPinned = note.isPinned; //
 
     updateLabels();
+    updatePinDisplay(); //
     setToolTip(QString("%0\n%1").arg(title).arg(lastModified));
+}
+
+void NoteWidget::updatePinDisplay()
+{
+    if (isPinned)
+        titleLbl->setStyleSheet("font-weight: bold; color: #c24887;");
+    else
+        titleLbl->setStyleSheet("");
 }
 
 void NoteWidget::resizeEvent(QResizeEvent *event)
@@ -79,6 +91,11 @@ void NoteWidget::setElidedText(QLabel *label, const QString &text)
 void NoteWidget::showContextMenu(const QPoint &pos)
 {
     QMenu contextMenu(this);
+
+    QAction* pinAction = contextMenu.addAction(isPinned ? "Unpin Note" : "Pin Note");
+    pinAction->setIcon(QIcon(":/icons/pin.svg"));
+    connect(pinAction, &QAction::triggered, this, &NoteWidget::togglePinNote);
+
     QAction* renameAction = contextMenu.addAction("Rename Note");
     renameAction->setIcon(QIcon(":/icons/rename.svg"));
     connect(renameAction, &QAction::triggered,

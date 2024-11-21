@@ -9,6 +9,7 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    ../../../../../byeworld/sem3/OOP/qtlearn/Notes/addtagdialog.cpp \
     main.cpp \
     mainwindow.cpp \
     notebook.cpp \
@@ -18,6 +19,7 @@ SOURCES += \
     xmlstorage.cpp
 
 HEADERS += \
+    ../../../../../byeworld/sem3/OOP/qtlearn/Notes/addtagdialog.h \
     mainwindow.h \
     note.h \
     notebook.h \
@@ -27,6 +29,7 @@ HEADERS += \
     xmlstorage.h
 
 FORMS += \
+    ../../../../../byeworld/sem3/OOP/qtlearn/Notes/addtagdialog.ui \
     mainwindow.ui \
     noteslistwidget.ui \
     renamedialog.ui

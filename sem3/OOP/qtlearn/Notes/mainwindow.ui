@@ -37,7 +37,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset>
          <normaloff>:/icons/create.svg</normaloff>:/icons/create.svg</iconset>
        </property>
       </widget>
@@ -48,7 +48,7 @@
         <string/>
        </property>
        <property name="icon">
-        <iconset resource="resources.qrc">
+        <iconset>
          <normaloff>:/icons/remove.svg</normaloff>:/icons/remove.svg</iconset>
        </property>
       </widget>
@@ -97,6 +97,12 @@
         <height>0</height>
        </size>
       </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Shape::StyledPanel</enum>
+      </property>
      </widget>
     </widget>
    </item>
@@ -110,8 +116,6 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="resources.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

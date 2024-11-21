@@ -16,15 +16,19 @@ public:
     int noteId() const;
     void UpdateContent(const Note& note);
 
+    bool getIsPinned() const { return isPinned; }
+
 signals:
     void removeNote(int index);
     void renameNote(int index, const QString& newTitle);
+    void togglePinNote();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void contextMenuEvent(QContextMenuEvent *event) override;
 
 private:
+    void updatePinDisplay();
     void setupGui();
     void updateLabels();
 
@@ -40,6 +44,7 @@ private:
     int index;
     QString title;
     QString lastModified;
+    bool isPinned;
 
     const QString dateTimeFormat = "dd/MM/yyyy - hh:mm:ss";
 };

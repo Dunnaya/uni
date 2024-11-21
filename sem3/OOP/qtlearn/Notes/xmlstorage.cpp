@@ -77,6 +77,7 @@ void XmlStorage::writeNote(QXmlStreamWriter &stream, const Note &note)
     stream.writeStartElement(noteToken);
     stream.writeAttribute(titleToken, note.title);
     stream.writeAttribute(lastModifiedToken, note.lastModified.toString(dateTimeFormat));
+    stream.writeAttribute(isPinnedToken, note.isPinned ? "true" : "false");
     stream.writeTextElement(contentToken, note.content);
     stream.writeEndElement();
 }
@@ -89,6 +90,7 @@ void XmlStorage::readNote(QXmlStreamReader &stream, std::vector<Note> &notes)
         auto attributes = stream.attributes();
         note.title = attributes.value(titleToken).toString();
         note.lastModified = QDateTime::fromString(attributes.value(lastModifiedToken).toString(), dateTimeFormat);
+        note.isPinned = attributes.value(isPinnedToken).toString() == "true";
 
         stream.readNextStartElement();
         if(stream.name() == contentToken)
