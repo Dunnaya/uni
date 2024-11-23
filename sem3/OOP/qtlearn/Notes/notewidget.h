@@ -20,6 +20,8 @@ public:
 
     QString getTitle() const { return title; }
 
+    QString getLastModified() const { return lastModified; }
+
 signals:
     void removeNote(int index);
     void renameNote(int index, const QString& newTitle);
