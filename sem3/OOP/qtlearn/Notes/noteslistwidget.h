@@ -24,8 +24,11 @@ public:
 
     int currentNoteId();
 
-    void togglePinStatus(int index); //
-    void addNoteToList(const Note& note); //
+    void togglePinStatus(int index);
+    void addNoteToList(const Note& note);
+
+    void filterNotes(const QString& searchText);
+    void showAllNotes();
 
 signals:
     void selectedNoteChanged(int index);
@@ -37,13 +40,16 @@ signals:
 private:
     Ui::NotesListWidget *ui;
 
+    QMap<QListWidgetItem*, int> itemToNoteId;
+
     void onItemSelectionChanged();
 
-    void refreshNotesList(); //
+    void refreshNotesList();
 
     void moveCurrentItemToTop(const Note& note);
     void setupNoteItem(const Note& note, QListWidgetItem* item);
 
-    Note* findNoteById(int noteId); //
-    //Notebook& notesManager; //
+    Note* findNoteById(int noteId);
+
+    int findInsertPosition(const Note& note);
 };

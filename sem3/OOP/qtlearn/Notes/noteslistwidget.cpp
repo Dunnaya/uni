@@ -22,7 +22,9 @@ NotesListWidget::~NotesListWidget()
 void NotesListWidget::addNote(const Note &note)
 {
     auto* item = new QListWidgetItem();
-    ui->noteListWidget->insertItem(0, item);
+    int insertPos = findInsertPosition(note);
+    ui->noteListWidget->insertItem(insertPos, item);
+    itemToNoteId[item] = note.index;
 
     setupNoteItem(note, item);
 }
@@ -38,13 +40,24 @@ void NotesListWidget::removeCurrentNote()
 
 void NotesListWidget::updateCurrentNote(const Note &note)
 {
-    if(ui->noteListWidget->currentRow() != 0)
+    auto* currentItem = ui->noteListWidget->currentItem();
+    if (!currentItem) return;
+
+    auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(currentItem));
+    bool pinStatusChanged = widget->getIsPinned() != note.isPinned;
+
+    if (pinStatusChanged)
     {
-        moveCurrentItemToTop(note);
+        int row = ui->noteListWidget->row(currentItem);
+        currentItem = ui->noteListWidget->takeItem(row);
+
+        int newPos = findInsertPosition(note);
+        ui->noteListWidget->insertItem(newPos, currentItem);
+        setupNoteItem(note, currentItem);
+        ui->noteListWidget->setCurrentItem(currentItem);
     }
     else
     {
-        auto widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(ui->noteListWidget->currentItem()));
         widget->UpdateContent(note);
     }
 }
@@ -70,6 +83,27 @@ void NotesListWidget::togglePinStatus(int index)
             emit togglePinNote(index);
             break;
         }
+    }
+}
+
+void NotesListWidget::filterNotes(const QString &searchText)
+{
+    for (int i = 0; i < ui->noteListWidget->count(); ++i)
+    {
+        QListWidgetItem* item = ui->noteListWidget->item(i);
+        NoteWidget* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(item));
+
+        // case insensitive search
+        bool matches = widget->getTitle().contains(searchText, Qt::CaseInsensitive);
+        item->setHidden(!matches);
+    }
+}
+
+void NotesListWidget::showAllNotes()
+{
+    for (int i = 0; i < ui->noteListWidget->count(); ++i)
+    {
+        ui->noteListWidget->item(i)->setHidden(false);
     }
 }
 
@@ -131,4 +165,32 @@ void NotesListWidget::setupNoteItem(const Note &note, QListWidgetItem *item)
     item->setSizeHint(widget->sizeHint());
     ui->noteListWidget->setItemWidget(item, widget);
     ui->noteListWidget->setCurrentItem(item);
+}
+
+int NotesListWidget::findInsertPosition(const Note &note)
+{
+    if (note.isPinned)
+    {
+        for (int i = 0; i < ui->noteListWidget->count(); ++i)
+        {
+            auto* item = ui->noteListWidget->item(i);
+            auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(item));
+
+            if (!widget->getIsPinned())
+                return i;
+        }
+        return ui->noteListWidget->count();
+    }
+    else
+    {
+        for (int i = 0; i < ui->noteListWidget->count(); ++i)
+        {
+            auto* item = ui->noteListWidget->item(i);
+            auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(item));
+
+            if (!widget->getIsPinned())
+                return i;
+        }
+        return ui->noteListWidget->count();
+    } //chatGPT
 }
