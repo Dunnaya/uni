@@ -46,7 +46,12 @@ void NotesListWidget::updateCurrentNote(const Note &note)
     auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(currentItem));
     bool pinStatusChanged = widget->getIsPinned() != note.isPinned;
 
-    if (pinStatusChanged)
+    bool needsReposition = pinStatusChanged ||
+                           (note.lastModified != QDateTime::fromString(widget->getLastModified(),
+                                                                       "dd.MM.yyyy hh:mm:ss"));
+
+
+    if (needsReposition)
     {
         int row = ui->noteListWidget->row(currentItem);
         currentItem = ui->noteListWidget->takeItem(row);
@@ -177,20 +182,34 @@ int NotesListWidget::findInsertPosition(const Note &note)
             auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(item));
 
             if (!widget->getIsPinned())
-                return i;
+                return i;  // insert before first unpinned note
         }
-        return ui->noteListWidget->count();
+        return ui->noteListWidget->count();  // all notes are pinned, add at end
     }
     else
     {
-        for (int i = 0; i < ui->noteListWidget->count(); ++i)
+        // for unpinned notes, first skip all pinned notes
+        int firstUnpinnedPos = 0;
+        for (; firstUnpinnedPos < ui->noteListWidget->count(); ++firstUnpinnedPos)
         {
-            auto* item = ui->noteListWidget->item(i);
+            auto* item = ui->noteListWidget->item(firstUnpinnedPos);
             auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(item));
 
             if (!widget->getIsPinned())
+                break;
+        }
+
+        for (int i = firstUnpinnedPos; i < ui->noteListWidget->count(); ++i)
+        {
+            auto* item = ui->noteListWidget->item(i);
+            auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(item));
+            QDateTime itemDateTime = QDateTime::fromString(widget->getLastModified(),
+                                                           "dd.MM.yyyy hh:mm:ss");
+
+            if (note.lastModified > itemDateTime)
                 return i;
         }
+
         return ui->noteListWidget->count();
-    } //chatGPT
+    }
 }
