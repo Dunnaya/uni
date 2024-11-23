@@ -36,9 +36,16 @@ private slots:
     void onTogglePinNote();
     void onTogglePinRequested(int index);
 
+    void onSearchTextChanged(const QString& text);
+
 private:
     void addNoteToList(const Note& note);
     void removeNote(int index);
+
+    void setTheme(bool isDark);
+    bool isDarkTheme = false;
+    QAction* themeToggleAction;
+    void setupThemeButton();
 
     void init();
     void makeConnections();

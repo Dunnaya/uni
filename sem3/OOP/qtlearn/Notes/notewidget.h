@@ -18,6 +18,8 @@ public:
 
     bool getIsPinned() const { return isPinned; }
 
+    QString getTitle() const { return title; }
+
 signals:
     void removeNote(int index);
     void renameNote(int index, const QString& newTitle);
