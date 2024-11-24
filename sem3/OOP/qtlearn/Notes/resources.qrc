@@ -5,7 +5,7 @@
         <file>icons/rename.svg</file>
         <file>icons/tag.svg</file>
         <file>icons/pin.svg</file>
-        <file>icons/dark.svg</file>
         <file>icons/light.svg</file>
+        <file>icons/dark.svg</file>
     </qresource>
 </RCC>

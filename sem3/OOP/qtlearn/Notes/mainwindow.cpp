@@ -150,6 +150,17 @@ void MainWindow::setTheme(bool isDark)
                 color: white;
                 border: 1px solid #555555;
             }
+            QListWidget::item {
+                color: white;
+            }
+            QListWidget::item:selected {
+                background-color: #505050;
+                color: white;
+            }
+            QListWidget::item:selected:active {
+                background-color: #505050;
+                color: white;
+            }
             QMessageBox {
                 background-color: #2D2D2D;
                 color: white;
@@ -168,6 +179,21 @@ void MainWindow::setTheme(bool isDark)
             }
             QMenu::item:selected {
                 background-color: #404040;
+            }
+            QListWidget::item {
+                color: white;
+                border-bottom: 1px solid #555555;
+                padding: 4px;
+            }
+            QListWidget::item:selected {
+                background-color: #505050;
+                color: white;
+            }
+            QListWidget {
+                background-color: #3D3D3D;
+                color: white;
+                border: 1px solid #555555;
+                outline: none;  /* Removes the focus rectangle */
             }
         )");
     } else {
@@ -196,6 +222,17 @@ void MainWindow::setTheme(bool isDark)
                 color: #333333;
                 border: 1px solid #DDA0DD;
             }
+            QListWidget::item {
+                color: #333333;
+            }
+            QListWidget::item:selected {
+                background-color: #FFB6C1;
+                color: #333333;
+            }
+            QListWidget::item:selected:active {
+                background-color: #FFB6C1;
+                color: #333333;
+            }
             QMessageBox {
                 background-color: #FFF0F5;
                 color: #333333;
@@ -214,6 +251,21 @@ void MainWindow::setTheme(bool isDark)
             }
             QMenu::item:selected {
                 background-color: #FFB6C1;
+            }
+            QListWidget::item {
+                color: #333333;
+                border-bottom: 1px solid #DDA0DD;
+                padding: 4px;
+            }
+            QListWidget::item:selected {
+                background-color: #FFB6C1;
+                color: #333333;
+            }
+            QListWidget {
+                background-color: #FFE4E1;
+                color: #333333;
+                border: 1px solid #DDA0DD;
+                outline: none;  /* Removes the focus rectangle */
             }
         )");
     }
