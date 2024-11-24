@@ -62,7 +62,12 @@ void NoteWidget::setupGui()
     titleLbl = new QLabel();
     lastModifiedLbl = new QLabel();
 
+    titleLbl->setAttribute(Qt::WA_TranslucentBackground);
+    lastModifiedLbl->setAttribute(Qt::WA_TranslucentBackground);
+
     auto layout = new QVBoxLayout(this);
+    //layout->setContentsMargins(4, 4, 4, 4);
+    layout->setSpacing(2);
     layout->addWidget(titleLbl);
     layout->addWidget(lastModifiedLbl);
 }
