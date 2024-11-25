@@ -16,9 +16,10 @@ NoteWidget::NoteWidget(const Note& note, QWidget *parent)
     title = note.title;
     lastModified = note.lastModified.toString(dateTimeFormat);
     isPinned = note.isPinned;
+    content = note.content;
 
     updateLabels();
-    updatePinDisplay(); //
+    updatePinDisplay();
     setToolTip(QString("%0\n%1").arg(title).arg(lastModified));
 }
 
@@ -31,10 +32,10 @@ void NoteWidget::UpdateContent(const Note &note)
 {
     title = note.title;
     lastModified = note.lastModified.toString(dateTimeFormat);
-    isPinned = note.isPinned; //
+    isPinned = note.isPinned;
 
     updateLabels();
-    updatePinDisplay(); //
+    updatePinDisplay();
     setToolTip(QString("%0\n%1").arg(title).arg(lastModified));
 }
 
@@ -66,7 +67,6 @@ void NoteWidget::setupGui()
     lastModifiedLbl->setAttribute(Qt::WA_TranslucentBackground);
 
     auto layout = new QVBoxLayout(this);
-    //layout->setContentsMargins(4, 4, 4, 4);
     layout->setSpacing(2);
     layout->addWidget(titleLbl);
     layout->addWidget(lastModifiedLbl);
@@ -101,15 +101,17 @@ void NoteWidget::showContextMenu(const QPoint &pos)
     pinAction->setIcon(QIcon(":/icons/pin.svg"));
     connect(pinAction, &QAction::triggered, this, &NoteWidget::togglePinNote);
 
+    QAction* exportAction = contextMenu.addAction("Export to .txt");
+    exportAction->setIcon(QIcon(":/icons/export.svg"));
+    connect(exportAction, &QAction::triggered, this, &NoteWidget::onExportActionTriggered);
+
     QAction* renameAction = contextMenu.addAction("Rename Note");
     renameAction->setIcon(QIcon(":/icons/rename.svg"));
-    connect(renameAction, &QAction::triggered,
-            this, &NoteWidget::onRenameActionTriggered);
+    connect(renameAction, &QAction::triggered, this, &NoteWidget::onRenameActionTriggered);
 
     QAction* removeAction = contextMenu.addAction("Remove Note");
     removeAction->setIcon(QIcon(":/icons/remove.svg"));
-    connect(removeAction, &QAction::triggered,
-            this, &NoteWidget::onRemoveActionTriggered);
+    connect(removeAction, &QAction::triggered, this, &NoteWidget::onRemoveActionTriggered);
 
     contextMenu.exec(pos);
 }
@@ -117,6 +119,23 @@ void NoteWidget::showContextMenu(const QPoint &pos)
 void NoteWidget::onRemoveActionTriggered()
 {
     emit removeNote(index);
+}
+
+void NoteWidget::onExportActionTriggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+        "Export Note", QString("%1.txt").arg(title), "Text Files (*.txt)");
+
+    if (!fileName.isEmpty())
+    {
+        QFile file(fileName);
+        if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+        {
+            QTextStream out(&file);
+            out << title << "\n\n" << content;
+            file.close();
+        }
+    }
 }
 
 void NoteWidget::onRenameActionTriggered()

@@ -37,9 +37,7 @@ std::vector<Note> XmlStorage::read()
                 }
             }
             else
-            {
                 reader.skipCurrentElement();
-            }
         }
     }
 
@@ -94,9 +92,8 @@ void XmlStorage::readNote(QXmlStreamReader &stream, std::vector<Note> &notes)
 
         stream.readNextStartElement();
         if(stream.name() == contentToken)
-        {
             note.content = stream.readElementText();
-        }
+
         notes.push_back(note);
     }
 

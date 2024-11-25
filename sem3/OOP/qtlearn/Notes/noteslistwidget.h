@@ -7,7 +7,6 @@ class NotesListWidget;
 }
 
 class Note;
-//class Notebook;
 class QListWidgetItem;
 
 class NotesListWidget : public QWidget

@@ -10,8 +10,7 @@ int nextNoteId();
 Notebook::Notebook(QObject *parent) : QObject{parent}
 {
     mapChangedSignalToNoteId = new QSignalMapper(this);
-    connect(mapChangedSignalToNoteId, &QSignalMapper::mappedInt,
-            this, &Notebook::onNoteContentChanged);
+    connect(mapChangedSignalToNoteId, &QSignalMapper::mappedInt, this, &Notebook::onNoteContentChanged);
 
     readNotes();
 
@@ -65,7 +64,6 @@ void Notebook::toggleNotePin(int index)
     {
         auto& [note, textDocument] = found->second;
         note.isPinned = !note.isPinned;
-        //note.lastModified = QDateTime::currentDateTime();
 
         emit notePinToggled(index);
         emit noteContentChanged(index);

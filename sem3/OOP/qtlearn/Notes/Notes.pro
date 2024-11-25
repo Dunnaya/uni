@@ -15,6 +15,7 @@ SOURCES += \
     noteslistwidget.cpp \
     notewidget.cpp \
     renamedialog.cpp \
+    tagdialog.cpp \
     xmlstorage.cpp
 
 HEADERS += \
@@ -24,12 +25,15 @@ HEADERS += \
     noteslistwidget.h \
     notewidget.h \
     renamedialog.h \
+    tag.h \
+    tagdialog.h \
     xmlstorage.h
 
 FORMS += \
     mainwindow.ui \
     noteslistwidget.ui \
-    renamedialog.ui
+    renamedialog.ui \
+    tagdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

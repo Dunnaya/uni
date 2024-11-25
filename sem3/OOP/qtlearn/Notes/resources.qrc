@@ -7,5 +7,9 @@
         <file>icons/pin.svg</file>
         <file>icons/light.svg</file>
         <file>icons/dark.svg</file>
+        <file>icons/notes.svg</file>
+        <file>icons/export.svg</file>
+        <file>icons/color.svg</file>
+        <file>icons/font.svg</file>
     </qresource>
 </RCC>
