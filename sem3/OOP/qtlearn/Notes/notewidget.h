@@ -2,6 +2,9 @@
 
 #include <QWidget>
 
+#include <QFileDialog>
+#include <QTextStream>
+
 class QLabel;
 class QPoint;
 
@@ -40,6 +43,7 @@ private:
 
     void showContextMenu(const QPoint& pos);
     void onRemoveActionTriggered();
+    void onExportActionTriggered();
     void onRenameActionTriggered();
 
     QLabel* titleLbl;
@@ -49,6 +53,7 @@ private:
     QString title;
     QString lastModified;
     bool isPinned;
+    QString content;
 
     const QString dateTimeFormat = "dd/MM/yyyy - hh:mm:ss";
 };

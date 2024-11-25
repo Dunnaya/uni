@@ -8,6 +8,10 @@
 #include <QMessageBox>
 #include <QPushButton>
 
+#include <QFontDialog>
+#include <QColorDialog>
+#include <QMenuBar>
+
 #include <algorithm>
 
 MainWindow::MainWindow(Notebook& notebook, QWidget *parent)
@@ -285,6 +289,33 @@ void MainWindow::setupThemeButton()
     });
 }
 
+void MainWindow::changeFontFamily()
+{
+    bool ok;
+    QFont font = QFontDialog::getFont(&ok, ui->textEdit->currentFont(), this, "Select Font");
+
+    if (ok)
+        ui->textEdit->setCurrentFont(font);
+}
+
+void MainWindow::changeFontColor()
+{
+    QColor color = QColorDialog::getColor(ui->textEdit->textColor(), this, "Select Text Color");
+
+    if (color.isValid())
+    {
+        QTextCharFormat format;
+        format.setForeground(color);
+
+        QTextCursor cursor = ui->textEdit->textCursor();
+        if (!cursor.hasSelection())
+            cursor.select(QTextCursor::Document);
+
+        cursor.mergeCharFormat(format);
+        ui->textEdit->mergeCurrentCharFormat(format);
+    }
+}
+
 void MainWindow::init()
 {
     auto notesList = notesManager.notebook();
@@ -315,4 +346,7 @@ void MainWindow::makeConnections()
     connect(ui->notesListWidget, &NotesListWidget::togglePinNote, this, &MainWindow::onTogglePinRequested);
 
     connect(ui->serchByNameLine, &QLineEdit::textChanged, this, &MainWindow::onSearchTextChanged);
+
+    connect(ui->fontBtn, &QPushButton::clicked, this, &MainWindow::changeFontFamily);
+    connect(ui->colorBtn, &QPushButton::clicked, this, &MainWindow::changeFontColor);
 }

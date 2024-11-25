@@ -12,6 +12,6 @@ public:
     QDateTime lastModified;
     bool isPinned = false;
 
-    void setPinned(bool pinned) { isPinned = pinned; } //
-    bool getPinned() const { return isPinned; } //
+    void setPinned(bool pinned) { isPinned = pinned; }
+    bool getPinned() const { return isPinned; }
 };

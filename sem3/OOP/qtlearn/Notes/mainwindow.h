@@ -47,6 +47,9 @@ private:
     QAction* themeToggleAction;
     void setupThemeButton();
 
+    void changeFontFamily();
+    void changeFontColor();
+
     void init();
     void makeConnections();
 

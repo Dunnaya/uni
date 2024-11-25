@@ -11,7 +11,7 @@ NotesListWidget::NotesListWidget(QWidget *parent)
     ui->setupUi(this);
 
     connect(ui->noteListWidget, &QListWidget::itemSelectionChanged,
-            this, &NotesListWidget::onItemSelectionChanged);
+        this, &NotesListWidget::onItemSelectionChanged);
 }
 
 NotesListWidget::~NotesListWidget()
@@ -44,12 +44,11 @@ void NotesListWidget::updateCurrentNote(const Note &note)
     if (!currentItem) return;
 
     auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(currentItem));
-    bool pinStatusChanged = widget->getIsPinned() != note.isPinned;
 
-    bool needsReposition = pinStatusChanged ||
+    // only reposition if the note is not pinned
+    bool needsReposition = !note.isPinned &&
                            (note.lastModified != QDateTime::fromString(widget->getLastModified(),
                                                                        "dd.MM.yyyy hh:mm:ss"));
-
 
     if (needsReposition)
     {
@@ -62,9 +61,7 @@ void NotesListWidget::updateCurrentNote(const Note &note)
         ui->noteListWidget->setCurrentItem(currentItem);
     }
     else
-    {
         widget->UpdateContent(note);
-    }
 }
 
 int NotesListWidget::currentNoteId()
@@ -128,7 +125,7 @@ void NotesListWidget::moveCurrentItemToTop(const Note &note)
 
     auto item = ui->noteListWidget->takeItem(ui->noteListWidget->currentRow());
 
-    // Find the correct position based on pin status
+    // find the correct position based on pin status
     int insertPosition = 0;
     if (!note.isPinned)
     {
@@ -155,12 +152,8 @@ void NotesListWidget::setupNoteItem(const Note &note, QListWidgetItem *item)
 {
     NoteWidget* widget = new NoteWidget(note);
 
-    connect(widget, &NoteWidget::removeNote,
-            this, &NotesListWidget::removeNote);
-
-    connect(widget, &NoteWidget::renameNote,
-            this, &NotesListWidget::renameNote);
-
+    connect(widget, &NoteWidget::removeNote, this, &NotesListWidget::removeNote);
+    connect(widget, &NoteWidget::renameNote, this, &NotesListWidget::renameNote);
     connect(widget, &NoteWidget::togglePinNote,
             this, [this, widget]()
             {
