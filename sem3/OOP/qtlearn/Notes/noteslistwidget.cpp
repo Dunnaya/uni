@@ -45,10 +45,11 @@ void NotesListWidget::updateCurrentNote(const Note &note)
 
     auto* widget = static_cast<NoteWidget*>(ui->noteListWidget->itemWidget(currentItem));
 
-    // only reposition if the note is not pinned
-    bool needsReposition = !note.isPinned &&
-                           (note.lastModified != QDateTime::fromString(widget->getLastModified(),
-                                                                       "dd.MM.yyyy hh:mm:ss"));
+    bool needsReposition =
+        (widget->getIsPinned() != note.isPinned) ||
+        (!note.isPinned &&
+         (note.lastModified != QDateTime::fromString(widget->getLastModified(),
+                                                     "dd.MM.yyyy hh:mm:ss")));
 
     if (needsReposition)
     {

@@ -97,6 +97,10 @@ void NoteWidget::showContextMenu(const QPoint &pos)
 {
     QMenu contextMenu(this);
 
+    QAction* addTagAction = contextMenu.addAction("Add Tag");
+    addTagAction->setIcon(QIcon(":/icons/tag.svg"));
+    //maybe will be implemented in the near future
+
     QAction* pinAction = contextMenu.addAction(isPinned ? "Unpin Note" : "Pin Note");
     pinAction->setIcon(QIcon(":/icons/pin.svg"));
     connect(pinAction, &QAction::triggered, this, &NoteWidget::togglePinNote);
@@ -104,6 +108,8 @@ void NoteWidget::showContextMenu(const QPoint &pos)
     QAction* exportAction = contextMenu.addAction("Export to .txt");
     exportAction->setIcon(QIcon(":/icons/export.svg"));
     connect(exportAction, &QAction::triggered, this, &NoteWidget::onExportActionTriggered);
+
+    contextMenu.addSeparator();
 
     QAction* renameAction = contextMenu.addAction("Rename Note");
     renameAction->setIcon(QIcon(":/icons/rename.svg"));
