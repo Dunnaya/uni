@@ -76,6 +76,7 @@ void XmlStorage::writeNote(QXmlStreamWriter &stream, const Note &note)
     stream.writeAttribute(titleToken, note.title);
     stream.writeAttribute(lastModifiedToken, note.lastModified.toString(dateTimeFormat));
     stream.writeAttribute(isPinnedToken, note.isPinned ? "true" : "false");
+
     stream.writeTextElement(contentToken, note.content);
     stream.writeEndElement();
 }
