@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма реєстрації</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 5px auto;
+            background-color: #fff;
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-block {
+            border: 1px solid #ccc;
+            padding: 8px;
+            margin-bottom: 5px; 
+            border-radius: 8px;
+        }
+
+        h3.subheading {
+            color: #777;
+            font-style: italic;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .required-field::after {
+            content: ' *';
+            color: red;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .animal-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 10px;
+        }
+
+        .animal-checkbox {
+            display: flex;
+            align-items: center;
+        }
+
+        .animal-checkbox input {
+            margin-right: 8px;
+        }
+
+        .animal-checkbox label {
+            margin-bottom: 0;
+        }
+
+        button {
+            background-color: #808080;
+            color: #000000;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Форма реєстрації</h2>
+        <h3 class="subheading">Будь ласка, заповніть форму. Обов'язкові поля відмічені <span style="color: red;">*</span></h3>
+
+        <div class="form-block">
+            <h3>Контактна інформація</h3>
+            <label for="name">Ім'я<span class="required-field"></span>:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="email">E-mail<span class="required-field"></span>:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-block">
+            <h3>Персональна інформація</h3>
+            <label for="age">Вік<span class="required-field"></span>:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="gender">Стать:</label>
+            <select id="gender" name="gender" required>
+                <option value="male">Чоловік</option>
+                <option value="female">Жінка</option>
+                <option value="other">Інше</option>
+            </select>
+
+            <label for="qualities">Особисті якості:</label>
+            <textarea id="qualities" name="qualities" rows="4" required></textarea>
+        </div>
+
+        <div class="form-block">
+            <h3>Виберіть улюблених тварин</h3>
+            <div class="animal-checkboxes">
+                <div class="animal-checkbox">
+                    <input type="checkbox" id="zebra" name="animals[]" value="Zebra">
+                    <label for="zebra">Зебра</label>
+                </div>
+
+                <div class="animal-checkbox">
+                    <input type="checkbox" id="elephant" name="animals[]" value="Elephant">
+                    <label for="elephant">Слон</label>
+                </div>
+
+                <div class="animal-checkbox">
+                    <input type="checkbox" id="tiger" name="animals[]" value="Tiger">
+                    <label for="tiger">Тигр</label>
+                </div>
+
+                <div class="animal-checkbox">
+                    <input type="checkbox" id="human" name="animals[]" value="Human">
+                    <label for="human">Людина</label>
+                </div>
+
+                <div class="animal-checkbox">
+                    <input type="checkbox" id="skunk" name="animals[]" value="Skunk">
+                    <label for="skunk">Скунс</label>
+                </div>
+
+                <div class="animal-checkbox">
+                    <input type="checkbox" id="lion" name="animals[]" value="Lion">
+                    <label for="lion">Лев</label>
+                </div>
+
+                <div class="animal-checkbox">
+                    <input type="checkbox" id="rhino" name="animals[]" value="Rhinoceros">
+                    <label for="rhino">Носорог</label>
+                </div>
+
+                <div class="animal-checkbox">
+                    <input type="checkbox" id="turtle" name="animals[]" value="Turtle">
+                    <label for="turtle">Черепаха</label>
+                </div>
+            </div>
+        </div>
+
+        <button>Відправити</button>
+    </div>
+
+</body>
+</html>
