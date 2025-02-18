@@ -1,6 +1,6 @@
 ---
 triple:          'arm64-apple-darwin'
-binary-path:     '/Users/dunnaya/projects/byeworld/sem3/Algorithms/lab1/grouplab'
+binary-path:     '/Users/dunnaya/projects/uni/sem3/Algorithms/lab1/grouplab'
 relocations:
   - { offsetInCU: 0x2DE9, offset: 0x2DE9, size: 0x8, addend: 0x0, symName: __ZNSt3__124__put_character_sequenceB8ue170006IcNS_11char_traitsIcEEEERNS_13basic_ostreamIT_T0_EES7_PKS4_m, symObjAddr: 0xCB4, symBinAddr: 0x100003114, symSize: 0x1F4 }
   - { offsetInCU: 0x4736, offset: 0x4736, size: 0x8, addend: 0x0, symName: __ZNSt3__1lsB8ue170006INS_11char_traitsIcEEEERNS_13basic_ostreamIcT_EES6_PKc, symObjAddr: 0x198, symBinAddr: 0x1000025F8, symSize: 0x48 }
