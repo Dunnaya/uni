@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Форма заявки на роботу в зоопарку</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+        }
+        h2.subheading {
+            color: grey;
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-style: italic;
+            font-size: 12px;
+            margin-bottom: 30px;
+        }
+        .container { 
+            max-width: 600px;
+            margin: 5px auto; 
+            padding: 5px;
+            border-radius: 8px;
+        }
+        label { 
+            display: block; 
+            margin-top: 10px; 
+        }
+        .required-field::after {
+            content: ' *';
+            color: red;
+        }
+        input, select, textarea { 
+            width: 100%; 
+            margin-top: 5px; 
+        }
+        .checkbox-group { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr);
+        }
+        .checkbox-group label { 
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            width: 40%; 
+        }
+        button { 
+            margin-top: 5px; 
+            cursor: pointer;
+        }
+        .form-group { 
+            display: flex; 
+            align-items: center;
+        }
+        .form-group label { width: 30%;}
+        legend { font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Форма заявки на роботу в зоопарку</h1>
+        <h2 class="subheading">Будь ласка, заповніть форму. Обов'язкові поля відмічені <span style="color: red;">*</span></h2>
+        
+        <form action="#" method="post">
+            <fieldset>
+                <legend>Контактна інформація</legend>
+                <div class="form-group">
+                    <label for="name">Ім'я <span class="required-field"></span></label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Телефон</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">E-mail<span class="required-field"></span></label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Персональна інформація</legend>
+                
+                <div class="form-group">
+                    <label for="age">Вік<span class="required-field"></span></label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="gender">Стать</label>
+                    <select id="gender" name="gender">
+                        <option value="male">Чоловік</option>
+                        <option value="female">Жінка</option>
+                        <option value="other">Інше</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="qualities">Перерахуйте особисті якості</label>
+                    <textarea id="qualities" name="qualities" rows="4"></textarea>
+                </div>
+            </fieldset>
+            
+            <fieldset>
+                <legend>Виберіть улюблених тварин:</legend>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="animals" value="zebra"> Зебра</label>
+                    <label><input type="checkbox" name="animals" value="elephant"> Слон</label>
+                    <label><input type="checkbox" name="animals" value="tiger"> Тигр</label>
+                    <label><input type="checkbox" name="animals" value="human"> Людина</label>
+                    <label><input type="checkbox" name="animals" value="skunk"> Скунс</label>
+                    <label><input type="checkbox" name="animals" value="lion"> Лев</label>
+                    <label><input type="checkbox" name="animals" value="rhino"> Носоріг</label>
+                    <label><input type="checkbox" name="animals" value="turtle"> Черепаха</label>
+                </div>
+            </fieldset>
+            
+            <button type="submit">Відправити</button>
+        </form>
+    </div>
+</body>
+</html>
