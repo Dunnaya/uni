@@ -70,20 +70,18 @@ public:
             }
         }
 
-        // 🔹 Проверяем, все ли ключи записаны
+        // Проверяем, все ли ключи записаны
         for (double key : keys)
         {
             int hash = primaryTable[index].universalHash(key);
-            if (isnan(primaryTable[index].data[hash].first) || primaryTable[index].data[hash].first != key)
+            if (isnan(primaryTable[index].data[hash].first) || fabs(primaryTable[index].data[hash].first - key) > 1e-9)
             {
-                cout << "Warning: Key " << key << " not properly stored in secondary table " << index << "!" << endl;
+                cout << "⚠️  Warning: Key " << key << " not properly stored in secondary table " << index << "!" << endl;
             }
         }
 
-        cout << "Secondary table " << index << ": a=" << primaryTable[index].a
-            << ", b=" << primaryTable[index].b << ", size=" << primaryTable[index].size << endl;
+        cout << "✅ Secondary table " << index << " built successfully.\n";
     }
-
 
 public:
     PerfectHash4Real(vector<double>& keys)
@@ -122,9 +120,8 @@ public:
 
         int secondaryIndex = table.universalHash(key);
 
-        // Добавляем проверку isnan() перед сравнением
-        if (secondaryIndex >= 0 && secondaryIndex < table.size && 
-            !isnan(table.data[secondaryIndex].first) && table.data[secondaryIndex].first == key)
+        if (secondaryIndex >= 0 && secondaryIndex < table.size &&
+            !isnan(table.data[secondaryIndex].first) && fabs(table.data[secondaryIndex].first - key) < 1e-9)
         {
             table.data[secondaryIndex].second = value;
             cout << "Stored key " << key << " at [" << primaryIndex << "][" << secondaryIndex << "] with value " << value << endl;
@@ -141,7 +138,8 @@ public:
         const auto& table = primaryTable[primaryIndex];
 
         int secondaryIndex = table.universalHash(key);
-        if (secondaryIndex >= 0 && secondaryIndex < table.size && table.data[secondaryIndex].first == key)
+        if (secondaryIndex >= 0 && secondaryIndex < table.size &&
+            !isnan(table.data[secondaryIndex].first) && fabs(table.data[secondaryIndex].first - key) < 1e-9)
         {
             return table.data[secondaryIndex].second;
         }
