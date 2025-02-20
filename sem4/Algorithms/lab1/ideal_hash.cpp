@@ -1,191 +1,148 @@
 #include <iostream>
 #include <vector>
 #include <cmath>
-#include <random>
 #include <limits>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
-class PerfectHash4Real
+const double EMPTY_VALUE = numeric_limits<double>::quiet_NaN();
+const int INIT_SIZE = 8;
+
+// Первичная хеш-функция
+int primaryHash(double key, int size) 
 {
-public:
-    struct SecondaryTable
-    {
-        vector<pair<double, int> > data;
-        int size;
-        int a, b;
+    return static_cast<int>(fabs(key) * 1000000) % size;
+}
 
-        int universalHash(double key) const
+// Вторичная хеш-функция
+int secondaryHash(double key, int size, int seed) 
+{
+    return (static_cast<int>(fabs(key) * seed) % size);
+}
+
+class SecondaryHashTable 
+{
+    public:
+        vector<double> table;
+        int seed;
+
+        SecondaryHashTable() : seed(1) {}
+
+        void build(const vector<double>& keys) 
         {
-            int intKey = static_cast<int>(round(key * 1e6));
-            const int p = 2147483647;
-            return ((a * intKey + b) % p) % size;
-        }
-
-        void reset()
-        {
-            data.assign(size, make_pair(numeric_limits<double>::quiet_NaN(), -1));
-        }
-    };
-
-    vector<SecondaryTable> primaryTable;
-    int a, b;
-
-    int primaryHash(double key) const
-    {
-        int intKey = static_cast<int>(round(key * 1e6));
-        const int p = 2147483647;
-        return ((a * intKey + b) % p) % primaryTable.size();
-    }
-
-    void buildSecondaryTable(vector<double>& keys, int index)
-    {
-        int n = keys.size();
-        if (n == 0) return;
-
-        primaryTable[index].size = n * n;
-        primaryTable[index].data.resize(primaryTable[index].size);
-
-        random_device rd;
-        mt19937 gen(rd());
-        uniform_int_distribution<int> dist(1, 2147483646);
-
-        bool success = false;
-        while (!success)
-        {
-            primaryTable[index].a = dist(gen);
-            primaryTable[index].b = dist(gen);
-            primaryTable[index].reset();
-
-            success = true;
-            for (double key : keys)
+            int n = keys.size();
+            table.assign(n * n, EMPTY_VALUE);
+            seed = rand() % 100 + 1;
+            
+            for (double key : keys) 
             {
-                int hash = primaryTable[index].universalHash(key);
-                if (!isnan(primaryTable[index].data[hash].first))
+                int index = secondaryHash(key, table.size(), seed);
+                if (!isnan(table[index])) 
                 {
-                    success = false;
-                    break;
+                    build(keys); // Перестроить, если есть коллизия
+                    return;
                 }
-                primaryTable[index].data[hash] = make_pair(key, 0);
+                table[index] = key;
             }
         }
 
-        // Проверяем, все ли ключи записаны
-        for (double key : keys)
+        bool search(double key) 
         {
-            int hash = primaryTable[index].universalHash(key);
-            if (isnan(primaryTable[index].data[hash].first) || fabs(primaryTable[index].data[hash].first - key) > 1e-9)
-            {
-                cout << "⚠️  Warning: Key " << key << " not properly stored in secondary table " << index << "!" << endl;
-            }
+            int index = secondaryHash(key, table.size(), seed);
+            return table[index] == key;
         }
-
-        cout << "✅ Secondary table " << index << " built successfully.\n";
-    }
-
-public:
-    PerfectHash4Real(vector<double>& keys)
-    {
-        int primarySize = max(2, static_cast<int>(sqrt(keys.size())));
-        primaryTable.resize(primarySize);
-
-        random_device rd;
-        mt19937 gen(rd());
-        uniform_int_distribution<int> dist(1, 2147483646);
-
-        a = dist(gen);
-        b = dist(gen);
-
-        cout << "Primary hash: a=" << a << ", b=" << b << ", table size=" << primarySize << endl;
-
-        vector<vector<double> > groups(primarySize);
-
-        for (double key : keys)
-        {
-            int index = primaryHash(key);
-            groups[index].push_back(key);
-            cout << "Key " << key << " -> Primary index " << index << endl;
-        }
-
-        for (int i = 0; i < primarySize; i++)
-        {
-            buildSecondaryTable(groups[i], i);
-        }
-    }
-
-    void setValue(double key, int value)
-    {
-        int primaryIndex = primaryHash(key);
-        auto& table = primaryTable[primaryIndex];
-
-        int secondaryIndex = table.universalHash(key);
-
-        if (secondaryIndex >= 0 && secondaryIndex < table.size &&
-            !isnan(table.data[secondaryIndex].first) && fabs(table.data[secondaryIndex].first - key) < 1e-9)
-        {
-            table.data[secondaryIndex].second = value;
-            cout << "Stored key " << key << " at [" << primaryIndex << "][" << secondaryIndex << "] with value " << value << endl;
-        }
-        else
-        {
-            cout << "Error: key " << key << " not found in hash table!" << endl;
-        }
-    }
-
-    int getValue(double key) const
-    {
-        int primaryIndex = primaryHash(key);
-        const auto& table = primaryTable[primaryIndex];
-
-        int secondaryIndex = table.universalHash(key);
-        if (secondaryIndex >= 0 && secondaryIndex < table.size &&
-            !isnan(table.data[secondaryIndex].first) && fabs(table.data[secondaryIndex].first - key) < 1e-9)
-        {
-            return table.data[secondaryIndex].second;
-        }
-
-        return -1;
-    }
-
-    bool contains(double key) const
-    {
-        int primaryIndex = primaryHash(key);
-        const auto& table = primaryTable[primaryIndex];
-
-        int secondaryIndex = table.universalHash(key);
-        return (secondaryIndex >= 0 && secondaryIndex < table.size && !isnan(table.data[secondaryIndex].first));
-    }
 };
 
-int main()
+class PerfectHashTable 
 {
+    private:
+        vector<SecondaryHashTable> table;
+        vector<vector<double> > buckets;
+        int capacity;
+
+        void rehash() {
+            vector<double> keys;
+            for (const auto& bucket : buckets) 
+            {
+                for (double key : bucket) 
+                {
+                    keys.push_back(key);
+                }
+            }
+            build(keys);
+        }
+
+    public:
+        PerfectHashTable(int init_size = INIT_SIZE) 
+        {
+            capacity = init_size;
+            table.resize(capacity);
+            buckets.resize(capacity);
+        }
+
+        void build(const vector<double>& keys) 
+        {
+            srand(time(nullptr));
+            buckets.assign(capacity, vector<double>());
+            for (double key : keys) {
+                int index = primaryHash(key, capacity);
+                buckets[index].push_back(key);
+            }
+            for (int i = 0; i < capacity; i++) 
+            {
+                if (!buckets[i].empty()) 
+                {
+                    table[i].build(buckets[i]);
+                }
+            }
+        }
+
+        void insert(double key) 
+        {
+            int index = primaryHash(key, capacity);
+            buckets[index].push_back(key);
+            table[index].build(buckets[index]);
+        }
+
+        bool search(double key) 
+        {
+            int index = primaryHash(key, capacity);
+            return table[index].search(key);
+        }
+
+        void print() 
+        {
+            cout << "Perfect Hash Table:" << endl;
+            for (int i = 0; i < capacity; i++) 
+            {
+                cout << "Bucket " << i << ": ";
+                for (double key : buckets[i]) 
+                {
+                    cout << key << " ";
+                }
+                cout << endl;
+            }
+        }
+};
+
+int main() {
+    PerfectHashTable hashTable;
     vector<double> keys;
-    for (int i = 1; i <= 5; i++)
-    {
-        keys.push_back(i * 1.1);
-    }
-    keys.push_back(-6.6);
+    //{3.1415, 2.718, 1.618, 0.5772, 1.4142}
+    keys.push_back(3.1415);
+    keys.push_back(2.718);
+    keys.push_back(1.618);
+    keys.push_back(0.5772);
+    keys.push_back(1.4142);
 
-    PerfectHash4Real hashTable(keys);
-
-    hashTable.setValue(1.1, 10);
-    hashTable.setValue(2.2, 20);
-    hashTable.setValue(3.3, 30);
-    hashTable.setValue(4.4, 40);
-    hashTable.setValue(5.5, 50);
-    hashTable.setValue(-6.6, -60);
-
-    cout << "\nRetrieving values:\n";
-    for (double key : keys)
-    {
-        cout << "Value for key " << key << ": " << hashTable.getValue(key) << endl;
-    }
-
-    cout << "\nChecking key presence:\n";
-    for (double key : keys)
-    {
-        cout << "Contains key " << key << ": " << (hashTable.contains(key) ? "Yes" : "No") << endl;
-    }
-
+    hashTable.build(keys);
+    
+    hashTable.print();
+    
+    cout << "Search 2.718: " << (hashTable.search(2.718) ? "Found" : "Not Found") << endl;
+    cout << "Search 0.999: " << (hashTable.search(0.999) ? "Found" : "Not Found") << endl;
+    
     return 0;
 }
