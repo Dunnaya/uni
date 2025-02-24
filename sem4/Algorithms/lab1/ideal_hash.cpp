@@ -1,148 +1,208 @@
 #include <iostream>
 #include <vector>
-#include <cmath>
-#include <limits>
-#include <cstdlib>
-#include <ctime>
-
+#include <random>
 using namespace std;
-
-const double EMPTY_VALUE = numeric_limits<double>::quiet_NaN();
-const int INIT_SIZE = 8;
-
-// Первичная хеш-функция
-int primaryHash(double key, int size) 
-{
-    return static_cast<int>(fabs(key) * 1000000) % size;
-}
-
-// Вторичная хеш-функция
-int secondaryHash(double key, int size, int seed) 
-{
-    return (static_cast<int>(fabs(key) * seed) % size);
-}
-
-class SecondaryHashTable 
-{
-    public:
-        vector<double> table;
-        int seed;
-
-        SecondaryHashTable() : seed(1) {}
-
-        void build(const vector<double>& keys) 
-        {
-            int n = keys.size();
-            table.assign(n * n, EMPTY_VALUE);
-            seed = rand() % 100 + 1;
-            
-            for (double key : keys) 
-            {
-                int index = secondaryHash(key, table.size(), seed);
-                if (!isnan(table[index])) 
-                {
-                    build(keys); // Перестроить, если есть коллизия
-                    return;
-                }
-                table[index] = key;
-            }
-        }
-
-        bool search(double key) 
-        {
-            int index = secondaryHash(key, table.size(), seed);
-            return table[index] == key;
-        }
-};
 
 class PerfectHashTable 
 {
     private:
-        vector<SecondaryHashTable> table;
-        vector<vector<double> > buckets;
-        int capacity;
-
-        void rehash() {
-            vector<double> keys;
-            for (const auto& bucket : buckets) 
+        struct HashFunction 
+        {
+            uint64_t a, b, m;
+            
+            HashFunction(int size) : m(size) 
             {
-                for (double key : bucket) 
-                {
-                    keys.push_back(key);
-                }
+                random_device rd;
+                mt19937_64 gen(rd());
+                uniform_int_distribution<uint64_t> dist(1, 1000000);
+                a = dist(gen);
+                b = dist(gen);
             }
-            build(keys);
-        }
+            
+            int operator()(double key) const 
+            {
+                // Simple conversion: multiply by 1M and take absolute value
+                int64_t k = abs(static_cast<int64_t>(key * 1000000));
+                return ((a * k + b) % 1000000007) % m;
+            }
+        };
+
+        struct Bucket 
+        {
+            vector<double> data;
+            HashFunction* hashFunc;
+            bool useSecondHash;
+            
+            // For empty or single-element buckets
+            Bucket() : hashFunc(nullptr), useSecondHash(false) {}
+            
+            // For buckets needing second-level hash
+            Bucket(int size, HashFunction* func) 
+                : data(size), hashFunc(func), useSecondHash(true) {}
+                
+            ~Bucket() {
+                delete hashFunc;
+            }
+        };
+
+        vector<vector<double> > firstLevel;  // Just to store initial distribution
+        vector<Bucket> buckets;
+        HashFunction firstHash;
+        int numKeys;
 
     public:
-        PerfectHashTable(int init_size = INIT_SIZE) 
-        {
-            capacity = init_size;
-            table.resize(capacity);
-            buckets.resize(capacity);
-        }
-
-        void build(const vector<double>& keys) 
-        {
-            srand(time(nullptr));
-            buckets.assign(capacity, vector<double>());
+        PerfectHashTable(const vector<double>& keys) 
+            : firstLevel(keys.size()), buckets(keys.size()), 
+            firstHash(keys.size()), numKeys(keys.size()) 
+            {
+            
+            // First level distribution
+            cout << "\nFirst level distribution:\n";
             for (double key : keys) {
-                int index = primaryHash(key, capacity);
-                buckets[index].push_back(key);
+                int idx = firstHash(key);
+                firstLevel[idx].push_back(key);
+                cout << key << " -> bucket " << idx << endl;
             }
-            for (int i = 0; i < capacity; i++) 
+            
+            // Handle each bucket
+            cout << "\nSecond level setup:\n";
+            for (int i = 0; i < numKeys; i++) 
             {
-                if (!buckets[i].empty()) 
+                auto& bucket = firstLevel[i];
+                
+                if (bucket.empty()) 
                 {
-                    table[i].build(buckets[i]);
+                    continue;  // Leave as default empty bucket
+                }
+                else if (bucket.size() == 1) 
+                {
+                    // Store single element directly
+                    buckets[i].data = vector<double>(1, bucket[0]);
+                    cout << "Bucket " << i << ": storing " << bucket[0] << " directly\n";
+                }
+                else 
+                {
+                    // Need second level hashing
+                    int size = bucket.size() * bucket.size();
+                    buckets[i].hashFunc = new HashFunction(size);
+                    buckets[i].data.resize(size);
+                    buckets[i].useSecondHash = true;
+                    
+                    cout << "Bucket " << i << ": creating second level table size " 
+                        << size << " for " << bucket.size() << " elements\n";
+                    
+                    // Try to find a good hash function
+                    bool success = false;
+                    while (!success) {
+                        success = true;
+                        vector<bool> used(size, false);
+                        
+                        for (double key : bucket) 
+                        {
+                            int pos = (*buckets[i].hashFunc)(key);
+                            if (used[pos]) 
+                            {
+                                success = false;
+                                delete buckets[i].hashFunc;
+                                buckets[i].hashFunc = new HashFunction(size);
+                                break;
+                            }
+                            used[pos] = true;
+                            buckets[i].data[pos] = key;
+                        }
+                    }
+                    
+                    // Print positions
+                    for (double key : bucket) 
+                    {
+                        cout << "  " << key << " -> position " 
+                            << (*buckets[i].hashFunc)(key) << endl;
+                    }
                 }
             }
         }
-
-        void insert(double key) 
+        
+        bool lookup(double key) const 
         {
-            int index = primaryHash(key, capacity);
-            buckets[index].push_back(key);
-            table[index].build(buckets[index]);
-        }
-
-        bool search(double key) 
-        {
-            int index = primaryHash(key, capacity);
-            return table[index].search(key);
-        }
-
-        void print() 
-        {
-            cout << "Perfect Hash Table:" << endl;
-            for (int i = 0; i < capacity; i++) 
+            int firstIdx = firstHash(key);
+            const Bucket& bucket = buckets[firstIdx];
+            
+            if (bucket.data.empty()) 
             {
-                cout << "Bucket " << i << ": ";
-                for (double key : buckets[i]) 
-                {
-                    cout << key << " ";
-                }
-                cout << endl;
+                return false;
             }
+            
+            if (!bucket.useSecondHash) 
+            {
+                return bucket.data[0] == key;  // Direct comparison for single element
+            }
+            
+            // Second level lookup
+            int secondIdx = (*bucket.hashFunc)(key);
+            return (secondIdx < bucket.data.size()) && (bucket.data[secondIdx] == key);
         }
+        
+        void printStats() const 
+        {
+            cout << "\nHash Table Statistics:\n";
+            int direct = 0, second = 0, total_slots = 0;
+            
+            for (int i = 0; i < numKeys; i++) 
+            {
+                if (!buckets[i].data.empty()) 
+                {
+                    if (buckets[i].useSecondHash) 
+                    {
+                        second++;
+                        total_slots += buckets[i].data.size();
+                    } else {
+                        direct++;
+                    }
+                }
+            }
+            
+            cout << "Buckets with direct storage: " << direct << endl;
+            cout << "Buckets with second-level hashing: " << second << endl;
+            cout << "Total second-level slots: " << total_slots << endl;
+        }
+        
+        ~PerfectHashTable() {}
 };
 
 int main() {
-    PerfectHashTable hashTable;
     vector<double> keys;
-    //{3.1415, 2.718, 1.618, 0.5772, 1.4142}
-    keys.push_back(3.1415);
-    keys.push_back(2.718);
-    keys.push_back(1.618);
-    keys.push_back(0.5772);
-    keys.push_back(1.4142);
+    //{-10.5, 22.3333, 0.0078, 40.1, -52.6666, 60.4444, 0.0001, 85.9999, 90.0};
+    keys.push_back(-10.5);
+    keys.push_back(22.3333);
+    keys.push_back(0.0078);
+    keys.push_back(40.1);
+    keys.push_back(-52.6666);
+    keys.push_back(60.4444);
+    keys.push_back(0.0001);
+    keys.push_back(85.9999);
+    keys.push_back(90.0);
+    
+    cout << "Creating perfect hash table with keys:";
+    for (double key : keys) cout << " " << key;
+    cout << endl;
+    
+    PerfectHashTable table(keys);
+    table.printStats();
+    
+    vector<double> tests;
+    //{22.3333, 85.9999, 99.9, 0.0078, -10.5, 0.0002};
+    tests.push_back(22.3333);
+    tests.push_back(85.9999);
+    tests.push_back(99.9);
+    tests.push_back(0.0078);
+    tests.push_back(-10.5);
+    tests.push_back(0.0002);
 
-    hashTable.build(keys);
-    
-    hashTable.print();
-    
-    cout << "Search 2.718: " << (hashTable.search(2.718) ? "Found" : "Not Found") << endl;
-    cout << "Search 0.999: " << (hashTable.search(0.999) ? "Found" : "Not Found") << endl;
+    cout << "\nTesting lookups:\n";
+    for (double key : tests) 
+    {
+        cout << key << " -> " << (table.lookup(key) ? "Found" : "Not found") << endl;
+    }
     
     return 0;
 }
