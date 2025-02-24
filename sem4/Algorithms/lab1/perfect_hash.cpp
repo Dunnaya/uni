@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <random>
+#include <unordered_set>
 using namespace std;
 
 class PerfectHashTable 
@@ -40,7 +41,8 @@ class PerfectHashTable
             Bucket(int size, HashFunction* func) 
                 : data(size), hashFunc(func), useSecondHash(true) {}
                 
-            ~Bucket() {
+            ~Bucket() 
+            {
                 delete hashFunc;
             }
         };
@@ -56,9 +58,28 @@ class PerfectHashTable
             firstHash(keys.size()), numKeys(keys.size()) 
             {
             
-            // First level distribution
+            // Check for duplicates first
+            unordered_set<double> uniqueKeys;
+            bool hasDuplicates = false;
+            
+            cout << "Checking for duplicate keys:" << endl;
+            for (double key : keys) 
+            {
+                if (uniqueKeys.find(key) != uniqueKeys.end()) 
+                {
+                    cout << "  Duplicate found: " << key << endl;
+                    hasDuplicates = true;
+                }
+                uniqueKeys.insert(key);
+            }
+            
+            if (hasDuplicates) 
+                cout << "Warning: Duplicate keys detected! Using only unique keys." << endl;
+            
+            // First level distribution (using only unique keys)
             cout << "\nFirst level distribution:\n";
-            for (double key : keys) {
+            for (double key : uniqueKeys) 
+            {
                 int idx = firstHash(key);
                 firstLevel[idx].push_back(key);
                 cout << key << " -> bucket " << idx << endl;
@@ -93,8 +114,13 @@ class PerfectHashTable
                     
                     // Try to find a good hash function
                     bool success = false;
-                    while (!success) {
+                    int maxAttempts = 1000;  // Add a maximum attempt limit to prevent infinite loops
+                    int attempts = 0;
+                    
+                    while (!success && attempts < maxAttempts) 
+                    {
                         success = true;
+                        attempts++;
                         vector<bool> used(size, false);
                         
                         for (double key : bucket) 
@@ -110,6 +136,14 @@ class PerfectHashTable
                             used[pos] = true;
                             buckets[i].data[pos] = key;
                         }
+                    }
+                    
+                    if (!success) 
+                    {
+                        cout << "  Warning: Failed to find a suitable hash function after " 
+                             << maxAttempts << " attempts.\n";
+                    } else {
+                        cout << "  Found suitable hash function after " << attempts << " attempts.\n";
                     }
                     
                     // Print positions
@@ -128,14 +162,10 @@ class PerfectHashTable
             const Bucket& bucket = buckets[firstIdx];
             
             if (bucket.data.empty()) 
-            {
                 return false;
-            }
             
             if (!bucket.useSecondHash) 
-            {
                 return bucket.data[0] == key;  // Direct comparison for single element
-            }
             
             // Second level lookup
             int secondIdx = (*bucket.hashFunc)(key);
@@ -169,7 +199,8 @@ class PerfectHashTable
         ~PerfectHashTable() {}
 };
 
-int main() {
+int main() 
+{
     vector<double> keys;
     //{-10.5, 22.3333, 0.0078, 40.1, -52.6666, 60.4444, 0.0001, 85.9999, 90.0};
     keys.push_back(-10.5);
@@ -181,6 +212,7 @@ int main() {
     keys.push_back(0.0001);
     keys.push_back(85.9999);
     keys.push_back(90.0);
+    keys.push_back(22.3333);  // Duplicate key for testing
     
     cout << "Creating perfect hash table with keys:";
     for (double key : keys) cout << " " << key;
