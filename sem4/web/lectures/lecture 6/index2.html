@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three Column Layout</title>
+    <style>
+        * {
+            margin: 0;
+            box-sizing: border-box;
+        }
+        body {
+            display: flex;
+            height: 100vh;
+        }
+        header, footer {
+            background-color: #8B2C2C;
+            color: white;
+            padding: 40px;
+            position: fixed;
+            width: 100%;
+            left: 0;
+        }
+        
+        header { 
+            top: 0;
+        }
+        footer { 
+            bottom: 0; 
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+            margin-top: 90px;
+            margin-bottom: 90px;
+        }
+        
+        .left, .right {
+            width: 15%;
+            background-color: #F57373;
+            padding: 10px;
+        }
+        .content {
+            flex: 1;
+            background-color: #E53935;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>header</header>
+    
+    <div class="container">
+        <div class="left">left</div>
+        <div class="content">content</div>
+        <div class="right">right</div>
+    </div>
+    
+    <footer>footer</footer>
+</body>
+</html>

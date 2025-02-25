@@ -144,12 +144,16 @@ int main()
     PerfectHashTable table(keys);
     
     vector<double> tests;
-    tests.push_back(22.3333);
-    tests.push_back(85.9999);
-    tests.push_back(99.9);
-    tests.push_back(0.0078);
-    tests.push_back(-10.5);
-    tests.push_back(0.0002);
+    tests.push_back(-52.6666);
+    tests.push_back(60.4444);
+    tests.push_back(0.0001);
+    tests.push_back(85.9998);  // майже як існуючий ключ
+    tests.push_back(100.0);    // відсутній у початковому списку
+    tests.push_back(-0.0078);  // знак змінили
+    tests.push_back(40.1001);  // дуже близько до існуючого ключа
+    tests.push_back(-99999.9); // далеке значення
+    tests.push_back(1e-6);     // дуже мале позитивне число
+    tests.push_back(-1e-6);    // дуже мале негативне число
 
     cout << "\nTesting lookups:\n";
     for (double key : tests) 
