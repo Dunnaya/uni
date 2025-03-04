@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lecture 7</title>
+    <style>
+        #container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 50%;
+            border-radius: 10px;
+            row-gap: 5px;
+            column-gap: 5px;
+            border: 1px solid black;
+            padding: 10px;
+            box-shadow: 0 0 5px 5px rgba(128, 128, 128, 0.75);
+        }
+        
+        .blue {
+            background-color: rgb(112, 213, 247);
+        }
+
+        .yellow {
+            background-color: rgb(255, 200, 0);
+        }
+
+        .pink {
+            background-color: rgb(255, 0, 136);
+        }
+
+        .grow1 {
+            flex-grow: 1;
+        }
+
+        .grow2 {
+            flex-grow: 2;
+        }
+
+        .grow3 {
+            flex-grow: 3;
+        }
+
+        .blue, .yellow, .pink {
+            min-width: 120px;
+            min-height: 100px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div class="blue grow1"></div>
+        <div class="blue grow1"></div>
+        <div class="blue grow1"></div>
+        <div class="yellow grow1"></div>
+        <div class="yellow grow1"></div>
+        <div class="yellow grow3"></div>
+        <div class="pink grow2"></div>
+        <div class="pink grow3"></div>
+    </div>
+</body>
+</html>
