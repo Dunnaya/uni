@@ -2,276 +2,258 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <style>
-        .blank{
-          position: absolute;
-          width: 400px;
-          height: 470px;
-          border-radius: 10px;
-          margin: 10px
+        .container {
+            position: fixed;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            width: 500px;
+            height: 550px;
+            margin: 10px;
         }
-
-        #blank1{
-            top:  10px;
-            left: 10px;
+        .first {
+            background-image: url(https://i.pinimg.com/736x/b2/42/52/b24252744782192564d361845874f55e.jpg);
+            top: 0;
+            left: 0;
             z-index: 1;
-            background-image: url("https://i.pinimg.com/736x/aa/a0/27/aaa0278086272e370d454a196d1b705a.jpg");
         }
-
-        #blank2{
-          top:  180px;
-          left: 350px;
-          z-index: 2;
-          background-image: url("https://i.pinimg.com/736x/38/c6/f8/38c6f866845a177d54e2dc029996f14a.jpg");
+        .second {
+            background-image: url(https://i.pinimg.com/736x/87/47/9d/87479d86a87483230abb98832c30b30a.jpg);
+            top: 160px;
+            left: 450px;
+            z-index: 2;
         }
-
-        #blank3{
-          top:  10px;
-          left: 600px;
-          z-index: 1;
-          background-image: url("https://i.pinimg.com/736x/dd/bd/ad/ddbdadbdabc36c5122b849033633dc27.jpg");
+        .third {
+            background-image: url(https://i.pinimg.com/736x/fd/56/f8/fd56f87c2f39774b09186a9e46d0e2eb.jpg);
+            top: 0;
+            left: 905px;
+            z-index: 1;
         }
-
-        img{
-          outline-color: #d616a9;
-          outline-style: solid;
-          outline-width: 1px;
-          border-radius: 5px;
+        .main_block {
+            width: 60%;
+            height: 60%;
         }
-
-        .main_picture{
-          width: 60%;
-          height: 35%;
-          position: relative;
-          top: 20px;
-          left: 10px;
+        img {
+            outline-color: pink;
+            outline-style: solid;
+            outline-width: 1px;
+            border-radius: 5px;
+            position: absolute;
         }
-
-        .menu{
-          width: 60%;
-          height: 35%;
-          position: relative;
-          top: 75px;
-          left: 10px;
-          outline-color: #d616a9;
-          outline-style: solid;
-          background-color: #b765a8;
-          border-radius: 5px;
+        .main_img {
+            width: 100%;
+            height: 70%;
+            top: 20px;
+            left: 10px;
+            position: relative;
         }
-
-        .menubar{
-          width: 100%;
-          height: 13%;
-          background-color: #8a2c6f;
+        .menu_img {
+            width: 60%;
+            height: 50%;
+            top: 10px;
+            left: 1px;
+            position: relative;
         }
-
-        .menu_button{
-          position: relative;
-          height: 90%;
-          width: 30%;
-          text-align: center;
-          font-weight: bold;
+        .menu_text1 {
+            float: right;
+            font-size: 12px;
+            color: #9b2381;
+            margin-left: 180px;
+            margin-right: 2px;
+            margin-top: -110px;
         }
-
-        .menu_button1{
-          top: 10%;
-          background-color: #a838ac;
-          color: #ffffff;
-        }
-
-        .menu_button1:hover{
-          color: #000000;
-        }
-
-        .menu_button2{
-          top: -80%;
-          left: 33%;
-          background-color: #a838ac;
-          color: #ffffff;
-        }
-
-        .menu_button2:hover{
-          color: #000000;
-        }
-
-        .menu_button3{
-          top: -170%;
-          left: 66%;
-          background-color: #a838ac;
-          color: #ffffff;
-        }
-
-        .menu_button3:hover{
-          color: #000000;
-        }
-
-        .menu_picture{
-          position: relative;
-          width: 45%;
-          height: 35%;
-          left: 2%;
-          top: 12px;
-        }
-
-        .menu_text1{
-          float: right;
-          font-size: 10px;
-          position: relative;
-          margin-left: 122px;
-          margin-right: 3px;
-          margin-top: -53px;
-        }
-
         .menu_text2{
-          float: right;
-          font-size: 10px;
-          position: relative;
-          margin-left: 3px;
-          margin-right: 3px;
+            float: right;
+            font-size: 12px;
+            color: #9b2381;
+            margin-left: 3px;
+            margin-right: 3px;
         }
-
-        a{
-          font-weight: bold;
-          margin-left: 6px;
-          position: relative;
-          top: 5%;
-          font-size: 95%;
+        a {
+            position: relative;
+            font-size: 16px;
+            color: #2cb7cf;
+            margin-left: 10px;
         }
-
-        #menubar_central{
-          background-color: #fd9aff;
+        .block1_pic {
+            width: 80px;
+            height: 60px;
         }
-
-        #menu_button1_central{
-          background-color: #752685;
-          color: #000000;
+        .block3_pic {
+            width: 120px;
+            height: 80px;
         }
-
-        #menu_button1_central:hover{
-          background-color: #7c0067;
+        .figcaption_main {
+            position: relative;
+            font-size: 14px;
+            color: #ffecfb;
+            top: 6%;
+            text-align: center;
         }
-
-        #menu_button2_central{
-          background-color: #d600c8;
-          color: #000000;
+        .figcaption_side {
+            position: absolute;
+            font-size: 10px;
+            color: #ffecfb;
         }
-
-        #menu_button2_central:hover{
-          background-color: #7c0067;
+        .menu {
+            position: relative;
+            align-content: center;
+            width: 96%;
+            height: 70%;
+            left: 10px;
+            top: 40px;
+            background-color: antiquewhite;
+            border-radius: 5px;
+            padding: 5px;
+            outline-color: pink;
+            outline-style: solid;
+            outline-width: 1px;
         }
-
-        #menu_button3_central{
-          background-color: #d600c8;
-          color: #000000;
+        .menu_bar {
+            position: relative;
         }
-
-        #menu_button3_central:hover{
-          background-color: #7c0067;
-        }
-
-        .main_figcaption{
-          position: relative;
-          left: -17%;
-          top: 5%;
-          color: #ffdafe;
-          font-size: 9px;
-          padding: 2px;
+        button {
+          width: 32%;
           text-align: center;
+          font-weight: bold;
+          border-radius: 8px;
         }
-
-        .side_figcaption{
-          position: absolute;
-          font-size: 7px;
-          color: #ffdafe;
+        .btn1 {
+            background-color: pink;
+            color: #ffffff;
+            border-color: rgb(253, 171, 247);
         }
-
-        .blank1_pic{
-          position: absolute;
-          width: 60px;
-          height: 60px;
+        .btn1:hover {
+            color: #000;
         }
-
-        .blank3_pic{
-          position: absolute;
-          width: 100px;
-          height: 60px;
+        .btn2 {
+            background-color: pink;
+            color: #c65794;
+            border-color: rgb(253, 171, 247);
+        }
+        .btn2:hover {
+            color: #000;
+        }
+        .btn3 {
+            background-color: pink;
+            color: #c65794;
+            border-color: rgb(253, 171, 247);
+        }
+        .btn3:hover {
+            color: #000;
+        }
+        .btn1_central {
+            background-color: rgb(88, 99, 139);
+            color: #e3ffef;
+            border-color: rgb(40, 103, 46);
+        }
+        .btn1_central:hover {
+            background-color: rgb(59, 136, 118);
+        }
+        .btn2_central {
+            background-color: rgb(88, 139, 138);
+            color: #e3ffef;
+            border-color: rgb(52, 102, 101);
+        }
+        .btn2_central:hover {
+            background-color: rgb(35, 103, 87);
+        }
+        .btn3_central {
+            background-color: rgb(88, 139, 138);
+            color: #e3ffef;
+            border-color: rgb(52, 102, 101);
+        }
+        .btn3_central:hover {
+            background-color: rgb(35, 103, 87);
         }
     </style>
 </head>
 <body>
-  <div class="blank" id="blank1">
-    <img class="main_picture" src="https://i.pinimg.com/736x/fc/e7/bf/fce7bf47417b01c6838bf144084cc206.jpg">
-    <figcaption class="main_figcaption">Lorem ipsum dolor sit amet!</figcaption>
-    <div class="menu">
-      <div class="menubar">
-        <div class="menu_button menu_button1">First</div>
-        <div class="menu_button menu_button2">Second</div>
-        <div class="menu_button menu_button3">Third</div>
-      </div>
-      <img class="menu_picture" src="https://i.pinimg.com/736x/65/46/7d/65467de72facf49f74e01c188cb50eba.jpg">
-      <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis</span><span class="menu_text2">nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></article>
-      <a href="Sem.4%20Task.html">Visit The Website</a>
+    <div class="container first">
+        <div class="main_block">
+            <img class="main_img" src="https://i.pinimg.com/736x/fc/e7/bf/fce7bf47417b01c6838bf144084cc206.jpg">
+            <figcaption class="figcaption_main">Lorem ipsum dolor sit amet, consectetur.</figcaption>
+            
+            <div class="menu">
+                <div class="menu_bar">
+                    <button class="btn1">First</button>
+                    <button class="btn2">Second</button>
+                    <button class="btn3">Third</button>
+                </div>
+                <img class="menu_img" src="https://i.pinimg.com/736x/65/46/7d/65467de72facf49f74e01c188cb50eba.jpg">
+                <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sed ullamcorper neque, ut ultricies odio. Fusce condimentum lacus sit amet dolor iaculis, ac interdum est </span><span class="menu_text2">sagittis. Curabitur luctus, purus non pulvinar semper, quam justo tincidunt erat, id porta neque augue a urna. Pellentesque sit amet ligula cursus, auctor ante quis, scelerisque nibh.</span></article>
+                <a href="https://i.pinimg.com/736x/85/62/00/856200e9c11993514c94a2631c1d8788.jpg">Link</a>
+            </div>
+        </div>
+        
+        <img class="block1_pic" src="https://i.pinimg.com/736x/e1/95/76/e19576f121c9d775e2014540996cadce.jpg" style="top: 20px; left: 320px;">
+        <img class="block1_pic" src="https://i.pinimg.com/736x/fe/58/41/fe58412a00fbc7e0f2fb7c906afb7742.jpg" style="top: 105px; left: 320px"></img>
+        <img class="block1_pic" src="https://i.pinimg.com/736x/fc/47/08/fc4708ec537e14649a676a00dfaf70cb.jpg" style="top: 190px; left: 320px"></img>
+        <img class="block1_pic" src="https://i.pinimg.com/736x/a2/2f/4c/a22f4c04d0afc7fdb06c3506e582ad26.jpg" style="top: 275px; left: 320px"></img>
+        <img class="block1_pic" src="https://i.pinimg.com/736x/94/58/92/94589231f77d7772206b72d6aefdb106.jpg" style="top: 360px; left: 320px"></img>
+        <img class="block1_pic" src="https://i.pinimg.com/736x/66/ca/38/66ca3818502ccd32e4ca452de6f255ae.jpg" style="top: 20px; left: 410px"></img>
+        <img class="block1_pic" src="https://i.pinimg.com/736x/2e/b1/55/2eb155696c69fe9549e0c329ee937b37.jpg" style="top: 105px; left: 410px"></img>
+        <img class="block1_pic" src="https://i.pinimg.com/736x/03/bf/2d/03bf2d66979c44229b8d4479f3c94007.jpg" style="top: 190px; left: 410px"></img>
+        <img class="block1_pic" src="https://i.pinimg.com/736x/fc/d4/93/fcd493db6a3aebada8a9c9a306f6e814.jpg" style="top: 275px; left: 410px"></img>
+        <img class="block1_pic" src="https://i.pinimg.com/736x/01/13/4b/01134b63d5b0aaecdda358ab3a8e89e7.jpg" style="top: 360px; left: 410px"></img>
+
+        <figcaption class="figcaption_side" style="top: 85px; left: 340px">Example 1</figcaption>
+        <figcaption class="figcaption_side" style="top: 170px; left: 340px">Example 3</figcaption>
+        <figcaption class="figcaption_side" style="top: 255px; left: 340px">Example 5</figcaption>
+        <figcaption class="figcaption_side" style="top: 340px; left: 340px">Example 7</figcaption>
+        <figcaption class="figcaption_side" style="top: 425px; left: 340px">Example 9</figcaption>
+        <figcaption class="figcaption_side" style="top: 85px; left: 430px">Example 2</figcaption>
+        <figcaption class="figcaption_side" style="top: 170px; left: 430px">Example 4</figcaption>
+        <figcaption class="figcaption_side" style="top: 255px; left: 430px">Example 6</figcaption>
+        <figcaption class="figcaption_side" style="top: 340px; left: 430px">Example 8</figcaption>
+        <figcaption class="figcaption_side" style="top: 425px; left: 430px">Example 10</figcaption>
     </div>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/e1/95/76/e19576f121c9d775e2014540996cadce.jpg" style="top: 20px; left: 263px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/fe/58/41/fe58412a00fbc7e0f2fb7c906afb7742.jpg" style="top: 105px; left: 263px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/fc/47/08/fc4708ec537e14649a676a00dfaf70cb.jpg" style="top: 190px; left: 263px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/a2/2f/4c/a22f4c04d0afc7fdb06c3506e582ad26.jpg" style="top: 275px; left: 263px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/94/58/92/94589231f77d7772206b72d6aefdb106.jpg" style="top: 360px; left: 263px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/66/ca/38/66ca3818502ccd32e4ca452de6f255ae.jpg" style="top: 20px; left: 333px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/2e/b1/55/2eb155696c69fe9549e0c329ee937b37.jpg" style="top: 105px; left: 333px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/03/bf/2d/03bf2d66979c44229b8d4479f3c94007.jpg" style="top: 190px; left: 333px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/fc/d4/93/fcd493db6a3aebada8a9c9a306f6e814.jpg" style="top: 275px; left: 333px"></img>
-    <img class="blank1_pic" src="https://i.pinimg.com/736x/01/13/4b/01134b63d5b0aaecdda358ab3a8e89e7.jpg" style="top: 360px; left: 333px"></img>
-    <figcaption class="side_figcaption" style="top: 85px; left: 280px">Example 1</figcaption>
-    <figcaption class="side_figcaption" style="top: 170px; left: 280px">Example 3</figcaption>
-    <figcaption class="side_figcaption" style="top: 255px; left: 280px">Example 5</figcaption>
-    <figcaption class="side_figcaption" style="top: 340px; left: 280px">Example 7</figcaption>
-    <figcaption class="side_figcaption" style="top: 425px; left: 280px">Example 9</figcaption>
-    <figcaption class="side_figcaption" style="top: 85px; left: 350px">Example 2</figcaption>
-    <figcaption class="side_figcaption" style="top: 170px; left: 350px">Example 4</figcaption>
-    <figcaption class="side_figcaption" style="top: 255px; left: 350px">Example 6</figcaption>
-    <figcaption class="side_figcaption" style="top: 340px; left: 350px">Example 8</figcaption>
-    <figcaption class="side_figcaption" style="top: 425px; left: 350px">Example 10</figcaption>
-  </div>
-  <div class="blank" id="blank2">
-    <img class="main_picture" src="https://i.pinimg.com/736x/18/69/cb/1869cbe85baf50e0fe6f5f647336dbf8.jpg">
-    <div class="menu" style="top: 50px">
-      <div class="menubar" id = "menubar_central">
-        <div class="menu_button menu_button1" id="menu_button1_central">First</div>
-        <div class="menu_button menu_button2" id="menu_button2_central">Second</div>
-        <div class="menu_button menu_button3" id="menu_button3_central">Third</div>
-      </div>
-      <img class="menu_picture" src="https://i.pinimg.com/736x/d4/ce/ce/d4cecef42e2309becb2c7be15bf7bf53.jpg">
-      <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis</span><span class="menu_text2">nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></article>
-      <a href="Sem.4%20Task.html">Visit The Website</a>
+    <div class="container second">
+        <div class="main_block">
+            <img class="main_img" src="https://i.pinimg.com/736x/18/69/cb/1869cbe85baf50e0fe6f5f647336dbf8.jpg">
+            <div class="menu">
+                <div class="menu_bar">
+                    <button class="btn1_central">First</button>
+                    <button class="btn2_central">Second</button>
+                    <button class="btn3_central">Third</button>
+                </div>
+                <img class="menu_img" src="https://i.pinimg.com/736x/d4/ce/ce/d4cecef42e2309becb2c7be15bf7bf53.jpg">
+                <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sed ullamcorper neque, ut ultricies odio. Fusce condimentum lacus sit amet dolor iaculis, ac interdum est </span><span class="menu_text2">sagittis. Curabitur luctus, purus non pulvinar semper, quam justo tincidunt erat, id porta neque augue a urna. Pellentesque sit amet ligula cursus, auctor ante quis, scelerisque nibh.</span></article>
+                <a href="https://i.pinimg.com/736x/60/48/29/604829498d52eba3cd409ad444ed8e98.jpg">Link</a>
+            </div>
+        </div>
     </div>
-  </div>
-  <div class="blank" id="blank3">
-    <img class="main_picture" src="https://i.pinimg.com/736x/83/9c/6a/839c6a2f9c79170e04a1ce5bf5645e9b.jpg">
-    <figcaption class="main_figcaption">Lorem ipsum dolor sit amet!</figcaption>
-    <div class="menu">
-      <div class="menubar">
-        <div class="menu_button menu_button1">First</div>
-        <div class="menu_button menu_button2">Second</div>
-        <div class="menu_button menu_button3">Third</div>
-      </div>
-      <img class="menu_picture" src="https://i.pinimg.com/736x/8e/a3/1b/8ea31b9412706c5598406456f6fe86a8.jpg">
-      <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis</span><span class="menu_text2">nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></article>
-      <a href="Sem.4%20Task.html">Visit The Website</a>
+    <div class="container third">
+        <div class="main_block">
+            <img class="main_img" src="https://i.pinimg.com/736x/83/9c/6a/839c6a2f9c79170e04a1ce5bf5645e9b.jpg">
+            <figcaption class="figcaption_main">Lorem ipsum dolor sit amet.</figcaption>
+            
+            <div class="menu">
+                <div class="menu_bar">
+                    <button class="btn1">First</button>
+                    <button class="btn2">Second</button>
+                    <button class="btn3">Third</button>
+                </div>
+                <img class="menu_img" src="https://i.pinimg.com/736x/75/77/f1/7577f148f749f5ff649083cec8716179.jpg">
+                <article><span class="menu_text1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi sed ullamcorper neque, ut ultricies odio. Fusce condimentum lacus sit amet dolor iaculis, ac interdum est </span><span class="menu_text2">sagittis. Curabitur luctus, purus non pulvinar semper, quam justo tincidunt erat, id porta neque augue a urna. Pellentesque sit amet ligula cursus, auctor ante quis, scelerisque nibh.</span></article>
+                <a href="https://i.pinimg.com/736x/7f/be/05/7fbe05f714e047f25ca95361c5be60b8.jpg">Link</a>
+            </div>
+        </div>
+        <img class="block3_pic" src="https://i.pinimg.com/736x/13/06/77/13067788c51199fed98ea7517a3fa2cd.jpg" style="top: 20px; left: 370px"></img>
+        <img class="block3_pic" src="https://i.pinimg.com/736x/10/75/91/107591c06eb89d873ebe5b7f9630d389.jpg" style="top: 140px; left: 370px"></img>
+        <img class="block3_pic" src="https://i.pinimg.com/736x/53/59/09/535909e88be9b2e15f68c7d9c76e2459.jpg" style="top: 260px; left: 370px"></img>
+        <img class="block3_pic" src="https://i.pinimg.com/736x/80/95/d1/8095d1420bf1b397b05cb65631fc8221.jpg" style="top: 380px; left: 370px"></img>
+        <figcaption class="figcaption_side" style="top: 105px; left: 405px">Example 1</figcaption>
+        <figcaption class="figcaption_side" style="top: 225px; left: 405px">Example 2</figcaption>
+        <figcaption class="figcaption_side" style="top: 345px; left: 405px">Example 3</figcaption>
+        <figcaption class="figcaption_side" style="top: 465px; left: 405px">Example 4</figcaption>
+        <figcaption class="figcaption_side" style="top: 115px; left: 420px">pic1</figcaption>
+        <figcaption class="figcaption_side" style="top: 235px; left: 420px">pic2</figcaption>
+        <figcaption class="figcaption_side" style="top: 355px; left: 420px">pic3</figcaption>
+        <figcaption class="figcaption_side" style="top: 475px; left: 420px">pic4</figcaption>
     </div>
-    <img class="blank3_pic" src="https://i.pinimg.com/736x/13/06/77/13067788c51199fed98ea7517a3fa2cd.jpg" style="top: 20px; left: 275px"></img>
-    <img class="blank3_pic" src="https://i.pinimg.com/736x/10/75/91/107591c06eb89d873ebe5b7f9630d389.jpg" style="top: 120px; left: 275px"></img>
-    <img class="blank3_pic" src="https://i.pinimg.com/736x/53/59/09/535909e88be9b2e15f68c7d9c76e2459.jpg" style="top: 220px; left: 275px"></img>
-    <img class="blank3_pic" src="https://i.pinimg.com/736x/80/95/d1/8095d1420bf1b397b05cb65631fc8221.jpg" style="top: 320px; left: 275px"></img>
-    <figcaption class="side_figcaption" style="top: 85px; left: 315px">(Example 1)</figcaption>
-    <figcaption class="side_figcaption" style="top: 185px; left: 315px">(Example 2)</figcaption>
-    <figcaption class="side_figcaption" style="top: 285px; left: 315px">(Example 3)</figcaption>
-    <figcaption class="side_figcaption" style="top: 385px; left: 315px">(Example 4)</figcaption>
-    <figcaption class="side_figcaption" style="top: 93px; left: 325px">pic1</figcaption>
-    <figcaption class="side_figcaption" style="top: 193px; left: 325px">pic2</figcaption>
-    <figcaption class="side_figcaption" style="top: 293px; left: 325px">pic3</figcaption>
-    <figcaption class="side_figcaption" style="top: 393px; left: 325px">pic4</figcaption>
-  </div>
 </body>
 </html>
