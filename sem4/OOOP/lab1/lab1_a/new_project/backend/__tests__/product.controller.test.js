@@ -37,11 +37,6 @@ afterAll(async () => {
 
 //tests for GETting products
 describe('GET /api/products', () => {
-    
-});
-
-//tests for POST
-describe('POST /api/products', () => {
     it('must return an empty arr if no products', async () => {
         const res = await request(app).get('/api/products');
 
@@ -66,6 +61,50 @@ describe('POST /api/products', () => {
         expect(res.body.data).toBeInstanceOf(Array);
         expect(res.body.data.length).toBe(1);
         expect(res.body.data[0].name).toBe('Test product');
+    });
+});
+
+//tests for POST
+describe('POST /api/products', () => {
+    it('must create a new product', async () => {
+        const productData = {
+            name: 'New product',
+            price: 1200,
+            image: 'new-product.jpg'
+        };
+
+        const res = await request(app)
+        .post('/api/products')
+        .send(productData);
+
+        expect(res.statusCode).toBe(201);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data.name).toBe(productData.name);
+        expect(res.body.data.price).toBe(productData.price);
+
+        //is product saved in DB?
+        const savedProduct = await Product.findById(res.body.data._id);
+        expect(savedProduct).not.toBeNull();
+        expect(savedProduct.name).toBe(productData.name);
+    });
+
+    it('must return error if not enough data', async () => {
+        const invalidProduct = {
+            name: 'Not compeled product'
+            //there is no price and img
+        };
+
+        const res = await request(app)
+        .post('/api/products')
+        .send(invalidProduct);
+
+        expect(res.statusCode).toBe(400);
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toBe('Please provide all fields');
+
+        //this product should not be saved
+        const products = await Product.find({});
+        expect(products.length).toBe(0);
     });
 });
 
