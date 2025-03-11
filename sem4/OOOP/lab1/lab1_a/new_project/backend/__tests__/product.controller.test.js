@@ -70,7 +70,7 @@ describe('POST /api/products', () => {
         const productData = {
             name: 'New product',
             price: 1200,
-            image: 'new-product.jpg'
+            image: 'new-product.png'
         };
 
         const res = await request(app)
@@ -109,11 +109,48 @@ describe('POST /api/products', () => {
 });
 
 //tests for PUT
-describe('PUT /api/products', () => {
-    
+describe('PUT /api/products/:id', () => {
+    it('must update existing product', async () => {
+        const product = await Product.create({
+            name: 'Old name',
+            price: 1000,
+            image: 'old-image.png'
+        });
+
+        const updateData = {
+            name: 'New name',
+            price: 1500,
+            image: 'new-image.png'
+        };
+
+        const res = await request(app)
+        .put(`/api/products/${product._id}`)
+        .send(updateData);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data.name).toBe(updateData.name);
+        expect(res.body.data.price).toBe(updateData.price);
+
+        //DB check
+        const updatedProduct = await Product.findById(product._id);
+        expect(updatedProduct.name).toBe(updateData.name);
+    });
+
+    it('must return error if ID is wrong', async () => {
+        const invalidID = 'invalid-id';
+
+        const res = await request(app)
+        .put(`/api/products/${invalidID}`)
+        .send({name: 'Test', price: 100, image: 'test.png'});
+
+        expect(res.statusCode).toBe(404);
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toBe('Invalid Product Id');
+    });
 });
 
 //tests for DELETE
-describe('DELETE /api/products', () => {
+describe('DELETE /api/products/:id', () => {
     
 });
