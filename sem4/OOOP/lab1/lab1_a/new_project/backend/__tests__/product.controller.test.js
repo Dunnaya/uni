@@ -152,5 +152,34 @@ describe('PUT /api/products/:id', () => {
 
 //tests for DELETE
 describe('DELETE /api/products/:id', () => {
-    
+    it('must delete existing product', async () => {
+
+        const product = await Product.create({
+            name: 'Deleted product',
+            price: 500,
+            image: 'delete-me.png'
+        });
+
+        const res = await request(app)
+        .delete(`/api/products/${product._id}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.message).toBe('Product deleted');
+
+        //check DB
+        const deletedProduct = await Product.findById(product._id);
+        expect(deletedProduct).toBeNull();
+    });
+
+    it('must return error if ID is wrong', async () => {
+        const invalidID = 'invalid-id';
+
+        const res = await request(app)
+        .delete(`/api/products/${invalidID}`);
+
+        expect(res.statusCode).toBe(404);
+        expect(res.body.success).toBe(false);
+        expect(res.body.message).toBe('Invalid Product Id');
+    });
 });
