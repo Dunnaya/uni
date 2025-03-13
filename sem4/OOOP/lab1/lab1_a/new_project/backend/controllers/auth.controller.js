@@ -1,107 +1,103 @@
 import User from "../models/user.model.js";
 
-// @desc    Register a new user
-// @route   POST /api/users/register
-// @access  Public
+// register user
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
 
-    // check if user exists
-    const userExists = await User.findOne({ email });
-
-    if (userExists) {
-      return res
-        .status(400)
-        .json({ success: false, message: "User already exists" });
-    }
-
-    // create user - only admins can create other admins
     const user = await User.create({
       name,
       email,
-      password,
-      role: req.user && req.user.role === "admin" ? role || "user" : "user",
+      password
     });
 
-    // generate token and send response
-    sendTokenResponse(user, 201, res);
+    const token = user.getSignedJwtToken();
+
+    res.status(201).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (error) {
-    console.error("Error in user registration:", error.message);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
   }
 };
 
-// @desc    Login user
-// @route   POST /api/users/login
-// @access  Public
+// login user
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     // validate email & password
     if (!email || !password) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Please provide email and password" });
+      return res.status(400).json({
+        success: false,
+        message: "Please provide an email and password"
+      });
     }
 
     // check for user
-    const user = await User.findOne({ email }).select("+password");
+    // IMPORTANT: need to explicitly select password field
+    const user = await User.findOne({ email }).select('+password');
 
     if (!user) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
+      });
     }
 
     // check if password matches
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
-      return res
-        .status(401)
-        .json({ success: false, message: "Invalid credentials" });
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
+      });
     }
 
-    // generate token and send response
-    sendTokenResponse(user, 200, res);
+    const token = user.getSignedJwtToken();
+
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (error) {
-    console.error("Error in user login:", error.message);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
   }
 };
 
-// @desc    Get current logged in user
-// @route   GET /api/users/me
-// @access  Private
+// get current user
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
     res.status(200).json({
       success: true,
-      data: user,
+      data: user
     });
   } catch (error) {
-    console.error("Error getting user profile:", error.message);
-    res.status(500).json({ success: false, message: "Server Error" });
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
   }
-};
-
-// helper function to get token from model, create cookie and send response
-const sendTokenResponse = (user, statusCode, res) => {
-  // create token
-  const token = user.getSignedJwtToken();
-
-  res.status(statusCode).json({
-    success: true,
-    token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    },
-  });
 };
