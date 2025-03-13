@@ -7,39 +7,159 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 
 import User from "../models/user.model.js";
-import userRoutes from "../routes/user.route.js";
-import productRoutes from "../routes/product.route.js";
+import { protect, authorize } from "../middleware/auth.middleware.js";
+import { 
+    createProduct, 
+    deleteProduct, 
+    getProducts, 
+    updateProduct 
+} from "../controllers/product.controller.js";
 
 dotenv.config();
+
+// creating JWT if not found
+if (!process.env.JWT_SECRET) {
+    process.env.JWT_SECRET = "test-jwt-secret-for-unit-tests";
+}
+
+if (!process.env.JWT_EXPIRE) {
+    process.env.JWT_EXPIRE = "1h";
+}
 
 let mongoServer;
 const app = express();
 
-// Настройка Express для тестов
 app.use(express.json());
-app.use("/api/users", userRoutes);
-app.use("/api/products", productRoutes);
 
-// Запуск in-memory MongoDB перед всеми тестами
+// сreate custom login controller for test
+const loginUser = async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        // validate email & password
+        if (!email || !password) {
+            return res.status(400).json({
+                success: false,
+                message: "Please provide an email and password"
+            });
+        }
+
+        // сheck for user - IMPORTANT: explicitly select password field
+        const user = await User.findOne({ email }).select('+password');
+
+        if (!user) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid credentials"
+            });
+        }
+
+        // сheck if password matches (!)
+        const isMatch = await user.matchPassword(password);
+
+        if (!isMatch) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid credentials"
+            });
+        }
+
+        const token = user.getSignedJwtToken();
+
+        res.status(200).json({
+            success: true,
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        console.error("Login error:", error);
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+// create custom register controller
+const registerUser = async (req, res) => {
+    try {
+        const { name, email, password } = req.body;
+
+        const user = await User.create({
+            name,
+            email,
+            password
+        });
+
+        const token = user.getSignedJwtToken();
+
+        res.status(201).json({
+            success: true,
+            token,
+            user: {
+                id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role
+            }
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+// simple getMe controller for test
+const getMe = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+
+        res.status(200).json({
+            success: true,
+            data: user
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
+// users routes
+app.post("/api/users/register", registerUser);
+app.post("/api/users/login", loginUser);
+app.get("/api/users/me", protect, getMe);
+
+// products routes
+app.get("/api/products", getProducts);
+app.post("/api/products", protect, authorize("admin"), createProduct);
+app.put("/api/products/:id", protect, authorize("admin"), updateProduct);
+app.delete("/api/products/:id", protect, authorize("admin"), deleteProduct);
+
 beforeAll(async () => {
     mongoServer = await MongoMemoryServer.create();
     const uri = mongoServer.getUri();
     await mongoose.connect(uri);
 });
 
-// Очистка базы после каждого теста
 afterEach(async () => {
     await User.deleteMany({});
 });
 
-// Отключение базы после всех тестов
 afterAll(async () => {
     await mongoose.disconnect();
     await mongoServer.stop();
 });
 
 describe("User Authentication & Authorization", () => {
-    // Тест регистрации пользователя
     test("Should register a new user", async () => {
         const res = await request(app)
             .post("/api/users/register")
@@ -55,20 +175,18 @@ describe("User Authentication & Authorization", () => {
         expect(res.body.user.role).toBe("user");
     });
 
-    // Тест логина пользователя
     test("Should login an existing user", async () => {
-        // Создаем тестового пользователя
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash("password123", salt);
-
-        await User.create({
+        // directly create a user with a password we know
+        const user = new User({
             name: "Test User",
             email: "test@example.com",
-            password: hashedPassword,
+            password: "password123",
             role: "user",
         });
+        
+        // save the user - this will trigger the pre-save hook to hash the password
+        await user.save();
 
-        // Попытка входа
         const res = await request(app)
             .post("/api/users/login")
             .send({
@@ -81,9 +199,7 @@ describe("User Authentication & Authorization", () => {
         expect(res.body.token).toBeDefined();
     });
 
-    // Тест запрета создания товара обычным пользователем
     test("Regular user should not be able to create products", async () => {
-        // Создаем обычного пользователя
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash("password123", salt);
 
@@ -94,12 +210,10 @@ describe("User Authentication & Authorization", () => {
             role: "user",
         });
 
-        // Генерируем токен вручную
         const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
             expiresIn: "1h",
         });
 
-        // Пробуем создать товар с токеном обычного пользователя
         const res = await request(app)
             .post("/api/products")
             .set("Authorization", `Bearer ${token}`)
@@ -113,9 +227,8 @@ describe("User Authentication & Authorization", () => {
         expect(res.body.success).toBe(false);
     });
 
-    // Тест разрешения создания товара админом
     test("Admin user should be able to create products", async () => {
-        // Создаем пользователя-администратора
+        // creating admin
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash("password123", salt);
 
@@ -126,12 +239,12 @@ describe("User Authentication & Authorization", () => {
             role: "admin",
         });
 
-        // Генерируем токен вручную
+        // gen admin token
         const token = jwt.sign({ id: admin._id, role: admin.role }, process.env.JWT_SECRET, {
             expiresIn: "1h",
         });
 
-        // Пробуем создать товар с токеном админа
+        // admin
         const res = await request(app)
             .post("/api/products")
             .set("Authorization", `Bearer ${token}`)

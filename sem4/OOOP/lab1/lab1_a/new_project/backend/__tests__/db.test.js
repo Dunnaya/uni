@@ -1,23 +1,27 @@
-import mongoose, { connection } from "mongoose";
-import { connectDB } from '../config/db.js'
+import mongoose from "mongoose";
+import { connectDB } from '../config/db.js';
 
-//... console methods
-console.log = jest.fn();
-console.error = jest.fn();
-process.exit = jest.fn();
+const originalConsoleLog = console.log;
+const originalConsoleError = console.error;
+const originalProcessExit = process.exit;
 
 describe('Tests for connecting to DB', () => {
     beforeEach(() => {
-        //reseting all mocks before each test
+        console.log = jest.fn();
+        console.error = jest.fn();
+        process.exit = jest.fn();
+        
         jest.clearAllMocks();
     });
 
-    afterEach(async () => {
-        //closing connection after each test
-        await mongoose.connection.close();
+    afterEach(() => {
+        console.log = originalConsoleLog;
+        console.error = originalConsoleError;
+        process.exit = originalProcessExit;
     });
 
     it('must connect to DB successfully', async () => {
+        const originalConnect = mongoose.connect;
         mongoose.connect = jest.fn().mockResolvedValue({
             connection: {
                 host: 'test-host'
@@ -26,18 +30,28 @@ describe('Tests for connecting to DB', () => {
 
         process.env.MONGO_URI = 'mongodb://test-uri';
 
-        await connectDB();
+        try {
+            await connectDB();
 
-        expect(mongoose.connect).toHaveBeenCalledWith('mongodb://test-uri');
-        expect(console.log).toHaveBeenCalledWith('MongoDB Connected: test-host');
-        expect(process.exit).not.toHaveBeenCalled();
+            expect(mongoose.connect).toHaveBeenCalledWith('mongodb://test-uri');
+            expect(console.log).toHaveBeenCalledWith('MongoDB Connected: test-host');
+            expect(process.exit).not.toHaveBeenCalled();
+        } finally {
+            mongoose.connect = originalConnect;
+        }
     });
 
     it('must stop the process when error appears', async () => {
+        const originalConnect = mongoose.connect;
         mongoose.connect = jest.fn().mockRejectedValue(new Error('Connection failed'));
-        await connectDB();
+        
+        try {
+            await connectDB();
 
-        expect(console.error).toHaveBeenCalledWith('Error: Connection failed');
-        expect(process.exit).toHaveBeenCalledWith(1);
+            expect(console.error).toHaveBeenCalledWith('Error: Connection failed');
+            expect(process.exit).toHaveBeenCalledWith(1);
+        } finally {
+            mongoose.connect = originalConnect;
+        }
     });
 });
