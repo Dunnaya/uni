@@ -15,6 +15,7 @@ import {
   ModalHeader,
   ModalOverlay,
   Text,
+  Textarea,
   useColorModeValue,
   useDisclosure,
   useToast,
@@ -23,6 +24,7 @@ import {
 import { useProductStore } from "../store/product";
 import { useAuthStore } from "../store/auth";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const ProductCard = ({ product }) => {
   const [updatedProduct, setUpdatedProduct] = useState(product);
@@ -87,18 +89,22 @@ const ProductCard = ({ product }) => {
       _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
       bg={bg}
     >
-      <Image src={product.image} alt={product.name} h={48} w='full' objectFit='cover' />
+      <Link to={`/product/${product._id}`}>
+        <Image src={product.image} alt={product.name} h={48} w='full' objectFit='cover' />
 
-      <Box p={4}>
-        <Heading as='h3' size='md' mb={2}>
-          {product.name}
-        </Heading>
+        <Box p={4}>
+          <Heading as='h3' size='md' mb={2}>
+            {product.name}
+          </Heading>
 
-        <Text fontWeight='bold' fontSize='xl' color={textColor} mb={4}>
-          ${product.price}
-        </Text>
+          <Text fontWeight='bold' fontSize='xl' color={textColor} mb={4}>
+            ${product.price}
+          </Text>
+        </Box>
+      </Link>
 
-        {isAdmin && (
+      {isAdmin && (
+        <Box p={4} pt={0}>
           <HStack spacing={2}>
             <IconButton icon={<EditIcon />} onClick={onOpen} colorScheme='green' />
             <IconButton
@@ -107,8 +113,8 @@ const ProductCard = ({ product }) => {
               colorScheme='pink'
             />
           </HStack>
-        )}
-      </Box>
+        </Box>
+      )}
 
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
@@ -136,6 +142,13 @@ const ProductCard = ({ product }) => {
                 name='image'
                 value={updatedProduct.image}
                 onChange={(e) => setUpdatedProduct({ ...updatedProduct, image: e.target.value })}
+              />
+              <Textarea
+                placeholder='Product Description'
+                name='description'
+                value={updatedProduct.description || ''}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, description: e.target.value })}
+                rows={4}
               />
             </VStack>
           </ModalBody>
