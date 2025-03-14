@@ -72,7 +72,7 @@ export const useProductStore = create((set) => ({
         return { success: false, message: data.message };
       }
       
-      // Обновляем UI немедленно
+      // upd UI 
       set((state) => ({ products: state.products.filter((product) => product._id !== pid) }));
       return { success: true, message: data.message };
     } catch (error) {
@@ -103,7 +103,7 @@ export const useProductStore = create((set) => ({
         return { success: false, message: data.message };
       }
       
-      // Обновляем UI немедленно
+      // upd UI
       set((state) => ({
         products: state.products.map((product) => (product._id === pid ? data.data : product)),
       }));

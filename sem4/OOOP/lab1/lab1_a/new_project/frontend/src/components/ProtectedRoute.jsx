@@ -1,23 +1,22 @@
 import { Navigate, useLocation } from "react-router-dom";
-import { useAuthStore } from "../store/user";
+import { useAuthStore } from "../store/auth"; // Changed from store/user to store/auth
 
-// component for protecting routes that require authentication
-const ProtectedRoute = ({ children, allowedRoles = ["user", "admin"] }) => {
-  const { isAuthenticated, user } = useAuthStore();
+// updated to handle adminOnly parameter correctly
+const ProtectedRoute = ({ children, adminOnly = false }) => {
+  const { isAuthenticated, isAdmin } = useAuthStore();
   const location = useLocation();
 
-  // redirect on login page
+  // redirect to login if not authenticated
   if (!isAuthenticated) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // if allowed roles are specified and the user's role is not included in them,
-  // redirect to the home page
-  if (allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/" replace />;
+  // if admin only and user is not admin, redirect to unauthorized
+  if (adminOnly && !isAdmin) {
+    return <Navigate to="/unauthorized" replace />;
   }
 
-  // if all checks are passed, display the child components
+  // if all checks pass, display the children
   return children;
 };
 
