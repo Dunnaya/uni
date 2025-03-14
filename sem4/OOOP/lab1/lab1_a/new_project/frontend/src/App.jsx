@@ -14,7 +14,7 @@ import { useAuthStore } from "./store/auth";
 function App() {
   const { getMe } = useAuthStore();
   
-  // При загрузке приложения проверяем, есть ли активная сессия
+  // when loading the application, we check if there is an active session
   useEffect(() => {
     getMe();
   }, [getMe]);

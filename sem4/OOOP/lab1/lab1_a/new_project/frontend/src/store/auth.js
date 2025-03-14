@@ -81,7 +81,7 @@ export const useAuthStore = create(
           isAuthenticated: false,
           isAdmin: false
         });
-        // Добавляем принудительное обновление страницы при выходе
+
         window.location.href = '/';
       },
       

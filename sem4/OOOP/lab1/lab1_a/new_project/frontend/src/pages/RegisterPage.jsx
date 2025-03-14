@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import {
   Box,
   Button,
@@ -12,8 +11,11 @@ import {
   useColorModeValue,
   useToast,
   VStack,
+  Link as ChakraLink,
+  Spinner,
 } from "@chakra-ui/react";
-import { useAuthStore } from "../store/user";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/auth";
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -21,25 +23,22 @@ const RegisterPage = () => {
     email: "",
     password: "",
   });
-  const { register, loading } = useAuthStore();
+  
   const toast = useToast();
   const navigate = useNavigate();
-  const bgColor = useColorModeValue("white", "rgb(40, 4, 30)");
-
+  const { register, loading } = useAuthStore();
+  
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (formData.password.length < 6) {
+    if (!formData.name || !formData.email || !formData.password) {
       toast({
-        title: "Registration error",
-        description: "Password must be at least 6 characters long",
+        title: "Error",
+        description: "Please fill in all fields",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -51,16 +50,17 @@ const RegisterPage = () => {
     
     if (success) {
       toast({
-        title: "Registration successful",
-        description: "Now you can use the service",
+        title: "Success",
+        description: "Account created successfully",
         status: "success",
         duration: 3000,
         isClosable: true,
       });
-      navigate("/");
+      // redirect to the main page and add forced page refresh
+      window.location.href = '/';
     } else {
       toast({
-        title: "Registration error",
+        title: "Error",
         description: message,
         status: "error",
         duration: 3000,
@@ -68,77 +68,85 @@ const RegisterPage = () => {
       });
     }
   };
-
+  
   return (
-    <Container maxW="container.sm" py={12}>
+    <Container maxW="container.sm" py={10}>
       <VStack spacing={8}>
-        <Heading
-          as="h1"
-          size="2xl"
+        <Heading 
+          as="h1" 
+          size="2xl" 
           textAlign="center"
-          bgGradient="linear(to-r, rgb(233, 25, 132), rgb(152, 16, 186))"
+          bgGradient="linear(to-r,rgb(233, 25, 132), rgb(152, 16, 186))"
           bgClip="text"
         >
-          Registration
+          Register
         </Heading>
-
-        <Box w="full" bg={bgColor} p={8} rounded="lg" shadow="md">
-          <form onSubmit={handleSubmit}>
-            <VStack spacing={4}>
-              <FormControl id="name" isRequired>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="Your name"
-                />
-              </FormControl>
-              
-              <FormControl id="email" isRequired>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  placeholder="your@email.com"
-                />
-              </FormControl>
-              
-              <FormControl id="password" isRequired>
-                <FormLabel>Password</FormLabel>
-                <Input
-                  type="password"
-                  name="password"
-                  value={formData.password}
-                  onChange={handleChange}
-                  placeholder="••••••••"
-                />
-              </FormControl>
-
-              <Button
-                type="submit"
-                colorScheme="pink"
-                w="full"
-                mt={4}
-                isLoading={loading}
-              >
-                Register
-              </Button>
-            </VStack>
-          </form>
-        </Box>
-
-        <Text>
-        Already have an account?{" "}
-          <Link to="/login">
-            <Text as="span" color="pink.500" fontWeight="bold">
-              Login
+        
+        <Box
+          w="full"
+          bg={useColorModeValue("white", "rgb(40, 4, 30)")}
+          p={6}
+          rounded="lg"
+          shadow="md"
+          as="form"
+          onSubmit={handleSubmit}
+        >
+          <VStack spacing={4}>
+            <FormControl isRequired>
+              <FormLabel>Name</FormLabel>
+              <Input
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
+                placeholder="Enter your name"
+                disabled={loading}
+              />
+            </FormControl>
+            
+            <FormControl isRequired>
+              <FormLabel>Email</FormLabel>
+              <Input
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                disabled={loading}
+              />
+            </FormControl>
+            
+            <FormControl isRequired>
+              <FormLabel>Password</FormLabel>
+              <Input
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                minLength={6}
+                disabled={loading}
+              />
+            </FormControl>
+            
+            <Button
+              colorScheme="pink"
+              type="submit"
+              w="full"
+              mt={4}
+              isLoading={loading}
+              loadingText="Registering"
+            >
+              {loading ? <Spinner size="sm" /> : "Register"}
+            </Button>
+            
+            <Text mt={4}>
+              Already have an account?{" "}
+              <ChakraLink as={Link} to="/login" color="pink.500">
+                Login
+              </ChakraLink>
             </Text>
-          </Link>
-        </Text>
+          </VStack>
+        </Box>
       </VStack>
     </Container>
   );
