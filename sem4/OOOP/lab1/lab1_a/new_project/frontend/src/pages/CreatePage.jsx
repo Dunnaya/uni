@@ -1,4 +1,4 @@
-import { Box, Button, Container, Heading, Input, useColorModeValue, useToast, VStack } from "@chakra-ui/react";
+import { Box, Button, Container, Heading, Input, Textarea, useColorModeValue, useToast, VStack } from "@chakra-ui/react";
 import { useState } from "react";
 import { useProductStore } from "../store/product";
 
@@ -7,6 +7,7 @@ const CreatePage = () => {
 		name: "",
 		price: "",
 		image: "",
+		description: "", // Added description field
 	});
 	const toast = useToast();
 
@@ -29,7 +30,7 @@ const CreatePage = () => {
 				isClosable: true,
 			});
 		}
-		setNewProduct({ name: "", price: "", image: "" });
+		setNewProduct({ name: "", price: "", image: "", description: "" });
 	};
 
 	return (
@@ -60,6 +61,13 @@ const CreatePage = () => {
 							value={newProduct.image}
 							onChange={(e) => setNewProduct({ ...newProduct, image: e.target.value })}
 						/>
+                        <Textarea
+                            placeholder='Product Description'
+                            name='description'
+                            value={newProduct.description}
+                            onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })}
+                            rows={4}
+                        />
 
 						<Button colorScheme='pink' onClick={handleAddProduct} w='full'>
 							Add Product

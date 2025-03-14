@@ -7,6 +7,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
+import ProductPage from "./pages/ProductPage";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuthStore } from "./store/auth";
@@ -24,6 +25,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path='/' element={<HomePage />} />
+        <Route path='/product/:productId' element={<ProductPage />} /> {/* New route */}
         <Route path='/create' element={
           <ProtectedRoute adminOnly={true}>
             <CreatePage />
