@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { useAuthStore } from "./auth";
 
 export const useCartStore = create(
   persist(
@@ -7,8 +8,31 @@ export const useCartStore = create(
       items: [],
       totalItems: 0,
       totalPrice: 0,
+      userId: null,
+      
+      initializeCart: () => {
+        const authState = useAuthStore.getState();
+        const currentUserId = authState.user?._id;
+        
+        // if user is logged in and userId doesn't match current user
+        if (authState.isAuthenticated && currentUserId !== get().userId) {
+          // reset cart for new user
+          set({ 
+            items: [], 
+            totalItems: 0, 
+            totalPrice: 0, 
+            userId: currentUserId 
+          });
+        } else if (!authState.isAuthenticated) {
+          // clear userId if not authenticated
+          set(state => ({ ...state, userId: null }));
+        }
+      },
       
       addToCart: (product, quantity = 1) => {
+        // make sure cart is initialized with correct user
+        get().initializeCart();
+        
         set((state) => {
           const existingItem = state.items.find(item => item._id === product._id);
           
@@ -37,6 +61,9 @@ export const useCartStore = create(
       },
       
       removeFromCart: (productId) => {
+        // make sure cart is initialized with correct user
+        get().initializeCart();
+        
         set((state) => {
           const updatedItems = state.items.filter(item => item._id !== productId);
           
@@ -52,6 +79,9 @@ export const useCartStore = create(
       },
       
       updateQuantity: (productId, quantity) => {
+        // make sure cart is initialized with correct user
+        get().initializeCart();
+        
         set((state) => {
           // don't allow quantities less than 1
           if (quantity < 1) return state;
@@ -72,11 +102,25 @@ export const useCartStore = create(
       },
       
       clearCart: () => {
-        set({ items: [], totalItems: 0, totalPrice: 0 });
+        const authState = useAuthStore.getState();
+        const currentUserId = authState.user?._id;
+        
+        set({ 
+          items: [], 
+          totalItems: 0, 
+          totalPrice: 0,
+          userId: currentUserId  // maintain the userId when clearing cart
+        });
       },
     }),
     {
       name: "cart-storage", // localStorage key
+      partialize: (state) => ({
+        items: state.items, 
+        totalItems: state.totalItems, 
+        totalPrice: state.totalPrice,
+        userId: state.userId
+      }),
     }
   )
 );

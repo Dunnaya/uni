@@ -19,14 +19,14 @@ import {
   import { PlusSquareIcon, ChevronDownIcon } from "@chakra-ui/icons";
   import { IoMoon } from "react-icons/io5";
   import { LuSun } from "react-icons/lu";
-  import { FiShoppingCart } from "react-icons/fi"; // Import cart icon
+  import { FiShoppingCart } from "react-icons/fi";
   import { useAuthStore } from "../store/auth";
-  import { useCartStore } from "../store/cart"; // Import cart store
+  import { useCartStore } from "../store/cart";
   
   const Navbar = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const { isAuthenticated, isAdmin, user, logout } = useAuthStore();
-	const { totalItems } = useCartStore(); // Get total items from cart store
+	const { totalItems } = useCartStore();
 	const toast = useToast();
 	
 	const handleLogout = () => {

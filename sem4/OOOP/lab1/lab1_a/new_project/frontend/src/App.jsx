@@ -8,18 +8,25 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import UnauthorizedPage from "./pages/UnauthorizedPage";
 import ProductPage from "./pages/ProductPage";
-import CartPage from "./pages/CartPage"; // Import CartPage
+import CartPage from "./pages/CartPage";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuthStore } from "./store/auth";
+import { useCartStore } from "./store/cart";
 
 function App() {
   const { getMe } = useAuthStore();
+  const { initializeCart } = useCartStore();
   
   // when loading the application, we check if there is an active session
   useEffect(() => {
     getMe();
   }, [getMe]);
+  
+  // initialize cart when auth state changes
+  useEffect(() => {
+    initializeCart();
+  }, [initializeCart, useAuthStore.getState().user]);
   
   return (
     <Box minH={"100vh"} bg={useColorModeValue("#FFEDFA", "rgb(75, 9, 57)")}>
