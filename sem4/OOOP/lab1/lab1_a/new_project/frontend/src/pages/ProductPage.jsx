@@ -12,43 +12,66 @@ import {
   useColorModeValue,
   Spinner,
   Divider,
-  useToast
+  useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Input,
+  Textarea,
+  useDisclosure,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper
 } from '@chakra-ui/react';
-import { ArrowBackIcon } from '@chakra-ui/icons';
+import { ArrowBackIcon, EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
 import { useProductStore } from '../store/product';
 import { useAuthStore } from '../store/auth';
+import { useCartStore } from '../store/cart';
 
 const ProductPage = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const toast = useToast();
+  const { isAuthenticated, isAdmin } = useAuthStore();
+  const { products, deleteProduct, updateProduct } = useProductStore();
+  const { addToCart } = useCartStore();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  
   const [product, setProduct] = useState(null);
+  const [updatedProduct, setUpdatedProduct] = useState(null);
   const [loading, setLoading] = useState(true);
-  const { isAdmin } = useAuthStore();
-  const { products, deleteProduct } = useProductStore();
+  const [quantity, setQuantity] = useState(1);
 
   const bgColor = useColorModeValue('white', 'rgb(40, 4, 30)');
   const textColor = useColorModeValue('pink.600', 'gray.400');
 
   useEffect(() => {
     const fetchProduct = async () => {
-      // first check if we already have the product in our store
+      // First check if we already have the product in our store
       if (products && products.length > 0) {
         const foundProduct = products.find(p => p._id === productId);
         if (foundProduct) {
           setProduct(foundProduct);
+          setUpdatedProduct(foundProduct);
           setLoading(false);
           return;
         }
       }
 
-      // if not found in store, fetch it from API
+      // If not found in store, fetch it from API
       try {
         const response = await fetch(`/api/products/${productId}`);
         const data = await response.json();
         
         if (data.success) {
           setProduct(data.data);
+          setUpdatedProduct(data.data);
         } else {
           toast({
             title: 'Error',
@@ -77,6 +100,7 @@ const ProductPage = () => {
 
   const handleDelete = async () => {
     const { success, message } = await deleteProduct(productId);
+    
     if (success) {
       toast({
         title: 'Success',
@@ -86,6 +110,30 @@ const ProductPage = () => {
         isClosable: true,
       });
       navigate('/');
+      return;
+    } 
+    
+    toast({
+      title: 'Error',
+      description: message,
+      status: 'error',
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+  
+  const handleUpdateProduct = async () => {
+    const { success, message } = await updateProduct(productId, updatedProduct);
+    if (success) {
+      toast({
+        title: 'Success',
+        description: 'Product updated successfully',
+        status: 'success',
+        duration: 3000,
+        isClosable: true,
+      });
+      setProduct(updatedProduct);
+      onClose();
     } else {
       toast({
         title: 'Error',
@@ -95,6 +143,18 @@ const ProductPage = () => {
         isClosable: true,
       });
     }
+  };
+
+  const handleAddToCart = () => {
+    addToCart(product, quantity);
+    toast({
+      title: 'Added to Cart',
+      description: `${quantity} x ${product.name} added to your cart`,
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    });
+    setQuantity(1);
   };
 
   if (loading) {
@@ -168,18 +228,49 @@ const ProductPage = () => {
               <Text>{product.description || 'No description available'}</Text>
             </Box>
 
+            {isAuthenticated && (
+              <Box w="full" pt={4}>
+                <HStack spacing={4} mb={4}>
+                  <Text>Quantity:</Text>
+                  <NumberInput 
+                    min={1} 
+                    max={100} 
+                    value={quantity} 
+                    onChange={(value) => setQuantity(parseInt(value))}
+                    w="100px"
+                  >
+                    <NumberInputField />
+                    <NumberInputStepper>
+                      <NumberIncrementStepper />
+                      <NumberDecrementStepper />
+                    </NumberInputStepper>
+                  </NumberInput>
+                </HStack>
+                <Button 
+                  colorScheme="purple" 
+                  w="full" 
+                  leftIcon={<AddIcon />}
+                  onClick={handleAddToCart}
+                >
+                  Add to Cart
+                </Button>
+              </Box>
+            )}
+
             {isAdmin && (
               <HStack spacing={4} pt={4} w="full">
                 <Button 
                   colorScheme="green" 
                   w="full"
-                  onClick={() => navigate(`/edit/${product._id}`)}
+                  leftIcon={<EditIcon />}
+                  onClick={onOpen}
                 >
                   Edit Product
                 </Button>
                 <Button 
                   colorScheme="pink" 
                   w="full"
+                  leftIcon={<DeleteIcon />}
                   onClick={handleDelete}
                 >
                   Delete Product
@@ -189,6 +280,58 @@ const ProductPage = () => {
           </VStack>
         </Box>
       </Box>
+      
+      {/* Edit Product Modal */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Edit Product</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <VStack spacing={4}>
+              <Input
+                placeholder='Product Name'
+                name='name'
+                value={updatedProduct?.name || ''}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, name: e.target.value })}
+              />
+              <Input
+                placeholder='Price'
+                name='price'
+                type='number'
+                value={updatedProduct?.price || ''}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, price: e.target.value })}
+              />
+              <Input
+                placeholder='Image URL'
+                name='image'
+                value={updatedProduct?.image || ''}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, image: e.target.value })}
+              />
+              <Textarea
+                placeholder='Product Description'
+                name='description'
+                value={updatedProduct?.description || ''}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, description: e.target.value })}
+                rows={4}
+              />
+            </VStack>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button
+              colorScheme='pink'
+              mr={3}
+              onClick={handleUpdateProduct}
+            >
+              Update
+            </Button>
+            <Button variant='ghost' onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Container>
   );
 };
