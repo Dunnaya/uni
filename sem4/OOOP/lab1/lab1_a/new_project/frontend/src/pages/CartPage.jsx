@@ -30,7 +30,7 @@ const CartPage = () => {
   const navigate = useNavigate();
   const toast = useToast();
   
-  // Redirect if not authenticated
+  // redirect if not authenticated
   useEffect(() => {
     if (!isAuthenticated) {
       toast({
@@ -47,12 +47,11 @@ const CartPage = () => {
   const handleCheckout = () => {
     toast({
       title: 'Checkout Process',
-      description: 'Checkout functionality would be implemented here',
+      description: 'Checkout functionality can be implemented here',
       status: 'info',
       duration: 3000,
       isClosable: true,
     });
-    // For demo purposes, we'll just clear the cart
     clearCart();
   };
 
@@ -60,7 +59,7 @@ const CartPage = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.700');
 
   if (!isAuthenticated) {
-    return null; // Don't render anything while redirecting
+    return null; // don't render anything while redirecting
   }
 
   return (
