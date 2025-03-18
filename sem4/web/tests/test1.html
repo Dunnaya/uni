@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test 1</title>
+    <style>
+        #content {
+            width: 40%;
+            height: 100%;
+            left: 30%;
+            top: 0;
+            background-color: rgb(178, 138, 168);
+            position: absolute;
+        }
+        #black_stripe {
+            background-color: black;
+            height: 5%;
+        }
+        #left_panel {
+            width: 25%;
+            height: 95%;
+            background-color: rgb(141, 109, 133);
+        }
+        #main_img {
+            position: absolute;
+            top: 25%;
+            left: 37%;
+            height: 20%;
+            width: 50%;
+            border-radius: 3px;
+            box-shadow: 5px 5px 5px 0px rgba(81, 81, 81, 0.75);
+        }
+        .left_img {
+            position: absolute;
+        }
+        .img1, .img2, .img3, .img4, .img5 {
+            width: 15%;
+	        height: 10%;
+            left: 5%;
+            border-radius: 5px;
+            box-shadow: 5px 5px 5px 0px rgba(81, 81, 81, 0.75);
+        }
+        .img1 {
+	        top: 15%;
+        }
+        .img2 {
+	        top: 31%; 
+        }
+        .img3 {
+	        top: 47%;
+        }
+        .img4 {
+	        top: 63%;
+        }
+        .img5 {
+	        top: 79%;
+        }
+        p {
+            position: absolute;
+            overflow-x: hidden;
+            font-size: 12px;
+        }
+        #top_text {
+            font-weight: bold;
+            top: 7%;
+            left: 37%;
+            height: 15%;
+            width: 50%;
+        }
+        #bottom_left_text {
+            top: 45%;
+            left: 37%;
+            height: 46%;
+            width: 25%;
+        }
+        #bottom_right_text {
+            position: absolute;
+            top: 46.5%;
+            left: 63%;
+            height: 46%;
+            width: 24%;
+            position: absolute;
+            overflow-x: hidden;
+            font-size: 12px;
+        }
+        #top_rectangle {
+            position: absolute;
+            background-color: #7a6577;
+            opacity: 0.5;
+            width: 100%;
+            height: 3%;
+            left: 0;
+            top: 5%;
+        }
+        #top_triangle {
+            position: absolute;
+            border-top: 50px solid #7a6577;
+            border-right: 600px solid transparent;	
+            opacity: 0.5;
+            left: 0;
+            top: 8%;
+        }
+        #bottom_rectangle {
+            position: absolute;
+            background-color: #7a6577;
+            opacity: 0.5;
+            width: 100%;
+            height: 3%;
+            right: 0;
+            bottom: 0;
+        }
+        #bottom_triangle {
+            position: absolute;
+            border-bottom: 50px solid #7a6577;
+            border-left: 600px solid transparent;	
+            opacity: 0.5;
+            right: 0;
+            bottom: 3%;
+        }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+        <div id="black_stripe"></div>
+        <div id="top_rectangle"></div>
+        <div id="top_triangle"></div>
+        <div id="left_panel">
+            <img class="left_img img1" src="https://i.pinimg.com/736x/bd/1c/57/bd1c579d3803cedb87ecb45a689384db.jpg">
+            <img class="left_img img2" src="https://i.pinimg.com/736x/41/5d/32/415d32cd2c948948154b701f9791da45.jpg">
+            <img class="left_img img3" src="https://i.pinimg.com/736x/c4/88/a8/c488a8259faf1393c484a30a7d4754bf.jpg">
+            <img class="left_img img4" src="https://i.pinimg.com/736x/40/77/61/4077615376ec9db46e83944553235ad7.jpg">
+            <img class="left_img img5" src="https://i.pinimg.com/736x/94/c4/80/94c4806925596f0d6f1a93c59c12731b.jpg">
+        </div>
+        <p id="top_text">A <i>body piercing</i>, which is a form of <i>body modification</i>, is the practice of puncturing or cutting a part of the human body, creating an opening in which <i>jewelry</i> may be worn, or where an implant could be inserted. The word piercing can refer to the act or practice of body piercing, or to an opening in the body created by this act or practice. It can also, by metonymy, refer to the resulting decoration, or to the decorative jewelry used. Piercing implants alter the body and/or skin profile and appearance (e.g. golden threads installed subdermal, platinum, titanium or medical grade steel subdermal implants).</p>
+        <img id="main_img" src="https://i.pinimg.com/736x/60/ba/22/60ba223836c445a4d766384f08f06815.jpg">
+        <p id="bottom_left_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempor volutpat risus in posuere. Nulla facilisi. Vestibulum eu ultrices nunc. Nulla a tortor libero. Nam faucibus nulla vel elit egestas, a placerat augue consectetur. Phasellus posuere commodo tempus. Nulla congue tempor ultricies. Phasellus id nibh a sapien viverra ultricies id in erat. <mark>Cras vel elit semper, ornare nisl in, malesuada nibh.</mark> Ut non justo at lacus laoreet laoreet id eu leo. Mauris tincidunt tempus felis, in luctus lectus feugiat id. Duis iaculis sagittis mauris, vel mattis leo maximus efficitur. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse viverra condimentum arcu, non faucibus nisl venenatis nec. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+            Fusce sit amet sem blandit, posuere mauris in, porttitor urna. Praesent ut finibus ipsum. Aliquam efficitur nisl lectus, vitae maximus diam porta eu. Cras sit amet ipsum enim. Curabitur fermentum arcu ligula, nec pulvinar sem finibus eget. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi pulvinar, mauris ac lacinia aliquam, arcu nisl condimentum libero, vel cursus magna lorem id massa. Pellentesque lobortis volutpat sollicitudin. Maecenas fermentum pellentesque urna, in tempor libero mollis sed. Praesent elementum, diam vitae commodo molestie, metus metus varius velit, quis rhoncus dolor sem id leo.
+            Quisque a sagittis eros. Aliquam porttitor, neque quis consectetur bibendum, risus odio congue tortor, in dapibus dui nisl sit amet magna. Suspendisse potenti. Mauris in varius purus. Cras ut mauris sit amet leo luctus placerat quis id ipsum. Etiam ipsum urna, posuere vel augue quis, pretium pharetra nibh. Aenean rutrum varius diam in commodo. Donec faucibus, dolor a mattis egestas, nisi nisl auctor enim, eu fermentum arcu urna at magna. Nullam feugiat risus ligula, ut mattis nibh posuere at. Aliquam scelerisque, diam eget imperdiet consequat, mauris eros vestibulum mauris, at iaculis tortor mi et lacus. Donec mollis commodo justo, ut auctor est viverra in. Morbi vel lacus id felis maximus posuere. Donec sed condimentum quam. Suspendisse sed pellentesque purus, vitae rhoncus ligula.
+        </p>
+        <div id="bottom_right_text">
+            Pellentesque in tincidunt lectus. Nulla facilisi. Ut scelerisque eleifend velit nec ultricies. Etiam suscipit, turpis sit amet dictum euismod, leo mi congue dui, condimentum lobortis risus dui a mauris. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Suspendisse hendrerit, nibh in consequat tincidunt, metus felis hendrerit eros, non commodo ante mi a est. <b>Maecenas quis consectetur lectus, vel ultrices lacus.</b> Donec a tempus justo.
+            <ul>
+                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</li>
+                <li>Mauris sollicitudin lectus bibendum mattis facilisis.</li>
+                <li>Praesent rutrum tortor at erat tristique elementum.</li>
+                <li>Aliquam viverra felis ut commodo imperdiet.</li>
+                <li>Phasellus congue ipsum vitae augue pellentesque gravida.</li>
+            </ul>
+            Fusce luctus euismod magna, auctor vehicula felis sagittis lobortis. Aliquam ac purus nec mi varius mattis vel nec quam. Donec ullamcorper lorem ut turpis volutpat, sed euismod felis consequat. Aliquam mollis ligula eu ligula tincidunt varius. Etiam egestas lorem quis blandit euismod. Quisque vitae nunc nec ex lobortis hendrerit. Nam ac accumsan erat. Quisque vitae augue luctus, mollis lacus tempus, mattis metus. Donec vel congue ex, sed viverra mauris.  
+        </div>
+        <div id="bottom_rectangle"></div>
+        <div id="bottom_triangle"></div>
+    </div>
+  </body>
+</html>
