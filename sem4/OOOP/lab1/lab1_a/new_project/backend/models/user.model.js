@@ -1,7 +1,22 @@
+/**
+ * User model definition
+ * @module models/user
+ */
+
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
+/**
+ * User schema for MongoDB
+ * @typedef {Object} UserSchema
+ * @property {string} name - User's full name
+ * @property {string} email - User's email address (unique)
+ * @property {string} password - User's password (hashed)
+ * @property {string} role - User's role ('user' or 'admin')
+ * @property {Date} createdAt - Date when user was created
+ * @property {Date} updatedAt - Date when user was last updated
+ */
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -36,7 +51,11 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-// hash password before saving
+/**
+ * Pre-save hook to hash password before saving
+ * @function preSave
+ * @param {Function} next - Mongoose next middleware function
+ */
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
@@ -45,12 +64,22 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-// compare entered password with hashed password
+/**
+ * Method to compare entered password with stored hashed password
+ * @async
+ * @method matchPassword
+ * @param {string} enteredPassword - Plain text password to compare
+ * @returns {Promise<boolean>} True if passwords match, false otherwise
+ */
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
-// generate JWT token
+/**
+ * Generate a signed JWT token for the user
+ * @method getSignedJwtToken
+ * @returns {string} JWT token
+ */
 userSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id, role: this.role }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRE,

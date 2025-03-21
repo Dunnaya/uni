@@ -1,6 +1,22 @@
+/**
+ * Authentication controller functions
+ * @module controllers/auth
+ */
+
 import User from "../models/user.model.js";
 
-// register user
+/**
+ * Register a new user
+ * @async
+ * @function registerUser
+ * @param {Object} req - Express request object
+ * @param {Object} req.body - Request body
+ * @param {string} req.body.name - User's name
+ * @param {string} req.body.email - User's email
+ * @param {string} req.body.password - User's password
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status, JWT token and user data
+ */
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -31,7 +47,17 @@ export const registerUser = async (req, res) => {
   }
 };
 
-// login user
+/**
+ * Login a user
+ * @async
+ * @function loginUser
+ * @param {Object} req - Express request object
+ * @param {Object} req.body - Request body
+ * @param {string} req.body.email - User's email
+ * @param {string} req.body.password - User's password
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status, JWT token and user data
+ */
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -85,7 +111,15 @@ export const loginUser = async (req, res) => {
   }
 };
 
-// get current user
+/**
+ * Get current logged in user
+ * @async
+ * @function getMe
+ * @param {Object} req - Express request object
+ * @param {Object} req.user - User object (set by auth middleware)
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status and user data
+ */
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
