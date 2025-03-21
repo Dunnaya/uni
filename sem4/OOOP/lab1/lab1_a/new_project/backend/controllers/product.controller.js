@@ -1,6 +1,19 @@
+/**
+ * Product controller functions
+ * @module controllers/product
+ */
+
 import mongoose from "mongoose";
 import Product from "../models/product.model.js";
 
+/**
+ * Get all products
+ * @async
+ * @function getProducts
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status and array of products
+ */
 export const getProducts = async (req, res) => {
 	try {
 		const products = await Product.find({});
@@ -11,6 +24,19 @@ export const getProducts = async (req, res) => {
 	}
 };
 
+/**
+ * Create a new product
+ * @async
+ * @function createProduct
+ * @param {Object} req - Express request object
+ * @param {Object} req.body - Request body containing product data
+ * @param {string} req.body.name - Product name
+ * @param {number} req.body.price - Product price
+ * @param {string} req.body.image - Product image URL
+ * @param {string} [req.body.description] - Optional product description
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status and created product data
+ */
 export const createProduct = async (req, res) => {
 	const product = req.body; // user will send this data
 
@@ -29,6 +55,17 @@ export const createProduct = async (req, res) => {
 	}
 };
 
+/**
+ * Update a product by ID
+ * @async
+ * @function updateProduct
+ * @param {Object} req - Express request object
+ * @param {Object} req.params - URL parameters
+ * @param {string} req.params.id - Product ID to update
+ * @param {Object} req.body - Request body with updated product data
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status and updated product data
+ */
 export const updateProduct = async (req, res) => {
 	const { id } = req.params;
 
@@ -46,6 +83,16 @@ export const updateProduct = async (req, res) => {
 	}
 };
 
+/**
+ * Delete a product by ID
+ * @async
+ * @function deleteProduct
+ * @param {Object} req - Express request object
+ * @param {Object} req.params - URL parameters
+ * @param {string} req.params.id - Product ID to delete
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status and confirmation message
+ */
 export const deleteProduct = async (req, res) => {
 	const { id } = req.params;
 

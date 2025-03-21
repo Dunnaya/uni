@@ -1,5 +1,20 @@
+/**
+ * Product model definition
+ * @module models/product
+ */
+
 import mongoose from "mongoose";
 
+/**
+ * Product schema for MongoDB
+ * @typedef {Object} ProductSchema
+ * @property {string} name - Product name
+ * @property {number} price - Product price
+ * @property {string} image - Product image URL
+ * @property {string} [description] - Optional product description
+ * @property {Date} createdAt - Date when product was created
+ * @property {Date} updatedAt - Date when product was last updated
+ */
 const productSchema = new mongoose.Schema(
 	{
 		name: {

@@ -1,7 +1,21 @@
+/**
+ * Authentication middleware functions
+ * @module middleware/auth
+ */
+
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
-// middleware to protect routes - require authentication
+/**
+ * Middleware to protect routes - requires authentication
+ * Checks JWT token and attaches user to request object
+ * @async
+ * @function protect
+ * @param {Object} req - Express request object
+ * @param {Object} res - Express response object
+ * @param {Function} next - Express next middleware function
+ * @returns {void}
+ */
 export const protect = async (req, res, next) => {
   let token;
 
@@ -38,7 +52,12 @@ export const protect = async (req, res, next) => {
   }
 };
 
-// middleware for role-based access control
+/**
+ * Middleware for role-based access control
+ * @function authorize
+ * @param {...string} roles - Roles allowed to access the route
+ * @returns {Function} Express middleware function
+ */
 export const authorize = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
