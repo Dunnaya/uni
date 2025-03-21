@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>frontend/src/pages/CartPage.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a><ul class='methods'><li data-type='method'><a href="module-App.html#~App">App</a></li></ul></li><li><a href="module-components_Navbar.html">components/Navbar</a><ul class='methods'><li data-type='method'><a href="module-components_Navbar.html#~Navbar">Navbar</a></li><li data-type='method'><a href="module-components_Navbar.html#~Navbar">Navbar</a></li></ul></li><li></li><li><a href="module-components_ProductCard.html">components/ProductCard</a><ul class='methods'><li data-type='method'><a href="module-components_ProductCard.html#~ProductCard">ProductCard</a></li><li data-type='method'><a href="module-components_ProductCard.html#~ProductCard">ProductCard</a></li></ul></li><li></li><li><a href="module-components_ProtectedRoute.html">components/ProtectedRoute</a><ul class='methods'><li data-type='method'><a href="module-components_ProtectedRoute.html#~ProtectedRoute">ProtectedRoute</a></li><li data-type='method'><a href="module-components_ProtectedRoute.html#~ProtectedRoute">ProtectedRoute</a></li></ul></li><li></li><li><a href="module-config_db.html">config/db</a><ul class='methods'><li data-type='method'><a href="module-config_db.html#~connectDB">connectDB</a></li><li data-type='method'><a href="module-config_db.html#~connectDB">connectDB</a></li></ul></li><li></li><li><a href="module-controllers_auth.html">controllers/auth</a><ul class='methods'><li data-type='method'><a href="module-controllers_auth.html#~getMe">getMe</a></li><li data-type='method'><a href="module-controllers_auth.html#~getMe">getMe</a></li><li data-type='method'><a href="module-controllers_auth.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~registerUser">registerUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~registerUser">registerUser</a></li></ul></li><li></li><li><a href="module-controllers_product.html">controllers/product</a><ul class='methods'><li data-type='method'><a href="module-controllers_product.html#~createProduct">createProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~createProduct">createProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~deleteProduct">deleteProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~deleteProduct">deleteProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~getProducts">getProducts</a></li><li data-type='method'><a href="module-controllers_product.html#~getProducts">getProducts</a></li><li data-type='method'><a href="module-controllers_product.html#~updateProduct">updateProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~updateProduct">updateProduct</a></li></ul></li><li></li><li><a href="module-main.html">main</a></li><li><a href="module-middleware_auth.html">middleware/auth</a><ul class='methods'><li data-type='method'><a href="module-middleware_auth.html#~authorize">authorize</a></li><li data-type='method'><a href="module-middleware_auth.html#~authorize">authorize</a></li><li data-type='method'><a href="module-middleware_auth.html#~protect">protect</a></li><li data-type='method'><a href="module-middleware_auth.html#~protect">protect</a></li></ul></li><li></li><li><a href="module-models_product.html">models/product</a></li><li></li><li><a href="module-models_user.html">models/user</a><ul class='methods'><li data-type='method'><a href="module-models_user.html#~getSignedJwtToken">getSignedJwtToken</a></li><li data-type='method'><a href="module-models_user.html#~getSignedJwtToken">getSignedJwtToken</a></li><li data-type='method'><a href="module-models_user.html#~matchPassword">matchPassword</a></li><li data-type='method'><a href="module-models_user.html#~matchPassword">matchPassword</a></li><li data-type='method'><a href="module-models_user.html#~preSave">preSave</a></li><li data-type='method'><a href="module-models_user.html#~preSave">preSave</a></li></ul></li><li></li><li><a href="module-pages_CartPage.html">pages/CartPage</a><ul class='methods'><li data-type='method'><a href="module-pages_CartPage.html#~CartPage">CartPage</a></li><li data-type='method'><a href="module-pages_CartPage.html#~CartPage">CartPage</a></li></ul></li><li></li><li><a href="module-pages_CreatePage.html">pages/CreatePage</a><ul class='methods'><li data-type='method'><a href="module-pages_CreatePage.html#~CreatePage">CreatePage</a></li><li data-type='method'><a href="module-pages_CreatePage.html#~CreatePage">CreatePage</a></li></ul></li><li></li><li><a href="module-pages_HomePage.html">pages/HomePage</a><ul class='methods'><li data-type='method'><a href="module-pages_HomePage.html#~HomePage">HomePage</a></li><li data-type='method'><a href="module-pages_HomePage.html#~HomePage">HomePage</a></li></ul></li><li></li><li><a href="module-pages_LoginPage.html">pages/LoginPage</a><ul class='methods'><li data-type='method'><a href="module-pages_LoginPage.html#~LoginPage">LoginPage</a></li><li data-type='method'><a href="module-pages_LoginPage.html#~LoginPage">LoginPage</a></li></ul></li><li></li><li><a href="module-pages_ProductPage.html">pages/ProductPage</a><ul class='methods'><li data-type='method'><a href="module-pages_ProductPage.html#~ProductPage">ProductPage</a></li><li data-type='method'><a href="module-pages_ProductPage.html#~ProductPage">ProductPage</a></li></ul></li><li></li><li><a href="module-pages_RegisterPage.html">pages/RegisterPage</a><ul class='methods'><li data-type='method'><a href="module-pages_RegisterPage.html#~RegisterPage">RegisterPage</a></li><li data-type='method'><a href="module-pages_RegisterPage.html#~RegisterPage">RegisterPage</a></li></ul></li><li></li><li><a href="module-pages_UnauthorizedPage.html">pages/UnauthorizedPage</a><ul class='methods'><li data-type='method'><a href="module-pages_UnauthorizedPage.html#~UnauthorizedPage">UnauthorizedPage</a></li><li data-type='method'><a href="module-pages_UnauthorizedPage.html#~UnauthorizedPage">UnauthorizedPage</a></li></ul></li><li></li><li><a href="module-routes_product.html">routes/product</a></li><li></li><li><a href="module-routes_user.html">routes/user</a></li><li></li><li><a href="module-server.html">server</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToCart">addToCart</a></li><li><a href="global.html#checkUser">checkUser</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#createProduct">createProduct</a></li><li><a href="global.html#deleteProduct">deleteProduct</a></li><li><a href="global.html#fetchProducts">fetchProducts</a></li><li><a href="global.html#getMe">getMe</a></li><li><a href="global.html#initializeCart">initializeCart</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#partialize">partialize</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeFromCart">removeFromCart</a></li><li><a href="global.html#setProducts">setProducts</a></li><li><a href="global.html#updateProduct">updateProduct</a></li><li><a href="global.html#updateQuantity">updateQuantity</a></li><li><a href="global.html#useAuthStore">useAuthStore</a></li><li><a href="global.html#useCartStore">useCartStore</a></li><li><a href="global.html#useProductStore">useProductStore</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">frontend/src/pages/CartPage.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  Flex,
+  Heading,
+  HStack,
+  IconButton,
+  Image,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  NumberIncrementStepper,
+  NumberDecrementStepper,
+  Text,
+  VStack,
+  useColorModeValue,
+  useToast
+} from '@chakra-ui/react';
+import { DeleteIcon, ArrowBackIcon } from '@chakra-ui/icons';
+import { useCartStore } from '../store/cart';
+import { useAuthStore } from '../store/auth';
+
+/**
+ * @file Shopping cart page component
+ * @module pages/CartPage
+ */
+
+/**
+ * CartPage component displays the user's shopping cart with product items,
+ * quantities, prices, and totals. Allows users to update quantities, remove items,
+ * and proceed to checkout.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered CartPage component
+ */
+
+const CartPage = () => {
+  const { items, totalItems, totalPrice, removeFromCart, updateQuantity, clearCart } = useCartStore();
+  const { isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
+  const toast = useToast();
+  
+  // redirect if not authenticated
+  useEffect(() => {
+    if (!isAuthenticated) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please log in to view your cart',
+        status: 'warning',
+        duration: 3000,
+        isClosable: true,
+      });
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate, toast]);
+
+  /**
+ * Handles the checkout process
+ * Clears the cart after checkout
+ * 
+ * @function
+ * @returns {void}
+ */
+
+  const handleCheckout = () => {
+    toast({
+      title: 'Checkout Process',
+      description: 'Checkout functionality can be implemented here',
+      status: 'info',
+      duration: 3000,
+      isClosable: true,
+    });
+    clearCart();
+  };
+
+  const bgColor = useColorModeValue('white', 'rgb(40, 4, 30)');
+  const borderColor = useColorModeValue('gray.200', 'gray.700');
+
+  if (!isAuthenticated) {
+    return null; // don't render anything while redirecting
+  }
+
+  return (
+    &lt;Container maxW="container.xl" py={10}>
+      &lt;Button 
+        leftIcon={&lt;ArrowBackIcon />} 
+        onClick={() => navigate('/')} 
+        mb={6}
+        variant="outline"
+      >
+        Continue Shopping
+      &lt;/Button>
+
+      &lt;Heading 
+        as="h1" 
+        size="xl" 
+        mb={8}
+        textAlign="center"
+        bgGradient="linear(to-r, rgb(233, 25, 132), rgb(152, 16, 186))"
+        bgClip="text"
+      >
+        Your Shopping Cart
+      &lt;/Heading>
+
+      {items.length === 0 ? (
+        &lt;Box textAlign="center" py={10}>
+          &lt;Heading as="h3" size="md" mb={4}>
+            Your cart is empty
+          &lt;/Heading>
+          &lt;Button 
+            colorScheme="pink" 
+            onClick={() => navigate('/')}
+          >
+            Shop Now
+          &lt;/Button>
+        &lt;/Box>
+      ) : (
+        &lt;Flex 
+          direction={{ base: 'column', lg: 'row' }} 
+          align="flex-start" 
+          justify="space-between"
+          gap={8}
+        >
+          &lt;VStack spacing={4} flex="1" align="stretch" w="full">
+            {items.map((item) => (
+              &lt;Box 
+                key={item._id}
+                p={4}
+                borderWidth="1px"
+                borderRadius="lg"
+                borderColor={borderColor}
+                bg={bgColor}
+                shadow="md"
+              >
+                &lt;Flex gap={4} align="center">
+                  &lt;Image 
+                    src={item.image} 
+                    alt={item.name} 
+                    boxSize="100px" 
+                    objectFit="cover"
+                    borderRadius="md"
+                  />
+                  &lt;VStack align="flex-start" flex="1" spacing={1}>
+                    &lt;Text fontWeight="bold" fontSize="lg">{item.name}&lt;/Text>
+                    &lt;Text color="gray.500" fontSize="sm" noOfLines={2}>
+                      {item.description || 'No description available'}
+                    &lt;/Text>
+                    &lt;Text fontWeight="medium" color="pink.500">
+                      ${item.price}
+                    &lt;/Text>
+                  &lt;/VStack>
+                  &lt;VStack>
+                    &lt;HStack>
+                      &lt;Text>Qty:&lt;/Text>
+                      &lt;NumberInput 
+                        min={1} 
+                        max={100} 
+                        value={item.quantity}
+                        onChange={(value) => updateQuantity(item._id, parseInt(value))}
+                        size="sm"
+                        w="80px"
+                      >
+                        &lt;NumberInputField />
+                        &lt;NumberInputStepper>
+                          &lt;NumberIncrementStepper />
+                          &lt;NumberDecrementStepper />
+                        &lt;/NumberInputStepper>
+                      &lt;/NumberInput>
+                    &lt;/HStack>
+                    &lt;Text fontWeight="bold">
+                      ${(item.price * item.quantity).toFixed(2)}
+                    &lt;/Text>
+                  &lt;/VStack>
+                  &lt;IconButton
+                    icon={&lt;DeleteIcon />}
+                    colorScheme="red"
+                    variant="ghost"
+                    onClick={() => removeFromCart(item._id)}
+                    aria-label="Remove item"
+                  />
+                &lt;/Flex>
+              &lt;/Box>
+            ))}
+          &lt;/VStack>
+
+          &lt;Box 
+            w={{ base: 'full', lg: '350px' }}
+            p={6}
+            borderWidth="1px"
+            borderRadius="lg"
+            borderColor={borderColor}
+            bg={bgColor}
+            shadow="md"
+            position="sticky"
+            top="100px"
+          >
+            &lt;Heading as="h3" size="md" mb={4}>
+              Order Summary
+            &lt;/Heading>
+            
+            &lt;VStack spacing={3} align="stretch">
+              &lt;Flex justify="space-between">
+                &lt;Text>Items ({totalItems}):&lt;/Text>
+                &lt;Text>${totalPrice.toFixed(2)}&lt;/Text>
+              &lt;/Flex>
+              
+              &lt;Flex justify="space-between">
+                &lt;Text>Shipping:&lt;/Text>
+                &lt;Text>Free&lt;/Text>
+              &lt;/Flex>
+              
+              &lt;Divider my={2} />
+              
+              &lt;Flex justify="space-between" fontWeight="bold">
+                &lt;Text>Total:&lt;/Text>
+                &lt;Text>${totalPrice.toFixed(2)}&lt;/Text>
+              &lt;/Flex>
+              
+              &lt;Button 
+                colorScheme="pink" 
+                size="lg" 
+                w="full" 
+                mt={4}
+                onClick={handleCheckout}
+              >
+                Checkout
+              &lt;/Button>
+              
+              &lt;Button 
+                variant="outline"
+                onClick={clearCart}
+                size="sm"
+                mt={2}
+              >
+                Clear Cart
+              &lt;/Button>
+            &lt;/VStack>
+          &lt;/Box>
+        &lt;/Flex>
+      )}
+    &lt;/Container>
+  );
+};
+
+export default CartPage;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sat Mar 22 2025 01:37:05 GMT+0200 (Eastern European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
