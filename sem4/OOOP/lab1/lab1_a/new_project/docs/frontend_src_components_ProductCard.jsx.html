@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>frontend/src/components/ProductCard.jsx - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a><ul class='methods'><li data-type='method'><a href="module-App.html#~App">App</a></li></ul></li><li><a href="module-components_Navbar.html">components/Navbar</a><ul class='methods'><li data-type='method'><a href="module-components_Navbar.html#~Navbar">Navbar</a></li><li data-type='method'><a href="module-components_Navbar.html#~Navbar">Navbar</a></li></ul></li><li></li><li><a href="module-components_ProductCard.html">components/ProductCard</a><ul class='methods'><li data-type='method'><a href="module-components_ProductCard.html#~ProductCard">ProductCard</a></li><li data-type='method'><a href="module-components_ProductCard.html#~ProductCard">ProductCard</a></li></ul></li><li></li><li><a href="module-components_ProtectedRoute.html">components/ProtectedRoute</a><ul class='methods'><li data-type='method'><a href="module-components_ProtectedRoute.html#~ProtectedRoute">ProtectedRoute</a></li><li data-type='method'><a href="module-components_ProtectedRoute.html#~ProtectedRoute">ProtectedRoute</a></li></ul></li><li></li><li><a href="module-config_db.html">config/db</a><ul class='methods'><li data-type='method'><a href="module-config_db.html#~connectDB">connectDB</a></li><li data-type='method'><a href="module-config_db.html#~connectDB">connectDB</a></li></ul></li><li></li><li><a href="module-controllers_auth.html">controllers/auth</a><ul class='methods'><li data-type='method'><a href="module-controllers_auth.html#~getMe">getMe</a></li><li data-type='method'><a href="module-controllers_auth.html#~getMe">getMe</a></li><li data-type='method'><a href="module-controllers_auth.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~registerUser">registerUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~registerUser">registerUser</a></li></ul></li><li></li><li><a href="module-controllers_product.html">controllers/product</a><ul class='methods'><li data-type='method'><a href="module-controllers_product.html#~createProduct">createProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~createProduct">createProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~deleteProduct">deleteProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~deleteProduct">deleteProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~getProducts">getProducts</a></li><li data-type='method'><a href="module-controllers_product.html#~getProducts">getProducts</a></li><li data-type='method'><a href="module-controllers_product.html#~updateProduct">updateProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~updateProduct">updateProduct</a></li></ul></li><li></li><li><a href="module-main.html">main</a></li><li><a href="module-middleware_auth.html">middleware/auth</a><ul class='methods'><li data-type='method'><a href="module-middleware_auth.html#~authorize">authorize</a></li><li data-type='method'><a href="module-middleware_auth.html#~authorize">authorize</a></li><li data-type='method'><a href="module-middleware_auth.html#~protect">protect</a></li><li data-type='method'><a href="module-middleware_auth.html#~protect">protect</a></li></ul></li><li></li><li><a href="module-models_product.html">models/product</a></li><li></li><li><a href="module-models_user.html">models/user</a><ul class='methods'><li data-type='method'><a href="module-models_user.html#~getSignedJwtToken">getSignedJwtToken</a></li><li data-type='method'><a href="module-models_user.html#~getSignedJwtToken">getSignedJwtToken</a></li><li data-type='method'><a href="module-models_user.html#~matchPassword">matchPassword</a></li><li data-type='method'><a href="module-models_user.html#~matchPassword">matchPassword</a></li><li data-type='method'><a href="module-models_user.html#~preSave">preSave</a></li><li data-type='method'><a href="module-models_user.html#~preSave">preSave</a></li></ul></li><li></li><li><a href="module-pages_CartPage.html">pages/CartPage</a><ul class='methods'><li data-type='method'><a href="module-pages_CartPage.html#~CartPage">CartPage</a></li><li data-type='method'><a href="module-pages_CartPage.html#~CartPage">CartPage</a></li></ul></li><li></li><li><a href="module-pages_CreatePage.html">pages/CreatePage</a><ul class='methods'><li data-type='method'><a href="module-pages_CreatePage.html#~CreatePage">CreatePage</a></li><li data-type='method'><a href="module-pages_CreatePage.html#~CreatePage">CreatePage</a></li></ul></li><li></li><li><a href="module-pages_HomePage.html">pages/HomePage</a><ul class='methods'><li data-type='method'><a href="module-pages_HomePage.html#~HomePage">HomePage</a></li><li data-type='method'><a href="module-pages_HomePage.html#~HomePage">HomePage</a></li></ul></li><li></li><li><a href="module-pages_LoginPage.html">pages/LoginPage</a><ul class='methods'><li data-type='method'><a href="module-pages_LoginPage.html#~LoginPage">LoginPage</a></li><li data-type='method'><a href="module-pages_LoginPage.html#~LoginPage">LoginPage</a></li></ul></li><li></li><li><a href="module-pages_ProductPage.html">pages/ProductPage</a><ul class='methods'><li data-type='method'><a href="module-pages_ProductPage.html#~ProductPage">ProductPage</a></li><li data-type='method'><a href="module-pages_ProductPage.html#~ProductPage">ProductPage</a></li></ul></li><li></li><li><a href="module-pages_RegisterPage.html">pages/RegisterPage</a><ul class='methods'><li data-type='method'><a href="module-pages_RegisterPage.html#~RegisterPage">RegisterPage</a></li><li data-type='method'><a href="module-pages_RegisterPage.html#~RegisterPage">RegisterPage</a></li></ul></li><li></li><li><a href="module-pages_UnauthorizedPage.html">pages/UnauthorizedPage</a><ul class='methods'><li data-type='method'><a href="module-pages_UnauthorizedPage.html#~UnauthorizedPage">UnauthorizedPage</a></li><li data-type='method'><a href="module-pages_UnauthorizedPage.html#~UnauthorizedPage">UnauthorizedPage</a></li></ul></li><li></li><li><a href="module-routes_product.html">routes/product</a></li><li></li><li><a href="module-routes_user.html">routes/user</a></li><li></li><li><a href="module-server.html">server</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToCart">addToCart</a></li><li><a href="global.html#checkUser">checkUser</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#createProduct">createProduct</a></li><li><a href="global.html#deleteProduct">deleteProduct</a></li><li><a href="global.html#fetchProducts">fetchProducts</a></li><li><a href="global.html#getMe">getMe</a></li><li><a href="global.html#initializeCart">initializeCart</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#partialize">partialize</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeFromCart">removeFromCart</a></li><li><a href="global.html#setProducts">setProducts</a></li><li><a href="global.html#updateProduct">updateProduct</a></li><li><a href="global.html#updateQuantity">updateQuantity</a></li><li><a href="global.html#useAuthStore">useAuthStore</a></li><li><a href="global.html#useCartStore">useCartStore</a></li><li><a href="global.html#useProductStore">useProductStore</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">frontend/src/components/ProductCard.jsx</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  IconButton,
+  Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  Textarea,
+  useColorModeValue,
+  useDisclosure,
+  useToast,
+  VStack,
+} from "@chakra-ui/react";
+import { useProductStore } from "../store/product";
+import { useAuthStore } from "../store/auth";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+
+/**
+ * @file Product Card component for displaying individual products
+ * @module components/ProductCard
+ */
+
+/**
+ * ProductCard displays a single product with image, name, price, and admin controls.
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.product - Product data object
+ * @param {string} props.product._id - Unique product identifier
+ * @param {string} props.product.name - Product name
+ * @param {number} props.product.price - Product price
+ * @param {string} props.product.image - URL for product image
+ * @param {string} [props.product.description] - Optional product description
+ * @returns {JSX.Element} - Rendered ProductCard component
+ */
+
+const ProductCard = ({ product }) => {
+  const [updatedProduct, setUpdatedProduct] = useState(product);
+
+  const textColor = useColorModeValue("pink.600", "gray.400");
+  const bg = useColorModeValue("white", "rgb(40, 4, 30)");
+
+  const { deleteProduct, updateProduct } = useProductStore();
+  const { isAdmin } = useAuthStore();
+  const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+    /**
+ * Handles deleting a product (admin only)
+ * 
+ * @async
+ * @function
+ * @param {string} pid - Product ID to delete
+ * @param {Object} deleteProduct - Deleted product data
+ * @returns {Promise&lt;void>}
+ */
+
+  const handleDeleteProduct = async (pid) => {
+    const { success, message } = await deleteProduct(pid);
+    if (!success) {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: message,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  /**
+ * Handles updating a product's details (admin only)
+ * 
+ * @async
+ * @function
+ * @param {string} pid - Product ID to update
+ * @param {Object} updatedProduct - New product data
+ * @returns {Promise&lt;void>}
+ */
+
+  const handleUpdateProduct = async (pid, updatedProduct) => {
+    const { success, message } = await updateProduct(pid, updatedProduct);
+    onClose();
+    if (!success) {
+      toast({
+        title: "Error",
+        description: message,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Success",
+        description: "Product updated successfully",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+  return (
+    &lt;Box
+      shadow='lg'
+      rounded='lg'
+      overflow='hidden'
+      transition='all 0.3s'
+      _hover={{ transform: "translateY(-5px)", shadow: "xl" }}
+      bg={bg}
+    >
+      &lt;Link to={`/product/${product._id}`}>
+        &lt;Image src={product.image} alt={product.name} h={48} w='full' objectFit='cover' />
+
+        &lt;Box p={4}>
+          &lt;Heading as='h3' size='md' mb={2}>
+            {product.name}
+          &lt;/Heading>
+
+          &lt;Text fontWeight='bold' fontSize='xl' color={textColor} mb={4}>
+            ${product.price}
+          &lt;/Text>
+        &lt;/Box>
+      &lt;/Link>
+
+      {isAdmin &amp;&amp; (
+        &lt;Box p={4} pt={0}>
+          &lt;HStack spacing={2}>
+            &lt;IconButton icon={&lt;EditIcon />} onClick={onOpen} colorScheme='green' />
+            &lt;IconButton
+              icon={&lt;DeleteIcon />}
+              onClick={() => handleDeleteProduct(product._id)}
+              colorScheme='pink'
+            />
+          &lt;/HStack>
+        &lt;/Box>
+      )}
+
+      &lt;Modal isOpen={isOpen} onClose={onClose}>
+        &lt;ModalOverlay />
+
+        &lt;ModalContent>
+          &lt;ModalHeader>Update Product&lt;/ModalHeader>
+          &lt;ModalCloseButton />
+          &lt;ModalBody>
+            &lt;VStack spacing={4}>
+              &lt;Input
+                placeholder='Product Name'
+                name='name'
+                value={updatedProduct.name}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, name: e.target.value })}
+              />
+              &lt;Input
+                placeholder='Price'
+                name='price'
+                type='number'
+                value={updatedProduct.price}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, price: e.target.value })}
+              />
+              &lt;Input
+                placeholder='Image URL'
+                name='image'
+                value={updatedProduct.image}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, image: e.target.value })}
+              />
+              &lt;Textarea
+                placeholder='Product Description'
+                name='description'
+                value={updatedProduct.description || ''}
+                onChange={(e) => setUpdatedProduct({ ...updatedProduct, description: e.target.value })}
+                rows={4}
+              />
+            &lt;/VStack>
+          &lt;/ModalBody>
+
+          &lt;ModalFooter>
+            &lt;Button
+              colorScheme='pink'
+              mr={3}
+              onClick={() => handleUpdateProduct(product._id, updatedProduct)}
+            >
+              Update
+            &lt;/Button>
+            &lt;Button variant='ghost' onClick={onClose}>
+              Cancel
+            &lt;/Button>
+          &lt;/ModalFooter>
+        &lt;/ModalContent>
+      &lt;/Modal>
+    &lt;/Box>
+  );
+};
+export default ProductCard;</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sat Mar 22 2025 01:37:05 GMT+0200 (Eastern European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>

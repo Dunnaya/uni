@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+    <meta charset="utf-8">
+    <title>backend/controllers/auth.controller.js - Documentation</title>
+    
+    
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+    <script src="scripts/nav.js" defer></script>
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav >
+    
+    
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-App.html">App</a><ul class='methods'><li data-type='method'><a href="module-App.html#~App">App</a></li></ul></li><li><a href="module-components_Navbar.html">components/Navbar</a><ul class='methods'><li data-type='method'><a href="module-components_Navbar.html#~Navbar">Navbar</a></li><li data-type='method'><a href="module-components_Navbar.html#~Navbar">Navbar</a></li></ul></li><li></li><li><a href="module-components_ProductCard.html">components/ProductCard</a><ul class='methods'><li data-type='method'><a href="module-components_ProductCard.html#~ProductCard">ProductCard</a></li><li data-type='method'><a href="module-components_ProductCard.html#~ProductCard">ProductCard</a></li></ul></li><li></li><li><a href="module-components_ProtectedRoute.html">components/ProtectedRoute</a><ul class='methods'><li data-type='method'><a href="module-components_ProtectedRoute.html#~ProtectedRoute">ProtectedRoute</a></li><li data-type='method'><a href="module-components_ProtectedRoute.html#~ProtectedRoute">ProtectedRoute</a></li></ul></li><li></li><li><a href="module-config_db.html">config/db</a><ul class='methods'><li data-type='method'><a href="module-config_db.html#~connectDB">connectDB</a></li><li data-type='method'><a href="module-config_db.html#~connectDB">connectDB</a></li></ul></li><li></li><li><a href="module-controllers_auth.html">controllers/auth</a><ul class='methods'><li data-type='method'><a href="module-controllers_auth.html#~getMe">getMe</a></li><li data-type='method'><a href="module-controllers_auth.html#~getMe">getMe</a></li><li data-type='method'><a href="module-controllers_auth.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~loginUser">loginUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~registerUser">registerUser</a></li><li data-type='method'><a href="module-controllers_auth.html#~registerUser">registerUser</a></li></ul></li><li></li><li><a href="module-controllers_product.html">controllers/product</a><ul class='methods'><li data-type='method'><a href="module-controllers_product.html#~createProduct">createProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~createProduct">createProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~deleteProduct">deleteProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~deleteProduct">deleteProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~getProducts">getProducts</a></li><li data-type='method'><a href="module-controllers_product.html#~getProducts">getProducts</a></li><li data-type='method'><a href="module-controllers_product.html#~updateProduct">updateProduct</a></li><li data-type='method'><a href="module-controllers_product.html#~updateProduct">updateProduct</a></li></ul></li><li></li><li><a href="module-main.html">main</a></li><li><a href="module-middleware_auth.html">middleware/auth</a><ul class='methods'><li data-type='method'><a href="module-middleware_auth.html#~authorize">authorize</a></li><li data-type='method'><a href="module-middleware_auth.html#~authorize">authorize</a></li><li data-type='method'><a href="module-middleware_auth.html#~protect">protect</a></li><li data-type='method'><a href="module-middleware_auth.html#~protect">protect</a></li></ul></li><li></li><li><a href="module-models_product.html">models/product</a></li><li></li><li><a href="module-models_user.html">models/user</a><ul class='methods'><li data-type='method'><a href="module-models_user.html#~getSignedJwtToken">getSignedJwtToken</a></li><li data-type='method'><a href="module-models_user.html#~getSignedJwtToken">getSignedJwtToken</a></li><li data-type='method'><a href="module-models_user.html#~matchPassword">matchPassword</a></li><li data-type='method'><a href="module-models_user.html#~matchPassword">matchPassword</a></li><li data-type='method'><a href="module-models_user.html#~preSave">preSave</a></li><li data-type='method'><a href="module-models_user.html#~preSave">preSave</a></li></ul></li><li></li><li><a href="module-pages_CartPage.html">pages/CartPage</a><ul class='methods'><li data-type='method'><a href="module-pages_CartPage.html#~CartPage">CartPage</a></li><li data-type='method'><a href="module-pages_CartPage.html#~CartPage">CartPage</a></li></ul></li><li></li><li><a href="module-pages_CreatePage.html">pages/CreatePage</a><ul class='methods'><li data-type='method'><a href="module-pages_CreatePage.html#~CreatePage">CreatePage</a></li><li data-type='method'><a href="module-pages_CreatePage.html#~CreatePage">CreatePage</a></li></ul></li><li></li><li><a href="module-pages_HomePage.html">pages/HomePage</a><ul class='methods'><li data-type='method'><a href="module-pages_HomePage.html#~HomePage">HomePage</a></li><li data-type='method'><a href="module-pages_HomePage.html#~HomePage">HomePage</a></li></ul></li><li></li><li><a href="module-pages_LoginPage.html">pages/LoginPage</a><ul class='methods'><li data-type='method'><a href="module-pages_LoginPage.html#~LoginPage">LoginPage</a></li><li data-type='method'><a href="module-pages_LoginPage.html#~LoginPage">LoginPage</a></li></ul></li><li></li><li><a href="module-pages_ProductPage.html">pages/ProductPage</a><ul class='methods'><li data-type='method'><a href="module-pages_ProductPage.html#~ProductPage">ProductPage</a></li><li data-type='method'><a href="module-pages_ProductPage.html#~ProductPage">ProductPage</a></li></ul></li><li></li><li><a href="module-pages_RegisterPage.html">pages/RegisterPage</a><ul class='methods'><li data-type='method'><a href="module-pages_RegisterPage.html#~RegisterPage">RegisterPage</a></li><li data-type='method'><a href="module-pages_RegisterPage.html#~RegisterPage">RegisterPage</a></li></ul></li><li></li><li><a href="module-pages_UnauthorizedPage.html">pages/UnauthorizedPage</a><ul class='methods'><li data-type='method'><a href="module-pages_UnauthorizedPage.html#~UnauthorizedPage">UnauthorizedPage</a></li><li data-type='method'><a href="module-pages_UnauthorizedPage.html#~UnauthorizedPage">UnauthorizedPage</a></li></ul></li><li></li><li><a href="module-routes_product.html">routes/product</a></li><li></li><li><a href="module-routes_user.html">routes/user</a></li><li></li><li><a href="module-server.html">server</a></li></ul><h3>Global</h3><ul><li><a href="global.html#addToCart">addToCart</a></li><li><a href="global.html#checkUser">checkUser</a></li><li><a href="global.html#clearCart">clearCart</a></li><li><a href="global.html#createProduct">createProduct</a></li><li><a href="global.html#deleteProduct">deleteProduct</a></li><li><a href="global.html#fetchProducts">fetchProducts</a></li><li><a href="global.html#getMe">getMe</a></li><li><a href="global.html#initializeCart">initializeCart</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#logout">logout</a></li><li><a href="global.html#partialize">partialize</a></li><li><a href="global.html#register">register</a></li><li><a href="global.html#removeFromCart">removeFromCart</a></li><li><a href="global.html#setProducts">setProducts</a></li><li><a href="global.html#updateProduct">updateProduct</a></li><li><a href="global.html#updateQuantity">updateQuantity</a></li><li><a href="global.html#useAuthStore">useAuthStore</a></li><li><a href="global.html#useCartStore">useCartStore</a></li><li><a href="global.html#useProductStore">useProductStore</a></li></ul>
+    
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">backend/controllers/auth.controller.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Authentication controller functions
+ * @module controllers/auth
+ */
+
+import User from "../models/user.model.js";
+
+/**
+ * Register a new user
+ * @async
+ * @function registerUser
+ * @param {Object} req - Express request object
+ * @param {Object} req.body - Request body
+ * @param {string} req.body.name - User's name
+ * @param {string} req.body.email - User's email
+ * @param {string} req.body.password - User's password
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status, JWT token and user data
+ */
+export const registerUser = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const user = await User.create({
+      name,
+      email,
+      password
+    });
+
+    const token = user.getSignedJwtToken();
+
+    res.status(201).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+/**
+ * Login a user
+ * @async
+ * @function loginUser
+ * @param {Object} req - Express request object
+ * @param {Object} req.body - Request body
+ * @param {string} req.body.email - User's email
+ * @param {string} req.body.password - User's password
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status, JWT token and user data
+ */
+export const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // validate email &amp; password
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide an email and password"
+      });
+    }
+
+    // check for user
+    // IMPORTANT: need to explicitly select password field
+    const user = await User.findOne({ email }).select('+password');
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
+      });
+    }
+
+    // check if password matches
+    const isMatch = await user.matchPassword(password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials"
+      });
+    }
+
+    const token = user.getSignedJwtToken();
+
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+/**
+ * Get current logged in user
+ * @async
+ * @function getMe
+ * @param {Object} req - Express request object
+ * @param {Object} req.user - User object (set by auth middleware)
+ * @param {Object} res - Express response object
+ * @returns {Object} JSON with success status and user data
+ */
+export const getMe = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    res.status(200).json({
+      success: true,
+      data: user
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};</code></pre>
+        </article>
+    </section>
+
+
+
+
+    
+    
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 4.0.4</a> on Sat Mar 22 2025 01:37:05 GMT+0200 (Eastern European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/polyfill.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+
+
+</body>
+</html>
