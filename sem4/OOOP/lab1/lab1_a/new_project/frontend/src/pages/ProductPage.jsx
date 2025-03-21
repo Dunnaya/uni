@@ -34,6 +34,20 @@ import { useProductStore } from '../store/product';
 import { useAuthStore } from '../store/auth';
 import { useCartStore } from '../store/cart';
 
+/**
+ * @file Product details page component
+ * @module pages/ProductPage
+ */
+
+/**
+ * ProductPage component displays detailed information about a single product.
+ * Includes product image, name, price, description, and controls for adding to cart.
+ * Admin users can also edit or delete the product.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered ProductPage component
+ */
+
 const ProductPage = () => {
   const { productId } = useParams();
   const navigate = useNavigate();

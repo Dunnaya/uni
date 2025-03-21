@@ -14,6 +14,19 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { useAuthStore } from "./store/auth";
 import { useCartStore } from "./store/cart";
 
+/**
+ * @file Main application component with routing
+ * @module App
+ */
+
+/**
+ * App component sets up the application routes and layout.
+ * Initializes authentication and cart state on application load.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered App component with routes
+ */
+
 function App() {
   const { getMe } = useAuthStore();
   const { initializeCart } = useCartStore();

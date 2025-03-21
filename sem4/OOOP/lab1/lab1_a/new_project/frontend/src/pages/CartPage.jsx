@@ -24,6 +24,20 @@ import { DeleteIcon, ArrowBackIcon } from '@chakra-ui/icons';
 import { useCartStore } from '../store/cart';
 import { useAuthStore } from '../store/auth';
 
+/**
+ * @file Shopping cart page component
+ * @module pages/CartPage
+ */
+
+/**
+ * CartPage component displays the user's shopping cart with product items,
+ * quantities, prices, and totals. Allows users to update quantities, remove items,
+ * and proceed to checkout.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered CartPage component
+ */
+
 const CartPage = () => {
   const { items, totalItems, totalPrice, removeFromCart, updateQuantity, clearCart } = useCartStore();
   const { isAuthenticated } = useAuthStore();
@@ -43,6 +57,14 @@ const CartPage = () => {
       navigate('/login');
     }
   }, [isAuthenticated, navigate, toast]);
+
+  /**
+ * Handles the checkout process
+ * Clears the cart after checkout
+ * 
+ * @function
+ * @returns {void}
+ */
 
   const handleCheckout = () => {
     toast({

@@ -17,6 +17,19 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/auth";
 
+/**
+ * @file Login page component
+ * @module pages/LoginPage
+ */
+
+/**
+ * LoginPage component provides a form for users to sign in to their accounts.
+ * Handles form validation and authentication.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered LoginPage component
+ */
+
 const LoginPage = () => {
   const [formData, setFormData] = useState({
     email: "",

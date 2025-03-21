@@ -17,6 +17,19 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../store/auth";
 
+/**
+ * @file User registration page component
+ * @module pages/RegisterPage
+ */
+
+/**
+ * RegisterPage component provides a form for new users to create an account.
+ * Collects name, email, and password information.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered RegisterPage component
+ */
+
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
     name: "",

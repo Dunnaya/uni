@@ -2,6 +2,19 @@ import { Box, Button, Container, Heading, Input, Textarea, useColorModeValue, us
 import { useState } from "react";
 import { useProductStore } from "../store/product";
 
+/**
+ * @file Create Product page component
+ * @module pages/CreatePage
+ */
+
+/**
+ * CreatePage component provides a form for admin users to add new products
+ * to the store with name, price, image URL, and description.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered CreatePage component
+ */
+
 const CreatePage = () => {
 	const [newProduct, setNewProduct] = useState({
 		name: "",
