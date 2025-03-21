@@ -4,6 +4,19 @@ import { Link } from "react-router-dom";
 import { useProductStore } from "../store/product";
 import ProductCard from "../components/ProductCard";
 
+/**
+ * @file Home page component showing all products
+ * @module pages/HomePage
+ */
+
+/**
+ * HomePage component displays a grid of all available products.
+ * Fetches product data on component mount.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered HomePage component
+ */
+
 const HomePage = () => {
 	const { fetchProducts, products } = useProductStore();
 

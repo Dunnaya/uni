@@ -1,10 +1,44 @@
+/**
+ * @file Product store using Zustand
+ * @description Manages product data and CRUD operations for products
+ */
+
 import { create } from "zustand";
 import { useAuthStore } from "./auth";
 
+/**
+ * Product store
+ * @typedef {Object} ProductState
+ * @property {Array} products - List of products
+ * @property {Function} setProducts - Set products list
+ * @property {Function} createProduct - Create a new product
+ * @property {Function} fetchProducts - Fetch all products
+ * @property {Function} deleteProduct - Delete a product
+ * @property {Function} updateProduct - Update a product
+ */
+
+/**
+ * Create product store
+ */
 export const useProductStore = create((set) => ({
   products: [],
+  
+  /**
+   * Set products list
+   * @param {Array} products - Products array
+   */
   setProducts: (products) => set({ products }),
   
+  /**
+   * Create a new product
+   * @async
+   * @param {Object} newProduct - Product to create
+   * @param {string} newProduct.name - Product name
+   * @param {string} newProduct.image - Product image URL
+   * @param {number} newProduct.price - Product price
+   * @param {string} [newProduct.description] - Product description
+   * @returns {Promise<Object>} Result object with success status and message
+   */
   createProduct: async (newProduct) => {
     if (!newProduct.name || !newProduct.image || !newProduct.price) {
       return { success: false, message: "Please fill in all fields." };
@@ -39,6 +73,10 @@ export const useProductStore = create((set) => ({
     }
   },
   
+  /**
+   * Fetch all products
+   * @async
+   */
   fetchProducts: async () => {
     try {
       const res = await fetch("/api/products");
@@ -51,6 +89,12 @@ export const useProductStore = create((set) => ({
     }
   },
   
+  /**
+   * Delete a product
+   * @async
+   * @param {string} pid - Product ID to delete
+   * @returns {Promise<Object>} Result object with success status and message
+   */
   deleteProduct: async (pid) => {
     const token = useAuthStore.getState().token;
     
@@ -80,6 +124,17 @@ export const useProductStore = create((set) => ({
     }
   },
   
+  /**
+   * Update a product
+   * @async
+   * @param {string} pid - Product ID to update
+   * @param {Object} updatedProduct - Updated product data
+   * @param {string} [updatedProduct.name] - Product name
+   * @param {string} [updatedProduct.image] - Product image URL
+   * @param {number} [updatedProduct.price] - Product price
+   * @param {string} [updatedProduct.description] - Product description
+   * @returns {Promise<Object>} Result object with success status and message
+   */
   updateProduct: async (pid, updatedProduct) => {
     const token = useAuthStore.getState().token;
     

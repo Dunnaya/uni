@@ -26,6 +26,25 @@ import { useAuthStore } from "../store/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+/**
+ * @file Product Card component for displaying individual products
+ * @module components/ProductCard
+ */
+
+/**
+ * ProductCard displays a single product with image, name, price, and admin controls.
+ * 
+ * @component
+ * @param {Object} props - Component props
+ * @param {Object} props.product - Product data object
+ * @param {string} props.product._id - Unique product identifier
+ * @param {string} props.product.name - Product name
+ * @param {number} props.product.price - Product price
+ * @param {string} props.product.image - URL for product image
+ * @param {string} [props.product.description] - Optional product description
+ * @returns {JSX.Element} - Rendered ProductCard component
+ */
+
 const ProductCard = ({ product }) => {
   const [updatedProduct, setUpdatedProduct] = useState(product);
 
@@ -36,6 +55,16 @@ const ProductCard = ({ product }) => {
   const { isAdmin } = useAuthStore();
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+    /**
+ * Handles deleting a product (admin only)
+ * 
+ * @async
+ * @function
+ * @param {string} pid - Product ID to delete
+ * @param {Object} deleteProduct - Deleted product data
+ * @returns {Promise<void>}
+ */
 
   const handleDeleteProduct = async (pid) => {
     const { success, message } = await deleteProduct(pid);
@@ -57,6 +86,16 @@ const ProductCard = ({ product }) => {
       });
     }
   };
+
+  /**
+ * Handles updating a product's details (admin only)
+ * 
+ * @async
+ * @function
+ * @param {string} pid - Product ID to update
+ * @param {Object} updatedProduct - New product data
+ * @returns {Promise<void>}
+ */
 
   const handleUpdateProduct = async (pid, updatedProduct) => {
     const { success, message } = await updateProduct(pid, updatedProduct);

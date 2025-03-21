@@ -1,6 +1,19 @@
 import { Box, Button, Container, Heading, Text, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 
+/**
+ * @file Unauthorized access page component
+ * @module pages/UnauthorizedPage
+ */
+
+/**
+ * UnauthorizedPage component is displayed when a user attempts to access
+ * a route they don't have permission for.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered UnauthorizedPage component
+ */
+
 const UnauthorizedPage = () => {
   return (
     <Container maxW="container.md" py={10}>

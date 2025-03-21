@@ -23,6 +23,19 @@ import {
   import { useAuthStore } from "../store/auth";
   import { useCartStore } from "../store/cart";
   
+  /**
+ * @file Navbar component for the application
+ * @module components/Navbar
+ */
+
+/**
+ * Navbar component that displays the app navigation, logo, dark/light mode toggle,
+ * login/register buttons or user avatar depending on authentication state, and cart button.
+ * 
+ * @component
+ * @returns {JSX.Element} - Rendered Navbar component
+ */
+
   const Navbar = () => {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const { isAuthenticated, isAdmin, user, logout } = useAuthStore();
