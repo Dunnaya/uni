@@ -2,6 +2,7 @@
 #include <fstream>
 #include <vector>
 #include <limits>
+#include <iomanip>
 using namespace std;
 
 class LinearProgram 
@@ -63,6 +64,40 @@ class SimplexTableau
                 table[rows - 1][j] = -lp.objective[j];
         }
 
+        void printTableau(int iteration) 
+        {
+            cout << "\nIteration " << iteration << ":" << endl;
+            cout << setw(10) << "Basis";
+            
+            // Друк назв змінних
+            for (int j = 0; j < cols; ++j) 
+            {
+                if (j < cols - 1)
+                    cout << setw(15) << "x" + to_string(j + 1);
+                else
+                    cout << setw(15) << "b";
+            }
+            cout << endl;
+
+            // Друк рядків таблиці
+            for (int i = 0; i < rows; ++i) 
+            {
+                // Назва базисної змінної
+                if (i < rows - 1)
+                    cout << setw(10) << "s" + to_string(i + 1);
+                else
+                    cout << setw(10) << "Z";
+
+                // Друк значень
+                for (int j = 0; j < cols; ++j) 
+                {
+                    cout << setw(15) << fixed << setprecision(2) << table[i][j];
+                }
+                cout << endl;
+            }
+            cout << endl;
+        }
+
         void pivot(int row, int col) 
         {
             double pivotElement = table[row][col];
@@ -112,11 +147,15 @@ class SimplexSolver
 {
     public:
         SimplexTableau tableau;
+        LinearProgram lp;
         
-        SimplexSolver(const LinearProgram &lp) : tableau(lp) {}
+        SimplexSolver(const LinearProgram &linear_program) : tableau(linear_program), lp(linear_program) {}
         
         void solve() 
         {
+            int iteration = 0;
+            tableau.printTableau(iteration);
+
             while (true) 
             {
                 auto [row, col] = tableau.findPivot();
@@ -125,9 +164,49 @@ class SimplexSolver
                     cout << "The solution does not exist or is infinite." << endl;
                     return;
                 }
+
+                cout << "Pivot: row " << row + 1 << ", col " << col + 1 << endl;
+                
                 tableau.pivot(row, col);
+                ++iteration;
+                tableau.printTableau(iteration);
             }
-            cout << "The optimal value of the objective function: " << tableau.table.back().back() << endl;
+
+            // Виведення значень змінних x
+            cout << "\nOptimal solution:" << endl;
+            vector<double> xValues(lp.numVariables, 0.0);
+
+            // Пошук базисних змінних
+            for (int j = 0; j < lp.numVariables; ++j) {
+                int baseRow = -1;
+                for (int i = 0; i < tableau.rows - 1; ++i) {
+                    if (tableau.table[i][j] == 1.0) {
+                        bool isBaseColumn = true;
+                        for (int k = 0; k < tableau.rows; ++k) {
+                            if (k != i && tableau.table[k][j] != 0.0) {
+                                isBaseColumn = false;
+                                break;
+                            }
+                        }
+                        if (isBaseColumn) {
+                            baseRow = i;
+                            break;
+                        }
+                    }
+                }
+                
+                if (baseRow != -1) {
+                    xValues[j] = tableau.table[baseRow].back();
+                }
+            }
+            
+            // Виведення значень змінних
+            for (int i = 0; i < lp.numVariables; ++i) {
+                cout << "x" << i + 1 << " = " << fixed << setprecision(2) << xValues[i] << endl;
+            }
+            
+            // Виведення оптимального значення цільової функції
+            cout << "Zmax = " << tableau.table.back().back() << endl;
         }
 };
 
