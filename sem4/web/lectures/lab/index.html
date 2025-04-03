@@ -3,9 +3,400 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="slideshow.css">
+    <title>Home Page</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        #header {
+            background-color: #c1b7bd;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 150px;
+            width: 100%;
+            padding: 5px;
+            display: flex;
+        }
+        .block {
+            height: 100%;
+            position: relative;
+            display: flex;
+        }
+        #block1 {
+            width: 20%;
+            margin-right: 3%;
+            margin-left: 3%;
+            justify-content: left;
+            flex-direction: row;
+        }
+        h1 {
+            font-size: 40px;
+            color: #3d2a35;
+            font-weight: bolder;
+            text-shadow: #8E627C 0 0 12px;
+            text-align: center;
+            margin-top: 40px;
+            margin-left: 20px;
+        }
+        #block2 {
+            width: 50%;
+            margin-right: 3%;
+        }
+        #block3 {
+            width: 30%;
+            margin-right: 3%;
+            justify-content: right;
+            flex-direction: column;
+        }
+        #block3 p {
+            color: #4c3442a4;
+            text-align: right;
+            font-style: italic;
+            text-shadow: #8E627C 0 0 12px;
+            font-size: 14px;
+            margin-top: 15px;
+            line-height: 1.2;
+        }
+        #block3 a {
+            color: #3d2a35;
+            font-size: 22px;
+            text-align: end;
+            margin-right: 20px;
+        }
+        #block3 a:hover {
+            font-weight: bolder;
+            text-shadow: #8E627C 0 0 12px;
+        }
+        body {
+            background-image: url(https://i.pinimg.com/736x/49/cd/52/49cd52127edcadad82660c7efc4cfaff.jpg);
+            background-attachment: fixed;
+            background-size: 100%;
+            height: 100%;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;     
+        }
+        #content {
+            background-color: #DED6DB;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            width: 70%;
+            height: 100%;
+            top: 197px;
+            left: 15%;
+            padding-top: 10px;
+        }
+        #content-wrapper {
+            background-color: #DED6DB;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            padding-left: 3%;
+            padding-right: 3%;
+        }
+        #content-right {
+            width: 70%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+        #content-left {
+            width: 25%;
+        }
+        #nav {
+            background-color: #F7F7F7;
+            display: flex;
+            justify-content: center;
+            height: 55px;
+            position: absolute;
+            top: 150px;
+            width: 100%;
+            left: 0;
+            white-space: nowrap;
+        }
+        .nav-links ul, .nav-links li{
+            display: inline-block;
+        }
+        .nav-ref {
+            text-decoration: none;
+            font-size: 22px;
+            margin-inline: 10px;
+            color: #6b495d;
+        }
+        @media (max-width: 1100px) { 
+            #block3 p {
+                font-size: 12px;
+            }
+        }
+        @media (max-width: 768px) {
+            .nav-ref {
+                font-size: 20px;
+                margin-inline: 5px;
+            }
+            #content {
+                width: 80%;
+                left: 10%;
+            }
+            #content-left {
+                width: 100%;
+            }
+            #content-right {
+                width: 100%;
+                flex-direction: column;
+                align-items: center;
+            }
+            #content-wrapper {
+                flex-direction: column;
+                padding-left: 5%;
+                padding-right: 5%;
+            }
+            h1 {
+                font-size: 35px;
+            }
+            #block3 p {
+                font-size: 10px;
+            }
+        }
+        @media (max-width: 480px) {
+            .nav-ref {
+                font-size: 18px;
+                margin-inline: 3px;
+            }
+            #content {
+                width: 90%;
+                left: 5%;
+            }
+            #content-right {
+                flex-direction: column;
+                align-items: center;
+            }
+            h1 {
+                font-size: 30px;
+            }
+            #block3 p {
+                font-size: 0px;
+                margin-top: 100px;
+            }
+        }
+        .nav-ref:hover {
+            font-weight: bolder;
+            text-shadow: #8E627C 0 0 12px;
+        }
+        #footer_wrapper{
+            height: auto;
+        }
+        #footer {
+            background-color: #6b495d;
+            padding: 10px;
+            display: flex;
+            flex-direction: row;   
+            position: absolute;
+            left: 0;
+            width: 100%;
+            margin-top: 195px;
+        }
+        #content-left a {
+            text-decoration: none;
+            color: #6b495d;
+        }
+        #content-left a:hover {
+            font-weight: bolder;
+            text-shadow: #8E627C 0 0 12px;
+        }
+        .card {
+            background-color: #F7F7F7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 190px;
+            height: 300px;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.265);
+            transition: box-shadow 0.3s ease;
+            transform: scale(1.02);
+            background-color: #ffffff;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+        .card a {
+            text-decoration: none;
+            color: #6b495d;
+            font-size: 20px;
+            margin-top: 5px;
+        }
+        .card a:hover {
+            font-weight: bolder;
+            text-shadow: #8E627C 0 0 12px;
+        }
+        .card p {
+            font-size: 14px;
+            text-align: center;
+            padding-top: 10px;
+            font-style: italic;
+            line-height: 1.2;
+            margin: 0 auto;
+            border-radius: 5px;
+            text-shadow: #8E627C 0 0 12px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div id="header">
+        <div class="block" id="block1">
+            <img src="https://i.pinimg.com/736x/41/b6/65/41b665a206b1d02f074d79c03d70fa50.jpg">
+            <h1>Steins;Gate</h1>
+        </div>
+        <div class="block" id="block2"> </div>
+        <div class="block" id="block3">
+            <p>There is no end though there is a start in space.<br>— Infinite. <br>It has its own power, it ruins, and it goes though there is a start also in the star.<br>— Finite.</p>
+            <a href="#">Feedback</a>
+        </div>
+    </div>
+
+
+
+    <div id="nav">
+        <div class="nav-links">
+            <ul>
+                <li><a class="nav-ref" href="index.html">Home</a><span class="nav-ref"> | </span></li>
+                <li><a class="nav-ref" href="about.html">About</a><span class="nav-ref"> | </span></li>
+                <li><a class="nav-ref" href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+
+
+
+    <div id="content">
+        <div class="slideshow-container">
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/81/ea/32/81ea329702569c81f0a52343887f8690.jpg">
+            </div>
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/f9/27/f0/f927f04a41fa84f59726dc26765a5b45.jpg">
+            </div>
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/be/dc/f9/bedcf9300572b15564e0f270f4ba7358.jpg">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <br>
+        <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+        <script src="slideshow.js"></script>
+
+        <div id="content-wrapper">
+            <div id="content-left">
+                <ul>
+                    <li><b>Main characters</b>
+                        <ul>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Rintaro_Okabe">Rintaro Okabe</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Kurisu_Makise">Kurisu Makise</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Mayuri_Shiina">Mayuri Shiina</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Itaru_Hashida">Itaru Hashida</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Suzuha_Amane">Suzuha Amane</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Luka_Urushibara">Luka Urushibara</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Faris_NyanNyan">Faris NyanNyan</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Moeka_Kiryu">Moeka Kiryu</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Maho_Hiyajo">Maho Hiyajo</a></li>
+                        </ul>
+                    </li>
+                    <br>
+                    <li><b>Side characters</b>
+                        <ul>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Yuugo_Tennouji">Yuugo Tennouji</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Nae_Tennouji">Nae Tennouji</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Dr._Nakabachi">Dr. Nakabachi</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/John_Titor">John Titor</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Eisuke_Urushibara">Eisuke Urushibara</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Yukitaka_Akiha">Yukitaka Akiha</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Alexis_Leskinen">Alexis Leskinen</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Yuki_Amane">Yuki Amane</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Katsumi_Nakase">Katsumi Nakase</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Kaede_Kurushima">Kaede Kurushima</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Kagari_Shiina">Kagari Shiina</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Judy_Reyes">Judy Reyes</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+
+
+            <div id="content-right">
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/dd/f0/25/ddf025bb088afb084508c85272ecb5ce.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Rintaro_Okabe">Rintaro Okabe</a>
+                    <p>“Theories are nothing more than words. Accept what you have seen!”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/2e/03/94/2e039409fd47e1dc96b3b0956e92de8f.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Kurisu_Makise">Kurisu Makise</a>
+                    <p>“I don't want to deny who I've been. Because even my failures are a part of who I am today”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/4d/4e/a1/4d4ea1efbe3e34b51210c11904d0a041.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Mayuri_Shiina">Mayuri Shiina</a>
+                    <p>“Tutturu~!”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/83/80/68/838068f5e85e3a9e45b7d057792f46e1.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Itaru_Hashida">Itaru Hashida</a>
+                    <p>“A very interesting theme ya know? What if we're actually just characters in a game?”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/b7/4d/91/b74d91a28ec602ff3a97e1c071167135.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Suzuha_Amane">Suzuha Amane</a>
+                    <p>“To rule time is to rule the world.”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/9e/dc/88/9edc889816da03253eb770eb137e38d6.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Luka_Urushibara">Luka Urushibara</a>
+                    <p>“If I knew I had to suffer like this, I would never have wished to become a girl...”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/77/7f/67/777f67f8169e0a02c120b8369a6ad6ab.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Faris_NyanNyan">Faris NyanNyan</a>
+                    <p>“That scar will one day become a scab and flowers will bloom”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/12/4a/4a/124a4a35dc711381a83178ed97379daf.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Moeka_Kiryu">Moeka Kiryu</a>
+                    <p>“People... need to be needed by someone in order to live. If a person isn't needed, she's worthless”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/40/3d/57/403d57e9e27b10f263e8169fe7a57fe0.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Maho_Hiyajo">Maho Hiyajo</a>
+                    <p>“If all things are decided like fate by some god, there's  no point in our choices”</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <footer>
+        <div id="footer-wrapper">
+            <div id="footer">
+                <p>&copy; 2025 YaSosal</p>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
