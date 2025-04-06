@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Page</title>
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/form.css">
+    <link rel="stylesheet" href="./css/nav.css">
+    <link rel="stylesheet" href="./css/slideshow.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/footer.css">
+
+    <script src="form.js"></script>
+</head>
+<body>
+    <div id="header">
+        <div class="block" id="block1">
+            <img src="https://i.pinimg.com/736x/41/b6/65/41b665a206b1d02f074d79c03d70fa50.jpg">
+            <h1>Steins;Gate</h1>
+        </div>
+        <div class="block" id="block2"> </div>
+        <div class="block" id="block3">
+            <p>There is no end though there is a start in space.<br>— Infinite. <br>It has its own power, it ruins, and it goes though there is a start also in the star.<br>— Finite.</p>
+            <a onclick="openForm()">Feedback</a>
+        </div>
+    </div>
+
+    <div id="nav">
+        <div class="nav-links">
+            <ul>
+                <li><a class="nav-ref" href="index.html">Home</a><span class="nav-ref"> | </span></li>
+                <li><a class="nav-ref" href="about.html">About</a><span class="nav-ref"> | </span></li>
+                <li><a class="nav-ref" href="#">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="slideshow-container">
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/81/ea/32/81ea329702569c81f0a52343887f8690.jpg">
+            </div>
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/f9/27/f0/f927f04a41fa84f59726dc26765a5b45.jpg">
+            </div>
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/be/dc/f9/bedcf9300572b15564e0f270f4ba7358.jpg">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <br>
+        <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+        <script src="slideshow.js"></script>
+        <div class="content-wrapper">
+            <div id="content-left">
+                <ul>
+                    <li><b>More info</b>
+                        <ul>
+                            <li><a href="https://en.wikipedia.org/wiki/Steins;Gate_(TV_series)">Wikipedia</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Steins;Gate_Wiki">Fandom</a></li>
+                            <li><a href="https://www.imdb.com/title/tt1910272/">IMDb</a></li>
+                            <li><a href="https://store.steampowered.com/app/412830/STEINSGATE/">Steam (Visual Novel)</a></li>
+                        </ul>
+                    </li>
+                    <br>
+                    <li><a href="./index.html"><b>Home</a></b></li>
+                    <li><a href="#"><b>Feedback</a></b></li>
+                </ul>
+            </div>
+
+            <div id="content-right">
+                <div class="about-text">
+                    <p>Steins;Gate is an adaptation of the visual novel of the same name. It is set in 2010 in Akihabara, Tokyo, and each segment takes place in a different "worldline", which represent different alternate realities that merge off from each other when a specific event, known as a convergence point, occurs.</p>
+                </div>
+                <div class="about-text">
+                    <p>The show follows Rintaro Okabe, a self-proclaimed "mad scientist", who runs the "Future Gadget Laboratory" in an apartment together with his friends Mayuri Shiina and Itaru "Daru" Hashida. While attending a conference about time travel, Okabe finds the dead body of Kurisu Makise, a neuroscience researcher; he sends a text message about it to Daru and later discovers that Kurisu is alive and that the message arrived before he sent it. The laboratory members learn that the cell phone-operated microwave oven they are developing can send text messages back in time; they are joined by Kurisu, and investigate it, sending text messages – referred to as "D-mails" – to the past to change the present. Kurisu eventually creates a device that can send memories through the microwave oven, effectively allowing the user to time travel.</p>
+                </div>
+                <div class="about-text">
+                    <p>SERN, a fictional organization based on CERN, learns of the time machine and sends people to the laboratory to retrieve it, killing Mayuri in the process. Okabe goes back in time multiple times to prevent Mayuri's death but fails each time. He learns that he needs to undo all the changes their D-mails have caused and does so until he realizes that undoing the first D-mail would return him to the timeline where Kurisu was found dead.</p>
+                </div>
+                <div class="about-text">
+                    <p>Okabe and Kurisu tell each other about their romantic feelings for one another, after which Kurisu tells Okabe to save Mayuri. Daru hacks into SERN's database, and they delete the record of the D-mail, returning them to the original timeline. Later, Suzuha Amane, Daru's future daughter, arrives in a time machine to tell Okabe that the only way to prevent a time-travel arms race leading to World War III is to prevent Kurisu's father Nakabachi from killing her and stealing her time travel theories. Suzuha and Okabe travel back in time, but Okabe accidentally kills Kurisu himself. Returning to the present, Okabe receives a message from his future self telling him that to escape the current timeline, he needs to save Kurisu while recreating the vision of the dead Kurisu that his past self saw. Traveling back in time again, he provokes Nakabachi into stabbing him, knocks Kurisu unconscious, and puts her in his pool of blood for his past self to see, causing the timeline to diverge into one where Kurisu lives and World War III does not occur.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div id="footer-wrapper">
+            <div id="footer">
+                <p>&copy; 2025 YaSosal</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="form-popup" id="popup_form">
+        <div class="form-wrapper">
+            <button type="button" class="close-button" onclick="closeForm()">X</button>
+            <form>
+                <h2>Feedback</h2>
+
+                <label for="name">* Your name:</label>
+                <input type="text" placeholder="" name="name" required>
+
+                <label for="phone">* Phone Number:</label>
+                <input type="tel" placeholder="" name="phone" required>
+
+                <label for="email">* Email: </label>
+                <input type="email" placeholder="" name="email" required>
+
+                <label for="message">Message: </label>
+                <textarea name="message" rows="8" cols="30" placeholder=""></textarea>
+
+                <button type="submit" class="submit-button">Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
