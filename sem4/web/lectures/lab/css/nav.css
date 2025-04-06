@@ -8,6 +8,7 @@
     width: 100%;
     left: 0;
     white-space: nowrap;
+    font-family: "Vollkorn", serif;
 }
 .nav-links ul, .nav-links li{
     display: inline-block;
