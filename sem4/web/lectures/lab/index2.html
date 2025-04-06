@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/form.css">
+    <link rel="stylesheet" href="./css/nav.css">
+    <link rel="stylesheet" href="./css/slideshow.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/card.css">
+    <link rel="stylesheet" href="./css/footer.css">
+
+    <script src="form.js"></script>
+</head>
+<body>
+    <div id="header">
+        <div class="block" id="block1">
+            <img src="https://i.pinimg.com/736x/41/b6/65/41b665a206b1d02f074d79c03d70fa50.jpg">
+            <h1>Steins;Gate</h1>
+        </div>
+        <div class="block" id="block2"> </div>
+        <div class="block" id="block3">
+            <p>There is no end though there is a start in space.<br>— Infinite. <br>It has its own power, it ruins, and it goes though there is a start also in the star.<br>— Finite.</p>
+            <a onclick="openForm()">Feedback</a>
+        </div>
+    </div>
+
+    <div id="nav">
+        <div class="nav-links">
+            <ul>
+                <li><a class="nav-ref" href="index.html">Home</a><span class="nav-ref"> | </span></li>
+                <li><a class="nav-ref" href="about.html">About</a><span class="nav-ref"> | </span></li>
+                <li><a class="nav-ref" href="#">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="content">
+        <div class="slideshow-container">
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/81/ea/32/81ea329702569c81f0a52343887f8690.jpg">
+            </div>
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/f9/27/f0/f927f04a41fa84f59726dc26765a5b45.jpg">
+            </div>
+            <div class="slides fade">
+                <img src="https://i.pinimg.com/736x/be/dc/f9/bedcf9300572b15564e0f270f4ba7358.jpg">
+            </div>
+            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+            <a class="next" onclick="plusSlides(1)">&#10095;</a>
+        </div>
+        <br>
+        <div style="text-align:center">
+            <span class="dot" onclick="currentSlide(1)"></span>
+            <span class="dot" onclick="currentSlide(2)"></span>
+            <span class="dot" onclick="currentSlide(3)"></span>
+        </div>
+        <script src="slideshow.js"></script>
+
+        <div class="content-wrapper">
+            <div id="content-left">
+                <ul>
+                    <li><b>Main characters</b>
+                        <ul>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Rintaro_Okabe">Rintaro Okabe</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Kurisu_Makise">Kurisu Makise</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Mayuri_Shiina">Mayuri Shiina</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Itaru_Hashida">Itaru Hashida</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Suzuha_Amane">Suzuha Amane</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Luka_Urushibara">Luka Urushibara</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Faris_NyanNyan">Faris NyanNyan</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Moeka_Kiryu">Moeka Kiryu</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Maho_Hiyajo">Maho Hiyajo</a></li>
+                        </ul>
+                    </li>
+                    <br>
+                    <li><b>Side characters</b>
+                        <ul>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Yuugo_Tennouji">Yuugo Tennouji</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Nae_Tennouji">Nae Tennouji</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Dr._Nakabachi">Dr. Nakabachi</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/John_Titor">John Titor</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Eisuke_Urushibara">Eisuke Urushibara</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Yukitaka_Akiha">Yukitaka Akiha</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Alexis_Leskinen">Alexis Leskinen</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Yuki_Amane">Yuki Amane</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Katsumi_Nakase">Katsumi Nakase</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Kaede_Kurushima">Kaede Kurushima</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Kagari_Shiina">Kagari Shiina</a></li>
+                            <li><a href="https://steins-gate.fandom.com/wiki/Judy_Reyes">Judy Reyes</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div id="content-right">
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/77/7f/67/777f67f8169e0a02c120b8369a6ad6ab.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Faris_NyanNyan">Faris NyanNyan</a>
+                    <p>“That scar will one day become a scab and flowers will bloom”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/12/4a/4a/124a4a35dc711381a83178ed97379daf.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Moeka_Kiryu">Moeka Kiryu</a>
+                    <p>“People... need to be needed by someone in order to live. If a person isn't needed, she's worthless”</p>
+                </div>
+                <div class="card">
+                    <img src="https://i.pinimg.com/736x/40/3d/57/403d57e9e27b10f263e8169fe7a57fe0.jpg">
+                    <a href="https://steins-gate.fandom.com/wiki/Maho_Hiyajo">Maho Hiyajo</a>
+                    <p>“If all things are decided like fate by some god, there's  no point in our choices”</p>
+                </div>
+                <div class="pagination_holder">
+                    <div class="pagination">
+                        <a href="index.html">&laquo;</a>
+                        <a href="index.html">1</a>
+                        <a class="active" href="#">2</a>
+                        <a href="index.html">&raquo;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="content-bottom">
+                <p>Steins;Gate is a Japanese anime television series produced by White Fox based on 5pb. and Nitroplus's 2009 visual novel of the same name. The series aired for 26 episodes, from April to September 2011. It is set in 2010 and follows Rintaro Okabe, who together with his friends accidentally discovers a method of time travel through which they can send text messages to the past, thereby changing the present.</p>
+            </div>
+            <div class="content-bottom">
+                <p>Critics praised its character development and its themes of time travel, human nature and its perspective on PTSD. It is considered one of the best anime series of all time by critics and fans alike. The series has spawned four original net animation episodes and a spinoff film. A sequel anime adaptation titled Steins;Gate 0, based on the visual novel of the same name, premiered in 2018.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div id="footer-wrapper">
+            <div id="footer">
+                <p>&copy; 2025 YaSosal</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="form-popup" id="popup_form">
+        <div class="form-wrapper">
+            <button type="button" class="close-button" onclick="closeForm()">X</button>
+            <form>
+                <h2>Feedback</h2>
+
+                <label for="name">* Your name:</label>
+                <input type="text" placeholder="" name="name" required>
+
+                <label for="phone">* Phone Number:</label>
+                <input type="tel" placeholder="" name="phone" required>
+
+                <label for="email">* Email: </label>
+                <input type="email" placeholder="" name="email" required>
+
+                <label for="message">Message: </label>
+                <textarea name="message" rows="8" cols="30" placeholder=""></textarea>
+
+                <button type="submit" class="submit-button">Send</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

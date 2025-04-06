@@ -1,0 +1,13 @@
+#footer_wrapper{
+    height: auto;
+}
+#footer {
+    background-color: #4c3d46;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;   
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin-top: 195px;
+}

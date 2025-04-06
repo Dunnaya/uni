@@ -1,0 +1,117 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    background-image: url(https://i.pinimg.com/736x/49/cd/52/49cd52127edcadad82660c7efc4cfaff.jpg);
+    background-attachment: fixed;
+    background-size: 100%;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;     
+}
+.content-wrapper {
+    background-color: #DED6DB;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+#content {
+    background-color: #DED6DB;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    width: 70%;
+    height: 100%;
+    top: 197px;
+    left: 15%;
+    padding-top: 10px;
+}
+#content-right {
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.about-text {
+    background-color: #F7F7F7;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    line-height: 1.5;
+    text-shadow: #8E627C 0 0 12px;
+}
+#content-left {
+    width: 25%;
+}
+#content-left a {
+    text-decoration: none;
+    color: #6b495d;
+}
+#content-left a:hover {
+    font-weight: bolder;
+    text-shadow: #8E627C 0 0 12px;
+}
+.content-bottom {
+    text-shadow: #8E627C 0 0 12px;
+    margin: 35px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+.pagination_holder{
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.pagination a {
+    color: #6b495d;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+.pagination a.active {
+    background-color: #3d2b3580;
+    color: white;
+}
+.pagination a:hover:not(.active) {
+    background-color: #3d2b354f;
+    color: white;
+}
+@media (max-width: 768px) {
+    #content {
+        width: 80%;
+        left: 10%;
+    }
+    #content-left {
+        width: 100%;
+    }
+    #content-right {
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+    }
+    .content-wrapper {
+        flex-direction: column;
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
+@media (max-width: 480px) {
+    #content {
+        width: 90%;
+        left: 5%;
+    }
+    #content-right {
+        flex-direction: column;
+        align-items: center;
+    }
+}

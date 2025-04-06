@@ -3,254 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="slideshow.css">
     <title>Home Page</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-        #header {
-            background-color: #c1b7bd;
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 150px;
-            width: 100%;
-            padding: 5px;
-            display: flex;
-        }
-        .block {
-            height: 100%;
-            position: relative;
-            display: flex;
-        }
-        #block1 {
-            width: 20%;
-            margin-right: 3%;
-            margin-left: 3%;
-            justify-content: left;
-            flex-direction: row;
-        }
-        h1 {
-            font-size: 40px;
-            color: #3d2a35;
-            font-weight: bolder;
-            text-shadow: #8E627C 0 0 12px;
-            text-align: center;
-            margin-top: 40px;
-            margin-left: 20px;
-        }
-        #block2 {
-            width: 50%;
-            margin-right: 3%;
-        }
-        #block3 {
-            width: 30%;
-            margin-right: 3%;
-            justify-content: right;
-            flex-direction: column;
-        }
-        #block3 p {
-            color: #4c3442a4;
-            text-align: right;
-            font-style: italic;
-            text-shadow: #8E627C 0 0 12px;
-            font-size: 14px;
-            margin-top: 15px;
-            line-height: 1.2;
-        }
-        #block3 a {
-            color: #3d2a35;
-            font-size: 22px;
-            text-align: end;
-            margin-right: 20px;
-        }
-        #block3 a:hover {
-            font-weight: bolder;
-            text-shadow: #8E627C 0 0 12px;
-        }
-        body {
-            background-image: url(https://i.pinimg.com/736x/49/cd/52/49cd52127edcadad82660c7efc4cfaff.jpg);
-            background-attachment: fixed;
-            background-size: 100%;
-            height: 100%;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;     
-        }
-        #content {
-            background-color: #DED6DB;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-            width: 70%;
-            height: 100%;
-            top: 197px;
-            left: 15%;
-            padding-top: 10px;
-        }
-        #content-wrapper {
-            background-color: #DED6DB;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            padding-left: 3%;
-            padding-right: 3%;
-        }
-        #content-right {
-            width: 70%;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-        }
-        #content-left {
-            width: 25%;
-        }
-        #nav {
-            background-color: #F7F7F7;
-            display: flex;
-            justify-content: center;
-            height: 55px;
-            position: absolute;
-            top: 150px;
-            width: 100%;
-            left: 0;
-            white-space: nowrap;
-        }
-        .nav-links ul, .nav-links li{
-            display: inline-block;
-        }
-        .nav-ref {
-            text-decoration: none;
-            font-size: 22px;
-            margin-inline: 10px;
-            color: #6b495d;
-        }
-        @media (max-width: 1100px) { 
-            #block3 p {
-                font-size: 12px;
-            }
-        }
-        @media (max-width: 768px) {
-            .nav-ref {
-                font-size: 20px;
-                margin-inline: 5px;
-            }
-            #content {
-                width: 80%;
-                left: 10%;
-            }
-            #content-left {
-                width: 100%;
-            }
-            #content-right {
-                width: 100%;
-                flex-direction: column;
-                align-items: center;
-            }
-            #content-wrapper {
-                flex-direction: column;
-                padding-left: 5%;
-                padding-right: 5%;
-            }
-            h1 {
-                font-size: 35px;
-            }
-            #block3 p {
-                font-size: 10px;
-            }
-        }
-        @media (max-width: 480px) {
-            .nav-ref {
-                font-size: 18px;
-                margin-inline: 3px;
-            }
-            #content {
-                width: 90%;
-                left: 5%;
-            }
-            #content-right {
-                flex-direction: column;
-                align-items: center;
-            }
-            h1 {
-                font-size: 30px;
-            }
-            #block3 p {
-                font-size: 0px;
-                margin-top: 100px;
-            }
-        }
-        .nav-ref:hover {
-            font-weight: bolder;
-            text-shadow: #8E627C 0 0 12px;
-        }
-        #footer_wrapper{
-            height: auto;
-        }
-        #footer {
-            background-color: #6b495d;
-            padding: 10px;
-            display: flex;
-            flex-direction: row;   
-            position: absolute;
-            left: 0;
-            width: 100%;
-            margin-top: 195px;
-        }
-        #content-left a {
-            text-decoration: none;
-            color: #6b495d;
-        }
-        #content-left a:hover {
-            font-weight: bolder;
-            text-shadow: #8E627C 0 0 12px;
-        }
-        .card {
-            background-color: #F7F7F7;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 190px;
-            height: 300px;
-            padding: 10px;
-            margin: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        .card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.265);
-            transition: box-shadow 0.3s ease;
-            transform: scale(1.02);
-            background-color: #ffffff;
-        }
-        .card img {
-            width: 100%;
-            height: auto;
-            border-radius: 5px;
-        }
-        .card a {
-            text-decoration: none;
-            color: #6b495d;
-            font-size: 20px;
-            margin-top: 5px;
-        }
-        .card a:hover {
-            font-weight: bolder;
-            text-shadow: #8E627C 0 0 12px;
-        }
-        .card p {
-            font-size: 14px;
-            text-align: center;
-            padding-top: 10px;
-            font-style: italic;
-            line-height: 1.2;
-            margin: 0 auto;
-            border-radius: 5px;
-            text-shadow: #8E627C 0 0 12px;
-        }
-    </style>
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/form.css">
+    <link rel="stylesheet" href="./css/nav.css">
+    <link rel="stylesheet" href="./css/slideshow.css">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/card.css">
+    <link rel="stylesheet" href="./css/footer.css">
+
+    <script src="form.js"></script>
 </head>
 <body>
     <div id="header">
@@ -261,23 +23,19 @@
         <div class="block" id="block2"> </div>
         <div class="block" id="block3">
             <p>There is no end though there is a start in space.<br>— Infinite. <br>It has its own power, it ruins, and it goes though there is a start also in the star.<br>— Finite.</p>
-            <a href="#">Feedback</a>
+            <a onclick="openForm()">Feedback</a>
         </div>
     </div>
-
-
 
     <div id="nav">
         <div class="nav-links">
             <ul>
                 <li><a class="nav-ref" href="index.html">Home</a><span class="nav-ref"> | </span></li>
                 <li><a class="nav-ref" href="about.html">About</a><span class="nav-ref"> | </span></li>
-                <li><a class="nav-ref" href="contact.html">Contact</a></li>
+                <li><a class="nav-ref" href="#">Contact</a></li>
             </ul>
         </div>
     </div>
-
-
 
     <div id="content">
         <div class="slideshow-container">
@@ -301,7 +59,7 @@
         </div>
         <script src="slideshow.js"></script>
 
-        <div id="content-wrapper">
+        <div class="content-wrapper">
             <div id="content-left">
                 <ul>
                     <li><b>Main characters</b>
@@ -337,8 +95,6 @@
                 </ul>
             </div>
 
-
-
             <div id="content-right">
                 <div class="card">
                     <img src="https://i.pinimg.com/736x/dd/f0/25/ddf025bb088afb084508c85272ecb5ce.jpg">
@@ -370,26 +126,26 @@
                     <a href="https://steins-gate.fandom.com/wiki/Luka_Urushibara">Luka Urushibara</a>
                     <p>“If I knew I had to suffer like this, I would never have wished to become a girl...”</p>
                 </div>
-                <div class="card">
-                    <img src="https://i.pinimg.com/736x/77/7f/67/777f67f8169e0a02c120b8369a6ad6ab.jpg">
-                    <a href="https://steins-gate.fandom.com/wiki/Faris_NyanNyan">Faris NyanNyan</a>
-                    <p>“That scar will one day become a scab and flowers will bloom”</p>
-                </div>
-                <div class="card">
-                    <img src="https://i.pinimg.com/736x/12/4a/4a/124a4a35dc711381a83178ed97379daf.jpg">
-                    <a href="https://steins-gate.fandom.com/wiki/Moeka_Kiryu">Moeka Kiryu</a>
-                    <p>“People... need to be needed by someone in order to live. If a person isn't needed, she's worthless”</p>
-                </div>
-                <div class="card">
-                    <img src="https://i.pinimg.com/736x/40/3d/57/403d57e9e27b10f263e8169fe7a57fe0.jpg">
-                    <a href="https://steins-gate.fandom.com/wiki/Maho_Hiyajo">Maho Hiyajo</a>
-                    <p>“If all things are decided like fate by some god, there's  no point in our choices”</p>
+                <div class="pagination_holder">
+                    <div class="pagination">
+                        <a href="index2.html">&laquo;</a>
+                        <a class="active" href="#">1</a>
+                        <a href="index2.html">2</a>
+                        <a href="index2.html">&raquo;</a>
+                    </div>
                 </div>
             </div>
         </div>
+        
+        <div class="content-wrapper">
+            <div class="content-bottom">
+                <p>Steins;Gate is a Japanese anime television series produced by White Fox based on 5pb. and Nitroplus's 2009 visual novel of the same name. The series aired for 26 episodes, from April to September 2011. It is set in 2010 and follows Rintaro Okabe, who together with his friends accidentally discovers a method of time travel through which they can send text messages to the past, thereby changing the present.</p>
+            </div>
+            <div class="content-bottom">
+                <p>Critics praised its character development and its themes of time travel, human nature and its perspective on PTSD. It is considered one of the best anime series of all time by critics and fans alike. The series has spawned four original net animation episodes and a spinoff film. A sequel anime adaptation titled Steins;Gate 0, based on the visual novel of the same name, premiered in 2018.</p>
+            </div>
+        </div>
     </div>
-
-
 
     <footer>
         <div id="footer-wrapper">
@@ -398,5 +154,28 @@
             </div>
         </div>
     </footer>
+    
+    <div class="form-popup" id="popup_form">
+        <div class="form-wrapper">
+            <button type="button" class="close-button" onclick="closeForm()">X</button>
+            <form>
+                <h2>Feedback</h2>
+
+                <label for="name">* Your name:</label>
+                <input type="text" placeholder="" name="name" required>
+
+                <label for="phone">* Phone Number:</label>
+                <input type="tel" placeholder="" name="phone" required>
+
+                <label for="email">* Email: </label>
+                <input type="email" placeholder="" name="email" required>
+
+                <label for="message">Message: </label>
+                <textarea name="message" rows="8" cols="30" placeholder=""></textarea>
+
+                <button type="submit" class="submit-button">Send</button>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
