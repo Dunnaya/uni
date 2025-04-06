@@ -47,12 +47,14 @@ h1 {
     font-size: 14px;
     margin-top: 15px;
     line-height: 1.2;
+    font-family: "Vollkorn", serif;
 }
 #block3 a {
     color: #3d2a35;
     font-size: 22px;
     text-align: end;
     margin-right: 20px;
+    cursor: pointer;
 }
 #block3 a:hover {
     font-weight: bolder;

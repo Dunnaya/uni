@@ -50,6 +50,7 @@ body {
 }
 #content-left {
     width: 25%;
+    font-family: "Vollkorn", serif;
 }
 #content-left a {
     text-decoration: none;
@@ -64,6 +65,7 @@ body {
     margin: 35px;
     font-size: 16px;
     line-height: 1.5;
+    
 }
 .pagination_holder{
     margin-top: 20px;
