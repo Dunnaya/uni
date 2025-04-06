@@ -20,6 +20,7 @@
     background-color: #F7F7F7;
     box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.2);
     max-height: 800px;
+    font-family: 'Times New Roman', Times, serif;
 }
 form h2 {
     font-size: 30px;

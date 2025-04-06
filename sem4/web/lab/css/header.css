@@ -28,6 +28,7 @@ h1 {
     text-align: center;
     margin-top: 40px;
     margin-left: 20px;
+    font-family: 'Times New Roman', Times, serif;
 }
 #block2 {
     width: 50%;
@@ -55,6 +56,7 @@ h1 {
     text-align: end;
     margin-right: 20px;
     cursor: pointer;
+    font-family: 'Times New Roman', Times, serif;
 }
 #block3 a:hover {
     font-weight: bolder;
