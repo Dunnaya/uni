@@ -32,7 +32,7 @@ function pointInfo(x1, y1, x2, y2) {
         if (x < 0 && y > 0) return "в 2 чверті";
         if (x < 0 && y < 0) return "в 3 чверті";
         if (x > 0 && y < 0) return "в 4 чверті";
-        if (x === 0 && y === 0) return "в центрі осі";
+        if (x === 0 && y === 0) return "початок координат";
         if (x === 0) return "на осі Y";
         if (y === 0) return "на осі X";
       }
@@ -40,7 +40,7 @@ function pointInfo(x1, y1, x2, y2) {
     let q1 = getQuarter(x1, y1);
     let q2 = getQuarter(x2, y2);
 
-    if (q1 === q2 && q1 !== "в центрі осі") {
+    if (q1 === q2 && q1 !== "початок координат") {
         let distance = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
         console.log("Відстань між точками (" + x1 + ";" + y1 + ") та (" + x2 + ";" + y2 + "): " + distance.toFixed(2));
     } 
