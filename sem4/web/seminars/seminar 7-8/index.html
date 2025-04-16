@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Landing page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: white;
+        }
+        .header {
+            background-image: url('https://img.freepik.com/free-photo/top-view-coffee-tamper-with-copy-space_23-2148336702.jpg?t=st=1744746501~exp=1744750101~hmac=9669ea03508698396d4ce37b84737e7038677257499746d8507d9cb6026cfb81&w=2000');
+            background-size: cover;
+            width: 100%;
+            min-height: 700px;
+        }
+        .card-info {
+            padding: 15px;
+            background-color: white;
+        }
+        .custom-btn {
+            color: white;
+            width: 100%;
+            min-width: 120px;
+            margin-top: 50px;
+            margin-bottom: 10px;
+            font-size: 15px;
+            height: 55px;
+        }
+        .paragraph{
+           font-size: 36px;
+           padding: 40px;
+       }
+       .why {
+            background-image: url('https://img.freepik.com/free-photo/roasted-coffee-beans-with-accessories_23-2148336700.jpg?t=st=1744834626~exp=1744838226~hmac=d886d9def448ce6dfd1e2458a6f637f21587d0c73d41be9968300a3591a16d47&w=2000');
+            background-size: cover;
+            padding: 200px;
+            min-height: 700px;
+            -webkit-box-shadow: inset 0px 15000px 0px #00000080;
+       }
+       .list {
+            justify-content: space-between;
+            text-align: center;
+            margin-top: -90px;
+        }
+        .list-item{
+            background-color: #eeeeee;
+            width: 520px;
+            margin-top: 20px;
+            padding: 65px 60px 90px;
+        }
+        .list-item h1{
+            font-size: 100px;
+        }
+        .how {
+            padding: 100px;
+            min-height: 200px;
+        }
+        .how-item {
+            margin-top: 10%;
+            height: 280px;
+        }
+        .how-img {
+            width: 100%;
+            height: 100%;
+        }
+        .info   {
+            background: url(https://img.freepik.com/free-photo/two-young-people-sitting-outside-african-couple-enjoying-time-spending-with-each-other_1157-47044.jpg?t=st=1744836914~exp=1744840514~hmac=60dff481604097c47fc8aba820abc0543249d9e7c72a935d4ecfcbe4b8ae7de6&w=2000);
+            background-size: cover;
+            padding: 100px;
+            min-height: 200px;
+            -webkit-box-shadow: inset 0px 15000px 0px #00000080;
+        }
+        .footer {
+            background: white;
+            padding-top: 56px;
+        }
+        .footer-strip {
+            color: white;
+            font-size: 14px;
+            text-align: center;
+            padding: 12px 0 16px;
+            margin-top: 20px;
+        }
+    </style>
+  </head>
+  <body>
+    <section class="text-center header">
+        <div class="container pt-5">
+            <nav class="navbar navbar-expand-lg">
+                <a class="navbar-brand text-white" href="#"><img src="тут мало бути лого">IHateCoffee</a>
+                <div class="navbar-nav" style="margin-right: 0; margin-left: auto;">
+                    <a class="nav-item nav-link px-4 text-white active" href="#">Головна</a>
+                    <a class="nav-item nav-link px-4 text-white" href="#">Каталог</a>
+                    <a class="nav-item nav-link px-4 text-white" href="#">Блог</a>
+                    <a class="nav-item nav-link px-4 text-white" href="#">Про нас</a>
+                    <a class="nav-item nav-link px-4 text-white" href="#">Інше</a>
+                    <a class="nav-item nav-link px-4 text-white disabled" href="#">Допомога</a>
+                    <button class="btn btn-warning text-white" type="button">Реєстрація</button>
+                </div>
+            </nav>
+            <div class="container" style="width: 80%; margin-top: 150px;">
+                <h1 class="mx-auto text-white" style="width: 60%; font-size: 24pt;">Привіт, любителю рафу на кокосовому!</h1>
+                <h2 class="mx-auto text-white" style="width: 80%; font-size: 14pt; margin: 30px;">Ми — молода, амбітна компанія, яка займається постачанням та продажем професійного кавового обладнання, аксесуарів і відбірної кави для кав’ярень, ресторанів та інших місць для молодих та успішних.</h2>
+                <button class="btn btn-warning text-white mx-2" type="button" style="width: 45%; margin: 5px;">Каталог</button>
+                <button class="btn btn-warning text-white mx-2" type="button" style="width: 45%; margin: 5px;">Про нас</button>
+            </div>
+        </div>
+    </section>
+    <div class="container text-center">
+        <p class="paragraph"><b>Ми - про можливості</b></p>
+        <div class="row justify-content-around">
+            <div class="card col-lg-4 col-md-8 col-sm-12 mb-4">
+                <div class="card-info">
+                    <h5 class="card-title mb-4">Постачальники</h5>
+                    <p class="card-text">Шановні постачальники, якщо ви виробляєте кавомашини, млини, або щось, що вміє гарно пшикати паром — пишіть нам. Особливо цінуємо тих, хто забуває вкладати інструкції, ми любимо інженерні експерименти! Обіцяємо об’ємні закупівлів і мінімум істерик.</p>
+                </div>
+                <button type="button" class="btn btn-warning custom-btn" style="margin-top: 72px;">Дізнатись про поставки</button>
+            </div>
+            <div class="card col-lg-4 col-md-8 col-sm-12 mb-4">
+                <div class="card-info">
+                    <h5 class="card-title mb-4">Продавці</h5>
+                    <p class="card-text">Ми шукаємо тих, хто може продати кавомолку навіть тому, хто п’є розчинну. У нас висока зарплатня, адекватне керівництво (іноді), і щоденна доза кави, щоб ви були нервові але могли витримати всі ці дзвінки. Кар'єрний ріст? Є. Крута команда? Ще й яка. </p>
+                </div>
+                <button type="button" class="btn btn-warning custom-btn" style="margin-top: 72px;">Дізнатись про вакансії</button>
+            </div>
+            <div class="card col-lg-4 col-md-8 col-sm-12 mb-4">
+                <div class="card-info">
+                    <h5 class="card-title mb-4">Покупці</h5>
+                    <p class="card-text">У нас є все — від зерна з Ефіопії до кавоварки, яка вміє готувати краще, ніж ваш бариста. АССОРТИМЕНТ ТАКИЙ ВЕЛИКИЙ, що ми самі іноді губимося. Всі товари протестовані нашими незалежними експертами (в них вже сіпаються очі та тремтять руки).</p>
+                </div>
+                <button type="button" class="btn btn-warning custom-btn" style="margin-top: 72px;">Обрати кавомашину</button>
+            </div>
+        </div>
+    </div>
+    <section class="why">
+        <div class="container text-center">
+            <div class="container" style="width: 60%">
+                <h2 class="title text-white">Не маємо рівних на ринку кавового обладнання</h2>
+                <p class="text-white">Ми працюємо дужє швидко та якісно, починаючи з замовлення техніки та кави, закінчуючи їх доставкою під ваші двері.</p>
+                <button href="#" type="button" class="btn btn-warning custom-btn">Чому IHateCoffee?</button>
+            </div>
+        </div>
+    </section>
+    <section class="result block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <ul class="list" style="list-style-type: none;">
+                        <li class="list-item">
+                            <h1 class="text-warning">1,5</h1>
+                            <h2><b>Клієнтів</b></h2>
+                            <h5 class="text-secondary">Приблизно стільки клієнтів наша команда обслуговує на добу</h5>
+                        </li>
+                        <li class="list-item">
+                            <h1 class="text-warning">99%</h1>
+                            <h2><b>Постачальників</b></h2>
+                            <h5 class="text-secondary">Стільки відсотків постачальників відмовляються з нами працювати.</h5>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <ul class="list" style="list-style-type: none;">
+                        <li class="list-item">
+                            <h1 class="text-warning">0%</h1>
+                            <h2><b>Клієнтів</b></h2>
+                            <h5 class="text-secondary">Приблизно стільки клієнтів задоволено нашим обслуговуванням</h5>
+                        </li>
+                        <li class="list-item">
+                            <h1 class="text-warning">9/10</h1>
+                            <h2><b>Продавців</b></h2>
+                            <h5 class="text-secondary">Приблизно стільки продавців незадоволені умовами праці</h5>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="process block">
+        <div class="how bg-warning text-center">
+            <h2>Як ми працюємо?</h2>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <ul style="list-style-type: none;">
+                        <li class="how-item">
+                            <h3>Продавці</h3>
+                            <p>Продавці працюють за каву та за смішні меми, які їм в чат скидає начальник під час перекуру (кожні 15 хв).</p>
+                            <button href="" type="button" class="btn btn-warning custom-btn">Дізнатися більше</button>
+                        </li>
+                        <li class="how-item">
+                            <img class="how-img" src="https://img.freepik.com/free-photo/top-view-female-barista-holding-cup-coffee_23-2148824445.jpg?t=st=1744836133~exp=1744839733~hmac=89de18d59f2af0c42885cd2469806775efd1914309ff2d43becd32f34a5f9d60&w=1800" alt="кава (готова)">
+                        </li>
+                        <li class="how-item">
+                            <h3>Постачальники</h3>
+                            <p>Постачальники вважають нас психічно нестабільними, але стабільно платоспроможними. Контракти з ними тримаються на гуморі, запізненнях і взаємному небажанні щось змінювати.</p>
+                            <button href="" type="button" class="btn btn-warning custom-btn">Дізнатися більше</button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <ul style="list-style-type: none;">
+                        <li class="how-item">
+                            <img class="how-img" src="https://img.freepik.com/free-photo/top-view-female-barista-pouring-frothed-milk-cup_23-2148824452.jpg?t=st=1744836172~exp=1744839772~hmac=416d23218c53eb0c3b71bc0e416740f6f944689c2adb275dec9c6b14cd0664bc&w=2000" alt="кава (готується)">
+                        </li>
+                        <li class="how-item">
+                            <h3>Клієнти</h3>
+                            <p>Наші клієнти думають, що якщо вони вивчили різницю між арабікою і робустою — це автоматично додає +50 до інтелекту. Тому купують все, що бачать, — аби виглядало по хіпстерськи, як в оверпрайсд лофт кавʼярнях.</p>
+                            <button href="" type="button" class="btn btn-warning custom-btn">Дізнатися більше</button>
+                        </li>
+                        <li class="how-item">
+                            <img class="how-img" src="https://img.freepik.com/free-photo/stylish-businessman-working-cafe_1157-20942.jpg?t=st=1744836223~exp=1744839823~hmac=4c6611cc8fc721ee7617db2111c75b1ce79386b106b36e4a5484a36b820c4414&w=2000" alt="мужик за ноутом">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="info block">
+        <div class="container text-center">
+            <h2 class="text-white">Хочете дізнатись як нам допомогти?</h2>
+            <button href="" type="button" class="btn btn-warning custom-btn">Тут вже навіть Бог не допоможе</button>
+        </div>
+    </section>
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <h3>Почати</h3>
+                    <ul>
+                        <li><a href="#">Покупці</a></li>
+                        <li><a href="#">Постачальники</a></li>
+                        <li><a href="#">Працевлаштування</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <h3>IHateCoffee</h3>
+                    <ul >
+                        <li><a>Про нас</a></li>
+                        <li><a>Допомога</a></li>
+                        <li><a>Я втомилась</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 col-sm-12" >
+                    <h3>Зворотній зв'язок</h3>
+                    <ul>
+                        <li><span>м. Київ, вул. Кавова 14, буд. 88</span></li>
+                        <li><span>ідея цього сайту точно нова і унікальна</span></li>
+                        <li><a href="#">+380441234567</a></li>
+                        <li><a href="#">ihatecoffee@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-strip bg-warning">
+            Copyright 2025 | IHateCoffee
+        </div>
+    </footer>
+  </body>
+</html>
