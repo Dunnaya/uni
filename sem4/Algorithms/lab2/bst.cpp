@@ -19,7 +19,7 @@ struct Complex
         return Complex(real + other.real, imaginary + other.imaginary);
     }
 
-    // Оптимізоване порівняння - порівнюємо квадрати модулів замість обчислення кореня
+    // comparing squared magnitudes not to compute square root
     bool operator<(const Complex& other) const 
     {
         return (real * real + imaginary * imaginary) < (other.real * other.real + other.imaginary * other.imaginary);
@@ -40,7 +40,6 @@ struct Complex
     }
 };
 
-// Структура для зберігання ключа та його ваги разом
 struct KeyWeight 
 {
     Complex key;
@@ -69,7 +68,6 @@ struct TreeNode
     }
 };
 
-// Допоміжна функція для створення дерева
 TreeNode* createSubtree(const vector<KeyWeight>& keyWeights, const vector<vector<int> >& root, int i, int j) 
 {
     if (i > j) return nullptr;
@@ -82,7 +80,6 @@ TreeNode* createSubtree(const vector<KeyWeight>& keyWeights, const vector<vector
     return node;
 }
 
-// Функція для розрахунку оптимального бінарного дерева пошуку
 TreeNode* buildOptimalBST(const vector<KeyWeight>& keyWeights) 
 {
     int n = keyWeights.size();
@@ -91,20 +88,19 @@ TreeNode* buildOptimalBST(const vector<KeyWeight>& keyWeights)
     vector<vector<double> > cost(n + 2, vector<double>(n + 1, 0));
     vector<vector<int> > root(n + 1, vector<int>(n + 1, 0));
     
-    // Розрахунок сумарної ваги для підпослідовностей
+    // computing cumulative weights
     vector<double> sumWeights(n + 1, 0);
     for (int i = 0; i < n; i++) 
     {
         sumWeights[i + 1] = sumWeights[i] + keyWeights[i].weight;
     }
     
-    // Ініціалізація для порожніх підпослідовностей
+    // initializing cost for empty subtrees
     for (int i = 1; i <= n; i++) 
     {
-        cost[i][i-1] = 0;  // Порожнє піддерево
+        cost[i][i-1] = 0;
     }
     
-    // Заповнення таблиці для підпослідовностей довжини від 1 до n
     for (int len = 1; len <= n; len++) 
     {
         for (int i = 0; i <= n - len; i++) 
@@ -114,7 +110,7 @@ TreeNode* buildOptimalBST(const vector<KeyWeight>& keyWeights)
             
             double sumW = sumWeights[j + 1] - sumWeights[i];
             
-            // Пошук оптимального кореня для підпослідовності [i, j]
+            // search for the best root
             for (int r = i; r <= j; r++) 
             {
                 double c = cost[i][r-1] + cost[r+1][j] + sumW;
@@ -130,21 +126,18 @@ TreeNode* buildOptimalBST(const vector<KeyWeight>& keyWeights)
     return createSubtree(keyWeights, root, 0, n - 1);
 }
 
-// Функція для виводу дерева у запитаному стилі
 void printTree(TreeNode* node, int level = 0, bool left = false, TreeNode* root = nullptr) 
 {
     if (node == nullptr) return;
     
     if (root == nullptr) 
     {
-        // Перший виклик з коренем
         root = node;
         cout << "Key: " << node->key << endl;
         cout << "weight " << node->weight << endl;
     } 
     else 
     {
-        // Нащадки
         for (int i = 0; i < level; i++) cout << "|\t";
         
         if (left) cout << "LEFT ";
@@ -159,12 +152,10 @@ void printTree(TreeNode* node, int level = 0, bool left = false, TreeNode* root 
         cout << "weight " << node->weight << endl;
     }
     
-    // Рекурсивно виводимо лівого та правого нащадків
     printTree(node->left, level + 1, true, root);
     printTree(node->right, level + 1, false, root);
 }
 
-// Функція для пошуку елемента у дереві
 bool search(TreeNode* root, const Complex& key) 
 {
     if (root == nullptr) return false;
@@ -176,7 +167,6 @@ bool search(TreeNode* root, const Complex& key)
         return search(root->right, key);
 }
 
-// Допоміжна функція для обчислення модуля комплексного числа (для виведення)
 double magnitude(const Complex& c) 
 {
     return sqrt(c.real * c.real + c.imaginary * c.imaginary);
@@ -184,33 +174,30 @@ double magnitude(const Complex& c)
 
 int main() 
 {
-    // Приклад використання з комплексними числами
     vector<Complex> keys;
     keys.push_back(Complex(1.0, 2.0));
-    keys.push_back(Complex(3.0, 1.0));
-    keys.push_back(Complex(2.0, 4.0));
-    keys.push_back(Complex(5.0, 2.0));
-    keys.push_back(Complex(4.0, 0.0));
+    keys.push_back(Complex(-1.0, 1.0));
+    keys.push_back(Complex(3.0, 0.0));
+    keys.push_back(Complex(0.0, -2.0));
+    keys.push_back(Complex(-2.0, -2.0));
 
-    // Вага кожного ключа (ймовірність пошуку)
     vector<double> weights;
+    weights.push_back(0.1);
+    weights.push_back(0.2);
+    weights.push_back(0.3);
     weights.push_back(0.15);
-    weights.push_back(0.10);
     weights.push_back(0.25);
-    weights.push_back(0.05);
-    weights.push_back(0.45);
 
-    // Створюємо пари ключ-вага перед сортуванням
+    // creating keyWeight pairs
     vector<KeyWeight> keyWeights;
     for (size_t i = 0; i < keys.size(); i++) 
     {
         keyWeights.push_back(KeyWeight(keys[i], weights[i]));
     }
 
-    // Сортуємо за модулем комплексного числа
+    // sorting keys by their module
     sort(keyWeights.begin(), keyWeights.end());
-
-    cout << "Ключі (відсортовані за модулем):" << endl;
+    cout << "Keys (sorted by module):" << endl;
     for (size_t i = 0; i < keyWeights.size(); i++) 
     {
         cout << "Key " << i << ": " << keyWeights[i].key 
@@ -218,26 +205,25 @@ int main()
              << ", |z| = " << magnitude(keyWeights[i].key) << endl;
     }
 
-    // Побудова оптимального BST
+    // creating optimal BST
     TreeNode* optimalBST = buildOptimalBST(keyWeights);
-
-    cout << "\nОптимальне бінарне дерево пошуку:" << endl;
+    cout << "\nOptimal binary search tree:" << endl;
     printTree(optimalBST);
 
-    // Перевірка пошуку
-    Complex searchKey(3.0, 1.0);
-    cout << "\nПошук комплексного числа " << searchKey << ": ";
+    // search revision
+    Complex searchKey(0.0, -2.0);
+    cout << "\nFinding the complex number " << searchKey << ": ";
     if (search(optimalBST, searchKey))
-        cout << "Знайдено" << endl;
+        cout << "Found" << endl;
     else
-        cout << "Не знайдено" << endl;
+        cout << "Not found" << endl;
 
-    // Обчислення середньої довжини пошуку
+    // average search length
     double totalCost = 0.0;
     for (size_t i = 0; i < keyWeights.size(); i++) 
     {
         TreeNode* current = optimalBST;
-        int depth = 1; // Корінь має глибину 1
+        int depth = 1; // root depth is 1
         
         while (current != nullptr && !(current->key == keyWeights[i].key)) 
         {
@@ -251,10 +237,9 @@ int main()
         totalCost += depth * keyWeights[i].weight;
     }
     
-    cout << "\nСередня довжина пошуку: " << totalCost << endl;
+    cout << "\nAverage search length: " << totalCost << endl;
 
-    // Звільнення пам'яті
+    // cleaning up
     delete optimalBST;
-
     return 0;
 }
