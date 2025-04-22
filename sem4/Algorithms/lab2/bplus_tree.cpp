@@ -2,7 +2,6 @@
 #include <vector>
 #include <cmath>
 #include <queue>
-
 using namespace std;
 
 struct Complex 
@@ -38,277 +37,248 @@ struct Complex
 };
 
 class BPlusTree 
-{ 
-private:
-    struct Node 
-    { 
-        vector<Complex> keys;
-        vector<Node*> children;
-        Node* next;
-        bool isLeaf;
-
-        Node(bool leaf) : isLeaf(leaf), next(nullptr) {}
-    };
-   
-    Node* root;
-    int order; 
-
-public:
-    BPlusTree(int order) : root(nullptr), order(order) {}
-
-    void insert(const Complex& value) 
-    {
-        if (!root) 
+{
+    private:
+        struct Node 
         {
-            root = new Node(true);
-            root->keys.push_back(value);
-        }
-        else 
-        {
-            Node* leaf = findLeaf(root, value);
-            insertIntoLeaf(leaf, value);
-            if (leaf->keys.size() == order)
-                splitLeaf(leaf);
-        }
-    }
+            vector<Complex> keys;
+            vector<Node*> children;
+            bool isLeaf;
 
-    void remove(const Complex& value) 
-    {
-        if (!root)
-            return;
-        
-        bool valueRemoved = removeRecursive(root, value, nullptr, 0);
-        
-        // if root is empty
-        if (root->keys.empty()) 
+            Node(bool leaf) : isLeaf(leaf) {}
+        };
+    
+        Node* root;
+        int order; 
+
+    public:
+        BPlusTree(int order) : root(nullptr), order(order) {}
+
+        void insert(const Complex& value) 
         {
-            if (root->isLeaf) 
+            if (!root) 
             {
-                // leave the tree empty
-            } 
-            else if (root->children.size() == 1) 
+                root = new Node(true);
+                root->keys.push_back(value);
+            }
+            else 
             {
-                // if root has only one child, make it the new root
+                Node* leaf = findLeaf(root, value);
+                insertIntoLeaf(leaf, value);
+                if (leaf->keys.size() == order)
+                    splitLeaf(leaf);
+            }
+        }
+
+        void remove(const Complex& value) 
+        {
+            if (!root)
+                return;
+
+            removeRecursive(root, value);
+
+            if (root->keys.empty() && !root->isLeaf) 
+            {
                 Node* oldRoot = root;
                 root = root->children[0];
                 delete oldRoot;
             }
         }
-    }
 
-    bool removeRecursive(Node* node, const Complex& value, Node* parent, int parentIndex) 
-    {
-        bool valueRemoved = false;
-        
-        if (node->isLeaf) 
+        void removeRecursive(Node* node, const Complex& value) 
         {
-            // finding the key to remove
-            for (size_t i = 0; i < node->keys.size(); i++) 
+            if (node->isLeaf) 
             {
-                if (node->keys[i] == value) 
-                {
-                    node->keys.erase(node->keys.begin() + i);
-                    valueRemoved = true;
-                    break;
-                }
+                auto it = find(node->keys.begin(), node->keys.end(), value);
+                if (it != node->keys.end())
+                    node->keys.erase(it);
             }
-        } 
-        else 
-        {
-            int childIndex = 0;
-            while (childIndex < node->keys.size() && !(value < node->keys[childIndex])) 
+            else 
             {
-                childIndex++;
-            }
-            
-            valueRemoved = removeRecursive(node->children[childIndex], value, node, childIndex);
-            
-            if (valueRemoved && childIndex < node->keys.size() && node->keys[childIndex] == value) 
-            {
-                Node* rightSubtree = node->children[childIndex + 1];
-                Node* leftmost = rightSubtree;
-                while (!leftmost->isLeaf) 
-                {
-                    leftmost = leftmost->children[0];
-                }
+                int index = 0;
+                while (index < node->keys.size() && !(value < node->keys[index]))
+                    index++;
                 
-                if (!leftmost->keys.empty())
-                    node->keys[childIndex] = leftmost->keys[0];
-            }
-            // check if the child node is empty after deletion
-            Node* child = node->children[childIndex];
-            if (child->keys.empty()) 
-            {
-                if (child->isLeaf) 
+                // ckeck index
+                if (index < node->children.size())
+                    removeRecursive(node->children[index], value);
+
+                //update the key in the parent node
+                for (size_t i = 0; i < node->keys.size(); i++) 
                 {
-                    if (childIndex > 0 && node->children[childIndex - 1]->isLeaf) 
+                    if (node->keys[i] == value && i < node->children.size() - 1) 
                     {
-                        Node* leftSibling = node->children[childIndex - 1];
-                        leftSibling->next = child->next;
+                        if (!node->children[i + 1]->keys.empty())
+                            node->keys[i] = node->children[i + 1]->keys.front();
                     }
-                    // delete empty leaf node
-                    node->children.erase(node->children.begin() + childIndex);
-                    if (childIndex < node->keys.size())
-                        node->keys.erase(node->keys.begin() + childIndex);
-                    else if (childIndex > 0)
-                        node->keys.erase(node->keys.begin() + childIndex - 1);
-                    
-                    delete child;
                 }
             }
-        }
-        
-        return valueRemoved;
-    }
 
-    Node* getParent(Node* currentNode, Node* childNode) 
-    {
-        if (currentNode == childNode)
-            return nullptr;
-        
-        if (currentNode->isLeaf)
-            return nullptr;
-        
-        for (size_t i = 0; i < currentNode->children.size(); i++) 
-        {
-            if (currentNode->children[i] == childNode)
-                return currentNode;
-        }
-        
-        for (size_t i = 0; i < currentNode->children.size(); i++) 
-        {
-            Node* parent = getParent(currentNode->children[i], childNode);
-            if (parent)
-                return parent;
-        }
-        
-        return nullptr;
-    }
-
-    Node* findLeaf(Node* node, const Complex& value) 
-    {
-        if (node->isLeaf)
-            return node;
-        else 
-        {
-            int index = 0;
-            while (index < node->keys.size() && !(value < node->keys[index])) 
+            // delete empty leaf nodes
+            if (node->isLeaf && node->keys.empty() && node != root) 
             {
-                index++;
-            }
-            return findLeaf(node->children[index], value);
-        }
-    }
-
-    void insertIntoLeaf(Node* leaf, const Complex& value) 
-    {
-        // finding position to insert value
-        int pos = 0;
-        while (pos < leaf->keys.size() && leaf->keys[pos] < value) 
-        {
-            pos++;
-        }
-        leaf->keys.insert(leaf->keys.begin() + pos, value);
-    }
-
-    void splitLeaf(Node* leaf) 
-    {
-        int mid = leaf->keys.size() / 2;
-        Node* newLeaf = new Node(true);
-        newLeaf->keys.assign(leaf->keys.begin() + mid, leaf->keys.end());
-        leaf->keys.erase(leaf->keys.begin() + mid, leaf->keys.end());
-        
-        newLeaf->next = leaf->next;
-        leaf->next = newLeaf;
-
-        if (leaf == root) 
-        {
-            Node* newRoot = new Node(false);
-            newRoot->keys.push_back(newLeaf->keys[0]);
-            newRoot->children.push_back(leaf);
-            newRoot->children.push_back(newLeaf);
-            root = newRoot;
-        }
-        else
-            insertIntoParent(leaf, newLeaf->keys[0], newLeaf);
-    }
-
-    void insertIntoParent(Node* left, const Complex& key, Node* right) 
-    { 
-        Node* parent = getParent(root, left);
-        // finding position to insert key
-        int pos = 0;
-        while (pos < parent->keys.size() && parent->keys[pos] < key) 
-        {
-            pos++;
-        }
-        
-        parent->keys.insert(parent->keys.begin() + pos, key);
-        parent->children.insert(parent->children.begin() + pos + 1, right);
-        
-        if (parent->keys.size() == order)
-            splitNode(parent);
-    }
-
-    void splitNode(Node* node) 
-    {
-        int mid = node->keys.size() / 2;
-        Complex midKey = node->keys[mid];
-        
-        Node* newSibling = new Node(node->isLeaf);
-        newSibling->keys.assign(node->keys.begin() + mid + 1, node->keys.end());
-        node->keys.erase(node->keys.begin() + mid, node->keys.end());
-
-        if (!node->isLeaf) 
-        {
-            newSibling->children.assign(node->children.begin() + mid + 1, node->children.end());
-            node->children.erase(node->children.begin() + mid + 1, node->children.end());
-        }
-
-        if (node == root) 
-        {
-            Node* newRoot = new Node(false);
-            newRoot->keys.push_back(midKey);
-            newRoot->children.push_back(node);
-            newRoot->children.push_back(newSibling);
-            root = newRoot;
-        }
-        else
-            insertIntoParent(node, midKey, newSibling);
-    }
-
-    void printTree() 
-    {
-        if (!root) 
-        {
-            cout << "Tree is empty" << endl;
-            return;
-        }
-
-        queue<Node*> q;
-        q.push(root);
-
-        while (!q.empty()) 
-        {
-            int size = q.size();
-            for (int i = 0; i < size; ++i) 
-            {
-                Node* node = q.front();
-                q.pop();
-
-                for (const auto& key : node->keys)
-                    cout << key << " ";
-                cout << "| ";
-
-                if (!node->isLeaf) 
+                Node* parent = getParent(root, node);
+                if (parent) 
                 {
-                    for (Node* child : node->children)
-                        q.push(child);
+                    auto it = find(parent->children.begin(), parent->children.end(), node);
+                    if (it != parent->children.end()) 
+                    {
+                        parent->children.erase(it);
+                        
+                        if (!parent->children.empty() && !parent->keys.empty()) 
+                        {
+                            for (size_t i = 0; i < parent->keys.size(); i++) 
+                            {
+                                if (parent->keys[i] == value && i < parent->children.size() - 1) 
+                                {
+                                    if (!parent->children[i + 1]->keys.empty())
+                                        parent->keys[i] = parent->children[i + 1]->keys.front();
+                                }
+                            }
+                        }
+                        
+                        delete node;
+                    }
                 }
             }
-            cout << endl;
         }
-    }
+
+        Node* getParent(Node* currentNode, Node* childNode) 
+        {
+            if (!currentNode || currentNode->isLeaf || currentNode->children.empty())
+                return nullptr;
+
+            for (auto child : currentNode->children) 
+            {
+                if (child == childNode)
+                    return currentNode;
+            }
+
+            for (auto child : currentNode->children) 
+            {
+                Node* parent = getParent(child, childNode);
+                if (parent)
+                    return parent;
+            }
+            
+            return nullptr;
+        }
+
+        Node* findLeaf(Node* node, const Complex& value)
+        {
+            if (node->isLeaf)
+                return node;
+            else 
+            {
+                int index = 0;
+                while (index < node->keys.size() && !(value < node->keys[index])) 
+                {
+                    index++;
+                }
+                return findLeaf(node->children[index], value);
+            }
+        }
+
+        void insertIntoLeaf(Node* leaf, const Complex& value) 
+        {
+            auto it = lower_bound(leaf->keys.begin(), leaf->keys.end(), value);
+            leaf->keys.insert(it, value);
+        }
+
+        void splitLeaf(Node* leaf) 
+        {
+            int mid = leaf->keys.size() / 2;
+            Node* newLeaf = new Node(true);
+            newLeaf->keys.assign(leaf->keys.begin() + mid, leaf->keys.end());
+            leaf->keys.erase(leaf->keys.begin() + mid, leaf->keys.end());
+
+            if (leaf == root) 
+            {
+                Node* newRoot = new Node(false);
+                newRoot->keys.push_back(newLeaf->keys[0]);
+                newRoot->children.push_back(leaf);
+                newRoot->children.push_back(newLeaf);
+                root = newRoot;
+            }
+            else
+                insertIntoParent(leaf, newLeaf->keys[0], newLeaf);
+        }
+
+        void insertIntoParent(Node* left, const Complex& key, Node* right) 
+        {
+            Node* parent = getParent(root, left);
+            if (!parent) return;
+            
+            auto it = find(parent->children.begin(), parent->children.end(), left);
+            if (it == parent->children.end()) return;
+            
+            int index = it - parent->children.begin();
+            
+            parent->keys.insert(parent->keys.begin() + index, key);
+            parent->children.insert(parent->children.begin() + index + 1, right);
+            
+            if (parent->keys.size() == order)
+                splitNode(parent);
+        }
+
+        void splitNode(Node* node) 
+        {
+            int mid = node->keys.size() / 2;
+            Node* newSibling = new Node(node->isLeaf);
+            newSibling->keys.assign(node->keys.begin() + mid + 1, node->keys.end());
+            Complex midKey = node->keys[mid];
+            node->keys.erase(node->keys.begin() + mid, node->keys.end());
+
+            if (!node->isLeaf) 
+            {
+                newSibling->children.assign(node->children.begin() + mid + 1, node->children.end());
+                node->children.erase(node->children.begin() + mid + 1, node->children.end());
+            }
+
+            if (node == root) 
+            {
+                Node* newRoot = new Node(false);
+                newRoot->keys.push_back(midKey);
+                newRoot->children.push_back(node);
+                newRoot->children.push_back(newSibling);
+                root = newRoot;
+            }
+            else
+                insertIntoParent(node, midKey, newSibling);
+        }
+
+        void printTree() 
+        {
+            if (!root) 
+            {
+                cout << "Tree is empty" << endl;
+                return;
+            }
+
+            queue<Node*> q;
+            q.push(root);
+
+            while (!q.empty()) 
+            {
+                int size = q.size();
+                for (int i = 0; i < size; ++i) 
+                {
+                    Node* node = q.front();
+                    q.pop();
+
+                    for (const auto& key : node->keys)
+                        cout << key << " ";
+                    cout << "| ";
+
+                    if (!node->isLeaf) 
+                    {
+                        for (Node* child : node->children)
+                            q.push(child);
+                    }
+                }
+                cout << endl;
+            }
+        }
 };
 
 int main() 
@@ -326,7 +296,6 @@ int main()
     
     cout << "\nAfter returning (-3, 4) and deleting (1, 2):" << endl;
     tree.insert(Complex(-3, 4));
-    tree.remove(Complex(1, 2));
     tree.printTree();
 
     return 0;
