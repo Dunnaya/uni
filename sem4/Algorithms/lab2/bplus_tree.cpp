@@ -320,11 +320,11 @@ int main()
     tree.insert(Complex(5, -6));
     tree.printTree();
 
-    cout << "\nПісля видалення (-3, 4):" << endl;
+    cout << "\nAfter deleting (-3, 4):" << endl;
     tree.remove(Complex(-3, 4));
     tree.printTree();
-
-    cout << "\nПісля повернення (-3, 4) та видалення (1, 2):" << endl;
+    
+    cout << "\nAfter returning (-3, 4) and deleting (1, 2):" << endl;
     tree.insert(Complex(-3, 4));
     tree.remove(Complex(1, 2));
     tree.printTree();
