@@ -1,0 +1,57 @@
+-- creating DB
+CREATE DATABASE MobileCommunication;
+
+-- operators table
+CREATE TABLE Operators (
+    OperatorID INT PRIMARY KEY IDENTITY,
+    Name VARCHAR(100) NOT NULL,
+    Prefix CHAR(3) NOT NULL UNIQUE
+);
+
+-- subs table
+CREATE TABLE Subscribers (
+    PhoneNumber CHAR(10) PRIMARY KEY,
+    OperatorID INT NOT NULL,
+    CONSTRAINT FK_Subscribers_Operators FOREIGN KEY (OperatorID)
+        REFERENCES Operators(OperatorID),
+    CONSTRAINT CK_PhoneNumber_Format CHECK (PhoneNumber LIKE '[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]')
+);
+
+-- checking prefix (sub's pref == existing operator's pref)
+CREATE TRIGGER tr_CheckPrefix
+ON Subscribers
+INSTEAD OF INSERT
+AS
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM INSERTED i
+        JOIN Operators o ON i.OperatorID = o.OperatorID
+        WHERE LEFT(i.PhoneNumber, 3) <> o.Prefix
+    )
+    BEGIN
+        RAISERROR('Prefix of number does not match operator prefix.', 16, 1);
+        ROLLBACK;
+    END
+    ELSE
+    BEGIN
+        INSERT INTO Subscribers (PhoneNumber, OperatorID)
+        SELECT PhoneNumber, OperatorID FROM INSERTED;
+    END
+END;
+
+-- calls table
+CREATE TABLE Calls (
+    CallID INT PRIMARY KEY IDENTITY,
+    Caller CHAR(10) NOT NULL,
+    Receiver CHAR(10) NOT NULL,
+    CallStart DATETIME NOT NULL,
+    Duration INT NOT NULL CHECK (Duration > 0),
+    CONSTRAINT FK_Calls_Caller FOREIGN KEY (Caller) REFERENCES Subscribers(PhoneNumber),
+    CONSTRAINT FK_Calls_Receiver FOREIGN KEY (Receiver) REFERENCES Subscribers(PhoneNumber),
+    CONSTRAINT CK_No_SelfCall CHECK (Caller <> Receiver)
+);
+
+-- index to prevent calls from crossing over time by the same caller
+CREATE UNIQUE INDEX UX_Calls_Caller_Time
+ON Calls (Caller, CallStart);
