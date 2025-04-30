@@ -1,0 +1,36 @@
+CREATE TABLE Owners (
+    passport CHAR(9) PRIMARY KEY,
+    full_name CHAR(100),
+    birth_date DATE NOT NULL,
+    CONSTRAINT age_check CHECK (
+        DATEADD(YEAR, 18, birth_date) <= GETDATE()
+    )
+);
+
+CREATE TABLE Plots (
+    owner_passport CHAR(9) NOT NULL,
+    plot_id INT IDENTITY PRIMARY KEY,
+    x1 FLOAT NOT NULL,
+    y1 FLOAT NOT NULL,
+    x2 FLOAT NOT NULL,
+    y2 FLOAT NOT NULL,
+    ownership_date DATE NOT NULL,
+    FOREIGN KEY (owner_passport) REFERENCES Owners(passport),
+    CONSTRAINT coord_order CHECK (x1 < x2 AND y1 < y2)
+);
+
+CREATE TRIGGER NoIntersection
+ON Plots
+AFTER INSERT, UPDATE
+AS
+IF EXISTS (
+    SELECT *
+    FROM Plots A, INSERTED B
+    WHERE A.plot_id <> B.plot_id AND NOT (
+        B.x2 <= A.x1 OR
+        B.x1 >= A.x2 OR
+        B.y2 <= A.y1 OR
+        B.y1 >= A.y2
+    )
+)
+ROLLBACK TRANSACTION;
