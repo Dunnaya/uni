@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-size: 18px;
+        }
+        .container {
+            padding: 20px;
+            margin: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .histogram-container {
+            margin-top: 30px;
+            display: flex;
+            align-items: flex-end;
+            height: 300px;
+            border-bottom: 2px solid #333;
+        }
+        .histogram-col {
+            margin: 0 2px;
+            flex-grow: 1;
+            border-radius: 2px 2px 0 0;
+        }
+        table {
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        td {
+            height: 40px;
+            width: 40px;
+            border: 1px solid #000;
+        }
+        h1 {
+            color: #4CAF50;
+            margin-top: 0;
+        }
+        input {
+            padding: 5px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #327636;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Task 1</h1>
+        <div>
+            <label for="col-count">Columns: </label>
+            <input type="number" id="col-count" min="1" max="100" value="25">
+            <button onclick="createHistogram()">Create!</button>
+        </div>
+        <div id="histogram" class="histogram-container"></div>
+    </div>
+
+    <div class="container">
+        <h1>Task 2</h1>
+        <div>
+            <label for="row-count">Rows: </label>
+            <input type="number" id="row-count" min="1" max="30" value="5">
+            <label for="table-col-count">Columns: </label>
+            <input type="number" id="table-col-count" min="1" max="30" value="5">
+            <button onclick="createTable()">Create!</button>
+        </div>
+        <div id="table-container"></div>
+    </div>
+
+    <script>
+        // task 1
+        function createHistogram() {
+            const colCount = document.getElementById('col-count').value;
+            const histogramContainer = document.getElementById('histogram');
+            
+            //clear prev
+            histogramContainer.innerHTML = '';
+            //new columns
+            for (let i = 0; i < colCount; i++) 
+            {
+                //rand height
+                const height = Math.floor(Math.random() * 95) + 5;
+                //rand color
+                //const randColor = '#' + Math.floor(Math.random()*16777215).toString(16);
+                const randColor = getRandColor();
+                //create div
+                const column = document.createElement('div');
+                column.className = 'histogram-col';
+                column.style.height = height + '%';
+                column.style.backgroundColor = randColor;
+                //append to container
+                histogramContainer.appendChild(column);
+            }
+        }
+
+        //better func for rand hex color
+        function getRandColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) 
+            {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        //task 2
+        function createTable() {
+            const rowCount = document.getElementById('row-count').value;
+            const colCount = document.getElementById('table-col-count').value;
+            const tableContainer = document.getElementById('table-container');
+            
+            //clear prev
+            tableContainer.innerHTML = '';
+            //create table
+            const table = document.createElement('table');
+            //creale rows&cells
+            for (let i = 0; i < rowCount; i++) 
+            {
+                const row = document.createElement('tr');
+
+                for (let j = 0; j < colCount; j++) 
+                {
+                    const cell = document.createElement('td');
+                    cell.style.backgroundColor = (i + j) % 2 === 0 ? 'black' : 'white';
+                    row.appendChild(cell);
+                }
+                table.appendChild(row);
+            }
+            //append to container
+            tableContainer.appendChild(table);
+        }
+        //init
+        window.onload = function() {
+            createHistogram();
+            createTable();
+        };
+    </script>
+</body>
+</html>

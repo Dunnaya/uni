@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lec 14</title>
+</head>
+<body>
+    <script>
+        let array1 = [1, 2, 3, -1, 4, -3, 5, 0];
+        let array2 = [-1, 5, 6, 7, 8, 9, 0, -3, 10];
+        
+        // task 1
+        let array3 = [...new Set(array1.concat(array2))];
+        console.log("An array of unique elements: ", array3);
+        
+        // task 2
+        let evenNumbers = array3.filter(num => num > 0 && num % 2 == 0);
+        console.log("Even numbers from positive array elements: ", evenNumbers);
+        
+        // task 3
+        if (array3.includes(0)) {
+            console.log("Array contains zero");
+        }
+        
+        // task 4
+        let index = array3.indexOf(5);
+        if (index != -1) {
+            console.log("Index of the array element whose value = 5: ", index);
+        }
+        
+        // task 5
+        let product = array3.reduce((total, currentValue) => total * currentValue);
+        console.log("Product of all elements of an array: ", product);
+        
+        // task 6
+        // a)
+        let sortedAlphabetically = [...array3].sort();
+        console.log("Array elements in alphabetical order: ", sortedAlphabetically);
+        
+        // b)
+        let sortedNumerically = [...array3].sort((a, b) => Math.abs(a) - Math.abs(b));
+        console.log("Numeric array sorted without considering sign: ", sortedNumerically);
+    </script>
+</body>
+</html>

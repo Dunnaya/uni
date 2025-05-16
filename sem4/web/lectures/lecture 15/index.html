@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lec 16</title>
+</head>
+<body>
+    <script>
+        // script that displays date, time, and day of the week
+        window.onload = function() 
+        {
+            var currentDate = new Date();
+            var dayOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            var dateString = "Date: " + currentDate.getDate() + "/" + (currentDate.getMonth()+1) + "/" + currentDate.getFullYear();
+            var timeString = "Time: " + currentDate.getHours() + ":" + currentDate.getMinutes() + ":" + currentDate.getSeconds();
+            var dayString = "Day of the week: " + dayOfWeek[currentDate.getDay()];
+            alert(dateString + "\n" + timeString + "\n" + dayString);
+        }
+
+        // func that adds a new field to an object
+        function addFieldToObject(obj, key, value) 
+        {
+            if (!obj.hasOwnProperty(key)) 
+            {
+                obj[key] = value;
+            }
+            return obj;
+        }
+
+        // iterate over and output all fields of an object using for...in
+        function printFieldsForIn(obj) 
+        {
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) 
+                {
+                    console.log(key + ": " + obj[key]);
+                }
+            }
+        }
+
+        // iterate over and display all the fields of an object using Object.keys()
+        function printFieldsObjectKeys(obj) 
+        {
+            Object.keys(obj).forEach(function(key) 
+            {
+                console.log(key + ": " + obj[key]);
+            });
+        }
+
+        var testObj = {name: "Jane", age: 19};
+        addFieldToObject(testObj, "city", "Kyiv");
+        addFieldToObject(testObj, "city", "Rivne");
+        console.log("Iterate using for...in:");
+        printFieldsForIn(testObj);
+        console.log("Iterate through Object.keys():");
+        printFieldsObjectKeys(testObj);
+    </script>
+</body>
+</html>
