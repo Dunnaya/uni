@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            margin: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 10px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            font-size: 16px;
+        }
+        img {
+            max-width: 300px;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 3px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            color: #777;
+        }
+        .attraction {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Country explorer :p</h1>
+    <form>
+        <label for="country">Country:</label>
+        <select id="country" onchange="displayInfo()">
+            <option value="">-- Select a country --</option>
+            <option value="germany">Germany</option>
+            <option value="france">France</option>
+            <option value="italy">Italy</option>
+            <option value="spain">Spain</option>
+            <option value="japan">Japan</option>
+        </select>   
+        
+        <div id="country-info">
+
+        </div>
+
+        <div id="total-cost">
+
+        </div>
+    </form>
+
+    <script>
+        const countryData = {
+            germany: {
+                flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Flag_of_Germany.svg/2560px-Flag_of_Germany.svg.png',
+                attractions: [
+                    {name: "Cologne Cathedral", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/07/ba/94/ca/cologne-cathedral-dom.jpg?w=1200&h=-1&s=1", description: "This giant Gothic cathedral, which until its completion in 1880 had been under construction for over 500 years, is perhaps Germany's most famous religious structure and includes two huge towers that serve as the defining symbol of Cologne's skyline.", cost: 17},
+                    {name: "Miniatur Wunderland", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0d/8d/c1/85/20161106-154820-largejpg.jpg?w=2000&h=-1&s=1", description: "Miniatur Wunderland is the world’s largest model train exhibit, and still growing. See trains running through recreations of Hamburg and the coast, Austria, the Grand Canyon and Scandinavia.", cost: 33},
+                    {name: "Reichstag Building", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/0a/95/23/when-in-berlin-a-visit.jpg?w=1400&h=-1&s=1", description: "Situated just north of the Brandenburg Gate, this building houses the German Parliament and was the seat of the Weimar Republic government until it was seized by the Nazis in 1933.", cost: 21},
+                ]
+            },
+            france: {
+                flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Flag_of_France.svg/1024px-Flag_of_France.svg.png',
+                attractions: [
+                    {name: "Eiffel Tower", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1b/15/a3/a1/c-emeric-livinec-sete.jpg?w=1400&h=-1&s=1", description: "Completed in 1889, this colossal landmark, although initially hated by many Parisians, is now a famous symbol of French civic pride.", cost: 55},
+                    {name: "Louvre Museum", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/4f/70/dc/cour-napoleon-et-pyramide.jpg?w=1200&h=-1&s=1", description: "As one of the largest, oldest, and grandest museums in the world, the Louvre hosts a treasure trove of artworks spanning diverse cultures and periods of history. Marvel at the museum’s greatest hits: the Mona Lisa, the Venus de Milo, Winged Victory, and stunning collections of prized paintings and Greek and Roman statues. It’s not possible to see all of the museum in one visit, so be inspired to return for your next trip to Paris. Buy timed-entry tickets online to skip the lines as the museum is usually packed. You can also join a guided tour to enjoy a curated experience organized and led by an expert. – Tripadvisor", cost: 45},
+                    {name: "Disneyland Paris", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/26/92/e4/97/disneyland-paris.jpg?w=1400&h=-1&s=1", description: "Since opening in 1992, Disneyland Paris® has welcomed hundreds of millions of guests through its gates, making it Europe's number-one tourist destination. With the majestic Sleeping Beauty castle as its heart, Disneyland park is the fantastical home to five incredible lands. For 30 magical years, it's been the place where extraordinary stories come to life before your very eyes. Buckle up because you’re about to whizz around Discoveryland, Fantasyland, Frontierland, Adventureland, and Main Street U.S.A.®", cost: 56}
+                ]
+            },
+            italy: {
+                flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/03/Flag_of_Italy.svg/2560px-Flag_of_Italy.svg.png',
+                attractions: [
+                    {name: "Colosseum", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/eb/91/d1/il-colosseo-di-roma-visto.jpg?w=1400&h=-1&s=1", description: "The ancient Flavian Amphitheater was built by the Flavian emperors in 70 C.E. as a gift to the Roman people. As the largest Roman theater ever built, it was designed to house over 50,000 people, and had played host to gladiator games, plays and even public executions. ", cost: 33},
+                    {name: "Pantheon", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/c9/c7/87/caption.jpg?w=1400&h=-1&s=1", description: "Dedicated to the seven planetary divinities and featuring an interior of gorgeous marble, the Pantheon is one of the most impressive monuments of Augustan Rome.", cost: 5},
+                    {name: "Fontana di Trevi", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/21/59/9f/21/caption.jpg?w=1400&h=-1&s=1", description: "Certainly the most famous and photographed fountain in Rome, legend has it that whoever throws a coin into the pond will return to Rome.", cost: 0}
+                ]
+            },
+            spain: {
+                flag: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_Spain.svg/1280px-Flag_of_Spain.svg.png',
+                attractions: [
+                    {name: "Basílica de la Sagrada Familia", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/16/8c/16/fa/photo4jpg.jpg?w=1400&h=-1&s=1", description: "Basilica de la Sagrada Familia is a church devoted to the Holy Family. One of Antoni Gaudi’s most famous works, the church is perhaps best known for still being under construction since 1882—with works funded purely by donations. Take a lift to the top of the towers for a panoramic view of the city and marvel at the ornate architecture. The nativity facade and crypt have also been awarded UNESCO World Heritage Status. Skip the line with a pre-booked tour with tower access, or combine your visit with another of Gaudi's work, Parc Guell. – Tripadvisor", cost: 8},
+                    {name: "Casa Batlló", photo: "https://dynamic-media-cdn.tripadvisor.com/media/daodao/photo-o/19/ac/b2/a5/caption.jpg?w=1400&h=-1&s=1", description: "Welcome to Barcelona's magical house. A Gaudí masterpiece. A unique immersive experience. International Exhibition of the Year 2022. Children free up to 12 years old.", cost: 40},
+                    {name: "The Alhambra", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/cc/bb/5f/a-sample-of-some-of-the.jpg?w=1400&h=-1&s=1", description: "The second most visited site in Europe: this breathtaking palace-city is a sophisticated blend of medieval Islamic, Renaissance Christian and modern architectural styles.", cost: 56}
+                ]
+            },
+            japan: {
+                flag: 'https://upload.wikimedia.org/wikipedia/en/thumb/9/9e/Flag_of_Japan.svg/800px-Flag_of_Japan.svg.png',
+                attractions: [
+                    {name: "Kinkakuji Temple", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/10/44/1a/a9/caption.jpg?w=1400&h=-1&s=1", description: "One of Kyoto's most famous attractions, this temple was originally built in 1397 as a residence for shogun Ashikaga Yoshimitsu. The structure was completely covered in gold leaf, earning it the name Golden Pavilion.", cost: 0},
+                    {name: "teamLab Planets TOKYO", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/3d/68/26/floating-flower-garden.jpg?w=1200&h=-1&s=1", description: "teamLab Planets (Toyosu, Tokyo) is a museum where you walk through water, and a garden where you become one with the flowers. It comprises 4 large-scale artwork spaces and 2 gardens created by art collective teamLab. teamLab Planets Recognized by GUINNESS WORLD RECORDS™ as the most visited museum (single art group) in the world.", cost: 27},
+                    {name: "Nara Park", photo: "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0b/35/6d/56/photo0jpg.jpg?w=2000&h=-1&s=1", description: "Alongside Naramachi and Nishinokyo, Nara Park is one of the must-see areas in Nara City. The vast area covers 660 hectares and is renowned for its free-roaming deer and world famous temples. Feeding the deer is an attraction in itself and special crackers are on sale all around the park. For human refreshments, there are traditional tea houses as well as kiosks selling snacks and souvenirs.", cost: 0}
+                ]
+            },
+        };
+
+        let selectedAttractions = [];
+
+        function displayInfo() {
+            const countrySelect = document.getElementById('country');
+            const selectedCountry = countrySelect.value;
+            const countryInfoDiv = document.getElementById('country-info');
+            const totalCostDiv = document.getElementById('total-cost');
+
+            countryInfoDiv.innerHTML = '';
+            totalCostDiv.innerHTML = '';
+
+            if (selectedCountry) {
+                const selectedCountryData = countryData[selectedCountry];
+                const flagImg = document.createElement("img");
+                flagImg.src = selectedCountryData.flag;
+                flagImg.alt = `${selectedCountry} flag`;
+                countryInfoDiv.appendChild(flagImg);
+
+                const attractionsDiv = document.createElement('div');
+                let totalCost = 0;
+
+                selectedCountryData.attractions.forEach(attraction => {
+                    const attractionDiv = document.createElement("div");
+                    const photoImg = document.createElement("img");
+                    photoImg.src = attraction.photo;
+                    photoImg.alt = attraction.name;
+                    attractionDiv.appendChild(photoImg);
+
+                    const nameHeading = document.createElement("h3");
+                    nameHeading.textContent = attraction.name;
+                    attractionDiv.appendChild(nameHeading);
+
+                    const descriptionPara = document.createElement("p");
+                    descriptionPara.textContent = attraction.description;
+                    attractionDiv.appendChild(descriptionPara);
+
+                    const pricePara = document.createElement("p");
+                    pricePara.textContent = `Price: $${attraction.cost}`;
+                    attractionDiv.appendChild(pricePara);
+
+                    const checkbox = document.createElement("input");
+                    checkbox.type = "checkbox";
+                    checkbox.value = attraction.name;
+                    checkbox.dataset.price = attraction.cost;
+                    checkbox.checked = selectedAttractions.includes(attraction.name);
+                    checkbox.addEventListener("change", updateTotalCost);
+                    attractionDiv.appendChild(checkbox);
+
+                    attractionsDiv.appendChild(attractionDiv);
+                    totalCost += attraction.cost;
+                });
+
+                countryInfoDiv.appendChild(attractionsDiv);
+
+                const totalCostHeading = document.createElement("h3");
+                totalCostHeading.textContent = `Total Cost: $${calculateTotalCost()}`;
+                totalCostDiv.appendChild(totalCostHeading);
+            }
+
+            function updateTotalCost(event) {
+                const checkbox = event.target;
+                const attractionName = checkbox.value;
+                const attractionPrice = parseInt(checkbox.dataset.price);
+
+                if (checkbox.checked) {
+                    selectedAttractions.push(attractionName);
+                } else {
+                    selectedAttractions = selectedAttractions.filter(name => name !== attractionName);
+                }
+
+                const totalCostHeading = document.querySelector("#total-cost h3");
+                totalCostHeading.textContent = `Total Cost: $${calculateTotalCost()}`;
+            }           
+
+            function calculateTotalCost() {
+                let totalCost = 0;
+                for (const country in countryData) {
+                    const countryAttractions = countryData[country].attractions;
+                    for (const attraction of countryAttractions) {
+                        if (selectedAttractions.includes(attraction.name)) {
+                            totalCost += attraction.cost;
+                        }
+                    }
+                }
+                return totalCost;
+            }
+        }
+    </script>
+</body>
+</html>
