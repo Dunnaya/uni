@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lec 18</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 700px;
+        }
+        h1 {
+            text-align: left;
+            color: #333;
+        }
+        .chart {
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            height: 300px;
+            padding: 20px 0;
+            border-bottom: 2px solid #333;
+            margin-bottom: 10px;
+        }
+        .bar {
+            width: 60px;
+            border-radius: 5px 5px 0 0;
+            position: relative;
+            transition: height 0.5s ease;
+            display: flex;
+            justify-content: center;
+        }
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            font-weight: bold;
+        }
+        .bar-label {
+            text-align: center;
+            font-weight: bold;
+        }
+        .category-labels {
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>A simple histogram of sales by category:</h1>
+        <div class="chart" id="chart">
+
+        </div>
+        <div class="category-labels" id="labels">
+        
+        </div>
+    </div>
+
+    <script>
+        const salesData = [
+            { category: "Accessories", sales: 1200 },
+            { category: "Clothing", sales: 950 },
+            { category: "Electronics", sales: 1500 },
+            { category: "Furniture", sales: 750 }
+        ];
+        
+        const maxSales = Math.max(...salesData.map(item => item.sales));
+        
+        const chartContainer = document.getElementById('chart');
+        const labelsContainer = document.getElementById('labels');
+        
+        salesData.forEach(item => {
+            const barHeight = (item.sales / maxSales) * 250;
+            
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.height = '0';
+            
+            const barValue = document.createElement('div');
+            barValue.className = 'bar-value';
+            barValue.textContent = item.sales;
+            bar.appendChild(barValue);
+            
+            chartContainer.appendChild(bar);
+            
+            const categoryLabel = document.createElement('div');
+            categoryLabel.className = 'bar-label';
+            categoryLabel.textContent = item.category;
+            labelsContainer.appendChild(categoryLabel);
+            
+            setTimeout(() => {
+                bar.style.height = `${barHeight}px`;
+            }, 100);
+        });
+        
+        const colors = ['#364AB6', '#F2304F', '#5CDD2C', '#FFC433'];
+        document.querySelectorAll('.bar').forEach((bar, index) => {
+            bar.style.backgroundColor = colors[index % colors.length];
+        });
+    </script>
+</body>
+</html>
