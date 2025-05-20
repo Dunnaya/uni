@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test2 Task4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .text-edit {
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .text-edit-tools {
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .text-edit-tools button {
+            border: none;
+            background-color: #ddd;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+        .text-edit-tools button:hover {
+            background-color: #ccc;
+        }
+        .text-edit-tools .color-pick {
+            height: 32px;
+            padding: 0 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }    
+        .text-edit-area, .preview-area {
+            width: 100%;
+            min-height: 250px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            box-sizing: border-box;
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <h2>Text Editor</h2>
+    <div class="text-edit">
+        <div class="text-edit-tools">
+            <button id="bold-btn" title="Bold">B</button>
+            <button id="italic-btn" title="Italic">I</button>
+            <button id="underline-btn" title="Underline">U</button>
+            <input type="color" id="color-pick" class="color-pick" title="Font color">
+            <button id="upper-btn" title="UPPER CASE">AA</button>
+            <button id="lower-btn" title="lower case">aa</button>
+            <button id="tomato-btn">🍅</button>
+        </div>
+        <div contenteditable="true" class="text-edit-area" id="editor">
+            I love tomatoes <3
+        </div>
+        <h4>Preview:</h4>
+        <div class="preview-area" id="preview"></div>
+    </div>
+    
+    <script>
+        const editor = document.getElementById('editor');
+        const preview = document.getElementById('preview');
+        const boldBtn = document.getElementById('bold-btn');
+        const italicBtn = document.getElementById('italic-btn');
+        const underlineBtn = document.getElementById('underline-btn');
+        const colorPicker = document.getElementById('color-pick');
+        const uppercaseBtn = document.getElementById('upper-btn');
+        const lowercaseBtn = document.getElementById('lower-btn');
+        const tomatoBtn = document.getElementById('tomato-btn');
+        
+        editor.addEventListener('input', () => {
+            preview.innerHTML = editor.innerHTML;
+        });
+        boldBtn.addEventListener('click', () => {
+            document.execCommand('bold', false, null);
+            editor.focus();
+        });     
+        italicBtn.addEventListener('click', () => {
+            document.execCommand('italic', false, null);
+            editor.focus();
+        });       
+        underlineBtn.addEventListener('click', () => {
+            document.execCommand('underline', false, null);
+            editor.focus();
+        });       
+        colorPicker.addEventListener('input', () => {
+            document.execCommand('foreColor', false, colorPicker.value);
+            editor.focus();
+        });    
+        uppercaseBtn.addEventListener('click', () => {
+            formatText('uppercase');
+        });
+        lowercaseBtn.addEventListener('click', () => {
+            formatText('lowercase');
+        });
+        tomatoBtn.addEventListener('click', () => {
+            document.execCommand('insertText', false, '🍅');
+            editor.focus();
+        });
+
+        function formatText(caseType) 
+        {
+            const selection = window.getSelection();
+            
+            if (selection.rangeCount > 0) 
+            {
+                const range = selection.getRangeAt(0);
+                const selectedText = range.toString();
+                
+                if (selectedText) 
+                {
+                    const newText = caseType === 'uppercase' ? selectedText.toUpperCase() : selectedText.toLowerCase();
+                    document.execCommand('insertText', false, newText);
+                    editor.focus();
+                }
+            }
+        }
+
+        preview.innerHTML = editor.innerHTML;
+    </script>
+</body>
+</html>
