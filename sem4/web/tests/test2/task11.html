@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test2 Task11</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 30px;
+            line-height: 1.5;
+        }
+        .description {
+            color: #666;
+        }
+        .content {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .tooltip {
+            position: relative;
+            border-bottom: 1px dotted blue;
+            color: blue;
+            cursor: help;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: #444444ee;
+            color: rgb(198, 225, 255);
+            text-align: center;
+            padding: 5px;
+            border-radius: 5px;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .controls {
+            background-color: white;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+        }
+        button {
+            padding: 5px 20px;
+            background-color: rgb(77, 77, 255);
+            border-radius: 5px;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: blue;
+        }
+        input, textarea {
+            width: 300px;
+            max-width: 99%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tooltip visual element</h1>
+    
+    <div class="content" id="content">
+        <p>This is a demo text of a web page. <span class="tooltip">HTML<span class="tooltip-text">HyperText Markup Language</span></span> is used to create the structure of a page. <span class="tooltip">CSS<span class="tooltip-text">Cascading Style Sheets</span></span> is responsible for styles. <span class="tooltip">JS<span class="tooltip-text">JavaScript - a programming language and core technology of the World Wide Web, alongside HTML and CSS.</span></span> is used to add interactivity and dynamic behavior to the page.</p>
+        
+        <p class="description">* On this page, you can select any text and add a tooltip to it that will appear when you hover your mouse over it.</p>
+    </div>
+    
+    <div class="controls">
+        <h3>Creating a new tooltip</h3>
+        <p>1. Select text on the page</p>
+        <p>2. Enter tooltip text</p>
+        <textarea id="tooltip-text" rows="3" placeholder="Enter tooltip text here =)"></textarea><br>
+        <button id="add-tooltip">Add tooltip</button>
+    </div>
+
+    <script>
+        const content = document.getElementById('content');
+        const tooltipTextArea = document.getElementById('tooltip-text');
+        const addTooltipButton = document.getElementById('add-tooltip');
+        
+        let selection;
+        let range;
+        
+        addTooltipButton.addEventListener('click', function() {
+            selection = window.getSelection();
+            
+            if (selection.toString().trim() === '') 
+            {
+                alert('Select text on the page first');
+                return;
+            }
+
+            const tooltipContent = tooltipTextArea.value.trim();
+            if (tooltipContent === '') 
+            {
+                alert('Enter tooltip text');
+                return;
+            }
+            
+            range = selection.getRangeAt(0);
+            
+            // create a span element for the tooltip
+            const tooltipSpan = document.createElement('span');
+            tooltipSpan.className = 'tooltip';
+            
+            const tooltipTextSpan = document.createElement('span');
+            tooltipTextSpan.className = 'tooltip-text';
+            tooltipTextSpan.textContent = tooltipContent;
+            
+            const selectedContent = range.extractContents();
+            tooltipSpan.appendChild(selectedContent);
+            tooltipSpan.appendChild(tooltipTextSpan);
+            
+            range.insertNode(tooltipSpan);
+            
+            tooltipTextArea.value = '';
+            selection.removeAllRanges();
+        });
+    </script>
+</body>
+</html>
