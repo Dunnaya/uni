@@ -19,6 +19,8 @@
     margin-left: 3%;
     justify-content: left;
     flex-direction: row;
+    position: absolute;
+    left: 0;
 }
 h1 {
     font-size: 40px;
@@ -39,6 +41,8 @@ h1 {
     margin-right: 3%;
     justify-content: right;
     flex-direction: column;
+    position: absolute;
+    right: 0;
 }
 #block3 p {
     color: #4c3442a4;

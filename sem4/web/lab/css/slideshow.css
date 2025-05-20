@@ -25,11 +25,9 @@
     right: 0;
     border-radius: 3px 0 0 3px;
 }
-/* On hover, add a black background color with a little bit see-through */
 .prev:hover, .next:hover {
     background-color: #6b495db1;
 }
-/* The dots/bullets/indicators */
 .dot {
     cursor: pointer;
     height: 15px;
@@ -43,7 +41,6 @@
 .active, .dot:hover {
     background-color: #6b495d;
 }
-/* Fading animation */
 .fade {
     animation-name: fade;
     animation-duration: 1.5s;
