@@ -8,7 +8,7 @@ body {
     height: 100%;
     overflow: auto;
     display: flex;
-    flex-direction: column;     
+    flex-direction: column;
 }
 .content-wrapper {
     background-color: #DED6DB;
@@ -60,8 +60,16 @@ body {
     font-weight: bolder;
     text-shadow: #8E627C 0 0 12px;
 }
+.content-wrapper-bottom {
+    background-color: #DED6DB;
+    display: flex;
+    justify-content: flex-end;
+    padding-left: 3%;
+    padding-right: 3%;
+}
 .content-bottom {
     text-shadow: #8E627C 0 0 12px;
+    max-width: 45%;
     margin: 35px;
     font-size: 16px;
     line-height: 1.5;
@@ -101,10 +109,15 @@ body {
         flex-direction: column;
         align-items: center;
     }
-    .content-wrapper {
+    .content-wrapper, .content-wrapper-bottom {
+        display: flex;
         flex-direction: column;
         padding-left: 5%;
         padding-right: 5%;
+    }
+    .content-bottom {
+        max-width: 90%;
+        margin: 20px;
     }
 }
 @media (max-width: 480px) {

@@ -10,8 +10,15 @@
     justify-content: center;
     left: 0;
     width: 100%;
+    min-height: 100px;
     margin-top: 195px;
     font-family: 'Times New Roman', Times, serif;
+}
+.left {
+    left: 0;
+}
+.right {
+    right: 0;
 }
 .foot-ref {
     color: #F7F7F7;
@@ -29,6 +36,7 @@
     justify-content: center;
     margin-left: 15%;
     margin-right: 15%;
+    position: absolute;
 }
 footer p, footer ul {
     color: #F7F7F7;
@@ -45,5 +53,8 @@ footer p, footer ul {
     footer p {
         font-size: 12px;
         margin: 5px 0;
+    }
+    .footer-div {
+        position: relative;
     }
 }
