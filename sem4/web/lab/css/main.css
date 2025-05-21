@@ -9,6 +9,9 @@ body {
     overflow: auto;
     display: flex;
     flex-direction: column;
+    justify-content:space-between;
+    min-height: 100vh;
+    margin:0;
 }
 .content-wrapper {
     background-color: #DED6DB;
@@ -26,7 +29,7 @@ body {
     flex: 1;
     width: 70%;
     height: 100%;
-    top: 197px;
+    top: 55px;
     left: 15%;
     padding-top: 10px;
 }
