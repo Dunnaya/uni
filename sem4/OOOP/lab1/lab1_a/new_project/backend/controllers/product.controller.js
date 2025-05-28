@@ -1,115 +1,72 @@
-/**
- * Product controller functions
- * @module controllers/product
- */
-
-import mongoose from "mongoose";
+// controllers/product.controller.js
+import { ProductService } from "../services/ProductService.js";
+import { ProductValidationStrategy } from "../validation/ValidationStrategy.js";
+import { ResponseDirector } from "../utils/responseBuilder.js";
+import { MongooseAdapter } from "../adapters/DatabaseAdapter.js";
 import Product from "../models/product.model.js";
-import { validateProduct } from "../utils/validators.js";
+import User from "../models/user.model.js";
 
-/**
- * Get all products
- * @async
- * @function getProducts
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @returns {Object} JSON with success status and array of products
- */
+const databaseAdapter = new MongooseAdapter({ Product, User });
+const validationStrategy = new ProductValidationStrategy();
+const responseDirector = new ResponseDirector();
+const productService = new ProductService(databaseAdapter, validationStrategy, responseDirector);
+
 export const getProducts = async (req, res) => {
-	try {
-		const products = await Product.find({});
-		res.status(200).json({ success: true, data: products });
-	} catch (error) {
-		console.log("error in fetching products:", error.message);
-		res.status(500).json({ success: false, message: "Server Error" });
-	}
+  try {
+    const result = await productService.getAllProducts();
+    const statusCode = result.success ? 200 : 500;
+    res.status(statusCode).json(result);
+  } catch (error) {
+    const errorResponse = responseDirector.buildErrorResponse(
+      error.message,
+      'Failed to fetch products'
+    );
+    res.status(500).json(errorResponse);
+  }
 };
 
-/**
- * Create a new product
- * @async
- * @function createProduct
- * @param {Object} req - Express request object
- * @param {Object} req.body - Request body containing product data
- * @param {string} req.body.name - Product name
- * @param {number} req.body.price - Product price
- * @param {string} req.body.image - Product image URL
- * @param {string} [req.body.description] - Optional product description
- * @param {Object} res - Express response object
- * @returns {Object} JSON with success status and created product data
- */
 export const createProduct = async (req, res) => {
-    // validate the product data
-    const validation = validateProduct(req.body);
-    if (!validation.isValid) {
-        return res.status(400).json({
-            success: false,
-            message: validation.errors.join(', ')
-        });
-    }
-
-    const { name, price, image, description } = validation.sanitizedData;
-
-    try {
-        const newProduct = new Product({ name, price, image, description });
-        await newProduct.save();
-        res.status(201).json({ success: true, data: newProduct });
-    } catch (error) {
-        console.error("Error in Create product:", error.message);
-        res.status(500).json({ success: false, message: "Server Error" });
-    }
+  try {
+    const userId = req.user?.id;
+    const result = await productService.createProduct(req.body, userId);
+    const statusCode = result.success ? 201 : 400;
+    res.status(statusCode).json(result);
+  } catch (error) {
+    const errorResponse = responseDirector.buildErrorResponse(
+      error.message,
+      'Failed to create product'
+    );
+    res.status(500).json(errorResponse);
+  }
 };
 
-/**
- * Update a product by ID
- * @async
- * @function updateProduct
- * @param {Object} req - Express request object
- * @param {Object} req.params - URL parameters
- * @param {string} req.params.id - Product ID to update
- * @param {Object} req.body - Request body with updated product data
- * @param {Object} res - Express response object
- * @returns {Object} JSON with success status and updated product data
- */
 export const updateProduct = async (req, res) => {
-	const { id } = req.params;
-
-	const product = req.body;
-
-	if (!mongoose.Types.ObjectId.isValid(id)) {
-		return res.status(404).json({ success: false, message: "Invalid Product Id" });
-	}
-
-	try {
-		const updatedProduct = await Product.findByIdAndUpdate(id, product, { new: true });
-		res.status(200).json({ success: true, data: updatedProduct });
-	} catch (error) {
-		res.status(500).json({ success: false, message: "Server Error" });
-	}
+  try {
+    const { id } = req.params;
+    const userId = req.user?.id;
+    const result = await productService.updateProduct(id, req.body, userId);
+    const statusCode = result.success ? 200 : (result.message.includes('not found') ? 404 : 400);
+    res.status(statusCode).json(result);
+  } catch (error) {
+    const errorResponse = responseDirector.buildErrorResponse(
+      error.message,
+      'Failed to update product'
+    );
+    res.status(500).json(errorResponse);
+  }
 };
 
-/**
- * Delete a product by ID
- * @async
- * @function deleteProduct
- * @param {Object} req - Express request object
- * @param {Object} req.params - URL parameters
- * @param {string} req.params.id - Product ID to delete
- * @param {Object} res - Express response object
- * @returns {Object} JSON with success status and confirmation message
- */
 export const deleteProduct = async (req, res) => {
-	const { id } = req.params;
-
-	if (!mongoose.Types.ObjectId.isValid(id)) {
-		return res.status(404).json({ success: false, message: "Invalid Product Id" });
-	}
-
-	try {
-		await Product.findByIdAndDelete(id);
-		res.status(200).json({ success: true, message: "Product deleted" });
-	} catch (error) {
-		console.log("error in deleting product:", error.message);
-		res.status(500).json({ success: false, message: "Server Error" });
-	}
+  try {
+    const { id } = req.params;
+    const result = await productService.deleteProduct(id);
+    const statusCode = result.success ? 200 : (result.message.includes('not found') ? 404 : 400);
+    res.status(statusCode).json(result);
+  } catch (error) {
+    const errorResponse = responseDirector.buildErrorResponse(
+      error.message,
+      'Failed to delete product'
+    );
+    res.status(500).json(errorResponse);
+  }
 };
