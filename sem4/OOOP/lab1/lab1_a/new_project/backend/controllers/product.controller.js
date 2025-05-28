@@ -5,6 +5,7 @@
 
 import mongoose from "mongoose";
 import Product from "../models/product.model.js";
+import { validateProduct } from "../utils/validators.js";
 
 /**
  * Get all products
@@ -38,21 +39,25 @@ export const getProducts = async (req, res) => {
  * @returns {Object} JSON with success status and created product data
  */
 export const createProduct = async (req, res) => {
-	const product = req.body; // user will send this data
+    // validate the product data
+    const validation = validateProduct(req.body);
+    if (!validation.isValid) {
+        return res.status(400).json({
+            success: false,
+            message: validation.errors.join(', ')
+        });
+    }
 
-	if (!product.name || !product.price || !product.image) {
-		return res.status(400).json({ success: false, message: "Please provide all fields" });
-	}
+    const { name, price, image, description } = validation.sanitizedData;
 
-	const newProduct = new Product(product);
-
-	try {
-		await newProduct.save();
-		res.status(201).json({ success: true, data: newProduct });
-	} catch (error) {
-		console.error("Error in Create product:", error.message);
-		res.status(500).json({ success: false, message: "Server Error" });
-	}
+    try {
+        const newProduct = new Product({ name, price, image, description });
+        await newProduct.save();
+        res.status(201).json({ success: true, data: newProduct });
+    } catch (error) {
+        console.error("Error in Create product:", error.message);
+        res.status(500).json({ success: false, message: "Server Error" });
+    }
 };
 
 /**
