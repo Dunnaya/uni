@@ -25,6 +25,7 @@ import { useProductStore } from "../store/product";
 import { useAuthStore } from "../store/auth";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { productStore } from "../store/productStore";
 
 /**
  * @file Product Card component for displaying individual products
@@ -69,23 +70,12 @@ const ProductCard = ({ product }) => {
   const handleDeleteProduct = async (pid) => {
     const { success, message } = await deleteProduct(pid);
     if (!success) {
-      toast({
-        title: "Error",
-        description: message,
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
+        toast({ title: "Error", description: message, status: "error", duration: 3000, isClosable: true });
     } else {
-      toast({
-        title: "Success",
-        description: message,
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
+        productStore.removeProduct(pid); // здесь обновляем Observer
+        toast({ title: "Success", description: message, status: "success", duration: 3000, isClosable: true });
     }
-  };
+};
 
   /**
  * Handles updating a product's details (admin only)
