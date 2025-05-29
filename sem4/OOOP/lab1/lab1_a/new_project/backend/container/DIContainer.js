@@ -1,3 +1,10 @@
+import Product from "../models/product.model.js";
+import User from "../models/user.model.js";
+import { MongooseAdapter } from "../adapters/DatabaseAdapter.js";
+import { ProductValidationStrategy, UserValidationStrategy } from "../validation/ValidationStrategy.js";
+import { ResponseDirector } from "../utils/responseBuilder.js";
+import { ProductService } from "../services/ProductService.js";
+
 export class DIContainer {
   constructor() {
     this.services = new Map();
@@ -24,14 +31,23 @@ export class DIContainer {
 
     return service.factory(this);
   }
+
+  has(name) {
+    return this.services.has(name);
+  }
+
+  clear() {
+    this.services.clear();
+    this.singletons.clear();
+  }
 }
 
 export function setupDIContainer() {
   const container = new DIContainer();
 
   container.register('models', () => ({
-    Product: Product,
-    User: User
+    Product,
+    User
   }), true);
 
   container.register('databaseAdapter', (c) => 

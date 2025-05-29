@@ -37,6 +37,8 @@ export class LoggingDecorator extends MiddlewareDecorator {
       this.logger.log(`[${new Date().toISOString()}] ${method} ${url} - IP: ${ip}`);
       
       const originalJson = res.json;
+      const logger = this.logger;
+      
       res.json = function(data) {
         const duration = Date.now() - start;
         logger.log(`[${new Date().toISOString()}] ${method} ${url} - Completed in ${duration}ms`);
