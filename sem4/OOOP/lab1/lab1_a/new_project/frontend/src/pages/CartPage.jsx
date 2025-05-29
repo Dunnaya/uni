@@ -69,7 +69,7 @@ const CartPage = () => {
   const handleCheckout = () => {
     toast({
       title: 'Checkout Process',
-      description: 'Checkout functionality can be implemented here',
+      description: 'Checkout functionality would not be implemented in this project',
       status: 'info',
       duration: 3000,
       isClosable: true,
