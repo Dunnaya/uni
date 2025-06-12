@@ -1,4 +1,4 @@
-# uni
+# 🚬 uni
 
 My university stuff ^-^  
 tg: @healdestruction
@@ -36,21 +36,21 @@ tg: @healdestruction
     <td rowspan="2"><a>2 course</a></td>
     <td>sem 3</td>
     <td>
-        <li><a href="./sem3/DSM">Dynamic Systems Management</a></li>
         <li><a href="./sem3/TA">Theory of Algorithms and Math Logics</a></li>
         <li><a href="./sem3/Algorithms">Algorithms and Complexity</a></li>
         <li><a href="./sem3/OOP">OOP</a></li>
+        <li><a href="./sem3/DSM">Dynamic Systems Management</a></li>
         <li><a href="./sem3/PT&MS">Probability Theory & Mathematical Statistics</a></li>
     </td>
   </tr>
   <tr>
     <td>sem 4</td>
     <td>
-        <li><a href="./sem4/GA">General Algebra</a></li>
-        <li><a href="./sem4/OR">Operations Research</a></li>
         <li><a href="./sem4/ML">Theory of Algorithms and Math Logics</a></li>
         <li><a href="./sem4/Algorithms">Algorithms and Complexity</a></li>
         <li><a href="./sem4/OOOP">OOOP</a></li>
+        <li><a href="./sem4/GA">General Algebra</a></li>
+        <li><a href="./sem4/OR">Operations Research</a></li>
         <li><a href="./sem4/DB">Organization of Databases</a></li>
         <li><a href="./sem4/web">Web</a></li>
     </td>
