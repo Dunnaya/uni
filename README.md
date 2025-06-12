@@ -1,6 +1,6 @@
 # uni
 
-My university stuff ^-^
+My university stuff ^-^  
 tg: @healdestruction
 
 <table>
@@ -52,7 +52,7 @@ tg: @healdestruction
         <li><a href="./sem4/Algorithms">Algorithms and Complexity</a></li>
         <li><a href="./sem4/OOOP">OOOP</a></li>
         <li><a href="./sem4/DB">Organization of Databases</a></li>
-        <li><a href="./sem4/Web">Web</a></li>
+        <li><a href="./sem4/web">Web</a></li>
     </td>
   </tr>
 </table>
