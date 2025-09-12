@@ -1,7 +1,6 @@
-# 🚬 uni
+# uni
 
-My university stuff ^-^  
-tg: @healdestruction
+My labs and study materials
 
 <table>
   <tr>
@@ -53,6 +52,19 @@ tg: @healdestruction
         <li><a href="./sem4/OR">Operations Research</a></li>
         <li><a href="./sem4/DB">Organization of Databases</a></li>
         <li><a href="./sem4/web">Web</a></li>
+    </td>
+  </tr>
+  <tr>
+    <td rowspan="2"><a>3 course</a></td>
+    <td>sem 5</td>
+    <td>
+        <li><a href="./sem5/OS">Operating Systems</a></li>
+        <li><a href="./sem5/DC">Distributed Computing</a></li>
+        <li><a href="./sem5/NM">Numerical Methods</a></li>
+        <li><a href="./sem5/CSM">Complex Systems Modeling</a></li>
+        <li><a href="./sem5/NoSQL">NoSQL</a></li>
+        <li><a href="./sem5/OOP">OOP</a></li>
+        <li><a href="./sem5/Philosophy">Philosophy</a></li>
     </td>
   </tr>
 </table>
