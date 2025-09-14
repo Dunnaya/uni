@@ -50,13 +50,20 @@ def plotDFTModules(
         saveImgPath: str
 ) -> None:
     numSamples = len(modulesDFT)
-    frequencies = []
-    for k in range(1, numSamples):
-        frequencies.append(k * deltaF)
+    # frequencies = []
+    # for k in range(1, numSamples):
+    #     frequencies.append(k * deltaF)
     
-    plt.plot(frequencies, modulesDFT[1:numSamples])
+    # plt.plot(frequencies, modulesDFT[1:numSamples])
+
+    halfModules = modulesDFT[:numSamples//2]
+    frequencies = np.arange(len(halfModules)) * deltaF
+    
+    plt.plot(frequencies, halfModules)
+
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Amplitude")
+    plt.grid(True)
     plt.savefig(saveImgPath)
     plt.show()
 
