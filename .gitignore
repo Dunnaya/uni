@@ -1,2 +1,7 @@
 .vscode/
 .DS_Store
+
+/target/
+*.iml
+.idea/
+*.class
