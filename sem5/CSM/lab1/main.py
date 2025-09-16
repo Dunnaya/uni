@@ -74,20 +74,12 @@ def plotDFTModules(
     plt.xlabel("Frequency (Hz)")
     plt.ylabel("Amplitude")
     plt.grid(True)
+    plt.title("DFT Amplitude Spectrum")
     plt.savefig(saveImgPath)
     plt.show()
 
 def fit_model(t, observations, peak_frequencies):
-    """
-    Підгонка моделі до спостережень методом least squares.
-    Сума поліноміального тренду (t^3, t^2, t) і синусоїд за піками частот.
-    """
     def model(t, a1, a2, a3, *params):
-        """
-        a1, a2, a3 — коефіцієнти поліноміального тренду
-        params — амплітуди і частоти синусоїд у порядку:
-                 [f1, f2, ..., an1, an2, ...]
-        """
         k = len(params) // 2
         y = a1 * t**3 + a2 * t**2 + a3 * t
         for i in range(k):
@@ -96,7 +88,7 @@ def fit_model(t, observations, peak_frequencies):
             y += ai * np.sin(2 * np.pi * fi * t)
         return y
 
-    # початкові значення: тренд = 1, амплітуди = 1, частоти = знайдені піки
+    # starting guess for parameters
     initial_guess = [0, 0, 0] + peak_frequencies + [1]*len(peak_frequencies)
 
     params, covariance = curve_fit(model, t, observations, p0=initial_guess)
@@ -109,18 +101,19 @@ testDFT(observations)
 peak_frequencies = findFreqContribution(observations)
 print(peak_frequencies)
 
-# створюємо масив часу
+# time vector
 t = np.arange(len(observations)) * 0.01  # delta_t = 0.01
 
-# підгонка моделі
+# model fitting
 params, fitted_values = fit_model(t, observations, peak_frequencies)
 print("Found parameters:", params)
 
 plt.figure(figsize=(12, 6))
 plt.plot(t, observations, label='Observations')
 plt.plot(t, fitted_values, label='Fitted Model', linestyle='--')
+plt.legend()
 plt.xlabel('Time')
 plt.ylabel('y(t)')
 plt.title('Comparison of Observations and Fitted Model')
-plt.legend()
+plt.savefig("fitted_model_comparison.png")
 plt.show()
