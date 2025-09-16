@@ -3,9 +3,9 @@ package com.lab1.sweets;
 public abstract class Sweet 
 {
     private String name;
-    private double weight;
-    private double calories; // kcal
-    private double sugar; // all in grams
+    private double weight; // for 1 piece in grams
+    private double calories; // kcal/100g
+    private double sugar; // all in grams /100g
 
     public Sweet(String name, double weight, double calories, double sugar) 
     {
@@ -23,6 +23,6 @@ public abstract class Sweet
     @Override
     public String toString() 
     {
-        return name + " (Weight: " + weight + "g, Calories: " + calories + "kcal, Sugar: " + sugar + "g)";
+        return name + " (Weight: " + weight + "g, Calories: " + calories + " kcal/100g, Sugar: " + sugar + "g)";
     }
 }
