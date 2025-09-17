@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gifts xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:noNamespaceSchemaLocation="gift.xsd">
+    
+    <gift name="New Year Gift">
+        <chocolates>
+            <chocolate>
+                <name>Milka</name>
+                <weight>100.0</weight>
+                <calories>534.0</calories>
+                <sugar>59.0</sugar>
+                <cocoa>30%</cocoa>
+                <hasNuts>false</hasNuts>
+                <type>MILK</type>
+            </chocolate>
+            <chocolate>
+                <name>Roshen Dark</name>
+                <weight>85.0</weight>
+                <calories>551.0</calories>
+                <sugar>18.2</sugar>
+                <cocoa>80%</cocoa>
+                <hasNuts>true</hasNuts>
+                <type>DARK</type>
+            </chocolate>
+        </chocolates>
+        
+        <candies>
+            <candy>
+                <name>Chupa Chups</name>
+                <weight>12.0</weight>
+                <calories>370.0</calories>
+                <sugar>91.0</sugar>
+                <flavor>Strawberry</flavor>
+                <isHard>true</isHard>
+            </candy>
+            <candy>
+                <name>Cow</name>
+                <weight>15.0</weight>
+                <calories>379.0</calories>
+                <sugar>67.8</sugar>
+                <flavor>Caramel</flavor>
+                <isHard>false</isHard>
+            </candy>
+        </candies>
+        
+        <jellies>
+            <jelly>
+                <name>Haribo Bears</name>
+                <weight>3.0</weight>
+                <calories>392.0</calories>
+                <sugar>59.0</sugar>
+                <shape>Bear</shape>
+                <isSour>false</isSour>
+            </jelly>
+            <jelly>
+                <name>Sour Worms</name>
+                <weight>5.0</weight>
+                <calories>338.0</calories>
+                <sugar>75.0</sugar>
+                <shape>Worm</shape>
+                <isSour>true</isSour>
+            </jelly>
+        </jellies>
+    </gift>
+    
+</gifts>
