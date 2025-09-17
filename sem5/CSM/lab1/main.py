@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
-from scipy.optimize import least_squares
 from scipy.optimize import curve_fit
 
 def manualDFT(samples: np.ndarray) -> np.ndarray:
@@ -21,7 +20,7 @@ def testDFT(samples: np.ndarray) -> None:
     if(maxAbsoluteError < 1e-6):
         print("Custom DFT is ok")
     else:
-        print("You're stupid af!")
+        print("Oops! Custom DFT is incorrect")
         print(f"Max absolute error: {maxAbsoluteError}")
 
 def findFreqContribution(samples: np.ndarray, observInterval: int = 5):
