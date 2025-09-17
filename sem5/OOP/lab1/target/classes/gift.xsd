@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
+
+    <!-- root el. -->
+    <xs:element name="gifts" type="GiftsType"/>
+
+    <xs:complexType name="GiftsType">
+        <xs:sequence>
+            <xs:element name="gift" type="GiftType" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="GiftType">
+        <xs:sequence>
+            <xs:element name="chocolates" type="ChocolatesType" minOccurs="0"/>
+            <xs:element name="candies" type="CandiesType" minOccurs="0"/>
+            <xs:element name="jellies" type="JelliesType" minOccurs="0"/>
+        </xs:sequence>
+        <xs:attribute name="name" type="xs:string" use="required"/>
+    </xs:complexType>
+
+    <!-- chocolates -->
+    <xs:complexType name="ChocolatesType">
+        <xs:sequence>
+            <xs:element name="chocolate" type="ChocolateType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="ChocolateType">
+        <xs:sequence>
+            <xs:element name="n" type="xs:string"/>
+            <xs:element name="weight" type="xs:double"/>
+            <xs:element name="calories" type="xs:double"/>
+            <xs:element name="sugar" type="xs:double"/>
+            <xs:element name="cocoa" type="xs:string"/>
+            <xs:element name="hasNuts" type="xs:boolean"/>
+            <xs:element name="type" type="ChocolateTypeEnum"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="ChocolateTypeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="MILK"/>
+            <xs:enumeration value="DARK"/>
+            <xs:enumeration value="WHITE"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- candies -->
+    <xs:complexType name="CandiesType">
+        <xs:sequence>
+            <xs:element name="candy" type="CandyType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="CandyType">
+        <xs:sequence>
+            <xs:element name="n" type="xs:string"/>
+            <xs:element name="weight" type="xs:double"/>
+            <xs:element name="calories" type="xs:double"/>
+            <xs:element name="sugar" type="xs:double"/>
+            <xs:element name="flavor" type="xs:string"/>
+            <xs:element name="isHard" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- jellies -->
+    <xs:complexType name="JelliesType">
+        <xs:sequence>
+            <xs:element name="jelly" type="JellyType" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:complexType name="JellyType">
+        <xs:sequence>
+            <xs:element name="n" type="xs:string"/>
+            <xs:element name="weight" type="xs:double"/>
+            <xs:element name="calories" type="xs:double"/>
+            <xs:element name="sugar" type="xs:double"/>
+            <xs:element name="shape" type="xs:string"/>
+            <xs:element name="isSour" type="xs:boolean"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>
