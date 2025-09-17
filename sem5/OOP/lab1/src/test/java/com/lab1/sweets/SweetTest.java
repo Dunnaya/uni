@@ -1,4 +1,4 @@
-// ! might partly replace other tests
+// ! might partly replace other tests but i'll keep them, lol
 
 package com.lab1.sweets;
 
