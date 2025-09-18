@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <!-- root el. -->
+    <xs:element name="devices">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="device" type="DeviceType" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- complex type for device -->
+    <xs:complexType name="DeviceType">
+        <xs:sequence>
+            <xs:element name="n" type="xs:string"/>
+            <xs:element name="origin" type="xs:string"/>
+            <xs:element name="price" type="PriceType"/>
+            <xs:element name="type" type="ComponentType"/>
+            <xs:element name="critical" type="xs:boolean"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:ID" use="required"/>
+    </xs:complexType>
+
+    <!-- simple type for price with restrictions -->
+    <xs:simpleType name="PriceType">
+        <xs:restriction base="xs:decimal">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1000000"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- complex type for component characteristics -->
+    <xs:complexType name="ComponentType">
+        <xs:sequence>
+            <xs:element name="peripheral" type="xs:boolean"/>
+            <xs:element name="powerConsumption" type="PowerType"/>
+            <xs:element name="coolerPresent" type="xs:boolean"/>
+            <xs:element name="componentGroup" type="ComponentGroupType"/>
+            <xs:element name="ports" type="PortsType"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- simple type for power consumption -->
+    <xs:simpleType name="PowerType">
+        <xs:restriction base="xs:int">
+            <xs:minInclusive value="0"/>
+            <xs:maxInclusive value="1000"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- enumeration for component groups -->
+    <xs:simpleType name="ComponentGroupType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="input-output"/>
+            <xs:enumeration value="multimedia"/>
+            <xs:enumeration value="processing"/>
+            <xs:enumeration value="memory"/>
+            <xs:enumeration value="storage"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <!-- complex type for ports -->
+    <xs:complexType name="PortsType">
+        <xs:sequence>
+            <xs:element name="port" type="PortType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <!-- enumeration for port types -->
+    <xs:simpleType name="PortType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="COM"/>
+            <xs:enumeration value="USB"/>
+            <xs:enumeration value="LPT"/>
+            <xs:enumeration value="HDMI"/>
+            <xs:enumeration value="LGA1700"/>
+            <xs:enumeration value="DDR5"/>
+            <xs:enumeration value="DDR4"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

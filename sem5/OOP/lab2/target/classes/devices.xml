@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<devices xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="devices.xsd">
+    
+    <device id="device1">
+        <name>NVIDIA GeForce RTX 4070</name>
+        <origin>Taiwan</origin>
+        <price>25000</price>
+        <type>
+            <peripheral>false</peripheral>
+            <powerConsumption>220</powerConsumption>
+            <coolerPresent>true</coolerPresent>
+            <componentGroup>multimedia</componentGroup>
+            <ports>
+                <port>USB</port>
+                <port>HDMI</port>
+            </ports>
+        </type>
+        <critical>true</critical>
+    </device>
+
+    <device id="device2">
+        <name>Logitech MX Master 3</name>
+        <origin>China</origin>
+        <price>3500</price>
+        <type>
+            <peripheral>true</peripheral>
+            <powerConsumption>5</powerConsumption>
+            <coolerPresent>false</coolerPresent>
+            <componentGroup>input-output</componentGroup>
+            <ports>
+                <port>USB</port>
+            </ports>
+        </type>
+        <critical>false</critical>
+    </device>
+
+    <device id="device3">
+        <name>Intel Core i7-13700K</name>
+        <origin>USA</origin>
+        <price>18000</price>
+        <type>
+            <peripheral>false</peripheral>
+            <powerConsumption>125</powerConsumption>
+            <coolerPresent>false</coolerPresent>
+            <componentGroup>processing</componentGroup>
+            <ports>
+                <port>LGA1700</port>
+            </ports>
+        </type>
+        <critical>true</critical>
+    </device>
+
+    <device id="device4">
+        <name>Kingston Fury Beast 32GB</name>
+        <origin>Taiwan</origin>
+        <price>4500</price>
+        <type>
+            <peripheral>false</peripheral>
+            <powerConsumption>10</powerConsumption>
+            <coolerPresent>false</coolerPresent>
+            <componentGroup>memory</componentGroup>
+            <ports>
+                <port>DDR5</port>
+            </ports>
+        </type>
+        <critical>true</critical>
+    </device>
+
+</devices>
