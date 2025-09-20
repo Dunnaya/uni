@@ -13,7 +13,7 @@
     <!-- complex type for device -->
     <xs:complexType name="DeviceType">
         <xs:sequence>
-            <xs:element name="n" type="xs:string"/>
+            <xs:element name="name" type="xs:string"/>
             <xs:element name="origin" type="xs:string"/>
             <xs:element name="price" type="PriceType"/>
             <xs:element name="type" type="ComponentType"/>
