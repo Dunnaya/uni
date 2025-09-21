@@ -32,18 +32,16 @@ public class SaxParser {
     }
     
     // inner class to handle SAX events
-    private static class DeviceHandler extends DefaultHandler {
+     private static class DeviceHandler extends DefaultHandler {
         private List<Device> devices = new ArrayList<>();
         private Device currentDevice;
         private ComponentType currentType;
         private List<Port> currentPorts;
         private StringBuilder textContent = new StringBuilder();
-        private String currentElement;
         
         @Override
         public void startElement(String uri, String localName, String qName, 
                                Attributes attributes) throws SAXException {
-            currentElement = qName;
             textContent.setLength(0);
             
             switch (qName) {
@@ -70,7 +68,7 @@ public class SaxParser {
             String content = textContent.toString().trim();
             
             switch (qName) {
-                case "n":
+                case "name":
                     currentDevice.setName(content);
                     break;
                 case "origin":

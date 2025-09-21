@@ -51,7 +51,7 @@ public class DOMParser {
         device.setId(deviceElement.getAttribute("id"));
         
         // main fields
-        device.setName(getElementText(deviceElement, "n"));
+        device.setName(getElementText(deviceElement, "name"));
         device.setOrigin(getElementText(deviceElement, "origin"));
         device.setPrice(Double.parseDouble(getElementText(deviceElement, "price")));
         device.setCritical(Boolean.parseBoolean(getElementText(deviceElement, "critical")));

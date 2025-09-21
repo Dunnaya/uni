@@ -7,12 +7,13 @@
             <head>
                 <title>Computer Components Report</title>
                 <style>
-                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    body { font-family: Arial, sans-serif; margin: 10px; }
                     table { border-collapse: collapse; width: 100%; }
-                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-                    th { background-color: #f2f2f2; }
-                    .critical { background-color: #ffebee; }
-                    .non-critical { background-color: #e8f5e8; }
+                    th, td { border: 1px solid #ddd; padding: 5px; text-align: left; }
+                    th { background-color: #eee; }
+                    .critical { background-color: rgba(240, 128, 128, 0.5); }
+                    .non-critical { background-color: rgba(144, 238, 144, 0.5); }
+                    h1 { text-align: center; margin-top: 20px; }
                 </style>
             </head>
             <body>
@@ -43,7 +44,7 @@
                                 <td><xsl:value-of select="@id"/></td>
                                 <td><xsl:value-of select="name"/></td>
                                 <td><xsl:value-of select="origin"/></td>
-                                <td>$<xsl:value-of select="format-number(price, '#,##0.00')"/></td>
+                                <td>₴<xsl:value-of select="format-number(price, '#,##0.00')"/></td>
                                 <td><xsl:value-of select="type/powerConsumption"/>W</td>
                                 <td><xsl:value-of select="type/componentGroup"/></td>
                                 <td>
@@ -62,11 +63,11 @@
                         </xsl:for-each>
                     </tbody>
                 </table>
-                
+                <br></br>
                 <h2>Summary</h2>
                 <p>Total devices: <xsl:value-of select="count(devices/device)"/></p>
                 <p>Critical devices: <xsl:value-of select="count(devices/device[critical='true'])"/></p>
-                <p>Total value: $<xsl:value-of select="format-number(sum(devices/device/price), '#,##0.00')"/></p>
+                <p>Total value: ₴<xsl:value-of select="format-number(sum(devices/device/price), '#,##0.00')"/></p>
                 <p>Average power consumption: <xsl:value-of select="format-number(sum(devices/device/type/powerConsumption) div count(devices/device), '#0.0')"/>W</p>
             </body>
         </html>
