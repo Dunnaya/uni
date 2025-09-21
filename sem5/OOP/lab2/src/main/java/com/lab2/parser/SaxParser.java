@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SaxParser {
-
-    // parse devices from XML input stream
     public List<Device> parseDevices(InputStream xmlStream) 
             throws ParserConfigurationException, SAXException, IOException {
         

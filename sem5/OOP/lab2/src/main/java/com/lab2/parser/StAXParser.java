@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class StAXParser {
-
     public List<Device> parseDevices(InputStream xmlStream) throws XMLStreamException {
         List<Device> devices = new ArrayList<>();
         Device currentDevice = null;
