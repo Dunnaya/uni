@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Computer Components Report</title>
+        <style>
+                    body { font-family: Arial, sans-serif; margin: 10px; }
+                    table { border-collapse: collapse; width: 100%; }
+                    th, td { border: 1px solid #ddd; padding: 5px; text-align: left; }
+                    th { background-color: #eee; }
+                    .critical { background-color: rgba(240, 128, 128, 0.5); }
+                    .non-critical { background-color: rgba(144, 238, 144, 0.5); }
+                    h1 { text-align: center; margin-top: 20px; }
+                </style>
+    </head>
+    <body>
+        <h1>Computer Components Inventory</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th><th>Name</th><th>Origin</th><th>Price</th><th>Power Consumption</th><th>Component Group</th><th>Ports</th><th>Critical</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="critical">
+                    <td>device1</td><td>NVIDIA GeForce RTX 4070</td><td>Taiwan</td><td>₴25,000.00</td><td>220W</td><td>multimedia</td><td>USB, HDMI</td><td>Yes</td>
+                </tr>
+                <tr class="critical">
+                    <td>device3</td><td>Intel Core i7-13700K</td><td>USA</td><td>₴18,000.00</td><td>125W</td><td>processing</td><td>LGA1700</td><td>Yes</td>
+                </tr>
+                <tr class="critical">
+                    <td>device4</td><td>Kingston Fury Beast 32GB</td><td>Taiwan</td><td>₴4,500.00</td><td>10W</td><td>memory</td><td>DDR5</td><td>Yes</td>
+                </tr>
+                <tr class="non-critical">
+                    <td>device2</td><td>Logitech MX Master 3</td><td>China</td><td>₴3,500.00</td><td>5W</td><td>input-output</td><td>USB</td><td>No</td>
+                </tr>
+            </tbody>
+        </table>
+        <br>
+        <h2>Summary</h2>
+        <p>Total devices: 4</p>
+        <p>Critical devices: 3</p>
+        <p>Total value: ₴51,000.00</p>
+        <p>Average power consumption: 90.0W</p>
+    </body>
+</html>
