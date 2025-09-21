@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class XmlValidator {
-    
     public static class ValidationResult {
         private boolean valid;
         private List<String> errors;

@@ -4,7 +4,6 @@ import com.lab2.model.Device;
 import java.util.Comparator;
 
 public class DeviceComparators {
-
     // by name
     public static final Comparator<Device> BY_NAME = 
         Comparator.comparing(Device::getName, String.CASE_INSENSITIVE_ORDER);
