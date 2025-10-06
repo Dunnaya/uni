@@ -10,7 +10,7 @@ def evaluate_poly(coeffs, x):
 
 def derivative_poly(coeffs):
     # returns the coefficients of the derivative of the polynomial
-    return np.array([i*c for i, c in enumerate(coeffs)][1:])
+    return np.array([i * c for i, c in enumerate(coeffs)][1:])
 
 def poly_to_string(coeffs):
     terms = []
@@ -24,14 +24,32 @@ def poly_to_string(coeffs):
     return " + ".join(terms) if terms else "0"
 
 # newton method
+def check_newton_convergence(coeffs, interval):
+    deriv = derivative_poly(coeffs)
+    second_deriv = derivative_poly(deriv)
+    a, b = interval
+    xs = np.linspace(a, b, 100)
+
+    f1_vals = evaluate_poly(deriv, xs)
+    if np.any(np.isclose(f1_vals, 0)):
+        print("Warning!!!! Derivative approaches 0 on the interval — possible convergence probs.")
+
+    x0 = (a + b) / 2
+    f_val = evaluate_poly(coeffs, x0)
+    f2_val = evaluate_poly(second_deriv, x0)
+    if f_val + f2_val > 0:
+        print("\tIt works!")
+    else:
+        print("\tDamn it.")
+
 def newton_method(coeffs, interval, accuracy=1e-3):
     a, b = interval
     if evaluate_poly(coeffs, a) * evaluate_poly(coeffs, b) >= 0:
-        raise ValueError("Invalid interval: no roots")
+        raise ValueError("Invalid interval: no roots") # the func does not change +-
 
-    x = (a+b)/2
+    x = (a + b) / 2
     deriv_coeffs = derivative_poly(coeffs)
-    max_iter = int(math.log2((b-a)/accuracy)) + 1
+    max_iter = int(math.log2((b - a) / accuracy)) + 1
     decimal_places = -int(math.log10(accuracy))
 
     print(f"\nSolving {poly_to_string(coeffs)} using Newton with accuracy {accuracy}")
@@ -52,11 +70,42 @@ def newton_method(coeffs, interval, accuracy=1e-3):
     return x
 
 # simple iteration method
-def simple_iteration_method(coeffs, interval, accuracy=1e-3, factor=0.1):
+def auto_factor(coeffs, interval, safety = 0.9):
+    deriv = derivative_poly(coeffs)
+    xs = np.linspace(*interval, 200)
+    max_deriv = np.max(np.abs(evaluate_poly(deriv, xs)))
+    return safety / max_deriv
+
+def check_iteration_convergence(coeffs, interval):
+    factor = auto_factor(coeffs, interval)
     a, b = interval
-    x = (a+b)/2   # initial guess
-    max_iter = int(math.log2((b-a)/accuracy)) + 1
+    x = (a + b) / 2
+    accuracy = 1e-6
+    max_iter = 1000
+
+    print(f"Auto factor: {factor:.5f}")
+    prev = x
+    converged = False
+    for i in range(max_iter):
+        x = prev - factor * evaluate_poly(coeffs, prev)
+        if abs(x - prev) < accuracy:
+            converged = True
+            break
+        prev = x
+
+    if converged:
+        print("\tIt works!")
+    else:
+        print("\tDamn it.")
+
+def simple_iteration_method(coeffs, interval, accuracy = 1e-3, factor = None):
+    a, b = interval
+    x = (a + b) / 2   # initial guess
+    max_iter = int(math.log2((b - a) / accuracy)) + 1
     decimal_places = -int(math.log10(accuracy))
+
+    if factor is None:
+        factor = auto_factor(coeffs, interval)
 
     print(f"\nSolving {poly_to_string(coeffs)} using simple iteration with accuracy {accuracy}")
     print(f"Interval: {interval}")
@@ -70,7 +119,6 @@ def simple_iteration_method(coeffs, interval, accuracy=1e-3, factor=0.1):
         if abs(x - prev) < accuracy:
             break
     return x
-
 
 # plots
 def plot_polynomial(coeffs, x_range, save_path, title):
@@ -88,7 +136,7 @@ def plot_polynomial(coeffs, x_range, save_path, title):
     #plt.show()
 
 # interface
-def interactive_test(method, coeffs, default_interval, default_accuracy=1e-3):
+def interactive_test(method, coeffs, default_interval, default_accuracy = 1e-3):
     interval_input = input(f"\nEnter interval {default_interval} (format a,b) or press enter: ")
     interval = tuple(map(float, interval_input.split(","))) if interval_input else default_interval
 
@@ -105,10 +153,14 @@ def interactive_test(method, coeffs, default_interval, default_accuracy=1e-3):
 
 if __name__ == "__main__":
     # equation 1: x^3 + x^2 - 4x - 4 = 0 (Newton)
+    print("\n Checking convergence:")
+    check_newton_convergence([-4, -4, 1, 1], (1, 3))
     print("\n Newton Method:")
     interactive_test("newton", [-4, -4, 1, 1], (1, 3))
 
     # equation 2: x^3 - 4x^2 - 4x + 16 = 0 (Simple Iteration)
+    print("\n Checking convergence:")
+    check_iteration_convergence([16, -4, -4, 1], (1, 4))
     print("\n Simple Iteration Method:")
     interactive_test("iteration", [16, -4, -4, 1], (1, 4))
 
