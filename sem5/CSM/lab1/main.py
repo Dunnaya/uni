@@ -78,9 +78,9 @@ def plotDFTModules(
     plt.show()
 
 def fit_model(t, observations, peak_frequencies):
-    def model(t, a1, a2, a3, *params):
+    def model(t, a1, a2, a3, a_const, *params):
         k = len(params) // 2
-        y = a1 * t**3 + a2 * t**2 + a3 * t
+        y = a1 * t**3 + a2 * t**2 + a3 * t + a_const
         for i in range(k):
             fi = params[i]
             ai = params[k + i]
@@ -88,7 +88,7 @@ def fit_model(t, observations, peak_frequencies):
         return y
 
     # starting guess for parameters
-    initial_guess = [0, 0, 0] + peak_frequencies + [1]*len(peak_frequencies)
+    initial_guess = [0, 0, 0, 0] + peak_frequencies + [1]*len(peak_frequencies)
 
     params, covariance = curve_fit(model, t, observations, p0=initial_guess)
     fitted_values = model(t, *params)
