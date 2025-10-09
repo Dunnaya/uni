@@ -38,9 +38,9 @@ def check_newton_convergence(coeffs, interval):
     f_val = evaluate_poly(coeffs, x0)
     f2_val = evaluate_poly(second_deriv, x0)
     if f_val + f2_val > 0:
-        print("\tIt works!")
+        print("\tConverges!")
     else:
-        print("\tDamn it.")
+        print("\tDoes not converge.")
 
 def newton_method(coeffs, interval, accuracy=1e-3):
     a, b = interval
@@ -94,9 +94,9 @@ def check_iteration_convergence(coeffs, interval):
         prev = x
 
     if converged:
-        print("\tIt works!")
+        print("\tConverges!")
     else:
-        print("\tDamn it.")
+        print("\tDoes not converge.")
 
 def simple_iteration_method(coeffs, interval, accuracy = 1e-3, factor = None):
     a, b = interval
