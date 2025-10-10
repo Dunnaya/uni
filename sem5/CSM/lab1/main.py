@@ -75,7 +75,7 @@ def plotDFTModules(
     plt.grid(True)
     plt.title("DFT Amplitude Spectrum")
     plt.savefig(saveImgPath)
-    plt.show()
+    #plt.show()
 
 def fit_model(t, observations, peak_frequencies):
     def model(t, a1, a2, a3, a_const, *params):
@@ -115,4 +115,8 @@ plt.xlabel('Time')
 plt.ylabel('y(t)')
 plt.title('Comparison of Observations and Fitted Model')
 plt.savefig("fitted_model_comparison.png")
-plt.show()
+#plt.show()
+
+#additional analysis
+error_value = np.sum((fitted_values - observations) ** 2)
+print(f"Sum of Squared Errors (SSE): {error_value}")
