@@ -1,0 +1,52 @@
+
+Parallel matrix-vector multiplication program
+
+Running test for matrix size = 10
+Results are equal.
+Execution time: 4.944e-05
+
+Running test for matrix size = 100
+Results are equal.
+Execution time: 0.000173232
+
+Running test for matrix size = 1000
+Results are equal.
+Execution time: 0.00806408
+
+Running test for matrix size = 2000
+Results are equal.
+Execution time: 0.0206392
+
+Running test for matrix size = 3000
+Results are equal.
+Execution time: 0.0439498
+
+Running test for matrix size = 4000
+Results are equal.
+Execution time: 0.10204
+
+Running test for matrix size = 5000
+Results are equal.
+Execution time: 0.125529
+
+Running test for matrix size = 6000
+Results are equal.
+Execution time: 0.179761
+
+Running test for matrix size = 7000
+Results are equal.
+Execution time: 0.251776
+
+Running test for matrix size = 8000
+Results are equal.
+Execution time: 0.31922
+
+Running test for matrix size = 9000
+Results are equal.
+Execution time: 0.410166
+
+Running test for matrix size = 10000
+Results are equal.
+Execution time: 0.547331
+
+All tests completed.
