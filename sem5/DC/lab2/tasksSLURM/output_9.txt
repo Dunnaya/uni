@@ -1,0 +1,27 @@
+Parallel Matrix Multiplication Program
+
+Running test for matrix size = 9
+Execution time: 0.000129866
+
+Running test for matrix size = 99
+Execution time: 0.00126231
+
+Running test for matrix size = 504
+Execution time: 0.0997036
+
+Running test for matrix size = 999
+Execution time: 0.797018
+
+Running test for matrix size = 1503
+Execution time: 2.75066
+
+Running test for matrix size = 1998
+Execution time: 6.46044
+
+Running test for matrix size = 2502
+Execution time: 12.9138
+
+Running test for matrix size = 2997
+Execution time: 22.3481
+
+All tests completed.

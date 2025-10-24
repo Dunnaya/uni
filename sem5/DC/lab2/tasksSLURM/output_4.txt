@@ -1,0 +1,35 @@
+Parallel Matrix Multiplication Program
+
+Running test for matrix size = 12
+The results are identical.
+Execution time: 7.9018e-05
+
+Running test for matrix size = 100
+The results are identical.
+Execution time: 0.00142622
+
+Running test for matrix size = 500
+The results are identical.
+Execution time: 0.156766
+
+Running test for matrix size = 1000
+The results are identical.
+Execution time: 1.27907
+
+Running test for matrix size = 1500
+The results are identical.
+Execution time: 4.37236
+
+Running test for matrix size = 2000
+The results are identical.
+Execution time: 10.5291
+
+Running test for matrix size = 2500
+The results are identical.
+Execution time: 25.7564
+
+Running test for matrix size = 3000
+The results are identical.
+Execution time: 53.574
+
+All tests completed.
