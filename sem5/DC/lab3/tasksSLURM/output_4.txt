@@ -1,0 +1,36 @@
+
+Parallel Gauss algorithm for solving linear systems
+
+Running test for matrix size = 10
+
+Execution time: 0.000212
+
+Running test for matrix size = 100
+
+Execution time: 0.001387
+
+Running test for matrix size = 500
+
+Execution time: 0.069877
+
+Running test for matrix size = 1000
+
+Execution time: 0.553777
+
+Running test for matrix size = 1500
+
+Execution time: 1.738321
+
+Running test for matrix size = 2000
+
+Execution time: 4.073796
+
+Running test for matrix size = 2500
+
+Execution time: 7.966657
+
+Running test for matrix size = 3000
+
+Execution time: 13.878321
+
+All tests completed.
