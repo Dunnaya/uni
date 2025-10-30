@@ -5,3 +5,6 @@
 *.iml
 .idea/
 *.class
+
+__pycache__/
+*.pyc
