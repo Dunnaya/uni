@@ -4,16 +4,15 @@ import time
 import psutil
 import os
 
-from PseudoInverseMatrixMethods import pseudoInverseMatrix_Greville, pseudoInverseMatrix_MoorePenrose
-from OperationsCounter import count_operations_greville, count_operations_moore_penrose
-from ImageUtils import readImg
+from pseudoInverseMatrixMethods import pseudoInverseMatrix_Greville, pseudoInverseMatrix_MoorePenrose
+from operationsCounter import count_operations_greville, count_operations_moore_penrose
+from imageUtils import readImg
 
 def calcError(Y, Y_pred):
     error = np.linalg.norm(Y - Y_pred, ord = 1)
     MSE = np.mean((Y - Y_pred)**2)
     RMSE = np.sqrt(MSE)
     return error, MSE, RMSE
-
 
 def calcOperator(X, Y, inversion_func, op_counter, eps = 1e-6, delta = 1000):
     start_time = time.time()
@@ -64,7 +63,7 @@ if __name__ == "__main__":
     print(f"Time: {time_G:.4f}s, Memory: {mem_G:.2f}MB, Operations: {ops_G}, RMSE: {RMSE_G:.6f}")
 
     print("\n\tResults comparison")
-    print(f"Time difference: {abs(time_MP - time_G):.4f}s ({('Moore-Penrose' if time_MP < time_G else 'Greville')} faster)")
+    print(f"Time difference: {abs(time_MP - time_G):.4f}s ({('Moore-Penrose' if time_MP < time_G else 'Greville')} is faster)")
     print(f"Memory difference: {abs(mem_MP - mem_G):.2f}MB")
     print(f"RMSE difference: {abs(RMSE_MP - RMSE_G):.6f}")
 
@@ -164,6 +163,6 @@ if __name__ == "__main__":
     plt.colorbar(fraction = 0.045)
 
     plt.tight_layout()
-    plt.savefig('comparison_results.png', dpi = 150, bbox_inches = 'tight')
-    print("\nThe plot is saved as 'comparison_results.png'")
+    plt.savefig('../results/comparison_results.png', dpi = 150, bbox_inches = 'tight')
+    print("\nThe plot is saved as 'comparison_results.png' in the results folder.")
     plt.show()

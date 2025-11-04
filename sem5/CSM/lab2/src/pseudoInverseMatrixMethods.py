@@ -22,7 +22,7 @@ def isPsevdoInversed(A, A_pinv) -> bool:
     print('Matrix is pseudoinverse (Moore–Penrose).')
     return True
 
-def pseudoInverseMatrix_Greville(A, eps=1e-12, delta=None):
+def pseudoInverseMatrix_Greville(A, eps = 1e-12, delta = None):
     log = setupLogging('Greville')
     A = np.array(A, dtype=float)
     m, n = A.shape
@@ -41,12 +41,12 @@ def pseudoInverseMatrix_Greville(A, eps=1e-12, delta=None):
     for i in range(1, m):
         a = A[i, :].reshape(-1, 1)    
         Z = np.identity(current_A.shape[1]) - np.dot(A_plus, current_A)
-        aTZa = np.dot(a.T, np.dot(Z, a))[0, 0]
+        quad_form = np.dot(a.T, np.dot(Z, a))[0, 0] # a^TZa
 
-        if aTZa > eps:
+        if quad_form > eps:
             num1 = np.dot(Z, np.dot(a, np.dot(a.T, A_plus)))
-            left = A_plus - num1 / aTZa
-            right = np.dot(Z, a) / aTZa
+            left = A_plus - num1 / quad_form
+            right = np.dot(Z, a) / quad_form
             A_plus = np.hstack((left, right))
         else:
             R = np.dot(A_plus, A_plus.T)
@@ -62,7 +62,7 @@ def pseudoInverseMatrix_Greville(A, eps=1e-12, delta=None):
     log(f"Finished. Final shape: {A_plus.shape}\n")
     return A_plus, m - 1
 
-def pseudoInverseMatrix_MoorePenrose(A, eps=1e-6, delta=1000):
+def pseudoInverseMatrix_MoorePenrose(A, eps = 1e-6, delta = 1000):
     log = setupLogging('MoorePenrose')
     m, n = A.shape
     
@@ -75,7 +75,7 @@ def pseudoInverseMatrix_MoorePenrose(A, eps=1e-6, delta=1000):
     while True:
         A_plus = A.T @ np.linalg.inv(A @ A.T + delta**2 * np.identity(m))
 
-        if np.linalg.norm(A0 - A_plus, ord=2) < eps:
+        if np.linalg.norm(A0 - A_plus, ord = 2) < eps:
             log(f'Converged after {iterations} iterations\n')
             return A_plus, iterations
         

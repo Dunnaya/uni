@@ -1,4 +1,4 @@
-def count_operations_greville(m, n, iterations=None):
+def count_operations_greville(m, n, iterations = None):
     operations = n + n  # init dot product and division
 
     for i in range(1, m):
@@ -17,7 +17,6 @@ def count_operations_greville(m, n, iterations=None):
         operations += n * (i + 1)  # hstack
 
     return operations
-
 
 def count_operations_moore_penrose(m, n, iterations):
     operations = 0
