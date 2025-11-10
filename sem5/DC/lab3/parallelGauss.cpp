@@ -65,7 +65,7 @@ void PrintResultVector(double *pResult, int size)
 }
 
 // memory alloc and data init
-void ProcessInitialization(double *&pMatrix, double *&pVector, double *&pResult, double *&pProcRows, double *&pProcVector, double *&pProcResult, int &size, int &rowNum)
+void ProcessInit(double *&pMatrix, double *&pVector, double *&pResult, double *&pProcRows, double *&pProcVector, double *&pProcResult, int &size, int &rowNum)
 {
     // setting the size of the matrix and the vector
     // if (procRank == 0)
@@ -299,7 +299,7 @@ void ParallelBackSubstitution(double *pProcRows, double *pProcVector, double *pP
 }
 
 // execution of the parallel Gauss algorithm
-void ParallelResultCalculation(double *pProcRows, double *pProcVector, double *pProcResult, int size, int rowNum)
+void ParallelResultCalc(double *pProcRows, double *pProcVector, double *pProcResult, int size, int rowNum)
 {
     // memory alloc
     pParallelPivotPos = new int[size];
@@ -406,7 +406,7 @@ int main(int argc, char *argv[])
         if (procRank == 0)
             printf("\nRunning test for matrix size = %d\n", size);
 
-        ProcessInitialization(pMatrix, pVector, pResult, pProcRows, pProcVector, pProcResult, size, rowNum);
+        ProcessInit(pMatrix, pVector, pResult, pProcRows, pProcVector, pProcResult, size, rowNum);
 
         DataDistribution(pMatrix, pProcRows, pVector, pProcVector, size, rowNum);
 
@@ -414,7 +414,7 @@ int main(int argc, char *argv[])
         start = MPI_Wtime();
 
         // execute the parallel Gauss algorithm
-        ParallelResultCalculation(pProcRows, pProcVector, pProcResult, size, rowNum);
+        ParallelResultCalc(pProcRows, pProcVector, pProcResult, size, rowNum);
 
         // gather result
         ResultCollection(pProcResult, pResult);
