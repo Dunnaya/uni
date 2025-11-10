@@ -24,13 +24,12 @@ void DummyDataInit(double *pAMatrix, double *pBMatrix, int Size)
         }
     }
 }
-// Function for random initialization of matrix elements
+
 void RandomDataInit(double *pAMatrix, double *pBMatrix, int Size)
 {
-    int i, j; // Loop variables
     srand(unsigned(clock()));
-    for (i = 0; i < Size; i++)
-        for (j = 0; j < Size; j++)
+    for (int i = 0; i < Size; i++)
+        for (int j = 0; j < Size; j++)
         {
             pAMatrix[i * Size + j] = rand() / double(1000000);
             pBMatrix[i * Size + j] = rand() / double(1000000);
@@ -52,7 +51,6 @@ void SerialResultCalculation(double *pAMatrix, double *pBMatrix, double *pCMatri
     }
 }
 
-// Function for formatted matrix output
 void PrintMatrix(double *pMatrix, int RowCount, int ColCount)
 {
     for (int i = 0; i < RowCount; i++)
@@ -63,7 +61,7 @@ void PrintMatrix(double *pMatrix, int RowCount, int ColCount)
     }
 }
 
-// Function for memory allocation and data initialization
+// memory alloc and data init
 void ProcessInit(double* &pAMatrix, double* &pBMatrix, double* &pCMatrix,
                  double* &pAblock, double* &pBblock, double* &pCblock, double* &pMatrixAblock,
                  int size, int &blockSize)
@@ -98,32 +96,32 @@ void ProcessInit(double* &pAMatrix, double* &pBMatrix, double* &pCMatrix,
     }
 }
 
-// Function for creating the two-dimensional grid communicator and communicators for each row and each column of the grid
+// creating two-dimensional grid communicator and communicators for each row and each column of the grid
 void CreateGridCommunicators()
 {
-    int DimSize[2];  // Number of processes in each dimension of the grid
-    int Periodic[2]; // =1, if the grid dimension should be periodic
+    int DimSize[2];  // num of processes in each dimension of the grid
+    int Periodic[2];
     DimSize[0] = gridSize;
     DimSize[1] = gridSize;
     Periodic[0] = 1;
     Periodic[1] = 1;
-    int Subdims[2]; // =1, if the grid dimension should be fixed
-    // Creation of the Cartesian communicator
+    int Subdims[2];
+    // creation of the Cartesian communicator
     MPI_Cart_create(MPI_COMM_WORLD, 2, DimSize, Periodic, 1, &gridComm);
-    // Determination of the cartesian coordinates for every process
+    // determination of the cartesian coordinates for every process
     MPI_Cart_coords(gridComm, procRank, 2, gridCoords);
 
-    // Creating communicators for rows
-    Subdims[0] = 0; // Dimension is fixed
-    Subdims[1] = 1; // Dimension belong to the subgrid
+    // creating communicators for rows
+    Subdims[0] = 0; // dimension is fixed
+    Subdims[1] = 1; // dimension belong to the subgrid
     MPI_Cart_sub(gridComm, Subdims, &rowComm);
-    // Creating communicators for columns
-    Subdims[0] = 1; // Dimension belong to the subgrid
-    Subdims[1] = 0; // Dimension is fixed
+    // creating communicators for columns
+    Subdims[0] = 1; // dimension belong to the subgrid
+    Subdims[1] = 0; // dimension is fixed
     MPI_Cart_sub(gridComm, Subdims, &colComm);
 }
 
-// Function for checkerboard matrix decomposition
+// checkerboard matrix decomposition
 void CheckerboardMatrixScatter(double *pMatrix, double *pMatrixBlock, int Size, int BlockSize)
 {
     double *pMatrixRow = new double[BlockSize * Size];
@@ -138,7 +136,7 @@ void CheckerboardMatrixScatter(double *pMatrix, double *pMatrixBlock, int Size, 
     delete[] pMatrixRow;
 }
 
-// Function for data distribution among the processes
+// data distribution among the processes
 void DataDistribution(double *pAMatrix, double *pBMatrix,
                       double *pMatrixAblock, double *pBblock, int Size, int BlockSize)
 {
@@ -165,22 +163,22 @@ void TestBlocks(double *pBlock, int BlockSize, const char *str)
     }
 }
 
-// Broadcasting blocks of the matrix A to process grid rows
+// broadcasting blocks of the matrix A to process grid rows
 void ABlockCommunication(int iter, double *pAblock, double *pMatrixAblock, int BlockSize)
 {
-    // Defining the leading process of the process grid row
+    // defining the leading process of the process grid row
     int Pivot = (gridCoords[0] + iter) % gridSize;
-    // Copying the transmitted block in a separate memory buffer
+    // copying the transmitted block in a separate memory buffer
     if (gridCoords[1] == Pivot)
     {
         for (int i = 0; i < BlockSize * BlockSize; i++)
             pAblock[i] = pMatrixAblock[i];
     }
-    // Block broadcasting
+
     MPI_Bcast(pAblock, BlockSize * BlockSize, MPI_DOUBLE, Pivot, rowComm);
 }
 
-// Function for cyclic shifting the blocks of the matrix B
+// cyclic shifting the blocks of the matrix B
 void BblockCommunication(double *pBblock, int BlockSize, MPI_Comm ColumnComm)
 {
     MPI_Status Status;
@@ -192,27 +190,26 @@ void BblockCommunication(double *pBblock, int BlockSize, MPI_Comm ColumnComm)
         PrevProc = gridSize - 1;
     MPI_Sendrecv_replace(pBblock, BlockSize * BlockSize, MPI_DOUBLE, NextProc, 0, PrevProc, 0, ColumnComm, &Status);
 }
-// Function for block multiplication
+
 void BlockMultiplication(double *pAblock, double *pBblock, double *pCblock, int Size)
 {
     SerialResultCalculation(pAblock, pBblock, pCblock, Size);
 }
 
-// Function for parallel execution of the Fox method
+// parallel exec of the Fox method
 void ParallelResultCalc(double *pAblock, double *pMatrixAblock, double *pBblock, double *pCblock, int BlockSize)
 {
     for (int iter = 0; iter < gridSize; iter++)
     {
-        // Sending blocks of matrix A to the process grid rows
+        // sending blocks of matrix A to the process grid rows
         ABlockCommunication(iter, pAblock, pMatrixAblock, BlockSize);
-        // Block multiplication
+
         BlockMultiplication(pAblock, pBblock, pCblock, BlockSize);
-        // Cyclic shift of blocks of matrix B in process grid columns
+        // cyclic shift of blocks of matrix B in process grid columns
         BblockCommunication(pBblock, BlockSize, colComm);
     }
 }
 
-// Function for gathering the result matrix
 void ResultCollection(double *pCMatrix, double *pCblock, int Size, int BlockSize)
 {
     double *pResultRow = new double[Size * BlockSize];
@@ -227,7 +224,6 @@ void ResultCollection(double *pCMatrix, double *pCblock, int Size, int BlockSize
     delete[] pResultRow;
 }
 
-// Function for testing the matrix multiplication result
 void TestResult(double *pAMatrix, double *pBMatrix, double *pCMatrix, int Size)
 {
     double *pSerialResult;
@@ -254,9 +250,7 @@ void TestResult(double *pAMatrix, double *pBMatrix, double *pCMatrix, int Size)
     }
 }
 
-void ProcessTermination(double *pAMatrix, double *pBMatrix,
-                        double *pCMatrix, double *pAblock, double *pBblock, double *pCblock,
-                        double *pMatrixAblock)
+void ProcessTermination(double *pAMatrix, double *pBMatrix, double *pCMatrix, double *pAblock, double *pBblock, double *pCblock, double *pMatrixAblock)
 {
     if (procRank == 0)
     {
