@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/dunnaya/projects/uni/sem5/DC/lab4/serialBS'
+relocations:     []
+...
