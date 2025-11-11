@@ -92,18 +92,18 @@ int main()
     std::cout << "\nSerial matrix-vector multiplication program\n";
 
     ProcessInit(pMatrix, pVector, pResult, size);
-    std::cout << "\nInitial matrix:\n";
-    PrintMatrix(pMatrix, size, size);
-    std::cout << "Initial vector:\n";
-    PrintVector(pVector, size);
+    // //std::cout << "\nInitial matrix:\n";
+    // PrintMatrix(pMatrix, size, size);
+    // //std::cout << "Initial vector:\n";
+    // PrintVector(pVector, size);
 
     start = clock();
     // matrix-vector multiplication
     ResultCalculation(pMatrix, pVector, pResult, size);
     finish = clock();
     // result vector
-    std::cout << "\nResult vector:\n";
-    PrintVector(pResult, size);
+    //std::cout << "\nResult vector:\n";
+    // PrintVector(pResult, size);
 
     duration = (finish - start) / double(CLOCKS_PER_SEC);
 
