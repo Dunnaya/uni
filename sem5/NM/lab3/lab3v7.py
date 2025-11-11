@@ -1,5 +1,8 @@
 import numpy as np
 
+# set print options for better numerical display consistency
+np.set_printoptions(precision = 6, suppress = True)
+
 def power_method(A, eps = 1e-4, max_iter = 50):
     n = A.shape[0]
     x = np.ones(n)       
@@ -81,7 +84,7 @@ def min_eigenvalue(A):
     return lam_min_A
 
 def jacobi_method(A, eps = 1e-4, max_iter = 50):
-    np.set_printoptions(precision=6, suppress=True)
+    np.set_printoptions(precision = 6, suppress = True)
 
     if not np.allclose(A, A.T):
         print("Matrix A isn't symmetrical. Jacobi method can't be applied.")
@@ -168,6 +171,104 @@ def jacobi_method(A, eps = 1e-4, max_iter = 50):
 
     return eigvals, eigvecs
 
+# func vector F(x) = (f1, f2)^T , f1 = 0 and f2 = 0
+def F(x_vec):
+    x, y = x_vec
+    # check for domain validity before calculation
+    if x <= 0 or y <= 0:
+        return None
+    
+    # f1(x, y) = 5x - 6y + 20*log10(x) + 16
+    f1 = 5 * x - 6 * y + 20 * np.log10(x) + 16
+    # f2(x, y) = 2x + y - 10*log10(y) - 4
+    f2 = 2 * x + y - 10 * np.log10(y) - 4
+    
+    return np.array([f1, f2])
+
+# Jacobian matrix J(x) = F'(x)
+def J(x_vec):
+    x, y = x_vec
+    # check for domain validity before calculation
+    if x <= 0 or y <= 0:
+        pass 
+        
+    # we use ln(10) to convert the derivative of log10(x)
+    ln10 = np.log(10) 
+    
+    # ∂f1/∂x = 5 + 20 / (x * ln10)
+    df1_dx = 5 + 20 / (x * ln10)
+    # ∂f1/∂y = -6
+    df1_dy = -6
+    # ∂f2/∂x = 2
+    df2_dx = 2
+    # ∂f2/∂y = 1 - 10 / (y * ln10)
+    df2_dy = 1 - 10 / (y * ln10)
+    
+    return np.array([
+        [df1_dx, df1_dy],
+        [df2_dx, df2_dy]
+    ])
+
+def newton_method(x0, eps = 1e-4, max_iter = 50):
+    # x0 - init approx vector [x, y]
+    x_k = x0.copy()
+    n = len(x_k)
+
+    print("\t\nNewton's Method")
+    print(f"Initial approximation x0: {x_k}")
+    print("Eps:", eps)
+    print("Maximum iterations:", max_iter)
+    
+    for k in range(max_iter):
+        print(f"\nIteration {k + 1}:")
+
+        try:
+            # check domain before calculation (ensures no RuntimeWarning)
+            if x_k[0] <= 0 or x_k[1] <= 0:
+                print("  ERROR: Approximation x_k led outside the function domain (x, y must be > 0). Stopping.")
+                return x_k
+
+            J_k = J(x_k)
+            print("  Jacobian Matrix J_k:")
+            print(np.round(J_k, 6))
+
+            F_k = F(x_k)
+            print("  Function Vector F_k = F(x_k):", np.round(F_k, 6))
+
+            # A_k * z^k = -F(x^k)
+            z_k = np.linalg.solve(J_k, -F_k)
+            print("  Linear system J_k * z_k = -F_k solved for z_k:", np.round(z_k, 6))
+
+            # condition for stopping: ||z^k|| <= eps (using max norm ||z_k||_inf)
+            z_norm_inf = np.max(np.abs(z_k))
+            print(f"  Max norm of correction ||z_k||_inf = {z_norm_inf:.6f}")
+            
+            if z_norm_inf <= eps:
+                print("\n")
+                print(f"Converged after {k + 1} iterations.")
+                print(f"Final solution x* ≈ {np.round(x_k, 6)}")
+                return x_k
+
+            # x^{k+1} = x^k + z^k
+            x_k = x_k + z_k
+            print("  New approximation x_k+1 = x_k + z_k:", np.round(x_k, 6))
+        
+        except np.linalg.LinAlgError:
+            print("  ERROR: Jacobian matrix J_k is singular or ill-conditioned. Cannot proceed.")
+            return x_k
+        except Exception as e:
+            # catch potential errors related to np.log10(x) when x <= 0
+            if "logarithm" in str(e) or "domain" in str(e):
+                 print(f"  ERROR: Iteration failed due to domain error (logarithm of non-positive number). Stopping.")
+            else:
+                 print(f"  ERROR: An unexpected error occurred: {e}. Stopping.")
+            return x_k
+        
+    print("\n")
+    print("Method did not converge within the iteration limit.")
+    print(f"Last estimated solution x* ≈ {np.round(x_k, 6)}")
+    return x_k
+
 if __name__ == "__main__":
     A = np.array([[5,0,2,1],
                   [0,4,0,1],
@@ -176,3 +277,6 @@ if __name__ == "__main__":
     
     min_eigenvalue(A)
     jacobi_method(A)
+
+    x0_system = np.array([0.5, 0.5])
+    newton_method(x0_system)
