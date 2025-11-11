@@ -1,0 +1,574 @@
+dunnaya@MacBook-Air-Dana lab3 % python3 lab3v7.py
+Matrix minors:
+ |A1| = 5.0
+ |A2| = 20.0
+ |A3| = 24.0
+ |A4| = 58.0
+
+Conditions for the power method are met.
+
+Max ||A|| = 8
+
+B = ||A||E - A :
+ [[ 3.  0. -2. -1.]
+ [ 0.  4.  0. -1.]
+ [-2.  0.  6.  0.]
+ [-1. -1.  0.  5.]]
+
+Power Method
+Initial vector x0: [1. 1. 1. 1.]
+Eps: 0.0001
+Maximum iterations: 50
+
+Iteration 1:
+A * x = [0. 3. 4. 3.]
+λ_new = x_new[3] / x[3] = 3.000
+||x_new|| = 5.831
+Normalized vector e1 = [0.    0.514 0.686 0.514]
+
+Iteration 2:
+A * x = [-1.886  1.543  4.116  2.058]
+λ_new = x_new[3] / x[3] = 4.000
+||x_new|| = 5.207
+Normalized vector e2 = [-0.362  0.296  0.79   0.395]
+
+Iteration 3:
+A * x = [-3.063  0.79   5.467  2.042]
+λ_new = x_new[3] / x[3] = 5.167
+||x_new|| = 6.638
+Normalized vector e3 = [-0.461  0.119  0.824  0.308]
+
+Iteration 4:
+A * x = [-3.339  0.169  5.864  1.88 ]
+λ_new = x_new[3] / x[3] = 6.113
+||x_new|| = 7.007
+Normalized vector e4 = [-0.476  0.024  0.837  0.268]
+
+Iteration 5:
+A * x = [-3.372 -0.172  5.974  1.794]
+λ_new = x_new[3] / x[3] = 6.686
+||x_new|| = 7.093
+Normalized vector e5 = [-0.475 -0.024  0.842  0.253]
+
+Iteration 6:
+A * x = [-3.364 -0.35   6.005  1.764]
+λ_new = x_new[3] / x[3] = 6.975
+||x_new|| = 7.114
+Normalized vector e6 = [-0.473 -0.049  0.844  0.248]
+
+Iteration 7:
+A * x = [-3.355 -0.445  6.01   1.762]
+λ_new = x_new[3] / x[3] = 7.105
+||x_new|| = 7.119
+Normalized vector e7 = [-0.471 -0.062  0.844  0.248]
+
+Iteration 8:
+A * x = [-3.35  -0.497  6.008  1.771]
+λ_new = x_new[3] / x[3] = 7.156
+||x_new|| = 7.121
+Normalized vector e8 = [-0.47  -0.07   0.844  0.249]
+
+Iteration 9:
+A * x = [-3.348 -0.528  6.003  1.784]
+λ_new = x_new[3] / x[3] = 7.172
+||x_new|| = 7.121
+Normalized vector e9 = [-0.47  -0.074  0.843  0.251]
+
+Iteration 10:
+A * x = [-3.347 -0.547  5.998  1.797]
+λ_new = x_new[3] / x[3] = 7.172
+||x_new|| = 7.121
+Normalized vector e10 = [-0.47  -0.077  0.842  0.252]
+
+Iteration 11:
+A * x = [-3.347 -0.56   5.994  1.809]
+λ_new = x_new[3] / x[3] = 7.167
+||x_new|| = 7.121
+Normalized vector e11 = [-0.47  -0.079  0.842  0.254]
+
+Iteration 12:
+A * x = [-3.347 -0.568  5.99   1.818]
+λ_new = x_new[3] / x[3] = 7.160
+||x_new|| = 7.121
+Normalized vector e12 = [-0.47  -0.08   0.841  0.255]
+
+Iteration 13:
+A * x = [-3.348 -0.575  5.987  1.827]
+λ_new = x_new[3] / x[3] = 7.153
+||x_new|| = 7.122
+Normalized vector e13 = [-0.47  -0.081  0.841  0.256]
+
+Iteration 14:
+A * x = [-3.348 -0.579  5.984  1.833]
+λ_new = x_new[3] / x[3] = 7.147
+||x_new|| = 7.122
+Normalized vector e14 = [-0.47  -0.081  0.84   0.257]
+
+Iteration 15:
+A * x = [-3.348 -0.583  5.982  1.839]
+λ_new = x_new[3] / x[3] = 7.142
+||x_new|| = 7.122
+Normalized vector e15 = [-0.47  -0.082  0.84   0.258]
+
+Iteration 16:
+A * x = [-3.349 -0.585  5.98   1.843]
+λ_new = x_new[3] / x[3] = 7.138
+||x_new|| = 7.122
+Normalized vector e16 = [-0.47  -0.082  0.84   0.259]
+
+Iteration 17:
+A * x = [-3.349 -0.588  5.979  1.846]
+λ_new = x_new[3] / x[3] = 7.135
+||x_new|| = 7.122
+Normalized vector e17 = [-0.47  -0.083  0.84   0.259]
+
+Iteration 18:
+A * x = [-3.349 -0.589  5.978  1.849]
+λ_new = x_new[3] / x[3] = 7.132
+||x_new|| = 7.122
+Normalized vector e18 = [-0.47  -0.083  0.839  0.26 ]
+
+Iteration 19:
+A * x = [-3.349 -0.591  5.977  1.851]
+λ_new = x_new[3] / x[3] = 7.130
+||x_new|| = 7.122
+Normalized vector e19 = [-0.47  -0.083  0.839  0.26 ]
+
+Iteration 20:
+A * x = [-3.349 -0.592  5.976  1.853]
+λ_new = x_new[3] / x[3] = 7.128
+||x_new|| = 7.122
+Normalized vector e20 = [-0.47  -0.083  0.839  0.26 ]
+
+Iteration 21:
+A * x = [-3.349 -0.593  5.976  1.854]
+λ_new = x_new[3] / x[3] = 7.127
+||x_new|| = 7.122
+Normalized vector e21 = [-0.47  -0.083  0.839  0.26 ]
+
+Iteration 22:
+A * x = [-3.35  -0.593  5.975  1.855]
+λ_new = x_new[3] / x[3] = 7.126
+||x_new|| = 7.122
+Normalized vector e22 = [-0.47  -0.083  0.839  0.261]
+
+Iteration 23:
+A * x = [-3.35  -0.594  5.975  1.856]
+λ_new = x_new[3] / x[3] = 7.125
+||x_new|| = 7.122
+Normalized vector e23 = [-0.47  -0.083  0.839  0.261]
+
+Iteration 24:
+A * x = [-3.35  -0.594  5.975  1.857]
+λ_new = x_new[3] / x[3] = 7.124
+||x_new|| = 7.122
+Normalized vector e24 = [-0.47  -0.083  0.839  0.261]
+
+Iteration 25:
+A * x = [-3.35  -0.594  5.974  1.858]
+λ_new = x_new[3] / x[3] = 7.124
+||x_new|| = 7.122
+Normalized vector e25 = [-0.47  -0.083  0.839  0.261]
+
+Iteration 26:
+A * x = [-3.35  -0.595  5.974  1.858]
+λ_new = x_new[3] / x[3] = 7.123
+||x_new|| = 7.122
+Normalized vector e26 = [-0.47  -0.084  0.839  0.261]
+
+Iteration 27:
+A * x = [-3.35  -0.595  5.974  1.858]
+λ_new = x_new[3] / x[3] = 7.123
+||x_new|| = 7.122
+Normalized vector e27 = [-0.47  -0.084  0.839  0.261]
+
+Iteration 28:
+A * x = [-3.35  -0.595  5.974  1.859]
+λ_new = x_new[3] / x[3] = 7.123
+||x_new|| = 7.122
+Normalized vector e28 = [-0.47  -0.084  0.839  0.261]
+
+Iteration 29:
+A * x = [-3.35  -0.595  5.974  1.859]
+λ_new = x_new[3] / x[3] = 7.122
+||x_new|| = 7.122
+Normalized vector e29 = [-0.47  -0.084  0.839  0.261]
+
+Iteration 30:
+A * x = [-3.35  -0.595  5.974  1.859]
+λ_new = x_new[3] / x[3] = 7.122
+||x_new|| = 7.122
+Normalized vector e30 = [-0.47  -0.084  0.839  0.261]
+
+Iteration 31:
+A * x = [-3.35  -0.595  5.974  1.859]
+λ_new = x_new[3] / x[3] = 7.122
+||x_new|| = 7.122
+Normalized vector e31 = [-0.47  -0.084  0.839  0.261]
+
+Iteration 32:
+A * x = [-3.35  -0.596  5.974  1.859]
+λ_new = x_new[3] / x[3] = 7.122
+||x_new|| = 7.122
+Normalized vector e32 = [-0.47  -0.084  0.839  0.261]
+
+Iteration 33:
+A * x = [-3.35  -0.596  5.974  1.859]
+λ_new = x_new[3] / x[3] = 7.122
+||x_new|| = 7.122
+Normalized vector e33 = [-0.47  -0.084  0.839  0.261]
+
+
+Converged after 33 iterations.
+Dominant eigenvalue λ ≈ 7.1219
+
+max_lam(B) =  7.121922263993244
+
+min_lam(A) = ||A|| - max_lam_B
+
+min_lam(A) = 8 - 7.121922263993244
+
+min_lam(A) = 0.8780777360067562
+
+Jacobi Rotation Method
+Initial matrix A:
+[[5 0 2 1]
+ [0 4 0 1]
+ [2 0 2 0]
+ [1 1 0 3]]
+Eps: 0.0001
+Maximum iterations: 50
+
+Iteration 1:
+  Pivot indices (p, q) = (0, 2)
+  a[p,q] = 2.000000
+  Off-diagonal norm = 3.464102
+  φ_k = 0.5 * arctan(2 * a[0,2] / (a[0,0] - a[2,2]))
+  φ_k = 0.463648
+  cos(φ_k) = 0.894427
+  sin(φ_k) = 0.447214
+
+  Rotation matrix U_k:
+[[ 0.894427  0.       -0.447214  0.      ]
+ [ 0.        1.        0.        0.      ]
+ [ 0.447214  0.        0.894427  0.      ]
+ [ 0.        0.        0.        1.      ]]
+
+  Matrix A after rotation:
+[[ 6.      0.      0.      0.8944]
+ [ 0.      4.      0.      1.    ]
+ [-0.      0.      1.     -0.4472]
+ [ 0.8944  1.     -0.4472  3.    ]]
+
+Iteration 2:
+  Pivot indices (p, q) = (1, 3)
+  a[p,q] = 1.000000
+  Off-diagonal norm = 2.0
+  φ_k = 0.5 * arctan(2 * a[1,3] / (a[1,1] - a[3,3]))
+  φ_k = 0.553574
+  cos(φ_k) = 0.850651
+  sin(φ_k) = 0.525731
+
+  Rotation matrix U_k:
+[[ 1.        0.        0.        0.      ]
+ [ 0.        0.850651  0.       -0.525731]
+ [ 0.        0.        1.        0.      ]
+ [ 0.        0.525731  0.        0.850651]]
+
+  Matrix A after rotation:
+[[ 6.      0.4702  0.      0.7608]
+ [ 0.4702  4.618  -0.2351 -0.    ]
+ [-0.     -0.2351  1.     -0.3804]
+ [ 0.7608 -0.     -0.3804  2.382 ]]
+
+Iteration 3:
+  Pivot indices (p, q) = (0, 3)
+  a[p,q] = 0.760845
+  Off-diagonal norm = 1.414214
+  φ_k = 0.5 * arctan(2 * a[0,3] / (a[0,0] - a[3,3]))
+  φ_k = 0.199063
+  cos(φ_k) = 0.980252
+  sin(φ_k) = 0.197750
+
+  Rotation matrix U_k:
+[[ 0.980252  0.        0.       -0.19775 ]
+ [ 0.        1.        0.        0.      ]
+ [ 0.        0.        1.        0.      ]
+ [ 0.19775   0.        0.        0.980252]]
+
+  Matrix A after rotation:
+[[ 6.1535  0.4609 -0.0752  0.    ]
+ [ 0.4609  4.618  -0.2351 -0.093 ]
+ [-0.0752 -0.2351  1.     -0.3729]
+ [ 0.     -0.093  -0.3729  2.2285]]
+
+Iteration 4:
+  Pivot indices (p, q) = (0, 1)
+  a[p,q] = 0.460942
+  Off-diagonal norm = 0.91773
+  φ_k = 0.5 * arctan(2 * a[0,1] / (a[0,0] - a[1,1]))
+  φ_k = 0.270356
+  cos(φ_k) = 0.963676
+  sin(φ_k) = 0.267075
+
+  Rotation matrix U_k:
+[[ 0.963676 -0.267075  0.        0.      ]
+ [ 0.267075  0.963676  0.        0.      ]
+ [ 0.        0.        1.        0.      ]
+ [ 0.        0.        0.        1.      ]]
+
+  Matrix A after rotation:
+[[ 6.2812 -0.     -0.1353 -0.0248]
+ [ 0.      4.4903 -0.2065 -0.0896]
+ [-0.1353 -0.2065  1.     -0.3729]
+ [-0.0248 -0.0896 -0.3729  2.2285]]
+
+Iteration 5:
+  Pivot indices (p, q) = (2, 3)
+  a[p,q] = -0.372910
+  Off-diagonal norm = 0.645983
+  φ_k = 0.5 * arctan(2 * a[2,3] / (a[2,2] - a[3,3]))
+  φ_k = 0.272815
+  cos(φ_k) = 0.963016
+  sin(φ_k) = 0.269444
+
+  Rotation matrix U_k:
+[[ 1.        0.        0.        0.      ]
+ [ 0.        1.        0.        0.      ]
+ [ 0.        0.        0.963016 -0.269444]
+ [ 0.        0.        0.269444  0.963016]]
+
+  Matrix A after rotation:
+[[ 6.2812 -0.     -0.137   0.0125]
+ [ 0.      4.4903 -0.223  -0.0307]
+ [-0.137  -0.223   0.8957 -0.    ]
+ [ 0.0125 -0.0307  0.      2.3328]]
+
+Iteration 6:
+  Pivot indices (p, q) = (1, 2)
+  a[p,q] = -0.222990
+  Off-diagonal norm = 0.373054
+  φ_k = 0.5 * arctan(2 * a[1,2] / (a[1,1] - a[2,2]))
+  φ_k = -0.061719
+  cos(φ_k) = 0.998096
+  sin(φ_k) = -0.061680
+
+  Rotation matrix U_k:
+[[ 1.        0.        0.        0.      ]
+ [ 0.        0.998096  0.06168   0.      ]
+ [ 0.       -0.06168   0.998096  0.      ]
+ [ 0.        0.        0.        1.      ]]
+
+  Matrix A after rotation:
+[[ 6.2812  0.0084 -0.1367  0.0125]
+ [ 0.0084  4.5041  0.     -0.0306]
+ [-0.1367  0.      0.8819 -0.0019]
+ [ 0.0125 -0.0306 -0.0019  2.3328]]
+
+Iteration 7:
+  Pivot indices (p, q) = (0, 2)
+  a[p,q] = -0.136716
+  Off-diagonal norm = 0.199299
+  φ_k = 0.5 * arctan(2 * a[0,2] / (a[0,0] - a[2,2]))
+  φ_k = -0.025299
+  cos(φ_k) = 0.999680
+  sin(φ_k) = -0.025297
+
+  Rotation matrix U_k:
+[[ 0.99968   0.        0.025297  0.      ]
+ [ 0.        1.        0.        0.      ]
+ [-0.025297  0.        0.99968   0.      ]
+ [ 0.        0.        0.        1.      ]]
+
+  Matrix A after rotation:
+[[ 6.2847  0.0084 -0.      0.0126]
+ [ 0.0084  4.5041  0.0002 -0.0306]
+ [-0.      0.0002  0.8784 -0.0016]
+ [ 0.0126 -0.0306 -0.0016  2.3328]]
+
+Iteration 8:
+  Pivot indices (p, q) = (1, 3)
+  a[p,q] = -0.030602
+  Off-diagonal norm = 0.048345
+  φ_k = 0.5 * arctan(2 * a[1,3] / (a[1,1] - a[3,3]))
+  φ_k = -0.014091
+  cos(φ_k) = 0.999901
+  sin(φ_k) = -0.014090
+
+  Rotation matrix U_k:
+[[ 1.        0.        0.        0.      ]
+ [ 0.        0.999901  0.        0.01409 ]
+ [ 0.        0.        1.        0.      ]
+ [ 0.       -0.01409   0.        0.999901]]
+
+  Matrix A after rotation:
+[[ 6.2847  0.0083 -0.      0.0127]
+ [ 0.0083  4.5045  0.0002 -0.    ]
+ [-0.      0.0002  0.8784 -0.0016]
+ [ 0.0127  0.     -0.0016  2.3324]]
+
+Iteration 9:
+  Pivot indices (p, q) = (0, 3)
+  a[p,q] = 0.012698
+  Off-diagonal norm = 0.021546
+  φ_k = 0.5 * arctan(2 * a[0,3] / (a[0,0] - a[3,3]))
+  φ_k = 0.003213
+  cos(φ_k) = 0.999995
+  sin(φ_k) = 0.003213
+
+  Rotation matrix U_k:
+[[ 0.999995  0.        0.       -0.003213]
+ [ 0.        1.        0.        0.      ]
+ [ 0.        0.        1.        0.      ]
+ [ 0.003213  0.        0.        0.999995]]
+
+  Matrix A after rotation:
+[[ 6.2847  0.0083 -0.      0.    ]
+ [ 0.0083  4.5045  0.0002 -0.    ]
+ [-0.      0.0002  0.8784 -0.0016]
+ [-0.     -0.     -0.0016  2.3323]]
+
+Iteration 10:
+  Pivot indices (p, q) = (0, 1)
+  a[p,q] = 0.008268
+  Off-diagonal norm = 0.011906
+  φ_k = 0.5 * arctan(2 * a[0,1] / (a[0,0] - a[1,1]))
+  φ_k = 0.004644
+  cos(φ_k) = 0.999989
+  sin(φ_k) = 0.004644
+
+  Rotation matrix U_k:
+[[ 0.999989 -0.004644  0.        0.      ]
+ [ 0.004644  0.999989  0.        0.      ]
+ [ 0.        0.        1.        0.      ]
+ [ 0.        0.        0.        1.      ]]
+
+  Matrix A after rotation:
+[[ 6.2848  0.     -0.     -0.    ]
+ [ 0.      4.5045  0.0002 -0.    ]
+ [-0.      0.0002  0.8784 -0.0016]
+ [-0.     -0.     -0.0016  2.3323]]
+
+Iteration 11:
+  Pivot indices (p, q) = (2, 3)
+  a[p,q] = -0.001570
+  Off-diagonal norm = 0.002246
+  φ_k = 0.5 * arctan(2 * a[2,3] / (a[2,2] - a[3,3]))
+  φ_k = 0.001080
+  cos(φ_k) = 0.999999
+  sin(φ_k) = 0.001080
+
+  Rotation matrix U_k:
+[[ 1.        0.        0.        0.      ]
+ [ 0.        1.        0.        0.      ]
+ [ 0.        0.        0.999999 -0.00108 ]
+ [ 0.        0.        0.00108   0.999999]]
+
+  Matrix A after rotation:
+[[ 6.2848  0.     -0.     -0.    ]
+ [ 0.      4.5045  0.0002 -0.    ]
+ [-0.      0.0002  0.8784  0.    ]
+ [-0.     -0.      0.      2.3323]]
+
+Iteration 12:
+  Pivot indices (p, q) = (1, 2)
+  a[p,q] = 0.000236
+  Off-diagonal norm = 0.000336
+  φ_k = 0.5 * arctan(2 * a[1,2] / (a[1,1] - a[2,2]))
+  φ_k = 0.000065
+  cos(φ_k) = 1.000000
+  sin(φ_k) = 0.000065
+
+  Rotation matrix U_k:
+[[ 1.        0.        0.        0.      ]
+ [ 0.        1.       -0.000065  0.      ]
+ [ 0.        0.000065  1.        0.      ]
+ [ 0.        0.        0.        1.      ]]
+
+  Matrix A after rotation:
+[[ 6.2848 -0.     -0.     -0.    ]
+ [-0.      4.5045  0.     -0.    ]
+ [-0.      0.      0.8784  0.    ]
+ [-0.     -0.      0.      2.3323]]
+
+Iteration 13:
+  Pivot indices (p, q) = (1, 3)
+  a[p,q] = -0.000027
+  Off-diagonal norm = 3.8e-05
+
+Convergence criterion satisfied (off-diagonal norm < eps).
+
+
+Finished after 13 iterations.
+Approximated eigenvalues:
+[6.284774 4.504461 0.878421 2.332344]
+
+Corresponding eigenvectors (columns):
+[[ 0.856  -0.2075 -0.4704 -0.055 ]
+ [ 0.1316  0.8608 -0.0837 -0.4845]
+ [ 0.3995 -0.1657  0.8388 -0.3307]
+ [ 0.3006  0.4342  0.2611  0.808 ]]
+
+
+
+Newton's Method
+Initial approximation x0: [0.5 0.5]
+Eps: 0.0001
+Maximum iterations: 50
+
+Iteration 1:
+  Jacobian Matrix J_k:
+[[22.371779 -6.      ]
+ [ 2.       -7.68589 ]]
+  Function Vector F_k = F(x_k): [9.4794 0.5103]
+  Linear system J_k * z_k = -F_k solved for z_k: [-0.436368 -0.047156]
+  Max norm of correction ||z_k||_inf = 0.436368
+  New approximation x_k+1 = x_k + z_k: [0.063632 0.452844]
+
+Iteration 2:
+  Jacobian Matrix J_k:
+[[141.502704  -6.      ]
+ [  2.        -8.59038 ]]
+  Function Vector F_k = F(x_k): [-10.325444   0.020622]
+  Linear system J_k * z_k = -F_k solved for z_k: [0.0738   0.019583]
+  Max norm of correction ||z_k||_inf = 0.073800
+  New approximation x_k+1 = x_k + z_k: [0.137432 0.472427]
+
+Iteration 3:
+  Jacobian Matrix J_k:
+[[68.2014   -6.      ]
+ [ 2.       -8.192846]]
+  Function Vector F_k = F(x_k): [-3.385648  0.003947]
+  Linear system J_k * z_k = -F_k solved for z_k: [0.050775 0.012877]
+  Max norm of correction ||z_k||_inf = 0.050775
+  New approximation x_k+1 = x_k + z_k: [0.188207 0.485303]
+
+Iteration 4:
+  Jacobian Matrix J_k:
+[[51.150812 -6.      ]
+ [ 2.       -7.94893 ]]
+  Function Vector F_k = F(x_k): [-0.478087  0.001584]
+  Linear system J_k * z_k = -F_k solved for z_k: [0.009655 0.002629]
+  Max norm of correction ||z_k||_inf = 0.009655
+  New approximation x_k+1 = x_k + z_k: [0.197862 0.487932]
+
+Iteration 5:
+  Jacobian Matrix J_k:
+[[48.898815 -6.      ]
+ [ 2.       -7.90072 ]]
+  Function Vector F_k = F(x_k): [-0.011053  0.000063]
+  Linear system J_k * z_k = -F_k solved for z_k: [0.000234 0.000067]
+  Max norm of correction ||z_k||_inf = 0.000234
+  New approximation x_k+1 = x_k + z_k: [0.198096 0.487999]
+
+Iteration 6:
+  Jacobian Matrix J_k:
+[[48.846894 -6.      ]
+ [ 2.       -7.899492]]
+  Function Vector F_k = F(x_k): [-0.000006  0.      ]
+  Linear system J_k * z_k = -F_k solved for z_k: [0. 0.]
+  Max norm of correction ||z_k||_inf = 0.000000
+
+
+Converged after 6 iterations.
+Final solution x* ≈ [0.198096 0.487999]
