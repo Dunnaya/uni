@@ -1,0 +1,10 @@
+Parameter Identification Results:
+
+Identified parameters:
+m2: 27.999973
+m3: 17.999969
+c3: 0.200000
+
+Quality indicator: 1.706308e-08
+Total iterations: 6
+Execution time: 0.08 seconds
