@@ -14,21 +14,21 @@ public class Manager {
     public static void main(String[] args) throws Exception {
         System.out.println("\tCLIENT STARTED");
         
-        // 1. Створюємо сканер
+        // create scanner for user input
         @SuppressWarnings("resource")
         Scanner scanner = new Scanner(System.in);
 
-        // 2. Питаємо у користувача число X (Інтерактивність!)
+        // ask user for the number x
         int x = 0;
         while (true) {
             System.out.print("Please enter integer number X: ");
             if (scanner.hasNextInt()) {
                 x = scanner.nextInt();
-                scanner.nextLine(); // "з'їдаємо" зайвий ентер після числа
+                scanner.nextLine(); // consume the leftover newline after the number
                 break;
             } else {
                 System.out.println("Error: That's not a number. Try again.");
-                scanner.nextLine(); // очистка буфера
+                scanner.nextLine(); // clear the buffer
             }
         }
 
@@ -41,10 +41,10 @@ public class Manager {
             ExecutorService executor = Executors.newFixedThreadPool(2);
             List<Process> processes = new ArrayList<>();
 
-            // Щоб передати x у лямбду, він має бути effectively final, тому копіюємо
+            // to pass x into the lambda it must be effectively final so we copy it
             int finalX = x;
 
-            // Запуск Worker 1
+            // start Worker1
             CompletableFuture<Double> future1 = CompletableFuture.supplyAsync(() -> {
                 try {
                     Process p = startWorkerProcess(1, finalX);
@@ -53,7 +53,7 @@ public class Manager {
                 } catch (Exception e) { throw new RuntimeException(e); }
             }, executor);
 
-            // Запуск Worker 2
+            // start Worker2
             CompletableFuture<Double> future2 = CompletableFuture.supplyAsync(() -> {
                 try {
                     Process p = startWorkerProcess(2, finalX);
@@ -71,17 +71,17 @@ public class Manager {
             Double res2 = null;
             boolean cancelled = false;
 
-            // Головний цикл
+            // main loop
             while (!future1.isDone() || !future2.isDone()) {
                 
-                // Перевірка тайм-ауту
+                // check timeout
                 if (System.currentTimeMillis() - startTime > TIMEOUT_MS) {
                     System.out.println("\n[!] ERROR: Computation timed out!");
                     cancelled = true;
                     break;
                 }
 
-                // Перевірка клавіші 'q'
+                // check for 'q' key press
                 if (System.in.available() > 0) {
                     String input = scanner.nextLine();
                     if (input.trim().equalsIgnoreCase("q")) {
@@ -91,7 +91,7 @@ public class Manager {
                     }
                 }
 
-                // Hard Stop check
+                // hard stop check
                 if (future1.isDone() && res1 == null) {
                     res1 = future1.get(); 
                     if (res1 == 0.0) {
