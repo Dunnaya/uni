@@ -3,7 +3,6 @@ import java.net.Socket;
 
 public class Worker {
     public static void main(String[] args) {
-        // args: port, function id (1 or 2), x value
         if (args.length < 3) return;
         
         int port = Integer.parseInt(args[0]);
@@ -13,10 +12,7 @@ public class Worker {
         try (Socket socket = new Socket("localhost", port);
              ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream())) {
 
-            // complicated computation based on functionId
             double result = compute(functionId, x);
-            
-            // send result back to Manager
             out.writeObject(result);
 
         } catch (Exception e) {
@@ -25,16 +21,16 @@ public class Worker {
     }
 
     private static double compute(int id, int x) throws InterruptedException {
-        // here we simulate different functions
         if (id == 1) {
-            // function 1: a bit longer (e.g., x * 2)
-            Thread.sleep(2000); // sleep for 2 sec
-            return x * 2.0;
+            // f(x) = x^2
+            // Повертає 0 при x = 0
+            Thread.sleep(2000); // 2 сек
+            return Math.pow(x, 2);
         } else {
-            // function 2: (e.g., x ^ 2)
-            Thread.sleep(1000); // sleep for 1 sec
-            // return 0.0; // uncomment to simulate hard case
-            return x * x * 1.0;
+            // g(x) = (x - 10)^2
+            // Повертає 0 при x = 10
+            Thread.sleep(4000); // 4 сек (повільніший, щоб показати Hard Stop)
+            return Math.pow(x - 10, 2);
         }
     }
 }

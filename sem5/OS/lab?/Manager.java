@@ -3,73 +3,141 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.*;
 
 public class Manager {
-    // communication port
     private static final int PORT = 9999;
+    private static final long TIMEOUT_MS = 10000;
+    private static final long POLL_INTERVAL_MS = 200;
 
     public static void main(String[] args) throws Exception {
-        // number x we are processing
-        int x = 5; 
-        System.out.println("Start. X = " + x);
+        System.out.println("\tCLIENT STARTED");
+        
+        // 1. Створюємо сканер
+        @SuppressWarnings("resource")
+        Scanner scanner = new Scanner(System.in);
 
-        // server socket waits for connections from workers
+        // 2. Питаємо у користувача число X (Інтерактивність!)
+        int x = 0;
+        while (true) {
+            System.out.print("Please enter integer number X: ");
+            if (scanner.hasNextInt()) {
+                x = scanner.nextInt();
+                scanner.nextLine(); // "з'їдаємо" зайвий ентер після числа
+                break;
+            } else {
+                System.out.println("Error: That's not a number. Try again.");
+                scanner.nextLine(); // очистка буфера
+            }
+        }
+
+        System.out.println("Calculating f(x) * g(x) for x = " + x);
+        System.out.println("---------------------------------------");
+        System.out.println(">>> Press 'q' and Enter at any time to CANCEL computation. <<<");
+
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             
-            // thread pool for asynchrony
             ExecutorService executor = Executors.newFixedThreadPool(2);
             List<Process> processes = new ArrayList<>();
 
-            // 1. launch task 1 (Worker 1) asynchronously
+            // Щоб передати x у лямбду, він має бути effectively final, тому копіюємо
+            int finalX = x;
+
+            // Запуск Worker 1
             CompletableFuture<Double> future1 = CompletableFuture.supplyAsync(() -> {
                 try {
-                    // launch a separate Java process
-                    Process p = startWorkerProcess(1, x);
-                    processes.add(p);
+                    Process p = startWorkerProcess(1, finalX);
+                    synchronized(processes) { processes.add(p); }
                     return receiveResult(serverSocket);
                 } catch (Exception e) { throw new RuntimeException(e); }
             }, executor);
 
-            // 2. launch task 2 (Worker 2) asynchronously
+            // Запуск Worker 2
             CompletableFuture<Double> future2 = CompletableFuture.supplyAsync(() -> {
                 try {
-                    Process p = startWorkerProcess(2, x);
-                    processes.add(p);
+                    Process p = startWorkerProcess(2, finalX);
+                    synchronized(processes) { processes.add(p); }
                     return receiveResult(serverSocket);
                 } catch (Exception e) { throw new RuntimeException(e); }
             }, executor);
 
-            // 3. processing logic (small exception cases from the video)
-            try {
-                // wait for results (or timeout 5 seconds)
-                // anyOf is not suitable because we need both, but acceptEither can be used for 'who is first'
-                // here we wait for both:
-                Double res1 = future1.get(5, TimeUnit.SECONDS);
-                Double res2 = future2.get(5, TimeUnit.SECONDS);
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                for (Process p : processes) p.destroy();
+            }));
 
-                System.out.println("Result 1: " + res1);
-                System.out.println("Result 2: " + res2);
+            long startTime = System.currentTimeMillis();
+            Double res1 = null;
+            Double res2 = null;
+            boolean cancelled = false;
+
+            // Головний цикл
+            while (!future1.isDone() || !future2.isDone()) {
                 
-                // final aggregation (multiplication as an ex.)
-                System.out.println("Final Result (Multiply): " + (res1 * res2));
+                // Перевірка тайм-ауту
+                if (System.currentTimeMillis() - startTime > TIMEOUT_MS) {
+                    System.out.println("\n[!] ERROR: Computation timed out!");
+                    cancelled = true;
+                    break;
+                }
 
-            } catch (TimeoutException e) {
-                System.out.println("TIMEOUT! Cancelling tasks...");
+                // Перевірка клавіші 'q'
+                if (System.in.available() > 0) {
+                    String input = scanner.nextLine();
+                    if (input.trim().equalsIgnoreCase("q")) {
+                        System.out.println("\n[!] USER CANCELLED THE OPERATION.");
+                        cancelled = true;
+                        break;
+                    }
+                }
+
+                // Hard Stop check
+                if (future1.isDone() && res1 == null) {
+                    res1 = future1.get(); 
+                    if (res1 == 0.0) {
+                        System.out.println("\n[!] Worker 1 returned 0.0. HARD STOP initiated.");
+                        cancelled = true; 
+                        res2 = 0.0; 
+                        break; 
+                    }
+                }
+                if (future2.isDone() && res2 == null) {
+                    res2 = future2.get();
+                    if (res2 == 0.0) {
+                        System.out.println("\n[!] Worker 2 returned 0.0. HARD STOP initiated.");
+                        cancelled = true;
+                        res1 = 0.0;
+                        break;
+                    }
+                }
+
+                System.out.print("."); 
+                Thread.sleep(POLL_INTERVAL_MS);
+            }
+
+            System.out.println(); 
+
+            if (cancelled) {
                 future1.cancel(true);
                 future2.cancel(true);
-            } catch (Exception e) {
-                System.out.println("Error occurred: " + e.getMessage());
-            } finally {
-                // kill worker processes on exit
-                for (Process p : processes) p.destroy();
-                executor.shutdown();
-                System.out.println("Done.");
+                if ((res1 != null && res1 == 0.0) || (res2 != null && res2 == 0.0)) {
+                     System.out.println(">>> FINAL RESULT: 0.0 (Computed via Hard Stop)");
+                } else {
+                     System.out.println(">>> OPERATION ABORTED BY USER OR TIMEOUT.");
+                }
+            } else {
+                res1 = future1.get();
+                res2 = future2.get();
+                System.out.println("Worker 1 Result: " + res1);
+                System.out.println("Worker 2 Result: " + res2);
+                System.out.println(">>> FINAL RESULT: " + (res1 * res2));
             }
+
+            for (Process p : processes) p.destroy();
+            executor.shutdownNow();
         }
     }
 
-    // method to start an external Java process
     private static Process startWorkerProcess(int funcId, int x) throws IOException {
         String javaHome = System.getProperty("java.home");
         String javaBin = javaHome + File.separator + "bin" + File.separator + "java";
@@ -78,13 +146,10 @@ public class Manager {
         ProcessBuilder builder = new ProcessBuilder(
                 javaBin, "-cp", classpath, "Worker", 
                 String.valueOf(PORT), String.valueOf(funcId), String.valueOf(x));
-        
-        // redirect input/output (to see worker errors in manager console)
-        builder.inheritIO(); 
+        builder.redirectError(ProcessBuilder.Redirect.INHERIT);
         return builder.start();
     }
 
-    // method to receive result via socket
     private static Double receiveResult(ServerSocket server) throws IOException, ClassNotFoundException {
         try (Socket client = server.accept();
              ObjectInputStream in = new ObjectInputStream(client.getInputStream())) {
