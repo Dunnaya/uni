@@ -46,6 +46,9 @@ NoSQL (Native Find): ~2.3 sec (для 1000 запитів)
 Потребує встановлених Node.js та Docker.
 ### Підготовка оточення
 ```bash
+# 0) Перехід в корінь проекту
+cd lab2
+
 # 1) Запуск БД (Postgres, Mongo, Redis)
 docker-compose up -d
 
