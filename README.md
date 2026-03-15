@@ -51,7 +51,7 @@ My labs and study materials
         <li><a href="./sem4/GA">General Algebra</a></li>
         <li><a href="./sem4/OR">Operations Research</a></li>
         <li><a href="./sem4/DB">Organization of Databases</a></li>
-        <li><a href="./sem4/web">Web</a></li>
+        <li><a href="./sem4/web">WEB</a></li>
     </td>
   </tr>
   <tr>
@@ -65,6 +65,17 @@ My labs and study materials
         <li><a href="./sem5/NoSQL">NoSQL</a></li>
         <li><a href="./sem5/OOP">OOP</a></li>
         <li><a href="./sem5/Philosophy">Philosophy</a></li>
+    </td>
+  </tr>
+  <tr>
+    <td>sem 6</td>
+    <td>
+        <li><a href="./sem6/CF">Cryptology Fundamentals</a></li>
+        <li><a href="./sem6/CCF">Compiler Construction Fundamentals</a></li>
+        <li><a href="./sem6/OOOP">OOP</a></li>
+        <li><a href="./sem6/3D">3D Graphics</a></li>
+        <li><a href="./sem6/SIW">Scientific Image of the World</a></li>
+        <li><a href="./sem6/SPS">Socio-Political Studies</a></li>
     </td>
   </tr>
 </table>
