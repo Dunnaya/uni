@@ -72,7 +72,7 @@ My labs and study materials
     <td>
         <li><a href="./sem6/CF">Cryptology Fundamentals</a></li>
         <li><a href="./sem6/CCF">Compiler Construction Fundamentals</a></li>
-        <li><a href="./sem6/OOOP">OOP</a></li>
+        <li><a href="./sem6/OOP">OOP</a></li>
         <li><a href="./sem6/3D">3D Graphics</a></li>
         <li><a href="./sem6/SIW">Scientific Image of the World</a></li>
         <li><a href="./sem6/SPS">Socio-Political Studies</a></li>
