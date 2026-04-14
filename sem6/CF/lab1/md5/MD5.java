@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.nio.charset.StandardCharsets;
 
-public class md5 {
+public class MD5 {
 
     // shift constants for each of 64 operations
     private static final int[] S = {
