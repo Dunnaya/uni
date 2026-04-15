@@ -33,8 +33,8 @@ The four registers are serialized as little-endian hex strings and concatenated 
 ## Usage (wow it's so non-obv)
 
 ```
-javac md5.java
-java md5
+javac MD5.java
+java MD5
 ```
 
 The program prints two known test vectors on startup, then prompts for input:
