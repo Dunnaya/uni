@@ -1,0 +1,16 @@
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/config/DatabaseConnection.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/controller/AdminServlet.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/controller/OrderServlet.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/controller/ProductServlet.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/dao/OrderDao.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/dao/ProductDao.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/dao/UserDao.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/dto/OrderItemRequest.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/dto/OrderRequest.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/dto/ProductDto.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/filter/JwtAuthFilter.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/mapper/ProductMapper.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/model/Order.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/model/OrderItem.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/model/Product.java
+/Users/dunnaya/projects/uni/sem6/OOP/lab1/lab1/src/main/java/com/lab1/model/User.java
