@@ -53,5 +53,3 @@ decrypted: hellwrld
 ## Limitations
 
 Works only with exactly 8-byte blocks. To handle arbitrary input you'd need padding (e.g. PKCS#7) and a block mode like CBC or CTR.
-
-## ts pmo

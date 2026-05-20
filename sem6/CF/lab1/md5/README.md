@@ -58,5 +58,3 @@ MD5: fc5e038d38a57032085441e7fe7010b0
 MD5 is considered cryptographically broken — collision attacks have been demonstrated, meaning two different inputs can produce the same hash. It should not be used for password hashing or digital signatures.
 
 That said, understanding how MD5 works is a good foundation for learning about stronger hash functions like SHA-256, which follow the same general structure but with more rounds and a larger state.
-
-## Сенкс фор йо аттеншн, хев е найс дей =))
