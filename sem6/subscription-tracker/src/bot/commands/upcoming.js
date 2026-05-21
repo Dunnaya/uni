@@ -1,6 +1,7 @@
 const User = require('../../models/User');
 const Subscription = require('../../models/Subscription');
 const { getUpcoming } = require('../../utils/dateUtils');
+const { escapeMd } = require('../utils');
 
 module.exports = async (ctx) => {
   try {
@@ -8,7 +9,9 @@ module.exports = async (ctx) => {
     const user = await User.findOne({ telegramChatId: chatId });
 
     if (!user) {
-      return ctx.reply('Link your Telegram account in the web app first.\nSend /start to see instructions.');
+      return ctx.reply(
+        'Link your Telegram account in the web app first.\nSend /start to see instructions.'
+      );
     }
 
     const subs = await Subscription.find({ userId: user._id, isActive: true });
@@ -19,14 +22,15 @@ module.exports = async (ctx) => {
     }
 
     const lines = upcoming.map(s => {
-      const date = s.nextBillingDate.toLocaleDateString('uk-UA');
+      const date   = escapeMd(s.nextBillingDate.toLocaleDateString('uk-UA'));
+      const name   = escapeMd(s.name);
       const amount = s.amount.toFixed(2);
-      return `${date} — *${s.name}*: ${amount} ${s.currency}`;
+      return `${date} — *${name}*: ${amount} ${s.currency}`;
     });
 
     ctx.reply(
-      `💳 *Upcoming charges (next 7 days):*\n\n` + lines.join('\n'),
-      { parse_mode: 'Markdown' }
+      `💳 *Upcoming charges \\(next 7 days\\):*\n\n` + lines.join('\n'),
+      { parse_mode: 'MarkdownV2' }
     );
   } catch (err) {
     console.error('Bot /upcoming error:', err.message);

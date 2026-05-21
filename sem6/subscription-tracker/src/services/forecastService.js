@@ -1,7 +1,14 @@
 const Subscription = require('../models/Subscription');
 const { calcNextBillingDate } = require('../utils/dateUtils');
 
-// prognosis for upcom. N mo
+// Returns billing events and a per-month, per-currency cost breakdown
+// for the next `months` months.
+//
+// monthlySummary shape:
+//   { "2026-06": { "UAH": 450, "USD": 15.99 }, "2026-07": { ... }, ... }
+//
+// Keeping currencies separate avoids silent incorrect totals when a user
+// has subscriptions in multiple currencies (e.g. UAH + USD).
 exports.getForecast = async (userId, months = 3) => {
   const active = await Subscription.find({ userId, isActive: true });
   const now = new Date();
@@ -13,32 +20,31 @@ exports.getForecast = async (userId, months = 3) => {
   for (const sub of active) {
     let nextDate = new Date(sub.nextBillingDate);
 
-    // generating all billing events for the period
     while (nextDate <= endDate) {
       if (nextDate >= now) {
         events.push({
           subscriptionId: sub._id,
-          name: sub.name,
-          amount: sub.amount,
+          name:     sub.name,
+          amount:   sub.amount,
           currency: sub.currency,
-          date: new Date(nextDate),
+          date:     new Date(nextDate),
           category: sub.category,
-          isTrial: sub.isTrial,
+          isTrial:  sub.isTrial,
         });
       }
-      // next cycle
       nextDate = calcNextBillingDate(nextDate, sub.billingCycle, sub.customCycleDays);
     }
   }
 
   events.sort((a, b) => a.date - b.date);
 
-  // monthly summary
+  // Build a nested summary: { "YYYY-MM": { "CURRENCY": totalAmount } }
   const monthlySummary = {};
   for (const e of events) {
-    const key = `${e.date.getFullYear()}-${String(e.date.getMonth() + 1).padStart(2, '0')}`;
-    if (!monthlySummary[key]) monthlySummary[key] = 0;
-    monthlySummary[key] += e.amount;
+    const monthKey = `${e.date.getFullYear()}-${String(e.date.getMonth() + 1).padStart(2, '0')}`;
+    if (!monthlySummary[monthKey]) monthlySummary[monthKey] = {};
+    const cur = e.currency || 'UAH';
+    monthlySummary[monthKey][cur] = (monthlySummary[monthKey][cur] || 0) + e.amount;
   }
 
   return { events, monthlySummary };

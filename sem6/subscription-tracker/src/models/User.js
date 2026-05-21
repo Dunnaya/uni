@@ -13,6 +13,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  // Increment this to invalidate all existing JWT tokens for this user
+  // (e.g. after logout-all or password change).
+  tokenVersion: {
+    type: Number,
+    default: 0,
+  },
   monobankToken: {
     type: String,
     default: null,
@@ -35,7 +41,7 @@ const userSchema = new mongoose.Schema({
   },
   telegramLinkTokenExpiry: {
     type: Date,
-    default: null,  // checked in bot/commands/start.js
+    default: null,
   },
   defaultReminderDays: {
     type: Number,
