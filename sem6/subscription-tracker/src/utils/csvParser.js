@@ -1,11 +1,10 @@
 const csv = require('csv-parse/sync');
 const xlsx = require('xlsx');
 
-// adapters for different bank formats
 const BANK_ADAPTERS = {
-  privatbank: parsePrivatbank,
+  privatbank:   parsePrivatbank,
   monobank_csv: parseMonobankCsv,
-  generic: parseGeneric,
+  generic:      parseGeneric,
 };
 
 exports.parseFile = (buffer, filename, bank = 'generic') => {
@@ -15,36 +14,44 @@ exports.parseFile = (buffer, filename, bank = 'generic') => {
   if (ext === 'csv') {
     rows = csv.parse(buffer, { columns: true, skip_empty_lines: true, bom: true });
   } else if (['xls', 'xlsx'].includes(ext)) {
-    const wb = xlsx.read(buffer);
+    // cellDates: true converts Excel date serials to JS Date objects
+    const wb = xlsx.read(buffer, { cellDates: true });
     rows = xlsx.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]);
   } else {
-    throw new Error('Unsupported file format');
+    throw new Error('Only CSV and XLSX files are supported');
   }
 
   const adapter = BANK_ADAPTERS[bank] || BANK_ADAPTERS.generic;
   return rows.map(adapter).filter(Boolean);
 };
 
-// PrivatBank (ts pmo): columns — "Date", "Description", "Amount", "Currency"
+function parseDate(val) {
+  if (!val) return null;
+  if (val instanceof Date) return val;
+  // Excel sometimes returns numbers (serial dates) — xlsx handles those with cellDates:true
+  // but just in case
+  if (typeof val === 'number') return new Date((val - 25569) * 86400 * 1000);
+  return new Date(val);
+}
+
 function parsePrivatbank(row) {
   const amount = parseFloat(String(row['Сума'] || row['Дебет'] || 0).replace(',', '.'));
-  if (isNaN(amount) || amount >= 0) return null;  // expenses only
+  if (isNaN(amount) || amount >= 0) return null;
 
   return {
-    date: new Date(row['Дата операції'] || row['Дата']),
+    date: parseDate(row['Дата операції'] || row['Дата']),
     description: row['Опис'] || row['Призначення'] || '',
-    amount: Math.round(amount * 100),   // in kopiyki
+    amount: Math.round(amount * 100),
     currency: row['Валюта'] || 'UAH',
   };
 }
 
-// Monobank CSV (app export)
 function parseMonobankCsv(row) {
   const amount = parseFloat(String(row['Сума'] || 0).replace(',', '.'));
   if (isNaN(amount) || amount >= 0) return null;
 
   return {
-    date: new Date(row['Дата']),
+    date: parseDate(row['Дата']),
     description: row['Опис'] || '',
     amount: Math.round(amount * 100),
     currency: row['Валюта операції'] || 'UAH',
@@ -52,11 +59,10 @@ function parseMonobankCsv(row) {
   };
 }
 
-// general (trying to guess columns)
 function parseGeneric(row) {
   const keys = Object.keys(row);
-  const dateKey = keys.find(k => /дата|date/i.test(k));
-  const descKey = keys.find(k => /опис|description|призначення/i.test(k));
+  const dateKey   = keys.find(k => /дата|date/i.test(k));
+  const descKey   = keys.find(k => /опис|description|призначення/i.test(k));
   const amountKey = keys.find(k => /сума|amount|деб/i.test(k));
 
   if (!dateKey || !amountKey) return null;
@@ -65,7 +71,7 @@ function parseGeneric(row) {
   if (isNaN(amount) || amount >= 0) return null;
 
   return {
-    date: new Date(row[dateKey]),
+    date: parseDate(row[dateKey]),
     description: descKey ? row[descKey] : '',
     amount: Math.round(amount * 100),
     currency: 'UAH',

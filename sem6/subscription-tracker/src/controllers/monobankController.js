@@ -8,7 +8,7 @@ exports.saveToken = async (req, res, next) => {
     const { token } = req.body;
     if (!token) return res.status(400).json({ error: 'Token is missing' });
 
-    // чек токен через апішку шоб понять чи він валідний перед сейвом
+    // verify against monobank API before saving
     await monobankService.verifyToken(token);
 
     // encrypt and save
@@ -35,17 +35,15 @@ exports.sync = async (req, res, next) => {
 
     const rawToken = cryptoService.decrypt(req.user.monobankToken);
 
-    // get transactions (for last 90 days if it's the 1st sync)
-    const from = req.user.monobankLastSync
-      ? req.user.monobankLastSync
-      : new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+    // always fetch the last 90 days so re-running sync picks up anything missed
+    // duplicate transactions are handled by upsert in saveTransactions
+    const from = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
 
     const transactions = await monobankService.fetchTransactions(rawToken, from);
 
     // detect subs
     const detected = await subscriptionDetector.detect(req.user._id, transactions);
 
-    // update last sync date
     req.user.monobankLastSync = new Date();
     await req.user.save();
 

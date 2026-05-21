@@ -2,48 +2,82 @@ const cron = require('node-cron');
 const User = require('../models/User');
 const Subscription = require('../models/Subscription');
 const { getBot } = require('../bot/bot');
+const { calcNextBillingDate } = require('../utils/dateUtils');
 
 exports.startScheduler = () => {
-  // start every day at 9:00 (jus like my fckin work =))))
-  cron.schedule('0 9 * * *', async () => {
-    console.log('Checking reminders...');
-    await checkAndNotify();
+  const hour   = process.env.NOTIFICATION_HOUR   || 9;
+  const minute = process.env.NOTIFICATION_MINUTE || 0;
+
+  cron.schedule(`${minute} ${hour} * * *`, async () => {
+    console.log('Running daily scheduler...');
+    try {
+      await advancePastDates();
+      await checkAndNotify();
+    } catch (err) {
+      console.error('Scheduler error:', err.message);
+    }
   });
 };
 
+async function advancePastDates() {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const outdated = await Subscription.find({
+    isActive: true,
+    nextBillingDate: { $lt: today },
+  });
+
+  for (const sub of outdated) {
+    let next = new Date(sub.nextBillingDate);
+    while (next < today) {
+      next = calcNextBillingDate(next, sub.billingCycle, sub.customCycleDays);
+    }
+    sub.nextBillingDate = next;
+    await sub.save();
+  }
+
+  if (outdated.length) {
+    console.log(`Advanced ${outdated.length} outdated billing date(s)`);
+  }
+}
+
 async function checkAndNotify() {
   const today = new Date();
+  today.setHours(0, 0, 0, 0);
 
-  // all active subs with their renewal dates
-  const subscriptions = await Subscription.find({ isActive: true });
+  const subscriptions = await Subscription.find({ isActive: true })
+    .populate({ path: 'userId', select: 'telegramLinked telegramChatId defaultReminderDays' });
+
+  const bot = getBot();
+  if (!bot) return;
 
   for (const sub of subscriptions) {
-    const user = await User.findById(sub.userId);
+    const user = sub.userId;
     if (!user?.telegramLinked || !user.telegramChatId) continue;
 
     const reminderDays = sub.reminderDays ?? user.defaultReminderDays ?? 3;
-    const targetDate = new Date(sub.nextBillingDate);
-    targetDate.setHours(0, 0, 0, 0);
 
-    const reminderDate = new Date(targetDate);
-    reminderDate.setDate(reminderDate.getDate() - reminderDays);
-    reminderDate.setHours(0, 0, 0, 0);
+    const billingDate = new Date(sub.nextBillingDate);
+    billingDate.setHours(0, 0, 0, 0);
 
-    today.setHours(0, 0, 0, 0);
+    const notifyOn = new Date(billingDate);
+    notifyOn.setDate(notifyOn.getDate() - reminderDays);
 
-    if (today.getTime() === reminderDate.getTime()) {
-      const bot = getBot();
-      const amount = (sub.amount / 100).toFixed(2);
-      const dateStr = targetDate.toLocaleDateString('uk-UA');
+    if (today.getTime() !== notifyOn.getTime()) continue;
 
+    try {
       await bot.telegram.sendMessage(
         user.telegramChatId,
-        `Reminder!!\n\n` +
-        `Subscription *${sub.name}* will be charged ${dateStr}\n` +
-        `Amount: ${amount} ${sub.currency}\n\n` +
-        `To cancel the reminder — open the app.`,
+        `🔔 *Reminder*\n\n` +
+        `*${sub.name}* will be charged on ${billingDate.toLocaleDateString('uk-UA')}\n` +
+        `Amount: ${sub.amount.toFixed(2)} ${sub.currency}`,
         { parse_mode: 'Markdown' }
       );
+    } catch (err) {
+      console.error(`Failed to notify user ${user._id}:`, err.message);
     }
   }
 }
+
+exports.advancePastDates = advancePastDates;

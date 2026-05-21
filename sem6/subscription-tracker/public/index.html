@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subscription Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- login / register -->
+<div id="auth">
+  <div class="auth-box">
+    <h2>Subscription Tracker</h2>
+    <p>Track your digital subscription expenses</p>
+    <div class="tabs">
+      <button class="tab active" onclick="setMode('login')">Sign in</button>
+      <button class="tab" onclick="setMode('register')">Register</button>
+    </div>
+    <div class="field">
+      <label>Email</label>
+      <input id="a-email" type="email" class="input" placeholder="you@example.com">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input id="a-pass" type="password" class="input" placeholder="Min. 6 characters">
+    </div>
+    <button id="a-btn" class="btn btn-primary w-full" onclick="handleAuth()">Sign in</button>
+    <div id="a-err" class="error-msg"></div>
+  </div>
+</div>
+
+<!-- main app (hidden until logged in) -->
+<div id="app">
+  <aside class="sidebar">
+    <div class="sidebar-title">SubTrack</div>
+    <div class="sidebar-email" id="s-email"></div>
+    <nav>
+      <button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">Dashboard</button>
+      <button class="nav-btn" data-page="subscriptions" onclick="go('subscriptions')">Subscriptions</button>
+      <button class="nav-btn" data-page="forecast" onclick="go('forecast')">Forecast</button>
+      <button class="nav-btn" data-page="import" onclick="go('import')">Import</button>
+      <button class="nav-btn" data-page="settings" onclick="go('settings')">Settings</button>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="nav-btn" onclick="signOut()">← Sign out</button>
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <!-- dashboard -->
+    <div class="page active" id="page-dashboard">
+      <h1 class="page-title">Dashboard</h1>
+      <p class="page-sub">Overview of your subscription expenses</p>
+      <div id="stats-row" class="stats-row"></div>
+      <div class="dash-cols">
+        <div class="card">
+          <div class="card-title">Upcoming in 7 days</div>
+          <div id="upcoming"></div>
+        </div>
+        <div class="card">
+          <div class="card-title">By category</div>
+          <div id="by-category"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- subscriptions -->
+    <div class="page" id="page-subscriptions">
+      <h1 class="page-title">Subscriptions</h1>
+      <p class="page-sub">Manage all your subscriptions</p>
+      <div class="toolbar">
+        <input id="q" class="input" style="max-width:200px" placeholder="Search..." oninput="renderTable()">
+        <select id="f-cat" class="input" onchange="renderTable()">
+          <option value="">All categories</option>
+          <option value="entertainment">Entertainment</option>
+          <option value="work">Work</option>
+          <option value="cloud">Cloud</option>
+          <option value="music">Music</option>
+          <option value="gaming">Gaming</option>
+          <option value="other">Other</option>
+        </select>
+        <select id="f-status" class="input" onchange="renderTable()">
+          <option value="">All</option>
+          <option value="active">Active</option>
+          <option value="paused">Paused</option>
+        </select>
+        <button class="btn btn-primary" onclick="openModal()">+ Add</button>
+      </div>
+      <div id="subs-table"></div>
+    </div>
+
+    <!-- forecast -->
+    <div class="page" id="page-forecast">
+      <h1 class="page-title">Forecast</h1>
+      <p class="page-sub">Projected billing for the upcoming months</p>
+      <div class="tabs-row">
+        <button class="m-tab active" onclick="setMonths(3, this)">3 months</button>
+        <button class="m-tab" onclick="setMonths(6, this)">6 months</button>
+        <button class="m-tab" onclick="setMonths(12, this)">12 months</button>
+      </div>
+      <div id="fc-grid" class="fc-grid"></div>
+      <div class="card">
+        <div class="card-title">All upcoming charges</div>
+        <div id="fc-events"></div>
+      </div>
+    </div>
+
+    <!-- import -->
+    <div class="page" id="page-import">
+      <h1 class="page-title">Import</h1>
+      <p class="page-sub">Load data from a bank export or Monobank API</p>
+
+      <div class="card" style="margin-bottom:14px">
+        <div class="card-title">CSV / XLSX bank export</div>
+        <div id="drop-zone" class="upload-area"
+             onclick="document.getElementById('f-csv').click()"
+             ondragover="onDrag(event)" ondrop="onDrop(event)" ondragleave="offDrag()">
+          <p>Drag a file here or click to select</p>
+          <small>Supported: monobank_csv, privatbank formats</small>
+        </div>
+        <input type="file" id="f-csv" accept=".csv,.xlsx" style="display:none" onchange="uploadCsv(this)">
+        <div id="csv-msg" class="result-msg"></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Monobank API</div>
+        <p style="color:#64748b;font-size:13px;margin-bottom:12px">
+          Get the token in Monobank app: Settings → Personal data → Developers.<br>
+          The token is stored encrypted with AES-256.
+        </p>
+        <div id="mono-status" style="display:none;margin-bottom:10px">
+          <span class="badge badge-ok">● Connected</span>
+          <span id="mono-sync-date" style="font-size:12px;color:#64748b;margin-left:8px"></span>
+        </div>
+        <div style="display:flex;gap:8px">
+          <input type="password" id="mono-token" class="input" placeholder="uXXXX..." style="flex:1">
+          <button class="btn btn-default" onclick="saveMonoToken()">Save</button>
+          <button id="sync-btn" class="btn btn-default" style="display:none" onclick="syncMono()">Sync now</button>
+        </div>
+        <div id="mono-msg" class="result-msg"></div>
+      </div>
+    </div>
+
+    <!-- settings -->
+    <div class="page" id="page-settings">
+      <h1 class="page-title">Settings</h1>
+      <p class="page-sub">Telegram notifications and account</p>
+
+      <div class="settings-block">
+        <h3>Telegram bot</h3>
+        <p>Get reminders before billing dates. Default: 3 days before each charge.<br>
+           Link your account using the token below — expires in 15 minutes.</p>
+        <div id="tg-linked" style="display:none;margin-bottom:10px">
+          <span class="badge badge-ok">✓ Telegram linked</span>
+        </div>
+        <div id="tg-token-box" class="token-box"></div>
+        <div id="tg-instr" class="instruction">
+          Open the bot and send: <code id="tg-cmd"></code>
+        </div>
+        <button class="btn btn-default" style="margin-top:12px" onclick="getTgToken()">Generate token</button>
+      </div>
+
+      <div class="settings-block">
+        <h3>About</h3>
+        <p>Coursework — "Web Systems Development". Stack: Node.js · Express · MongoDB · Telegram Bot API · Monobank API.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- add / edit subscription modal -->
+<div id="modal" class="modal-backdrop" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <h3 id="modal-title">New subscription</h3>
+    <div class="field">
+      <label>Service name *</label>
+      <input id="m-name" class="input" placeholder="Netflix, Spotify...">
+      <div id="e-name" class="field-error">Required</div>
+    </div>
+    <div class="form-2col">
+      <div class="field">
+        <label>Amount *</label>
+        <input id="m-amount" type="number" class="input" placeholder="299" min="0">
+        <div id="e-amount" class="field-error">Enter a positive number</div>
+      </div>
+      <div class="field">
+        <label>Currency</label>
+        <select id="m-cur" class="input">
+          <option value="UAH">UAH ₴</option>
+          <option value="USD">USD $</option>
+          <option value="EUR">EUR €</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-2col">
+      <div class="field">
+        <label>Billing cycle *</label>
+        <select id="m-cycle" class="input" onchange="toggleCustomDays()">
+          <option value="monthly">Monthly</option>
+          <option value="yearly">Yearly</option>
+          <option value="weekly">Weekly</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Category</label>
+        <select id="m-cat" class="input">
+          <option value="entertainment">Entertainment</option>
+          <option value="work">Work</option>
+          <option value="cloud">Cloud</option>
+          <option value="music">Music</option>
+          <option value="gaming">Gaming</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div id="m-custom-wrap" class="field" style="display:none">
+      <label>Cycle length (days)</label>
+      <input id="m-days" type="number" class="input" placeholder="30" min="1">
+    </div>
+    <div class="field">
+      <label>Next billing date *</label>
+      <input id="m-date" type="date" class="input">
+      <div id="e-date" class="field-error">Required</div>
+    </div>
+    <div class="field">
+      <label>Description</label>
+      <input id="m-desc" class="input" placeholder="Family plan, 4K...">
+    </div>
+    <div class="field">
+      <label>Remind N days before billing <span style="color:#94a3b8;font-weight:400">(leave empty to use account default)</span></label>
+      <input id="m-reminder" type="number" class="input" placeholder="3" min="0" max="30">
+    </div>
+    <label style="font-size:13px;display:flex;align-items:center;gap:6px;cursor:pointer">
+      <input type="checkbox" id="m-trial"> Trial period
+    </label>
+    <div class="modal-footer">
+      <button class="btn btn-default" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" style="width:auto" onclick="saveSub()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
