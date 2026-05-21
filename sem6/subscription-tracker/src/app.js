@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
-const multer = require('multer');
+const path = require('path');
 
 const authRoutes = require('./routes/auth');
 const subscriptionRoutes = require('./routes/subscriptions');
@@ -13,23 +13,28 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
-// security and utilities
-app.use(helmet());
+app.use(helmet({ contentSecurityPolicy: false })); // CSP off - google fonts won't load otherwise
 app.use(cors({ origin: process.env.CLIENT_URL || '*' }));
 app.use(morgan('dev'));
 app.use(express.json());
 
-// routes
+app.use(express.static(path.join(__dirname, '../public')));
+
 app.use('/api/auth', authRoutes);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/monobank', monobankRoutes);
 app.use('/api/import', importRoutes);
 app.use('/api/forecast', forecastRoutes);
 
-// health-check
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
-// centralized error handling (always last)
+// SPA fallback
+app.get('*', (req, res) => {
+  if (!req.path.startsWith('/api')) {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+  }
+});
+
 app.use(errorHandler);
 
 module.exports = app;

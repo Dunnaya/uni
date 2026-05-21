@@ -1,6 +1,4 @@
-/**
- * Calculates the next billing date based on the cycle type
- */
+// next billing date based on cycle type
 exports.calcNextBillingDate = (from, cycle, customDays = null) => {
   const date = new Date(from);
 
@@ -24,9 +22,7 @@ exports.calcNextBillingDate = (from, cycle, customDays = null) => {
   return date;
 };
 
-/**
- * Returns subscriptions that are due for billing within the next N days
- */
+// subscriptions due within the next N days
 exports.getUpcoming = (subscriptions, days = 7) => {
   const now = new Date();
   const limit = new Date(now.getTime() + days * 24 * 60 * 60 * 1000);

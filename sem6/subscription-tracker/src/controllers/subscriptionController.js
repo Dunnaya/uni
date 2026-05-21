@@ -1,6 +1,25 @@
 const Subscription = require('../models/Subscription');
 const { calcNextBillingDate } = require('../utils/dateUtils');
 
+const ALLOWED_CREATE_FIELDS = [
+  'name', 'amount', 'currency', 'billingCycle', 'customCycleDays',
+  'nextBillingDate', 'startDate', 'category', 'description',
+  'isTrial', 'trialEndDate', 'reminderDays', 'mcc',
+];
+
+const ALLOWED_UPDATE_FIELDS = [
+  'name', 'amount', 'currency', 'billingCycle', 'customCycleDays',
+  'nextBillingDate', 'category', 'description', 'isActive',
+  'isTrial', 'trialEndDate', 'reminderDays',
+];
+
+function pick(obj, allowed) {
+  return allowed.reduce((acc, key) => {
+    if (key in obj) acc[key] = obj[key];
+    return acc;
+  }, {});
+}
+
 exports.getAll = async (req, res, next) => {
   try {
     const { active, category } = req.query;
@@ -16,12 +35,11 @@ exports.getAll = async (req, res, next) => {
 exports.create = async (req, res, next) => {
   try {
     const data = {
-      ...req.body,
-      userId: req.user._id,
-      source: 'manual',
+      ...pick(req.body, ALLOWED_CREATE_FIELDS), // allowed fields only
+      userId: req.user._id,                      // userId always from token
+      source: 'manual',                          // source always 'manual' for manual creation
     };
 
-    // if nextBillingDate not provided, calculate auto
     if (!data.nextBillingDate && data.startDate) {
       data.nextBillingDate = calcNextBillingDate(
         new Date(data.startDate),
@@ -37,9 +55,11 @@ exports.create = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
+    const safeData = pick(req.body, ALLOWED_UPDATE_FIELDS); // only allowed fields
+
     const sub = await Subscription.findOneAndUpdate(
       { _id: req.params.id, userId: req.user._id },
-      req.body,
+      safeData,
       { new: true, runValidators: true }
     );
     if (!sub) return res.status(404).json({ error: 'Subscription not found' });
@@ -49,7 +69,8 @@ exports.update = async (req, res, next) => {
 
 exports.remove = async (req, res, next) => {
   try {
-    await Subscription.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    const sub = await Subscription.findOneAndDelete({ _id: req.params.id, userId: req.user._id });
+    if (!sub) return res.status(404).json({ error: 'Subscription not found' });
     res.json({ message: 'Subscription removed' });
   } catch (err) { next(err); }
 };

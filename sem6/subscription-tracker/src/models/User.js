@@ -13,16 +13,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // syphered token
   monobankToken: {
-    type: String,          // AES-256 sypheresd string
+    type: String,
     default: null,
   },
   monobankLastSync: {
     type: Date,
     default: null,
   },
-  // tg
   telegramChatId: {
     type: String,
     default: null,
@@ -31,14 +29,20 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  // reminreds settings
+  telegramLinkToken: {
+    type: String,
+    default: null,
+  },
+  telegramLinkTokenExpiry: {
+    type: Date,
+    default: null,  // checked in bot/commands/start.js
+  },
   defaultReminderDays: {
     type: Number,
     default: 3,
   },
 }, { timestamps: true });
 
-// hash passw before saving
 userSchema.pre('save', async function (next) {
   if (!this.isModified('passwordHash')) return next();
   this.passwordHash = await bcrypt.hash(this.passwordHash, 12);

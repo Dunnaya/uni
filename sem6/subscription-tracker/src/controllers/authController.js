@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
 const User = require('../models/User');
 
 const generateToken = (id) =>
@@ -7,10 +8,6 @@ const generateToken = (id) =>
 exports.register = async (req, res, next) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(400).json({ error: 'Email and password are required' });
-    }
-
     const existing = await User.findOne({ email });
     if (existing) return res.status(409).json({ error: 'Email is already registered' });
 
@@ -36,3 +33,20 @@ exports.login = async (req, res, next) => {
 };
 
 exports.me = (req, res) => res.json(req.user);
+
+exports.generateLinkToken = async (req, res, next) => {
+  try {
+    const token = crypto.randomBytes(16).toString('hex');
+
+    req.user.telegramLinkToken = token;
+    req.user.telegramLinkTokenExpiry = new Date(Date.now() + 15 * 60 * 1000);
+    await req.user.save();
+
+    res.json({
+      token,
+      instruction: `Send this command to the bot: /start ${token}`,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
