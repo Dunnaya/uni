@@ -3,6 +3,7 @@ const User = require('../models/User');
 const Subscription = require('../models/Subscription');
 const { getBot } = require('../bot/bot');
 const { calcNextBillingDate } = require('../utils/dateUtils');
+const { escapeMd } = require('../bot/utils');
 
 exports.startScheduler = () => {
   const hour   = process.env.NOTIFICATION_HOUR   || 9;
@@ -66,13 +67,19 @@ async function checkAndNotify() {
 
     if (today.getTime() !== notifyOn.getTime()) continue;
 
+    // Escape user-controlled fields before embedding in MarkdownV2 message.
+    const safeName = escapeMd(sub.name);
+    const safeDate = escapeMd(billingDate.toLocaleDateString('uk-UA'));
+    const safeAmount = escapeMd(sub.amount.toFixed(2));
+    const safeCurrency = escapeMd(sub.currency);
+
     try {
       await bot.telegram.sendMessage(
         user.telegramChatId,
         `🔔 *Reminder*\n\n` +
-        `*${sub.name}* will be charged on ${billingDate.toLocaleDateString('uk-UA')}\n` +
-        `Amount: ${sub.amount.toFixed(2)} ${sub.currency}`,
-        { parse_mode: 'Markdown' }
+        `*${safeName}* will be charged on ${safeDate}\n` +
+        `Amount: ${safeAmount} ${safeCurrency}`,
+        { parse_mode: 'MarkdownV2' }
       );
     } catch (err) {
       console.error(`Failed to notify user ${user._id}:`, err.message);

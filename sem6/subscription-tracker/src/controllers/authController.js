@@ -2,8 +2,12 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const User = require('../models/User');
 
-const generateToken = (id) =>
-  jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+const generateToken = (user) =>
+  jwt.sign(
+    { id: user._id, tokenVersion: user.tokenVersion },
+    process.env.JWT_SECRET,
+    { expiresIn: '30d' }
+  );
 
 exports.register = async (req, res, next) => {
   try {
@@ -12,7 +16,7 @@ exports.register = async (req, res, next) => {
     if (existing) return res.status(409).json({ error: 'Email is already registered' });
 
     const user = await User.create({ email, passwordHash: password });
-    res.status(201).json({ token: generateToken(user._id) });
+    res.status(201).json({ token: generateToken(user) });
   } catch (err) {
     next(err);
   }
@@ -26,13 +30,25 @@ exports.login = async (req, res, next) => {
     if (!user || !(await user.comparePassword(password))) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    res.json({ token: generateToken(user._id) });
+    res.json({ token: generateToken(user) });
   } catch (err) {
     next(err);
   }
 };
 
 exports.me = (req, res) => res.json(req.user);
+
+// Invalidate all existing tokens for this user by bumping tokenVersion.
+// Useful for "sign out of all devices" or post-password-change cleanup.
+exports.revokeAllTokens = async (req, res, next) => {
+  try {
+    req.user.tokenVersion = (req.user.tokenVersion || 0) + 1;
+    await req.user.save();
+    res.json({ message: 'All tokens revoked. Please log in again.' });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.generateLinkToken = async (req, res, next) => {
   try {
