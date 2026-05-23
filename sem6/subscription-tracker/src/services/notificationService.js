@@ -9,6 +9,9 @@ exports.startScheduler = () => {
   const hour   = process.env.NOTIFICATION_HOUR   || 9;
   const minute = process.env.NOTIFICATION_MINUTE || 0;
 
+  // Run once on startup to fix any dates that fell behind while server was down.
+  advancePastDates().catch(err => console.error('Startup advance error:', err.message));
+
   cron.schedule(`${minute} ${hour} * * *`, async () => {
     console.log('Running daily scheduler...');
     try {

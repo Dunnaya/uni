@@ -250,8 +250,9 @@ tbody tr:hover td { background: #f8fafc; }
 .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
 
 /* toast */
-.toast { position: fixed; bottom: 18px; right: 18px; background: #1a0a38; color: #fff; padding: 10px 16px; border-radius: 6px; font-size: 13px; z-index: 100; transform: translateY(60px); transition: transform .2s; max-width: 300px; }
-.toast.show { transform: none; }
+.toast { position: fixed; bottom: 18px; right: 18px; background: #1a0a38; color: #fff; padding: 10px 16px; border-radius: 6px; font-size: 13px; z-index: 100; transform: translateY(80px); opacity: 0; transition: transform .25s ease, opacity .25s ease; max-width: 300px; pointer-events: none; }
+.toast.show { transform: none; opacity: 1; pointer-events: auto; }
+.toast.hide { transform: translateY(80px); opacity: 0; }
 .toast.err { background: #b91c1c; }
 
 .empty { text-align: center; padding: 40px; color: #94a3b8; }

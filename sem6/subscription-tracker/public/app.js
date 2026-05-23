@@ -40,7 +40,11 @@ function toast(msg, isErr) {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.className = 'toast show' + (isErr ? ' err' : '');
-  setTimeout(() => el.classList.remove('show'), 2800);
+  clearTimeout(el._t);
+  el._t = setTimeout(() => {
+    el.classList.add('hide');
+    setTimeout(() => { el.className = 'toast' + (isErr ? ' err' : ''); }, 300);
+  }, 4500);
 }
 
 // --- auth ---
@@ -375,12 +379,16 @@ async function loadForecast() {
     const summary = data.monthlySummary || {};
     const events  = data.events || [];
 
-    document.getElementById('fc-grid').innerHTML = Object.entries(summary).map(([key, total]) => {
+    document.getElementById('fc-grid').innerHTML = Object.entries(summary).map(([key, currencies]) => {
       const [y, m] = key.split('-');
       const count = events.filter(e => e.date.startsWith(key)).length;
+      // monthlySummary is { UAH: 59, USD: 9.99 } — sum UAH only, show others separately
+      const uah = currencies['UAH'] || 0;
+      const extras = Object.entries(currencies).filter(([c]) => c !== 'UAH').map(([c, v]) => `+${v.toFixed(0)} ${c}`).join(' ');
+      const totalStr = extras ? `₴${uah.toFixed(0)} ${extras}` : `₴${uah.toFixed(0)}`;
       return `<div class="fc-card">
         <div class="fc-month">${MONTHS[+m - 1]} ${y}</div>
-        <div class="fc-total">₴${Number(total).toFixed(0)}</div>
+        <div class="fc-total">${totalStr}</div>
         <div class="fc-count">${count} charge${count !== 1 ? 's' : ''}</div>
       </div>`;
     }).join('') || '<p style="color:#94a3b8">No data</p>';
@@ -447,6 +455,9 @@ async function loadMonoStatus() {
     if (s.connected) {
       document.getElementById('mono-status').style.display = 'block';
       document.getElementById('sync-btn').style.display = 'inline-flex';
+      // hide token input and save button — token already set
+      document.getElementById('mono-token').style.display = 'none';
+      document.getElementById('mono-save-btn').style.display = 'none';
       if (s.lastSync) {
         document.getElementById('mono-sync-date').textContent =
           'Last sync: ' + new Date(s.lastSync).toLocaleDateString();
@@ -467,7 +478,8 @@ async function saveMonoToken() {
     msg.style.display = 'block';
     document.getElementById('sync-btn').style.display = 'inline-flex';
     document.getElementById('mono-status').style.display = 'block';
-    document.getElementById('mono-token').value = '';
+    document.getElementById('mono-token').style.display = 'none';
+    document.getElementById('mono-save-btn').style.display = 'none';
     toast('Monobank connected');
   } catch (e) {
     msg.className = 'result-msg result-err';
