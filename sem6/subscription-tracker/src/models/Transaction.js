@@ -18,13 +18,17 @@ const transactionSchema = new mongoose.Schema({
     enum: ['monobank', 'csv'],
     required: true,
   },
-  amount: { type: Number, required: true },   // negative for expenses
+  amount: { type: Number, required: true },  // negative for expenses
   currency: { type: String, default: 'UAH' },
-  description: { type: String },
+  description: { type: String, default: '' },
+  // Enriched merchant name from Monobank API (t.counterName).
+  // For Google/Apple charges `description` is a generic string like
+  // "Оплата в інтернеті", while counterName is "Google YouTube",
+  // "Apple.com/bill" etc. — the only reliable field for keyword matching.
+  counterName: { type: String, default: '' },
   mcc: { type: Number },
   date: { type: Date, required: true },
   isSubscription: { type: Boolean, default: false },
-  // link to sub if identified as subcharge
   subscriptionId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Subscription',

@@ -1,61 +1,64 @@
 const axios = require('axios');
 const Transaction = require('../models/Transaction');
 
-const MONO_BASE = 'https://api.monobank.ua';
+const BASE_URL = 'https://api.monobank.ua';
 
-// check token (get client info)
 exports.verifyToken = async (token) => {
-  const res = await axios.get(`${MONO_BASE}/personal/client-info`, {
+  const res = await axios.get(`${BASE_URL}/personal/client-info`, {
     headers: { 'X-Token': token },
   });
   return res.data;
 };
 
-// fetch transactions for an account
-// ! mono limits: no more than 1 request per 60 seconds, and max 31 days per request
 exports.fetchTransactions = async (token, from, to = new Date()) => {
-  // fetch list of accounts
-  const clientInfo = await exports.verifyToken(token);
-  const accounts = clientInfo.accounts;
+  const accounts = await exports.verifyToken(token);
+  const accountId = accounts.accounts.find(a => a.currencyCode === 980)?.id
+    || accounts.accounts[0]?.id;
 
-  const uahAccount = accounts.find(a => a.currencyCode === 980) || accounts[0];
+  if (!accountId) throw new Error('No account found');
 
-  // fetch transactions in chunks if needed
   const chunks = splitDateRange(from, to, 31);
-  const allTransactions = [];
+  const all = [];
 
-  for (const [chunkFrom, chunkTo] of chunks) {
-    const fromTs = Math.floor(chunkFrom.getTime() / 1000);
-    const toTs = Math.floor(chunkTo.getTime() / 1000);
+  for (let i = 0; i < chunks.length; i++) {
+    const [start, end] = chunks[i];
+    const fromTs = Math.floor(start.getTime() / 1000);
+    const toTs   = Math.floor(end.getTime()   / 1000);
 
-    const { data } = await axios.get(
-      `${MONO_BASE}/personal/statement/${uahAccount.id}/${fromTs}/${toTs}`,
+    const res = await axios.get(
+      `${BASE_URL}/personal/statement/${accountId}/${fromTs}/${toTs}`,
       { headers: { 'X-Token': token } }
     );
-    allTransactions.push(...data);
+    all.push(...res.data);
 
-    // deeeelay to avoid exceeeeeding the limit
-    if (chunks.length > 1) await delay(61_000);
+    // delay to avoid hitting monobank's rate limit (max 1 request per 60 seconds)
+    if (i < chunks.length - 1) await delay(61_000);
   }
 
-  return allTransactions;
+  return all;
 };
 
-// save transactions to DB, ignoring dups
 exports.saveTransactions = async (userId, transactions) => {
+  if (!transactions.length) return;
+
   const ops = transactions.map(t => ({
     updateOne: {
       filter: { externalId: t.id },
       update: {
         $setOnInsert: {
           userId,
-          externalId: t.id,
-          source: 'monobank',
-          amount: t.amount,
-          currency: 'UAH',
-          description: t.description,
-          mcc: t.mcc,
-          date: new Date(t.time * 1000),
+          externalId:  t.id,
+          source:      'monobank',
+          amount:      t.amount,
+          currency:    'UAH',
+          description: t.description  || '',
+          mcc:         t.mcc,
+          date:        new Date(t.time * 1000),
+        },
+        // counterName can be empty on old records — always update it
+        // so re-syncing retroactively fixes transactions saved without it
+        $set: {
+          counterName: t.counterName || '',
         },
       },
       upsert: true,
@@ -65,7 +68,6 @@ exports.saveTransactions = async (userId, transactions) => {
   await Transaction.bulkWrite(ops);
 };
 
-// helper func
 function splitDateRange(from, to, maxDays) {
   const chunks = [];
   let current = new Date(from);
