@@ -7,7 +7,7 @@ router.use(auth);
 
 router.get('/', ctrl.getAll);
 router.post('/', validate.subscription, ctrl.create);
-router.put('/:id', ctrl.update);
+router.put('/:id', validate.subscriptionUpdate, ctrl.update);
 router.delete('/:id', ctrl.remove);
 router.patch('/:id/toggle', ctrl.toggle);
 

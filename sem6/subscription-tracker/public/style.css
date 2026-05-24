@@ -206,11 +206,15 @@ tbody tr:hover td { background: #f8fafc; }
 .m-tab { padding: 5px 13px; border: 1px solid #dde1e7; border-radius: 6px; background: #fff; cursor: pointer; font-size: 13px; color: #475569; }
 .m-tab.active { border-color: #6d28d9; color: #6d28d9; background: #f5f0ff; }
 
-.fc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; margin-bottom: 18px; }
-.fc-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; }
-.fc-month { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: #94a3b8; margin-bottom: 6px; }
-.fc-total { font-size: 22px; font-weight: 700; }
-.fc-count { font-size: 12px; color: #94a3b8; margin-top: 3px; }
+.fc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; margin-bottom: 18px; }
+.fc-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px 14px; }
+.fc-month { font-size: 10px; text-transform: uppercase; letter-spacing: .6px; color: #94a3b8; margin-bottom: 8px; font-weight: 600; }
+.fc-amounts { display: flex; flex-direction: column; gap: 3px; margin-bottom: 8px; }
+.fc-currency-row { display: flex; align-items: baseline; gap: 3px; line-height: 1; }
+.fc-sym { font-size: 12px; color: #94a3b8; font-weight: 500; }
+.fc-val { font-size: 18px; font-weight: 700; color: #1e293b; }
+.fc-cur { font-size: 10px; color: #94a3b8; font-weight: 600; letter-spacing: .4px; }
+.fc-count { font-size: 11px; color: #94a3b8; border-top: 1px solid #f1f5f9; padding-top: 7px; }
 
 .event-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
 .event-row:last-child { border-bottom: none; }

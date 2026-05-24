@@ -30,6 +30,11 @@ async function api(method, path, body, isForm) {
   });
 
   const data = await res.json().catch(() => ({}));
+  if (res.status === 401) {
+    // Token expired or revoked — clear session and return to login
+    signOut();
+    throw new Error(data.error || 'Session expired. Please log in again.');
+  }
   if (!res.ok) throw new Error(data.error || 'Request failed');
   return data;
 }
@@ -97,7 +102,7 @@ async function initApp() {
   try {
     const me = await api('GET', '/auth/me');
     document.getElementById('s-email').textContent = me.email;
-    if (me.telegramLinked) document.getElementById('tg-linked').style.display = 'block';
+    document.getElementById('tg-linked').style.display = me.telegramLinked ? 'block' : 'none';
   } catch {}
 
   go('dashboard');
@@ -168,7 +173,10 @@ async function loadDashboard() {
       document.getElementById('upcoming').innerHTML = '<p style="color:#94a3b8;font-size:13px">No charges in the next 7 days ✓</p>';
     } else {
       document.getElementById('upcoming').innerHTML = coming.map(s => {
-        const days = Math.ceil((new Date(s.nextBillingDate) - now) / 864e5);
+        const billing = new Date(s.nextBillingDate);
+        billing.setHours(0, 0, 0, 0);
+        const today = new Date(); today.setHours(0, 0, 0, 0);
+        const days = Math.ceil((billing - today) / 864e5);
         const badgeClass = days <= 1 ? 'badge-red' : days <= 3 ? 'badge-warn' : 'badge-ok';
         const dayLabel = days === 0 ? 'today' : days === 1 ? 'tomorrow' : days + 'd';
         return `<div class="upcoming-item">
@@ -185,7 +193,6 @@ async function loadDashboard() {
       }).join('');
     }
 
-    // category breakdown
     // category breakdown in UAH equivalent (all currencies converted)
     const totals = {};
     active.forEach(s => {
@@ -382,13 +389,15 @@ async function loadForecast() {
     document.getElementById('fc-grid').innerHTML = Object.entries(summary).map(([key, currencies]) => {
       const [y, m] = key.split('-');
       const count = events.filter(e => e.date.startsWith(key)).length;
-      // monthlySummary is { UAH: 59, USD: 9.99 } — sum UAH only, show others separately
-      const uah = currencies['UAH'] || 0;
-      const extras = Object.entries(currencies).filter(([c]) => c !== 'UAH').map(([c, v]) => `+${v.toFixed(0)} ${c}`).join(' ');
-      const totalStr = extras ? `₴${uah.toFixed(0)} ${extras}` : `₴${uah.toFixed(0)}`;
+      // monthlySummary is { UAH: 59, USD: 9.99 } — show each currency on its own line
+      const SYMBOLS = { UAH: '₴', USD: '$', EUR: '€', GBP: '£' };
+      const currencyLines = Object.entries(currencies).map(([c, v]) => {
+        const sym = SYMBOLS[c] || c;
+        return `<div class="fc-currency-row"><span class="fc-sym">${sym}</span><span class="fc-val">${v.toFixed(0)}</span><span class="fc-cur">${c}</span></div>`;
+      }).join('');
       return `<div class="fc-card">
         <div class="fc-month">${MONTHS[+m - 1]} ${y}</div>
-        <div class="fc-total">${totalStr}</div>
+        <div class="fc-amounts">${currencyLines}</div>
         <div class="fc-count">${count} charge${count !== 1 ? 's' : ''}</div>
       </div>`;
     }).join('') || '<p style="color:#94a3b8">No data</p>';
@@ -455,13 +464,18 @@ async function loadMonoStatus() {
     if (s.connected) {
       document.getElementById('mono-status').style.display = 'block';
       document.getElementById('sync-btn').style.display = 'inline-flex';
-      // hide token input and save button — token already set
       document.getElementById('mono-token').style.display = 'none';
       document.getElementById('mono-save-btn').style.display = 'none';
       if (s.lastSync) {
         document.getElementById('mono-sync-date').textContent =
           'Last sync: ' + new Date(s.lastSync).toLocaleDateString();
       }
+    } else {
+      document.getElementById('mono-status').style.display = 'none';
+      document.getElementById('sync-btn').style.display = 'none';
+      document.getElementById('mono-token').style.display = 'block';
+      document.getElementById('mono-save-btn').style.display = 'inline-flex';
+      document.getElementById('mono-sync-date').textContent = '';
     }
   } catch {}
 }

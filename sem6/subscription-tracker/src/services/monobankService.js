@@ -31,8 +31,7 @@ exports.fetchTransactions = async (token, from, to = new Date()) => {
     );
     all.push(...res.data);
 
-    // delay to avoid hitting monobank's rate limit (max 1 request per 60 seconds)
-    if (i < chunks.length - 1) await delay(61_000);
+      if (i < chunks.length - 1) await delay(61_000); // monobank rate limit: 1 req/60s
   }
 
   return all;
@@ -51,15 +50,11 @@ exports.saveTransactions = async (userId, transactions) => {
           source:      'monobank',
           amount:      t.amount,
           currency:    'UAH',
-          description: t.description  || '',
+          description: t.description || '',
           mcc:         t.mcc,
           date:        new Date(t.time * 1000),
         },
-        // counterName can be empty on old records — always update it
-        // so re-syncing retroactively fixes transactions saved without it
-        $set: {
-          counterName: t.counterName || '',
-        },
+        $set: { counterName: t.counterName || '' },
       },
       upsert: true,
     },

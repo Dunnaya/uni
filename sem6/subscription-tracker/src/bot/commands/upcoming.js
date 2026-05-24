@@ -24,12 +24,13 @@ module.exports = async (ctx) => {
     const lines = upcoming.map(s => {
       const date   = escapeMd(s.nextBillingDate.toLocaleDateString('uk-UA'));
       const name   = escapeMd(s.name);
-      const amount = s.amount.toFixed(2);
-      return `${date} — *${name}*: ${amount} ${s.currency}`;
+      const amount   = escapeMd(s.amount.toFixed(2));
+      const currency = escapeMd(s.currency);
+      return `${date} — *${name}*: ${amount} ${currency}`;
     });
 
     ctx.reply(
-      `💳 *Upcoming charges \\(next 7 days\\):*\n\n` + lines.join('\n'),
+      `*Upcoming charges \\(next 7 days\\):*\n\n` + lines.join('\n'),
       { parse_mode: 'MarkdownV2' }
     );
   } catch (err) {

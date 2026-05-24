@@ -120,9 +120,9 @@
              onclick="document.getElementById('f-csv').click()"
              ondragover="onDrag(event)" ondrop="onDrop(event)" ondragleave="offDrag()">
           <p>Drag a file here or click to select</p>
-          <small>Supported: monobank_csv, privatbank formats</small>
+          <small>Monobank CSV або PrivatBank XLSX — формат визначається автоматично</small>
         </div>
-        <input type="file" id="f-csv" accept=".csv,.xlsx" style="display:none" onchange="uploadCsv(this)">
+        <input type="file" id="f-csv" accept=".csv,.xlsx,.xls" style="display:none" onchange="uploadCsv(this)">
         <div id="csv-msg" class="result-msg"></div>
       </div>
 
