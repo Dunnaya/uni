@@ -38,8 +38,6 @@ exports.login = async (req, res, next) => {
 
 exports.me = (req, res) => res.json(req.user);
 
-// Invalidate all existing tokens for this user by bumping tokenVersion.
-// Useful for "sign out of all devices" or post-password-change cleanup.
 exports.revokeAllTokens = async (req, res, next) => {
   try {
     req.user.tokenVersion = (req.user.tokenVersion || 0) + 1;

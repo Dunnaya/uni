@@ -28,11 +28,14 @@ app.use('/api/forecast', forecastRoutes);
 
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
-// SPA fallback
+// JSON 404 for unmatched /api/* routes (must be before SPA fallback)
+app.all('/api/*', (req, res) => {
+  res.status(404).json({ error: 'Not found' });
+});
+
+// SPA fallback for all non-API routes
 app.get('*', (req, res) => {
-  if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
-  }
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
 
 app.use(errorHandler);

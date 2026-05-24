@@ -35,13 +35,8 @@ exports.sync = async (req, res, next) => {
 
     const rawToken = cryptoService.decrypt(req.user.monobankToken);
 
-    // always fetch the last 90 days so re-running sync picks up anything missed
-    // duplicate transactions are handled by upsert in saveTransactions
     const from = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
-
     const transactions = await monobankService.fetchTransactions(rawToken, from);
-
-    // detect subs
     const detected = await subscriptionDetector.detect(req.user._id, transactions);
 
     req.user.monobankLastSync = new Date();

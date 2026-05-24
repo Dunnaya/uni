@@ -23,6 +23,9 @@ exports.importFile = async (req, res, next) => {
       time: Math.floor(new Date(row.date).getTime() / 1000),
       amount: row.amount,
       description: row.description || '',
+      // counterName is the enriched merchant name (e.g. "Google YouTube" vs generic "Оплата в інтернеті").
+      // Without it, the subscription detector can't match Google/Apple services from CSV imports.
+      counterName: row.counterName || row.description || '',
       mcc: row.mcc || 0,
       currencyCode: 980,
     }));

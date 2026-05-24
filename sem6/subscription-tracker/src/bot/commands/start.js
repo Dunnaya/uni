@@ -20,6 +20,12 @@ module.exports = async (ctx) => {
         return ctx.reply('This token has expired (valid for 15 minutes).\n\nGenerate a new one in the web app.');
       }
 
+      // clear this chatId from any other account that had it previously
+      await User.updateOne(
+        { telegramChatId: chatId, _id: { $ne: user._id } },
+        { $set: { telegramChatId: null, telegramLinked: false } }
+      );
+
       user.telegramChatId = chatId;
       user.telegramLinked = true;
       user.telegramLinkToken = null;         // one-time — del after use

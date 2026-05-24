@@ -46,3 +46,29 @@ exports.subscription = (req, res, next) => {
 
   next();
 };
+
+// Partial validation for PUT — only validate fields that are present
+exports.subscriptionUpdate = (req, res, next) => {
+  const { amount, billingCycle, nextBillingDate, reminderDays, customCycleDays } = req.body;
+
+  if (amount !== undefined && (typeof amount !== 'number' || amount <= 0))
+    return res.status(400).json({ error: 'amount must be a positive number' });
+
+  if (billingCycle !== undefined && !VALID_CYCLES.includes(billingCycle))
+    return res.status(400).json({ error: `billingCycle must be one of: ${VALID_CYCLES.join(', ')}` });
+
+  if (billingCycle === 'custom') {
+    if (!customCycleDays || typeof customCycleDays !== 'number' || customCycleDays < 1)
+      return res.status(400).json({ error: 'customCycleDays is required and must be a positive number when billingCycle is custom' });
+  }
+
+  if (reminderDays !== undefined && reminderDays !== null) {
+    if (typeof reminderDays !== 'number' || !Number.isInteger(reminderDays) || reminderDays < 0)
+      return res.status(400).json({ error: 'reminderDays must be a non-negative integer' });
+  }
+
+  if (nextBillingDate !== undefined && isNaN(Date.parse(nextBillingDate)))
+    return res.status(400).json({ error: 'nextBillingDate must be a valid date' });
+
+  next();
+};

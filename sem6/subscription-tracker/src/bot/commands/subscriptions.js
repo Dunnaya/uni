@@ -24,10 +24,11 @@ module.exports = async (ctx) => {
 
     const lines = subs.map(s => {
       const name   = escapeMd(s.name);
-      const amount = s.amount.toFixed(2);
-      const cycle  = cycleLabel[s.billingCycle] || s.billingCycle;
-      const trial  = s.isTrial ? ' _(trial)_' : '';
-      return `• *${name}* — ${amount} ${s.currency}/${cycle}${trial}`;
+      const amount   = escapeMd(s.amount.toFixed(2));
+      const currency = escapeMd(s.currency);
+      const cycle    = escapeMd(cycleLabel[s.billingCycle] || s.billingCycle);
+      const trial    = s.isTrial ? ' _(trial)_' : '';
+      return `• *${name}* — ${amount} ${currency}/${cycle}${trial}`;
     });
 
     ctx.reply(
