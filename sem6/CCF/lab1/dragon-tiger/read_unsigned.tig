@@ -1,0 +1,26 @@
+let
+    function read_unsigned() : int =
+        let
+            var result : int := 0
+            var ch : string := getchar()
+            var valid : int := 1
+        in
+            while (ch <> "\n") & (ch <> "") do (
+                let
+                    var code : int := ord(ch)
+                in
+                    if (code >= ord("0")) & (code <= ord("9")) then
+                        result := result * 10 + (code - ord("0"))
+                    else
+                        valid := 0
+                end;
+                ch := getchar()
+            );
+            if valid = 1 then result
+            else -1
+        end
+    var a : int := read_unsigned()
+in
+    print_int(a*2);
+    print("\n")
+end

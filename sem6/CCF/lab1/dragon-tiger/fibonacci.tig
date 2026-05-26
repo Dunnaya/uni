@@ -1,0 +1,9 @@
+let
+    function fibonacci(n : int) : int =
+        if n <= 1 then 1
+        else fibonacci(n - 1) + fibonacci(n - 2)
+in
+    for i := 0 to 7 do
+        (print_int(fibonacci(i)); 
+        print("\n"))
+end
