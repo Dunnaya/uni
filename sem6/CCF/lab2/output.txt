@@ -27,3 +27,44 @@ root@7fc4f2d586ac:/lab/dragon-tiger# echo "-4+5" | src/driver/dtiger --dump-ast 
 ((0-4)+5)
 root@7fc4f2d586ac:/lab/dragon-tiger# echo "1+2*3+4" | src/driver/dtiger --dump-ast -
 ((1+(2*3))+4)
+
+task3:
+root@7fc4f2d586ac:/lab/dragon-tiger# echo "1 | 0" | src/driver/dtiger --dump-ast -
+if 
+  1
+ then 
+  1
+ else 
+  if 
+    0
+   then 
+    1
+   else 
+    0
+root@7fc4f2d586ac:/lab/dragon-tiger# echo "0 | 1" | src/driver/dtiger --dump-ast -
+if 
+  0
+ then 
+  1
+ else 
+  if 
+    1
+   then 
+    1
+   else 
+    0
+root@7fc4f2d586ac:/lab/dragon-tiger# echo "0 | 0" | src/driver/dtiger --dump-ast -
+if 
+  0
+ then 
+  1
+ else 
+  if 
+    0
+   then 
+    1
+   else 
+    0
+
+task4:
+tbc
