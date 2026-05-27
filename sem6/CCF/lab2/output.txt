@@ -1,4 +1,4 @@
-tesk1:
+task1:
 root@7fc4f2d586ac:/lab/dragon-tiger# echo "1*2" | src/driver/dtiger --dump-ast -
 (1*2)
 root@7fc4f2d586ac:/lab/dragon-tiger# echo "1+2" | src/driver/dtiger --dump-ast -
@@ -67,4 +67,28 @@ if
     0
 
 task4:
+root@7fc4f2d586ac:/lab/dragon-tiger# echo "if 1 then 2 else 3" | src/driver/dtiger --dump-ast -
+if 
+  1
+ then 
+  2
+ else 
+  3
+root@7fc4f2d586ac:/lab/dragon-tiger# echo "if 0 then 2 else 3" | src/driver/dtiger --dump-ast -
+if 
+  0
+ then 
+  2
+ else 
+  3
+root@7fc4f2d586ac:/lab/dragon-tiger# echo "if 1 then 2" | src/driver/dtiger --dump-ast -
+if 
+  1
+ then 
+  2
+ else 
+  (
+  )
+
+task5:
 tbc
