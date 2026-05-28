@@ -25,7 +25,6 @@ exports.parseFile = (buffer, filename) => {
   throw new Error('Only CSV and XLSX/XLS files are supported');
 };
 
-// Handles all Monobank formats (UA/EN, CSV/XLS) and PrivatBank XLSX
 function normalizeKeys(rows) {
   return rows.map(row => {
     const normalized = {};
@@ -54,7 +53,9 @@ function parseMonobank(row) {
     ? amountRaw
     : parseFloat(String(amountRaw || 0).replace(',', '.'));
 
-  if (isNaN(amount) || amount >= 0) return null;
+  // Keep both negative (expenses) and positive (refunds/income) — the detector
+  // needs refund transactions to identify and ignore trial/verification charges.
+  if (isNaN(amount) || amount === 0) return null;
 
   return {
     date:        parseDate(row['Дата i час операції'] || row['Date and time']),
@@ -71,7 +72,7 @@ function parsePrivatbank(row) {
     ? amountRaw
     : parseFloat(String(amountRaw || 0).replace(',', '.'));
 
-  if (isNaN(amount) || amount >= 0) return null;
+  if (isNaN(amount) || amount === 0) return null;
 
   return {
     date:        parseDate(row['Дата'] || row['Дата операції']),
@@ -95,7 +96,7 @@ function parseGeneric(row) {
     ? raw
     : parseFloat(String(raw || 0).replace(',', '.'));
 
-  if (isNaN(amount) || amount >= 0) return null;
+  if (isNaN(amount) || amount === 0) return null;
 
   return {
     date:        parseDate(row[dateKey]),

@@ -89,6 +89,20 @@ document.addEventListener('keydown', e => {
 function signOut() {
   token = null;
   localStorage.removeItem('st_token');
+
+  // Reset all stateful UI elements so the next login starts clean
+  const csvMsg = document.getElementById('csv-msg');
+  if (csvMsg) { csvMsg.style.display = 'none'; csvMsg.textContent = ''; }
+
+  const monoMsg = document.getElementById('mono-msg');
+  if (monoMsg) { monoMsg.style.display = 'none'; monoMsg.textContent = ''; }
+
+  const monoStatus = document.getElementById('mono-status');
+  if (monoStatus) monoStatus.style.display = 'none';
+
+  // Reset any toast / notification state
+  subs = [];
+
   document.getElementById('app').classList.remove('show');
   document.getElementById('auth').style.display = 'flex';
 }
@@ -446,8 +460,14 @@ function uploadCsv(input) {
 
   api('POST', '/import', fd, true)
     .then(d => {
+      const newCount     = d.newSubscriptions     || 0;
+      const updatedCount = d.updatedSubscriptions || 0;
+      let text = `Parsed ${d.parsed} rows`;
+      if (newCount > 0)     text += ` — ${newCount} new subscription${newCount !== 1 ? 's' : ''} detected`;
+      if (updatedCount > 0) text += ` — ${updatedCount} subscription${updatedCount !== 1 ? 's' : ''} updated`;
+      if (newCount === 0 && updatedCount === 0) text += ' — no subscriptions detected';
       msg.className = 'result-msg result-ok';
-      msg.textContent = `Parsed ${d.parsed} rows — ${d.newSubscriptions} new subscriptions detected`;
+      msg.textContent = text;
       msg.style.display = 'block';
       toast('Import done');
     })

@@ -1,40 +1,42 @@
 const csvParser = require('../utils/csvParser');
 const subscriptionDetector = require('../services/subscriptionDetector');
-const Transaction = require('../models/Transaction');
 const crypto = require('crypto');
 
-// POST /api/import — multipart/form-data, fields: file, bank (optional)
+// POST /api/import — multipart/form-data, field: file
 exports.importFile = async (req, res, next) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const bank = req.body.bank || 'generic';
-    const parsed = csvParser.parseFile(req.file.buffer, req.file.originalname, bank);
+    const parsed = csvParser.parseFile(req.file.buffer, req.file.originalname);
 
     if (!parsed.length) {
       return res.status(422).json({ error: 'No valid transactions found in the file' });
     }
 
-    // reshape to match monobank tx format so detector can reuse the same logic
-    const transactions = parsed.map((row, i) => ({
-      id: `csv_${crypto.createHash('md5').update(`${row.date}${row.amount}${row.description}${i}`).digest('hex')}`,
+    const transactions = parsed.map(row => ({
+      // Hash on date+amount+description only (no index) so the same transaction
+      // always gets the same externalId regardless of its position in the file.
+      id: `csv_${crypto.createHash('md5').update(`${row.date}|${row.amount}|${row.description}`).digest('hex')}`,
       time: Math.floor(new Date(row.date).getTime() / 1000),
       amount: row.amount,
       description: row.description || '',
-      // counterName is the enriched merchant name (e.g. "Google YouTube" vs generic "Оплата в інтернеті").
-      // Without it, the subscription detector can't match Google/Apple services from CSV imports.
+      // counterName = enriched merchant name. For CSV imports it equals description
+      // since CSVs don't have a separate merchant field like the Monobank API does.
       counterName: row.counterName || row.description || '',
       mcc: row.mcc || 0,
       currencyCode: 980,
+      source: 'csv',
     }));
 
-    // save to DB and detect subs
     const detected = await subscriptionDetector.detect(req.user._id, transactions);
 
+    // Count only expense (negative) rows for the UI — refund rows are internal
+    const expenseCount = parsed.filter(r => r.amount < 0).length;
+
     res.json({
-      parsed: parsed.length,
+      parsed: expenseCount,
       newSubscriptions: detected.new,
       updatedSubscriptions: detected.updated,
     });
