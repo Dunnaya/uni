@@ -37,7 +37,7 @@ exports.fetchTransactions = async (token, from, to = new Date()) => {
   return all;
 };
 
-exports.saveTransactions = async (userId, transactions) => {
+exports.saveTransactions = async (userId, transactions, source = 'monobank') => {
   if (!transactions.length) return;
 
   const ops = transactions.map(t => ({
@@ -47,7 +47,7 @@ exports.saveTransactions = async (userId, transactions) => {
         $setOnInsert: {
           userId,
           externalId:  t.id,
-          source:      'monobank',
+          source:      t.source || source,
           amount:      t.amount,
           currency:    'UAH',
           description: t.description || '',
