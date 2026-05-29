@@ -1,0 +1,27 @@
+root@50f61276d29e:/lab# src/driver/dtiger -o hello.o hello.tig && clang++-9 hello.o src/runtime/posix/libruntime.a -o hello && ./hello
+Hello World!
+root@50f61276d29e:/lab# src/driver/dtiger -o fib.o fibonacci.tig && clang++-9 fib.o src/runtime/posix/libruntime.a -o fib && ./fib
+1
+1
+2
+3
+5
+8
+13
+21
+root@50f61276d29e:/lab# src/driver/dtiger -o ru.o read_unsigned.tig && clang++-9 ru.o src/runtime/posix/libruntime.a -o ru && echo "21" | ./ru
+42
+root@50f61276d29e:/lab# echo "abc" | ./ru
+-2
+root@50f61276d29e:/lab# echo "ab" | grep -E -x "$(cat regexp1.txt)"
+ab
+root@50f61276d29e:/lab# echo "ba" | grep -E -x "$(cat regexp1.txt)"
+root@50f61276d29e:/lab# echo "bbb" | grep -E -x "$(cat regexp1.txt)"
+bbb
+root@50f61276d29e:/lab# echo "aabb" | grep -E -x "$(cat regexp2.txt)"
+aabb
+root@50f61276d29e:/lab# echo "a" | grep -E -x "$(cat regexp2.txt)"
+root@50f61276d29e:/lab# echo "bb" | grep -E -x "$(cat regexp2.txt)"
+bb
+root@50f61276d29e:/lab# exit
+exit
