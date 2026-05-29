@@ -1,11 +1,8 @@
 const Transaction = require('../models/Transaction');
 const Subscription = require('../models/Subscription');
 
-// MCC codes that indicate digital subscription services
-// 5816 (in-game purchases / game stores like Steam) intentionally excluded
 const SUBSCRIPTION_MCC = [5815, 5817, 7372, 4816, 4899, 7995, 5968];
 
-// Payment intermediaries and game stores that are NOT subscription services themselves
 const NON_SUBSCRIPTION_NAMES = new Set([
   'xsolla', 'liqpay', 'fondy', 'wayforpay', 'portmone', 'easypay', 'ipay', 'paypal', 'stripe',
   'steam', 'epic', 'gog', 'origin', 'ubisoft',
@@ -33,23 +30,10 @@ const KNOWN_ORDERED = [
   'xbox', 'hbo', 'deezer', 'tidal', 'todoist', 'evernote',
 ];
 
-/**
- * Detect subscriptions from a batch of raw transactions.
- *
- * Detection is scoped to the current import batch only.
- * The DB is used solely for deduplication (saveTransactions) and for looking up
- * historical transactions of the same service — so that if a service appeared in
- * a previous import and appears again now, the interval between payments can be
- * calculated correctly and the existing subscription record is updated instead of
- * duplicated.
- */
 exports.detect = async (userId, rawTransactions) => {
   const monobankService = require('./monobankService');
   await monobankService.saveTransactions(userId, rawTransactions);
 
-  // Only analyse transactions that arrived in this import batch.
-  // This prevents re-detecting subscriptions from older imports when the user
-  // uploads a completely unrelated statement.
   const importedExternalIds = new Set(rawTransactions.map(t => t.id));
   const importedTx = await Transaction.find({
     userId,
@@ -58,8 +42,6 @@ exports.detect = async (userId, rawTransactions) => {
 
   if (!importedTx.length) return { new: 0, updated: 0 };
 
-  // For each subscription-like service found in this batch, also pull its older
-  // transactions from the DB so we can calculate the billing interval accurately.
   const importGroups = groupByService(importedTx);
   const enrichedGroups = await enrichWithHistory(userId, importGroups, importedExternalIds);
 
@@ -69,8 +51,6 @@ exports.detect = async (userId, rawTransactions) => {
   for (const group of enrichedGroups) {
     const isKnown = classifyGroup(group);
 
-    // Known services are detected even with a single transaction (we know what they are).
-    // Unknown services need 2+ transactions to reduce false positives.
     if (!isKnown && group.transactions.length < 2) continue;
 
     const interval = group.transactions.length >= 2
@@ -85,9 +65,6 @@ exports.detect = async (userId, rawTransactions) => {
       amount: { $gte: amountUah * 0.9, $lte: amountUah * 1.1 },
     });
 
-    // Anchor billing day to the oldest known transaction so a late payment
-    // (e.g. day 27 instead of day 26 due to insufficient funds) doesn't shift
-    // the expected billing date forward permanently.
     const mostRecentDate = group.transactions[0].date;
     const oldestDate = group.transactions[group.transactions.length - 1].date;
     const nextBillingDate = calcNextBillingDateWithDay(
@@ -119,11 +96,6 @@ exports.detect = async (userId, rawTransactions) => {
   return { new: newCount, updated: updatedCount };
 };
 
-/**
- * For each group detected in the current import, fetch older transactions for the
- * same service from the DB (excluding the ones already in this batch).
- * This allows interval detection to work correctly across multiple imports.
- */
 async function enrichWithHistory(userId, groups, importedExternalIds) {
   const enriched = [];
 
@@ -137,7 +109,6 @@ async function enrichWithHistory(userId, groups, importedExternalIds) {
       ],
     }).sort({ date: -1 });
 
-    // Merge: current batch transactions come first (most recent), then historical
     const allTx = [...group.transactions];
     for (const htx of historical) {
       const alreadyIn = allTx.some(t => String(t._id) === String(htx._id));
@@ -176,7 +147,6 @@ function groupByService(transactions) {
     const name = extractName(tx.counterName, tx.description);
     if (NON_SUBSCRIPTION_NAMES.has(name.toLowerCase())) continue;
 
-    // Skip trial/verification charges that were refunded within 48 h
     if (refundedIds.has(String(tx._id))) continue;
 
     const key = byKnown
@@ -194,10 +164,6 @@ function groupByService(transactions) {
   return Object.values(groups);
 }
 
-/**
- * Returns a Set of _id strings for charges that were fully refunded within 48 h
- * (e.g. card-verification / trial charges like Google's 10 UAH probe).
- */
 function buildRefundedChargeSet(transactions) {
   const refundedIds = new Set();
   const charges = transactions.filter(t => t.amount < 0);
@@ -251,24 +217,31 @@ function detectInterval(dates) {
 function calcNextBillingDateWithDay(from, cycle, days, billingDay) {
   const { calcNextBillingDate } = require('../utils/dateUtils');
 
+  let result;
+
   if (cycle === 'monthly') {
     const base = new Date(from);
     base.setDate(1);
     base.setMonth(base.getMonth() + 1);
     const lastDay = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
     base.setDate(Math.min(billingDay, lastDay));
-    return base;
-  }
-
-  if (cycle === 'yearly') {
+    result = base;
+  } else if (cycle === 'yearly') {
     const base = new Date(from);
     const origMonth = base.getMonth();
     base.setFullYear(base.getFullYear() + 1);
     if (base.getMonth() !== origMonth) base.setDate(0);
     const lastDay = new Date(base.getFullYear(), base.getMonth() + 1, 0).getDate();
     base.setDate(Math.min(billingDay, lastDay));
-    return base;
+    result = base;
+  } else {
+    result = calcNextBillingDate(from, cycle, days);
   }
 
-  return calcNextBillingDate(from, cycle, days);
+  const now = new Date();
+  while (result <= now) {
+    result = calcNextBillingDateWithDay(result, cycle, days, billingDay);
+  }
+
+  return result;
 }

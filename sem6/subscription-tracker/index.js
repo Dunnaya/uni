@@ -24,7 +24,5 @@ const PORT = process.env.PORT || 3000;
   startBot();
   notificationService.startScheduler();
 
-  // fix up any stale nextBillingDate values right away on startup
-  // (without this, dates would only update at 09:00 the next day)
   await notificationService.advancePastDates();
 })();

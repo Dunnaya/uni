@@ -35,9 +35,9 @@ exports.getAll = async (req, res, next) => {
 exports.create = async (req, res, next) => {
   try {
     const data = {
-      ...pick(req.body, ALLOWED_CREATE_FIELDS), // allowed fields only
-      userId: req.user._id,                      // userId always from token
-      source: 'manual',                          // source always 'manual' for manual creation
+      ...pick(req.body, ALLOWED_CREATE_FIELDS),
+      userId: req.user._id,
+      source: 'manual',
     };
 
     if (!data.nextBillingDate && data.startDate) {
@@ -55,7 +55,7 @@ exports.create = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    const safeData = pick(req.body, ALLOWED_UPDATE_FIELDS); // only allowed fields
+    const safeData = pick(req.body, ALLOWED_UPDATE_FIELDS);
 
     const sub = await Subscription.findOneAndUpdate(
       { _id: req.params.id, userId: req.user._id },

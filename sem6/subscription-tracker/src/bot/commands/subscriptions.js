@@ -9,7 +9,7 @@ module.exports = async (ctx) => {
 
     if (!user) {
       return ctx.reply(
-        'Link your Telegram account in the web app first.\nSend /start to see instructions.'
+        '⚠️ Your Telegram account isn\'t linked yet.\nSend /start to see how.'
       );
     }
 
@@ -17,7 +17,7 @@ module.exports = async (ctx) => {
       .sort({ nextBillingDate: 1 });
 
     if (!subs.length) {
-      return ctx.reply('No active subscriptions found. Add some in the app!');
+      return ctx.reply('No active subscriptions yet — add some in the web app!');
     }
 
     const cycleLabel = { weekly: 'week', monthly: 'month', yearly: 'year', custom: 'custom' };
@@ -32,7 +32,7 @@ module.exports = async (ctx) => {
     });
 
     ctx.reply(
-      `*Your subscriptions \\(${subs.length}\\):*\n\n` + lines.join('\n'),
+      `*Active subscriptions \\(${subs.length}\\):*\n\n` + lines.join('\n'),
       { parse_mode: 'MarkdownV2' }
     );
   } catch (err) {

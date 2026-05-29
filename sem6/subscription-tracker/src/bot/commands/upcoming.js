@@ -10,7 +10,7 @@ module.exports = async (ctx) => {
 
     if (!user) {
       return ctx.reply(
-        'Link your Telegram account in the web app first.\nSend /start to see instructions.'
+        '⚠️ Your Telegram account isn\'t linked yet.\nSend /start to see how.'
       );
     }
 
@@ -18,7 +18,7 @@ module.exports = async (ctx) => {
     const upcoming = getUpcoming(subs, 7);
 
     if (!upcoming.length) {
-      return ctx.reply('No upcoming charges in the next 7 days!');
+      return ctx.reply('✅ No charges in the next 7 days — enjoy the quiet!');
     }
 
     const lines = upcoming.map(s => {
@@ -30,7 +30,7 @@ module.exports = async (ctx) => {
     });
 
     ctx.reply(
-      `*Upcoming charges \\(next 7 days\\):*\n\n` + lines.join('\n'),
+      `*Upcoming charges — next 7 days:*\n\n` + lines.join('\n'),
       { parse_mode: 'MarkdownV2' }
     );
   } catch (err) {

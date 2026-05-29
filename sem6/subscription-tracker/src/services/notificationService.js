@@ -67,7 +67,8 @@ async function checkAndNotify() {
     const notifyOn = new Date(billingDate);
     notifyOn.setDate(notifyOn.getDate() - reminderDays);
 
-    if (today.getTime() !== notifyOn.getTime()) continue;
+    const toDateStr = (d) => d.toISOString().slice(0, 10);
+    if (toDateStr(today) !== toDateStr(notifyOn)) continue;
 
     const safeName = escapeMd(sub.name);
     const safeDate = escapeMd(billingDate.toLocaleDateString('uk-UA'));
@@ -78,8 +79,8 @@ async function checkAndNotify() {
       await bot.telegram.sendMessage(
         user.telegramChatId,
         `🔔 *Reminder*\n\n` +
-        `*${safeName}* will be charged on ${safeDate}\n` +
-        `Amount: ${safeAmount} ${safeCurrency}`,
+        `*${safeName}* renews on ${safeDate}\n` +
+        `Amount: *${safeAmount} ${safeCurrency}*`,
         { parse_mode: 'MarkdownV2' }
       );
     } catch (err) {

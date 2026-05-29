@@ -13,8 +13,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  // Increment this to invalidate all existing JWT tokens for this user
-  // (e.g. after logout-all or password change).
   tokenVersion: {
     type: Number,
     default: 0,

@@ -47,7 +47,6 @@ exports.subscription = (req, res, next) => {
   next();
 };
 
-// Partial validation for PUT — only validate fields that are present
 exports.subscriptionUpdate = (req, res, next) => {
   const { amount, billingCycle, nextBillingDate, reminderDays, customCycleDays } = req.body;
 

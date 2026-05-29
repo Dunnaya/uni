@@ -17,7 +17,6 @@ exports.startBot = () => {
   bot.command('subscriptions', subscriptionsCommand);
   bot.command('upcoming', upcomingCommand);
 
-  // catch-all for unrecognized messages
   bot.on('text', (ctx) => {
     ctx.reply(
       'Available commands:\n' +

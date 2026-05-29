@@ -1,6 +1,5 @@
 const forecastService = require('../services/forecastService');
 
-// GET /api/forecast?months=3
 exports.getForecast = async (req, res, next) => {
   try {
     const months = parseInt(req.query.months) || 3;

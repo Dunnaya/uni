@@ -1,19 +1,17 @@
-// In-memory rate limiter.
-// For multi-instance production deployments replace with Redis (e.g. rate-limiter-flexible).
+// in-memory rate limiter
+// for multi-instance production deployments replace with Redis (e.g. rate-limiter-flexible)
 
 const buckets = new Map();
 
-// Prune entries older than the window every PRUNE_INTERVAL ms
-// to prevent unbounded Map growth (memory leak on long-running servers).
-const PRUNE_INTERVAL = 10 * 60 * 1000; // 10 min
+const PRUNE_INTERVAL = 10 * 60 * 1000;
 setInterval(() => {
-  const cutoff = Date.now() - 60 * 60 * 1000; // drop buckets silent for 1 h
+  const cutoff = Date.now() - 60 * 60 * 1000;
   for (const [key, timestamps] of buckets) {
     if (!timestamps.length || timestamps[timestamps.length - 1] < cutoff) {
       buckets.delete(key);
     }
   }
-}, PRUNE_INTERVAL).unref(); // .unref() so the timer doesn't keep the process alive
+}, PRUNE_INTERVAL).unref();
 
 module.exports = (maxAttempts = 10, windowMs = 15 * 60 * 1000) => (req, res, next) => {
   const key = req.ip;
