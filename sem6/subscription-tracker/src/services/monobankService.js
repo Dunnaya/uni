@@ -10,10 +10,10 @@ exports.verifyToken = async (token) => {
   return res.data;
 };
 
-exports.fetchTransactions = async (token, from, to = new Date()) => {
-  const accounts = await exports.verifyToken(token);
-  const accountId = accounts.accounts.find(a => a.currencyCode === 980)?.id
-    || accounts.accounts[0]?.id;
+exports.fetchTransactions = async (token, from, to = new Date(), clientInfo = null) => {
+  const info = clientInfo || await exports.verifyToken(token);
+  const accountId = info.accounts.find(a => a.currencyCode === 980)?.id
+    || info.accounts[0]?.id;
 
   if (!accountId) throw new Error('No account found');
 
@@ -31,7 +31,7 @@ exports.fetchTransactions = async (token, from, to = new Date()) => {
     );
     all.push(...res.data);
 
-      if (i < chunks.length - 1) await delay(61_000); // monobank rate limit: 1 req/60s
+    if (i < chunks.length - 1) await delay(61_000);
   }
 
   return all;
@@ -60,7 +60,7 @@ exports.saveTransactions = async (userId, transactions, source = 'monobank') => 
     },
   }));
 
-  await Transaction.bulkWrite(ops);
+  await Transaction.bulkWrite(ops, { ordered: false });
 };
 
 function splitDateRange(from, to, maxDays) {

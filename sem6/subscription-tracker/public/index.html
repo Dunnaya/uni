@@ -32,10 +32,10 @@
   </div>
 </div>
 
-<!-- main app (hidden until logged in) -->
+<!-- main app -->
 <div id="app">
   <aside class="sidebar">
-    <div class="sidebar-title">SubTrack</div>
+    <div class="sidebar-title">Subscription Tracker</div>
     <div class="sidebar-email" id="s-email"></div>
     <nav>
       <button class="nav-btn active" data-page="dashboard" onclick="go('dashboard')">Dashboard</button>
@@ -61,9 +61,15 @@
           <div class="card-title">Upcoming in 7 days</div>
           <div id="upcoming"></div>
         </div>
-        <div class="card">
-          <div class="card-title">By category</div>
-          <div id="by-category"></div>
+        <div class="dash-col-right">
+          <div class="card">
+            <div class="card-title">By category — monthly</div>
+            <div id="by-category-monthly"></div>
+          </div>
+          <div class="card">
+            <div class="card-title">By category — annual</div>
+            <div id="by-category-annual"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -165,8 +171,45 @@
       </div>
 
       <div class="settings-block">
+        <h3>How to use</h3>
+        <p style="margin-bottom:10px">A quick overview of each section:</p>
+        <div class="how-to-grid">
+          <div class="how-to-item">
+            <div>
+              <div class="how-to-title">Subscriptions</div>
+              <div class="how-to-desc">Add, edit, pause or delete your subscriptions. Use filters to find by category or status. Paused subscriptions won't trigger reminders.</div>
+            </div>
+          </div>
+          <div class="how-to-item">
+            <div>
+              <div class="how-to-title">Dashboard</div>
+              <div class="how-to-desc">Overview of your monthly and annual spend, broken down by category. The "Upcoming" block shows charges due in the next 7 days.</div>
+            </div>
+          </div>
+          <div class="how-to-item">
+            <div>
+              <div class="how-to-title">Forecast</div>
+              <div class="how-to-desc">See a projected billing calendar for the next 3, 6 or 12 months. Useful for planning ahead or spotting expensive months.</div>
+            </div>
+          </div>
+          <div class="how-to-item">
+            <div>
+              <div class="how-to-title">Import</div>
+              <div class="how-to-desc">Upload a Monobank CSV/XLS or PrivatBank XLSX export — the app detects recurring charges automatically. You can also connect Monobank directly via API token.</div>
+            </div>
+          </div>
+          <div class="how-to-item">
+            <div>
+              <div class="how-to-title">Telegram reminders</div>
+              <div class="how-to-desc">Link your account below and the bot will message you a few days before each charge. Find the bot by username: <a class="bot-link" href="https://t.me/mycoolsubtracker_bot" target="_blank">@mycoolsubtracker_bot</a></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-block">
         <h3>About</h3>
-        <p>Coursework — "Web Systems Development". Stack: Node.js · Express · MongoDB · Telegram Bot API · Monobank API.</p>
+        <p style="margin-bottom:0">Coursework — "Web Systems Development".<br>Stack: Node.js · Express · MongoDB · Telegram Bot API · Monobank API.</p>
       </div>
     </div>
 

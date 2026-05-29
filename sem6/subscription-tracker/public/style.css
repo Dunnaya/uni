@@ -9,7 +9,6 @@ body {
 
 input, select, button { font-family: inherit; font-size: 14px; }
 
-/* auth */
 #auth {
   display: flex;
   min-height: 100vh;
@@ -65,7 +64,6 @@ input, select, button { font-family: inherit; font-size: 14px; }
   display: none;
 }
 
-/* form */
 .field { margin-bottom: 13px; }
 .field label { display: block; font-size: 12px; font-weight: 500; color: #64748b; margin-bottom: 5px; }
 
@@ -84,7 +82,6 @@ select.input { cursor: pointer; }
 
 .field-error { color: #dc2626; font-size: 12px; margin-top: 3px; display: none; }
 
-/* buttons */
 .btn {
   padding: 9px 16px;
   border: none;
@@ -105,11 +102,9 @@ select.input { cursor: pointer; }
 .btn-sm { padding: 4px 9px; font-size: 12px; }
 .w-full { width: 100%; justify-content: center; }
 
-/* app layout */
 #app { display: none; height: 100vh; }
 #app.show { display: flex; }
 
-/* sidebar */
 .sidebar {
   width: 210px;
   background: #1a0a38;
@@ -140,18 +135,15 @@ select.input { cursor: pointer; }
 .nav-btn.active { background: rgba(109,40,217,.35); color: #fff; }
 .sidebar-footer { padding: 10px 8px; border-top: 1px solid rgba(255,255,255,.07); }
 
-/* main */
 .main { flex: 1; overflow-y: auto; padding: 24px 28px; }
 .page { display: none; }
 .page.active { display: block; }
 .page-title { font-size: 20px; font-weight: 700; margin-bottom: 4px; }
 .page-sub { font-size: 13px; color: #64748b; margin-bottom: 20px; }
 
-/* cards */
 .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px 18px; }
 .card-title { font-size: 13px; font-weight: 600; color: #475569; margin-bottom: 12px; }
 
-/* dashboard */
 .stats-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
@@ -165,6 +157,7 @@ select.input { cursor: pointer; }
 .stat-hint { font-size: 12px; color: #94a3b8; margin-top: 3px; }
 
 .dash-cols { display: grid; grid-template-columns: 1fr 280px; gap: 14px; }
+.dash-col-right { display: flex; flex-direction: column; gap: 14px; }
 
 .upcoming-item {
   display: flex;
@@ -188,7 +181,6 @@ select.input { cursor: pointer; }
 .bar-track { height: 5px; background: #f1f5f9; border-radius: 3px; overflow: hidden; }
 .bar-fill { height: 100%; border-radius: 3px; }
 
-/* subscriptions */
 .toolbar { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
 
 table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; font-size: 13px; }
@@ -200,7 +192,6 @@ tbody tr:hover td { background: #f8fafc; }
 
 .cat-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 12px; }
 
-/* forecast */
 .tabs-row { display: flex; gap: 6px; margin-bottom: 16px; }
 
 .m-tab { padding: 5px 13px; border: 1px solid #dde1e7; border-radius: 6px; background: #fff; cursor: pointer; font-size: 13px; color: #475569; }
@@ -219,7 +210,6 @@ tbody tr:hover td { background: #f8fafc; }
 .event-row { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
 .event-row:last-child { border-bottom: none; }
 
-/* import */
 .upload-area {
   border: 2px dashed #dde1e7;
   border-radius: 8px;
@@ -237,7 +227,6 @@ tbody tr:hover td { background: #f8fafc; }
 .result-ok  { background: #f0fdf4; color: #16a34a; }
 .result-err { background: #fef2f2; color: #dc2626; }
 
-/* settings */
 .settings-block { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-bottom: 14px; }
 .settings-block h3 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
 .settings-block p { font-size: 13px; color: #64748b; line-height: 1.6; margin-bottom: 14px; }
@@ -245,7 +234,6 @@ tbody tr:hover td { background: #f8fafc; }
 .token-box { background: #f4f5f7; border-radius: 6px; padding: 10px 12px; font-family: monospace; font-size: 13px; word-break: break-all; display: none; margin-bottom: 10px; }
 .instruction { background: #f5f0ff; border-radius: 6px; padding: 11px 14px; font-size: 13px; color: #5b21b6; display: none; line-height: 1.6; }
 
-/* modal */
 .modal-backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 50; align-items: center; justify-content: center; padding: 20px; }
 .modal-backdrop.open { display: flex; }
 .modal { background: #fff; border-radius: 10px; padding: 24px; width: 100%; max-width: 460px; max-height: 90vh; overflow-y: auto; }
@@ -253,7 +241,6 @@ tbody tr:hover td { background: #f8fafc; }
 .form-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .modal-footer { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
 
-/* toast */
 .toast { position: fixed; bottom: 18px; right: 18px; background: #1a0a38; color: #fff; padding: 10px 16px; border-radius: 6px; font-size: 13px; z-index: 100; transform: translateY(80px); opacity: 0; transition: transform .25s ease, opacity .25s ease; max-width: 300px; pointer-events: none; }
 .toast.show { transform: none; opacity: 1; pointer-events: auto; }
 .toast.hide { transform: translateY(80px); opacity: 0; }
@@ -261,7 +248,6 @@ tbody tr:hover td { background: #f8fafc; }
 
 .empty { text-align: center; padding: 40px; color: #94a3b8; }
 
-/* category colors — used for both dots and badges */
 .dot-entertainment, .cat-entertainment { background: #7c3aed; color: #fff; }
 .dot-work,          .cat-work          { background: #6d28d9; color: #fff; }
 .dot-cloud,         .cat-cloud         { background: #0891b2; color: #fff; }
@@ -269,10 +255,16 @@ tbody tr:hover td { background: #f8fafc; }
 .dot-gaming,        .cat-gaming        { background: #d97706; color: #fff; }
 .dot-other,         .cat-other         { background: #94a3b8; color: #fff; }
 
-/* but dots are actual circles, badges need softer bg */
 .cat-badge.cat-entertainment { background: #f5f0ff; color: #7c3aed; }
 .cat-badge.cat-work          { background: #f5f0ff; color: #6d28d9; }
 .cat-badge.cat-cloud         { background: #ecfeff; color: #0891b2; }
 .cat-badge.cat-music         { background: #fdf2f8; color: #db2777; }
 .cat-badge.cat-gaming        { background: #fffbeb; color: #d97706; }
 .cat-badge.cat-other         { background: #f8fafc; color: #64748b; }
+
+.how-to-grid { display: flex; flex-direction: column; gap: 14px; }
+.how-to-item { display: flex; gap: 12px; align-items: flex-start; }
+.how-to-title { font-size: 13px; font-weight: 600; color: #1e293b; margin-bottom: 2px; }
+.how-to-desc { font-size: 13px; color: #64748b; line-height: 1.55; }
+.bot-link { color: #7c3aed; font-weight: 600; text-decoration: none; background: #f5f0ff; padding: 1px 6px; border-radius: 4px; }
+.bot-link:hover { background: #ede9fe; }

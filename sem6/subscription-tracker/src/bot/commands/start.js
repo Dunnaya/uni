@@ -9,18 +9,16 @@ module.exports = async (ctx) => {
       const user = await User.findOne({ telegramLinkToken: args[1] });
 
       if (!user) {
-        return ctx.reply('Invalid or expired linking token.\n\nGenerate a new one in the web app.');
+        return ctx.reply('❌ Token not found or already used.\n\nGenerate a new one in the web app → Settings → Telegram bot.');
       }
 
       if (!user.telegramLinkTokenExpiry || user.telegramLinkTokenExpiry < new Date()) {
-        // clean up expired token
         user.telegramLinkToken = null;
         user.telegramLinkTokenExpiry = null;
         await user.save();
-        return ctx.reply('This token has expired (valid for 15 minutes).\n\nGenerate a new one in the web app.');
+        return ctx.reply('❌ Token expired — it\'s valid for 15 minutes.\n\nGenerate a new one in the web app → Settings → Telegram bot.');
       }
 
-      // clear this chatId from any other account that had it previously
       await User.updateOne(
         { telegramChatId: chatId, _id: { $ne: user._id } },
         { $set: { telegramChatId: null, telegramLinked: false } }
@@ -28,26 +26,26 @@ module.exports = async (ctx) => {
 
       user.telegramChatId = chatId;
       user.telegramLinked = true;
-      user.telegramLinkToken = null;         // one-time — del after use
+      user.telegramLinkToken = null;
       user.telegramLinkTokenExpiry = null;
       await user.save();
 
       return ctx.reply(
-        'Telegram linked to your account!\n\nAvailable commands:\n' +
-        '/subscriptions — list your subscriptions\n' +
-        '/upcoming — upcoming charges'
+        '✅ Account linked!\n\n' +
+        'You\'ll get a reminder a few days before each charge.\n\n' +
+        '/subscriptions — all active subscriptions\n' +
+        '/upcoming — charges in the next 7 days'
       );
     }
 
     ctx.reply(
-      'Hi! I\'m your subscription tracker bot.\n\n' +
-      'To link your account:\n' +
-      '1. Log in to the web app\n' +
-      '2. Go to Settings → Telegram\n' +
-      '3. Click "Get link token" and copy the command\n' +
-      '4. Send it here\n\n' +
-      'Already linked? Try:\n' +
-      '/subscriptions — your active subs\n' +
+      'Hi! I\'ll remind you before your subscriptions renew 👋\n\n' +
+      'To get started, link your account:\n' +
+      '1. Open the web app\n' +
+      '2. Go to Settings → Telegram bot\n' +
+      '3. Click "Generate token" and send the command here\n\n' +
+      'Already linked?\n' +
+      '/subscriptions — your active subscriptions\n' +
       '/upcoming — charges in the next 7 days'
     );
   } catch (err) {

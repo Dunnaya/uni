@@ -8,7 +8,7 @@ let authMode = 'login';
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const CYCLES = { monthly: '/ mo', yearly: '/ yr', weekly: '/ wk', custom: '' };
 
-// approximate exchange rates for UAH display (same as backend)
+// approximate exchange rates
 const RATES = { UAH: 1, USD: 41, EUR: 44 };
 const toUAH = (amount, currency) => amount * (RATES[currency] || 1);
 const CAT_COLOR = {
@@ -31,7 +31,6 @@ async function api(method, path, body, isForm) {
 
   const data = await res.json().catch(() => ({}));
   if (res.status === 401) {
-    // Token expired or revoked — clear session and return to login
     signOut();
     throw new Error(data.error || 'Session expired. Please log in again.');
   }
@@ -90,7 +89,6 @@ function signOut() {
   token = null;
   localStorage.removeItem('st_token');
 
-  // Reset all stateful UI elements so the next login starts clean
   const csvMsg = document.getElementById('csv-msg');
   if (csvMsg) { csvMsg.style.display = 'none'; csvMsg.textContent = ''; }
 
@@ -100,7 +98,6 @@ function signOut() {
   const monoStatus = document.getElementById('mono-status');
   if (monoStatus) monoStatus.style.display = 'none';
 
-  // Reset any toast / notification state
   subs = [];
 
   document.getElementById('app').classList.remove('show');
@@ -143,7 +140,6 @@ async function loadDashboard() {
     subs = await api('GET', '/subscriptions');
     const active = subs.filter(s => s.isActive);
 
-    // monthly total converted to UAH (approx. rates)
     const monthly = active.reduce((sum, s) => {
       const m = s.billingCycle === 'yearly' ? s.amount / 12
               : s.billingCycle === 'weekly' ? s.amount * 4.33
@@ -207,26 +203,45 @@ async function loadDashboard() {
       }).join('');
     }
 
-    // category breakdown in UAH equivalent (all currencies converted)
-    const totals = {};
-    active.forEach(s => {
-      totals[s.category] = (totals[s.category] || 0) + toUAH(s.amount, s.currency);
-    });
-    const total = Object.values(totals).reduce((a, b) => a + b, 1);
+    const toMonthly = (s) => {
+      const uah = toUAH(s.amount, s.currency);
+      if (s.billingCycle === 'yearly')  return uah / 12;
+      if (s.billingCycle === 'weekly')  return uah * 4.33;
+      if (s.billingCycle === 'custom')  return uah * (30 / (s.customCycleDays || 30));
+      return uah;
+    };
 
-    document.getElementById('by-category').innerHTML = Object.entries(totals)
-      .sort((a, b) => b[1] - a[1])
-      .map(([cat, amt]) => `
-        <div class="cat-bar">
-          <div class="cat-bar-top">
-            <span style="font-weight:500">${cat}</span>
-            <span>₴${amt.toFixed(0)}</span>
+    const monthlyTotals = {};
+    active.forEach(s => {
+      monthlyTotals[s.category] = (monthlyTotals[s.category] || 0) + toMonthly(s);
+    });
+
+    const renderCatBars = (totals, suffix) => {
+      const total = Object.values(totals).reduce((a, b) => a + b, 1);
+      return Object.entries(totals)
+        .sort((a, b) => b[1] - a[1])
+        .map(([cat, amt]) => `
+          <div class="cat-bar">
+            <div class="cat-bar-top">
+              <span style="font-weight:500">${cat}</span>
+              <span>₴${amt.toFixed(0)}${suffix}</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:${(amt / total * 100).toFixed(1)}%;background:${CAT_COLOR[cat]}"></div>
+            </div>
           </div>
-          <div class="bar-track">
-            <div class="bar-fill" style="width:${(amt / total * 100).toFixed(1)}%;background:${CAT_COLOR[cat]}"></div>
-          </div>
-        </div>
-      `).join('') || '<p style="color:#94a3b8;font-size:13px">No data</p>';
+        `).join('') || '<p style="color:#94a3b8;font-size:13px">No data</p>';
+    };
+
+    document.getElementById('by-category-monthly').innerHTML =
+      renderCatBars(monthlyTotals, ' / mo');
+
+    const annualTotals = {};
+    Object.entries(monthlyTotals).forEach(([cat, amt]) => {
+      annualTotals[cat] = amt * 12;
+    });
+    document.getElementById('by-category-annual').innerHTML =
+      renderCatBars(annualTotals, ' / yr');
 
   } catch (e) {
     toast(e.message, true);
@@ -403,7 +418,6 @@ async function loadForecast() {
     document.getElementById('fc-grid').innerHTML = Object.entries(summary).map(([key, currencies]) => {
       const [y, m] = key.split('-');
       const count = events.filter(e => e.date.startsWith(key)).length;
-      // monthlySummary is { UAH: 59, USD: 9.99 } — show each currency on its own line
       const SYMBOLS = { UAH: '₴', USD: '$', EUR: '€', GBP: '£' };
       const currencyLines = Object.entries(currencies).map(([c, v]) => {
         const sym = SYMBOLS[c] || c;

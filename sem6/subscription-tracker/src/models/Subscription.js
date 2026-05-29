@@ -12,7 +12,6 @@ const subscriptionSchema = new mongoose.Schema({
     required: true,
     trim: true,
   },
-  // filter categories
   category: {
     type: String,
     enum: ['entertainment', 'work', 'cloud', 'music', 'gaming', 'other'],
@@ -26,7 +25,6 @@ const subscriptionSchema = new mongoose.Schema({
     type: String,
     default: 'UAH',
   },
-  // cycle: monthly / yearly / weekly / custom
   billingCycle: {
     type: String,
     enum: ['weekly', 'monthly', 'yearly', 'custom'],
@@ -36,12 +34,10 @@ const subscriptionSchema = new mongoose.Schema({
     type: Number,
     default: null,
   },
-  // prognosed or entered
   nextBillingDate: {
     type: Date,
     required: true,
   },
-  // 1st fixed charge date
   startDate: {
     type: Date,
     default: Date.now,
@@ -51,7 +47,6 @@ const subscriptionSchema = new mongoose.Schema({
     enum: ['monobank', 'csv', 'manual'],
     default: 'manual',
   },
-  // MCC-code or transaction description for manual entries
   mcc: {
     type: Number,
     default: null,
@@ -72,10 +67,9 @@ const subscriptionSchema = new mongoose.Schema({
     type: Date,
     default: null,
   },
-  // reminders settings
   reminderDays: {
     type: Number,
-    default: null,   // null = use defaultReminderDays from User
+    default: null,
   },
 }, { timestamps: true });
 

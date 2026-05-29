@@ -11,10 +11,7 @@ exports.getForecast = async (userId, months = 3) => {
 
   for (const sub of active) {
     let nextDate = new Date(sub.nextBillingDate);
-
-    // Fast-forward past dates to avoid iterating years of old billing cycles.
-    // advancePastDates() normally keeps nextBillingDate current, but a freshly
-    // imported subscription may still have a stale date before it runs.
+    
     while (nextDate < now) {
       nextDate = calcNextBillingDate(nextDate, sub.billingCycle, sub.customCycleDays);
     }

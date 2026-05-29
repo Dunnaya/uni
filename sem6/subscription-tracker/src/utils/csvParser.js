@@ -14,7 +14,6 @@ exports.parseFile = (buffer, filename) => {
     const ws = wb.Sheets[wb.SheetNames[0]];
     const raw = xlsx.utils.sheet_to_json(ws, { header: 1 });
 
-    // Find the header row — first row with 5+ non-empty cells
     const headerIdx = raw.findIndex(r => (r || []).filter(v => v != null && v !== '').length >= 5);
     if (headerIdx === -1) throw new Error('Could not find header row in the file');
 
@@ -53,8 +52,6 @@ function parseMonobank(row) {
     ? amountRaw
     : parseFloat(String(amountRaw || 0).replace(',', '.'));
 
-  // Keep both negative (expenses) and positive (refunds/income) — the detector
-  // needs refund transactions to identify and ignore trial/verification charges.
   if (isNaN(amount) || amount === 0) return null;
 
   return {

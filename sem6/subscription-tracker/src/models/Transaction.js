@@ -7,7 +7,6 @@ const transactionSchema = new mongoose.Schema({
     required: true,
     index: true,
   },
-  // unique transaction id from source (e.g. monobank transaction id or csv line hash)
   externalId: {
     type: String,
     unique: true,
@@ -18,13 +17,9 @@ const transactionSchema = new mongoose.Schema({
     enum: ['monobank', 'csv'],
     required: true,
   },
-  amount: { type: Number, required: true },  // negative for expenses
+  amount: { type: Number, required: true },
   currency: { type: String, default: 'UAH' },
   description: { type: String, default: '' },
-  // Enriched merchant name from Monobank API (t.counterName).
-  // For Google/Apple charges `description` is a generic string like
-  // "Оплата в інтернеті", while counterName is "Google YouTube",
-  // "Apple.com/bill" etc. — the only reliable field for keyword matching.
   counterName: { type: String, default: '' },
   mcc: { type: Number },
   date: { type: Date, required: true },

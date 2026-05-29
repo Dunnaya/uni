@@ -8,14 +8,12 @@ exports.saveToken = async (req, res, next) => {
     const { token } = req.body;
     if (!token) return res.status(400).json({ error: 'Token is missing' });
 
-    // verify against monobank API before saving
-    await monobankService.verifyToken(token);
+    const clientInfo = await monobankService.verifyToken(token);
 
-    // encrypt and save
     req.user.monobankToken = cryptoService.encrypt(token);
     await req.user.save();
 
-    res.json({ message: 'Token saved' });
+    res.json({ message: 'Token saved', name: clientInfo.name });
   } catch (err) { next(err); }
 };
 
