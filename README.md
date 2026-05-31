@@ -76,7 +76,10 @@ My labs and study materials
         <li><a href="./sem6/3D">3D Graphics</a></li>
         <li><a href="./sem6/SIW">Scientific Image of the World</a></li>
         <li><a href="./sem6/SPS">Socio-Political Studies</a></li>
-        <li><a href="./sem6/Coursework">Coursework</a></li>
     </td>
+    <td>
+        <li><a href="./sem6/Coursework">Coursework</a></li>
+        <li><a href="./sem6/Practice">Practice</a></li>
+    </td>      
   </tr>
 </table>
