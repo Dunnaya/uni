@@ -55,7 +55,7 @@ My labs and study materials
     </td>
   </tr>
   <tr>
-    <td rowspan="2"><a>3 course</a></td>
+    <td rowspan="4"><a>3 course</a></td>
     <td>sem 5</td>
     <td>
         <li><a href="./sem5/OS">Operating Systems</a></li>
@@ -79,11 +79,11 @@ My labs and study materials
     </td>     
   </tr>
   <tr>
-    <td>Practice</td>
-    <td><a href="./sem6/Practice">Here</a></td>
+    <td></td>
+    <td><a href="./sem6/Practice">Practice</a></td>
   </tr>
   <tr>
-    <td>Coursework</td>
-    <td><a href="./sem6/Coursework">Here</a></td>
+    <td></td>
+    <td><a href="./sem6/Coursework">Coursework</a></td>
   </tr>
 </table>
