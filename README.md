@@ -79,11 +79,11 @@ My labs and study materials
     </td>     
   </tr>
   <tr>
-      <td>
-        <li><a href="./sem6/Coursework">Coursework</a></li>
-      </td>
-      <td>
-        <li><a href="./sem6/Practice">Practice</a></li>
-      </td>
+    <td>Practice</td>
+    <td><a href="./sem6/Practice">Here</a></td>
+  </tr>
+  <tr>
+    <td>Coursework</td>
+    <td><a href="./sem6/Coursework">Here</a></td>
   </tr>
 </table>
