@@ -1,0 +1,122 @@
+\documentclass[12pt,openany]{book}
+
+\usepackage[cp866nav]{inputenc}
+\usepackage[ukrainian]{babel}
+
+%%% preamble.tex %%%%
+
+\usepackage{bezier}
+\usepackage{amssymb}
+% ...
+\usepackage{lipsum}
+
+
+\voffset=0in
+\hoffset=-0.1in
+\parskip=0.01in
+\textwidth=132mm
+\textheight=200mm
+\oddsidemargin=22mm
+\evensidemargin=22mm
+
+
+\newcommand{\indexentry}[2]{\item #1 #2}
+
+
+\newtheorem{theorem}{\ \ \ \ Теорема}[chapter]
+
+\begin{document}
+
+%%% titlepage.tex %%%
+
+\thispagestyle{empty}
+\begin{center}
+    МЎНЎСТЕРСТВО ОСВЎТИ Ў НАУКИ УКРА°НИ\\
+
+              КИ°ВСЬКИЙ НАЦЎОНАЛЬНИЙ  УНЎВЕРСИТЕТ\\
+                 ўменў ТАРАСА ШЕВЧЕНКА
+
+\end{center}
+
+\vspace{5cm}
+\begin{center}
+{\large{\bf НАЗВА РОБОТИ\\ ...}}
+\end{center}
+\vspace{3cm}
+\begin{center}
+     {\bf  Навчальний посўбник\\
+           (електронне видання)}
+\end{center}
+
+\vspace*{\fill}\centerline{Ки∙в 2026}
+\vspace{1cm}
+
+\newpage
+\thispagestyle{empty}
+{\footnotesize
+\hspace{-0.70cm}УДК ...
+
+\vspace{0.3cm}
+
+У посўбнику  розглядаються ...
+
+{\footnotesize
+\newpage
+\thispagestyle{empty}
+\tableofcontents
+}
+
+%%% chapters.tex %%%
+
+\newpage
+
+\chapter{ЗАСТОСУВАННЯ ...}
+
+\lipsum[2]
+
+Поняття {\em абстракцў∙} ...\index{абстракцўя}.
+
+% more chapters
+\lipsum[11-21]
+
+\begin{thebibliography}{999}
+\addcontentsline{toc}{section}{Список лўтератури}
+\thispagestyle{empty}
+{\scriptsize
+\bibitem{textbook1} {\em Author A.}
+\newblock Textbook 1.
+\newblock {\em -- UniPress. 1970 -- v. 1. -- 333 p.}
+
+% more entries
+}
+\end{thebibliography}{999}
+
+%%% index %%%
+
+{\scriptsize
+\renewcommand\indexname{Предметний покажчик}
+\begin{theindex}
+\thispagestyle{empty}
+\input{paper-ind.tex}
+\end{theindex}
+}
+
+%%% backcover.tex %%%
+
+\newpage
+\thispagestyle{empty}
+\vspace{2cm}
+\vspace*{\fill}
+
+{\footnotesize
+\begin{center}
+                      {\Huge\bfseries Палўтурка}
+\end{center}
+
+\vspace{1cm}
+% ...
+
+}
+\vspace*{\fill}
+
+\end{document}
