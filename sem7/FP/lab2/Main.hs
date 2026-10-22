@@ -1,7 +1,4 @@
 {-# LANGUAGE BangPatterns #-}
--- Lab 2, variant 3: parallel Gaussian elimination with partial pivoting.
--- Build: ghc -O2 -threaded -rtsopts Gauss.hs
--- Run:   ./Gauss 1000 +RTS -N4
 module Main (main) where
 
 import qualified Data.Vector.Unboxed as U
@@ -13,11 +10,9 @@ import GHC.Conc (getNumCapabilities)
 import System.Environment (getArgs)
 import Text.Printf (printf)
 
--- A row holds the remaining coefficients followed by the right-hand side.
 type Row = U.Vector Double
 
--- Forward elimination. Rows below the pivot are updated in parallel,
--- in chunks of `chunk` rows. Returns an upper-triangular system.
+-- forward elimination
 forward :: Bool -> Int -> [Row] -> [Row]
 forward _ _ [] = []
 forward par chunk rows =
@@ -31,14 +26,14 @@ forward par chunk rows =
             | otherwise = map elim rest
   in pivot : forward par chunk rest'
 
--- Partial pivoting: choose the row with the largest |first element|.
+-- partial pivoting: choose the row with the largest |first element|
 pickPivot :: [Row] -> (Row, [Row])
 pickPivot rs =
   let best = snd (maximum [ (abs (U.head r), i) | (r, i) <- zip rs [0 :: Int ..] ])
       (a, b : c) = splitAt best rs
   in (b, a ++ c)
 
--- Back substitution: x_i = (b_i - sum a_ij * x_j) / a_ii, from the last row up.
+-- back substitution: x_i = (b_i - sum a_ij * x_j) / a_ii, from the last row up
 backward :: [Row] -> U.Vector Double
 backward rows = foldl' step U.empty (reverse rows)
   where
@@ -53,7 +48,7 @@ solve par chunk a b =
   let rows = [ U.fromList (r ++ [bi]) | (r, bi) <- zip a b ]
   in U.toList (backward (forward par chunk rows))
 
--- Deterministic test system with a dominant diagonal (always solvable).
+-- deterministic test system with a dominant diagonal (always solvable)
 genSystem :: Int -> ([[Double]], [Double])
 genSystem n = (a, b)
   where
@@ -67,7 +62,7 @@ genSystem n = (a, b)
         | (i, r) <- zip [0 :: Int ..] rowsV ]
     b = take n restV
 
--- Maximum residual max |Ax - b|.
+-- maximum residual max |Ax - b|.
 residual :: [[Double]] -> [Double] -> [Double] -> Double
 residual a b x = maximum [ abs (sum (zipWith (*) r x) - bi) | (r, bi) <- zip a b ]
 
@@ -85,12 +80,12 @@ main = do
   let n = case args of (s : _) -> read s; _ -> 600
   caps <- getNumCapabilities
 
-  -- Correctness check on a small system.
+  -- correctness check on a small system
   let a0 = [[2, 1, -1], [-3, -1, 2], [-2, 1, 2]]
       b0 = [8, -11, -3]
   putStrLn ("3x3 check (expected [2,3,-1]): " ++ show (solve True 1 a0 b0))
 
-  -- Benchmark: sequential vs parallel.
+  -- benchmark: sequential vs parallel.
   let (a, b) = genSystem n
   _ <- evaluate (sum (map sum a) + sum b)
   printf "n = %d, threads (-N) = %d\n" n caps
