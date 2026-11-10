@@ -1,0 +1,7 @@
+package mysql
+  extra-lib-dirs: /opt/homebrew/lib, /opt/homebrew/opt/openssl@3/lib, /opt/homebrew/opt/mysql/lib
+  extra-include-dirs: /opt/homebrew/include, /opt/homebrew/opt/openssl@3/include, /opt/homebrew/opt/mysql/include
+
+package pcre-light
+  extra-lib-dirs: /opt/homebrew/lib
+  extra-include-dirs: /opt/homebrew/include

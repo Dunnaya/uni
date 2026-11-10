@@ -1,0 +1,14 @@
+cabal-version:      2.4
+name:               lab1
+version:            0.1.0.0
+synopsis:           Lab 1 (v 7)
+build-type:         Simple
+
+executable lab1
+    main-is:          Main.hs
+    hs-source-dirs:   app
+    build-depends:    base >=4.14 && <5,
+                      mysql-simple >=0.4.5,
+                      text
+    default-language: Haskell2010
+    ghc-options:      -Wall
