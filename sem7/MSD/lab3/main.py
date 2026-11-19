@@ -1,8 +1,3 @@
-""" Запуск:
-    python main.py                 # інтерактивне вікно зі слайдером (тестове зображення)
-    python main.py photo.jpg       # з вашим зображенням
-    python main.py photo.jpg --table   # таблиця експериментів + збереження графіка
-"""
 import argparse
 import numpy as np
 import matplotlib.pyplot as plt
@@ -19,7 +14,7 @@ LEVELS = 3
 
 
 def load_image(path):
-    if path is None:                      # синтетичне зображення, якщо файл не вказано
+    if path is None:                      # синтетичне зображення якщо файл не вказано
         y, x = np.mgrid[0:SIZE, 0:SIZE]
         img = 100 + 80 * x / SIZE + 30 * np.sin(y / 15.0)
         img[(x - 256) ** 2 + (y - 256) ** 2 < 100 ** 2] = 220

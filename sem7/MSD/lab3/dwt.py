@@ -1,4 +1,3 @@
-"""Власна реалізація багаторівневого DWT Хаара."""
 import numpy as np
 
 S = np.sqrt(2)
@@ -6,7 +5,7 @@ S = np.sqrt(2)
 
 def _fwd_1d_rows(x):
     a, b = x[:, 0::2], x[:, 1::2]
-    return np.hstack(((a + b) / S, (a - b) / S))      # [низькі | високі]
+    return np.hstack(((a + b) / S, (a - b) / S))     
 
 
 def _inv_1d_rows(x):
